@@ -25,7 +25,6 @@
     android:layout_height="1px"
     android:layout_weight="1"
     android:fillViewport="true"
-
         >
 
 	<LinearLayout android:id="@+id/main" android:orientation="vertical"

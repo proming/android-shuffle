@@ -24,25 +24,25 @@
     
     <Button
     	android:id="@+id/add_item_button"
-    	android:layout_width="fill_parent"
+    	android:layout_width="0dip"
 	    android:layout_height="fill_parent"
-    	android:layout_weight="10"
+    	android:layout_weight="2"
     	android:text="@string/task_name"
     	/>
 
     <Button
     	android:id="@+id/other_button"
-    	android:layout_width="fill_parent"
+        android:layout_width="0dip"
 	    android:layout_height="fill_parent"
-    	android:layout_weight="10"
+    	android:layout_weight="2"
         android:visibility="invisible"
     	/>
 
     <ImageButton android:id="@+id/filter_button"
         android:src="@drawable/ic_menu_manage"
-        android:layout_width="fill_parent"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="10"
+        android:layout_weight="1"
          />
 
 </LinearLayout>	
