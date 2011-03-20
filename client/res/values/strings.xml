@@ -92,6 +92,7 @@
     <string name="inactive">Inactive</string>
     <string name="from_context">(via context)</string>
     <string name="from_project">(via project)</string>
+    <string name="complete">Complete</string>
     <string name="completed">Completed</string>
     <string name="incomplete">Incomplete</string>
     <string name="none_empty">None</string>
@@ -132,7 +133,7 @@
 \t• Fixed calendar selection bug on Android 2.2.\n
 \t• Fixed action reordering in projects and Next Actions.\n
 \t• Action view screen added.\n
-\t• Spanish and Japanese translations.\n
+\t• Spanish, Portugese and Japanese translations.\n
 \n
 <b>New in version 1.6.3:</b>\n
 \t• Fix task editing compatibility with Android 1.5.\n
@@ -167,6 +168,7 @@ Also note that this application sends anonymous usage statistics back to a serve
 allow that, you can turn it off under Settings.</string>
 
     <!-- task view screen -->
+    <string name="complete_toggle_button">Mark %s</string>
     <string name="status_title">Status</string>
     <string name="created_title">Created</string>
     <string name="modified_title">Last modified</string>

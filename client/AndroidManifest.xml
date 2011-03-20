@@ -116,7 +116,8 @@
 
 		<activity
 			android:name="org.dodgybits.shuffle.android.editor.activity.TaskEditorActivity"
-			android:label="@string/app_name" android:theme="@android:style/Theme.Light">
+			android:label="@string/app_name" android:theme="@android:style/Theme.Light"
+            android:windowSoftInputMode="stateHidden|adjustResize">
 			<intent-filter android:label="@string/title_edit_task">
 				<action android:name="android.intent.action.EDIT" />
 				<action android:name="org.dodgybits.android.shuffle.action.EDIT_TASK" />
@@ -135,7 +136,8 @@
 
 		<activity
 			android:name="org.dodgybits.shuffle.android.editor.activity.ProjectEditorActivity"
-			android:label="@string/title_new_project" android:theme="@android:style/Theme.Light">
+			android:label="@string/title_new_project" android:theme="@android:style/Theme.Light"
+            android:windowSoftInputMode="stateHidden|adjustResize">
 			<intent-filter android:label="@string/title_edit_project">
 				<action android:name="android.intent.action.EDIT" />
 				<action android:name="org.dodgybits.android.shuffle.action.EDIT_PROJECT" />
@@ -153,7 +155,8 @@
 
 		<activity
 			android:name="org.dodgybits.shuffle.android.editor.activity.ContextEditorActivity"
-			android:label="@string/title_new_context" android:theme="@android:style/Theme.Light">
+			android:label="@string/title_new_context" android:theme="@android:style/Theme.Light"
+            android:windowSoftInputMode="stateHidden|adjustResize">
 			<intent-filter android:label="@string/title_edit_context">
 				<action android:name="android.intent.action.EDIT" />
 				<action android:name="org.dodgybits.android.shuffle.action.EDIT_CONTEXT" />

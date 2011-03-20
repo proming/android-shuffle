@@ -27,6 +27,7 @@ import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
@@ -38,6 +39,7 @@ import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.CalendarUtils;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
+import org.dodgybits.shuffle.android.list.activity.State;
 import org.dodgybits.shuffle.android.list.view.LabelView;
 import org.dodgybits.shuffle.android.list.view.StatusView;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
@@ -49,6 +51,7 @@ import roboguice.util.Ln;
  */
 public class TaskViewActivity extends AbstractViewActivity<Task> {
 
+    private @InjectView(R.id.complete_toggle_button) Button mCompleteButton;
 
     private @InjectView(R.id.project) TextView mProjectView;
     private @InjectView(R.id.description) TextView mDescriptionView;
@@ -64,7 +67,7 @@ public class TaskViewActivity extends AbstractViewActivity<Task> {
     private @InjectView(R.id.calendar_entry) View mCalendarEntry;
     private @InjectView(R.id.view_calendar_button) Button mViewCalendarButton;
 
-//    private @InjectView(R.id.reminder_entry) View mReinderEntry;
+//    private @InjectView(R.id.reminder_entry) View mReminderEntry;
 //    private @InjectView(R.id.reminder) TextView mReminderView;
 
     private @InjectView(R.id.status) StatusView mStatusView;
@@ -91,6 +94,8 @@ public class TaskViewActivity extends AbstractViewActivity<Task> {
         icon.setBounds(0, 0, 36, 36);
         mViewCalendarButton.setCompoundDrawables(icon, null, null, null);
         mViewCalendarButton.setOnClickListener(this);
+
+        mCompleteButton.setOnClickListener(this);
     }
 
     @Override
@@ -98,6 +103,7 @@ public class TaskViewActivity extends AbstractViewActivity<Task> {
         Context context = mContextCache.findById(task.getContextId());
         Project project = mProjectCache.findById(task.getProjectId());
 
+        updateCompleteButton(task.isComplete());
         updateProject(project);
         updateDescription(task.getDescription());
         updateContext(context);
@@ -123,6 +129,14 @@ public class TaskViewActivity extends AbstractViewActivity<Task> {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.complete_toggle_button: {
+                toggleComplete();
+                String text = getString(R.string.itemSavedToast, getString(R.string.task_name));
+                Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+            }
+
 	        case R.id.view_calendar_button: {
                 Uri eventUri = ContentUris.appendId(
                         CalendarUtils.getEventContentUri().buildUpon(),
@@ -138,6 +152,14 @@ public class TaskViewActivity extends AbstractViewActivity<Task> {
         }
     }
 
+    protected final void toggleComplete() {
+        Task updatedTask = Task.newBuilder().mergeFrom(mOriginalItem)
+                .setComplete(!mOriginalItem.isComplete()).build();
+        mPersister.update(updatedTask);
+
+    }
+
+
     private void loadCursors() {
         // Get the task if we're editing
         mCursor = managedQuery(mUri, TaskProvider.Tasks.FULL_PROJECTION, null, null, null);
@@ -145,6 +167,12 @@ public class TaskViewActivity extends AbstractViewActivity<Task> {
             // The cursor is empty. This can happen if the event was deleted.
             finish();
         }
+    }
+
+    private void updateCompleteButton(boolean isComplete) {
+        String label = getString(R.string.complete_toggle_button,
+                isComplete ? getString(R.string.incomplete) : getString(R.string.complete));
+       mCompleteButton.setText(label);
     }
 
     private void updateProject(Project project) {
