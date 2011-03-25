@@ -417,9 +417,14 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
             }
         }
 
-        final int order = commitValues ?
-                mPersister.calculateTaskOrder(mOriginalItem, projectId, dueMillis) :
-                mOriginalItem.getOrder();
+        final int order;
+        if (commitValues) {
+            order = mPersister.calculateTaskOrder(mOriginalItem, projectId, dueMillis);
+        } else if (mOriginalItem == null) {
+            order = 0;
+        } else {
+            order = mOriginalItem.getOrder();
+        }
 
         builder
             .setTimezone(timezone)
