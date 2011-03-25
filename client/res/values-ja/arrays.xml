@@ -12,6 +12,10 @@
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
+	
+	 About Japanase translation.
+	  2011/03/23 : Based on r265 :yosi
+	
 -->
 
 <resources>
@@ -28,12 +32,12 @@
         <item>毎週</item>
     </array>
     <array name="perspectives">
-        <item>インポックス</item>
-        <item>もうすぐ</item>
+        <item>未決箱</item>
+        <item>期限ありアクション</item>
         <item>次のアクション</item>
         <item>プロジェクト</item>
         <item>コンテキスト</item>
-        <item>通知</item>
+        <item>保留箱</item>
     </array>
     <array name="view_types">
         <item>展開リスト</item>
@@ -41,11 +45,11 @@
     </array>
     <array name="help_screens">
         <item>はじめに</item>
-        <item>インボックス</item>
+        <item>未決箱</item>
         <item>プロジェクト</item>
         <item>コンテキスト</item>
         <item>次のアクション</item>
-        <item>もうすぐ</item>
+        <item>期限ありアクション</item>
         <item>設定</item>
         <item>ヒント</item>
         <item>注意事項</item>
@@ -190,26 +194,26 @@
 
     <string-array name="list_preferences_active_labels" translatable="false">
         <item>全て表示</item>
-        <item>アクティブな物だけ表示</item>
-        <item>アクティブな物を隠す</item>
+        <item>有効な物だけ表示</item>
+        <item>有効な物を隠す</item>
     </string-array>
 
     <string-array name="list_preferences_deleted_labels" translatable="false">
         <item>全て表示</item>
-        <item>削除済みな物だけ表示</item>
-        <item>削除済みな物を隠す</item>
+        <item>削除した物だけ表示</item>
+        <item>削除した物を隠す</item>
     </string-array>
 
     <string-array name="list_preferences_pending_labels" translatable="false">
         <item>全て表示</item>
-        <item>後回しな物だけ表示</item>
-        <item>後回しな物を隠す</item>
+        <item>保留中の物だけ表示</item>
+        <item>保留中の物を隠す</item>
     </string-array>
 
     <string-array name="list_preferences_completed_labels" translatable="false">
         <item>全て表示</item>
-        <item>完了した物だけ隠す</item>
-        <item>完了したものを隠す</item>
+        <item>完了した物だけ表示</item>
+        <item>完了した物を隠す</item>
     </string-array>
 
 </resources>
