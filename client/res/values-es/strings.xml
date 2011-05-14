@@ -256,16 +256,16 @@ Ten en cuenta que la aplicación realiza estadísticas anónimas de uso y las ma
     <string name="permanently_delete_button_title">Borrado permanente</string>
 
     <!-- Toast displayed when an item is created -->
-    <string name="itemCreatedToast">Se ha creado %1$.</string>
+    <string name="itemCreatedToast">Se ha creado %1$s.</string>
 
     <string name="emptyTrashWarning">¿Vaciar todos los elementos de la papelera?</string>
-    <string name="emptyTrashToast">Borrado permanente de las acciones %1$, proyectos y contextos.</string>
+    <string name="emptyTrashToast">Borrado permanente de las acciones %1$s, proyectos y contextos.</string>
     
     <!-- Toast displayed when an item is saved -->
-    <string name="itemSavedToast">Se ha guardado %1$.</string>
+    <string name="itemSavedToast">Se ha guardado %1$s.</string>
 
     <!-- Toast displayed when an item is saved -->
-    <string name="itemDeletedToast">Se ha eliminado %1$.</string>
+    <string name="itemDeletedToast">Se ha eliminado %1$s.</string>
 
     
    <!-- synchronization-->
@@ -314,10 +314,10 @@ Ten en cuenta que la aplicación realiza estadísticas anónimas de uso y las ma
     <string name="no_due_tasks">No hay acciones pendientes.</string>
     <string name="no_projects">No hay proyectos que mostrar. Empieza creando acciones en la bandeja de entrada y asignándolas a un proyecto.</string>
     <string name="no_contexts">No hay contextos que mostrar. Empieza creando acciones en la bandeja de entrada y asignándolas a un contexto.</string>
-    <string name="delete_warning">¿Seguro que quieres borrar la selección %1$ y sus %2$d %3$s(s)?</string>
+    <string name="delete_warning">¿Seguro que quieres borrar la selección %1$s y sus %2$d %3$s(s)?</string>
     <string name="delete_completed_warning">¿Borrar acciones completadas?</string>
     <string name="clean_slate_warning">¿Borrar <i>todas</i> las acciones, proyectos y contextos definidos por el usuario?</string>
-    <string name="clean_task_message">Borrar las acciones completadas %1$.</string>
+    <string name="clean_task_message">Borrar las acciones completadas %1$s.</string>
     <string name="clean_inbox_message">Quitar las acciones que tengan definidos proyectos o contextos de la bandeja de entrada.</string>
     <string name="clean_slate_message">Se han borrado todas las acciones, proyectos y contextos definidos por el usuario.</string>
    	<string name="error_title">Error</string>
