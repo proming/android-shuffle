@@ -16,31 +16,18 @@
 
 package org.dodgybits.shuffle.android.list.activity.task;
 
-import static org.dodgybits.shuffle.android.core.model.persistence.selector.Flag.no;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import com.sun.source.util.TaskListener;
-import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
-import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
 import org.dodgybits.shuffle.android.list.annotation.ContextTasks;
-import org.dodgybits.shuffle.android.list.config.AbstractTaskListConfig;
 import org.dodgybits.shuffle.android.list.config.ContextTasksListConfig;
 import org.dodgybits.shuffle.android.list.config.ListConfig;
-import org.dodgybits.shuffle.android.list.config.TaskListConfig;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-import org.dodgybits.shuffle.android.preference.model.ListPreferenceSettings;
 
 import android.content.ContentUris;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
