@@ -107,6 +107,23 @@
 <string name="whats_new_dialog_title">Shuffle</string>
 <string name="whats_new_dialog_message">Gracias por descargar Shuffle.\n\n
 <b>Novedades en la versión actual:</b>\n
+\t• Solucionado el fallo la creación de nuevas acciones en la versión española \n
+\t• No haga caso de los elementos eliminados cálculo de Acciones Siguiente\n
+\n
+<b> Novedades en la versión 1.7.0: </b> \n
+\t• Ver filtros, personalizable en cada vista. \n
+\t• Active las banderas de los contextos y proyectos. \n
+\t• Los elementos eliminados son recuperables. \n
+\t• Barra de herramientas añadido a las vistas de lista. \n
+\t• Nuevo 4x4 widget. \n
+\t• Tickler vista de las acciones inactivo. \n
+\t• Soporte para los sitios con temas de auto certificados firmados. \n
+\t• Solución del problema de la selección natural en Android 2.2. \n
+\t• Reordenación de acción fija en los proyectos y acciones en Siguiente. \n
+\t• pantalla de vista de Acción agregó. \n
+\t• español, portugués y traducciones al japonés. \n
+\n
+<b>Novedades en la versión 1.6.3:</b>\n
 \t• Corrección del error de edición de tareas en Android 1.5.\n
 \n
 <b>Novedades en la versión 1.6.2:</b>\n

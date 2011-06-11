@@ -124,7 +124,7 @@
 <string name="whats_new_dialog_message">Thanks for downloading Shuffle.\n\n
 <b>New in this version:</b>\n
 \t• Fixed crash creating new actions in Spanish version\n 
-\t• Ignore deleted items calculating Top Actions	
+\t• Ignore deleted items calculating Next Actions	
 \n
 <b>New in version 1.7.0:</b>\n
 \t• View filters, customisable in each view.\n
