@@ -18,6 +18,9 @@ package org.dodgybits.android.shuffle.server;
 import com.google.android.c2dm.server.PMF;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 import java.util.Date;
 import java.util.List;
@@ -32,17 +35,17 @@ public class RegistrationInfo {
 
   private static final int MAX_DEVICES = 5;
 
-  String accountName;
-
   String deviceId;
 
   String deviceRegistrationId;
 
   public RegistrationInfo() {
   }
-
+  
   public String getAccountName() {
-    return accountName;
+      UserService userService = UserServiceFactory.getUserService();
+      User user = userService.getCurrentUser();
+      return user.getEmail();
   }
 
   public String getDeviceId() {
@@ -66,10 +69,6 @@ public class RegistrationInfo {
     log.info("Successfully registered");
   }
 
-  public void setAccountName(String accountName) {
-    this.accountName = accountName;
-  }
-
   public void setDeviceId(String deviceId) {
     this.deviceId = deviceId;
   }
@@ -80,7 +79,7 @@ public class RegistrationInfo {
 
   @Override
   public String toString() {
-    return "RegistrationInfo [accountName=" + accountName + ", deviceId=" + deviceId
+    return "RegistrationInfo [deviceId=" + deviceId
         + ", deviceRegistrationId=" + deviceRegistrationId + "]";
   }
 

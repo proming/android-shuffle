@@ -49,12 +49,9 @@ public class DeviceRegistrar {
             final String deviceRegistrationId, final boolean register) {
         final Intent updateUIIntent = new Intent(Util.UPDATE_UI_INTENT);
 
-        String accountName = Preferences.getGoogleAccountName(context);
-
         RegistrationInfoRequest request = getRequest(context);
         RegistrationInfoProxy proxy = request.create(RegistrationInfoProxy.class);
         proxy.setDeviceRegistrationId(deviceRegistrationId);
-        proxy.setAccountName(accountName);
 
         String deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
         proxy.setDeviceId(deviceId);

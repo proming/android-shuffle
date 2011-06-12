@@ -24,10 +24,8 @@ import com.google.web.bindery.requestfactory.shared.ValueProxy;
  */
 @ProxyForName("org.dodgybits.android.shuffle.server.RegistrationInfo")
 public interface RegistrationInfoProxy extends ValueProxy {
-  String getAccountName();
   String getDeviceId();
   String getDeviceRegistrationId();
-  void setAccountName(String accountName);
   void setDeviceId(String deviceId);
   void setDeviceRegistrationId(String deviceRegistrationId);
 }
