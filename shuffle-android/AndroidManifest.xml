@@ -410,8 +410,11 @@
 			</intent-filter>
 		</activity>
 
+        <activity
+            android:name="org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity" />
+
 		<activity
-			android:name="org.dodgybits.shuffle.android.preference.activity.SynchronizationSettingsActivity" />
+			android:name="org.dodgybits.shuffle.android.preference.activity.PreferencesTracksSynchronizationActivity" />
 
         <activity android:name="org.dodgybits.shuffle.android.list.activity.ListPreferenceActivity"/>
 

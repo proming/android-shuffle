@@ -56,6 +56,11 @@ public class Preferences {
     public static final String TRACKS_SELF_SIGNED_CERT = "tracks_self_signed_cert";
     public static final String TRACKS_INTERVAL = "tracks_interval";
 
+    public static final String GOOGLE_AUTH_COOKIE = "authCookie";
+    public static final String GOOGLE_ACCOUNT_NAME = "accountName";
+    public static final String GOOGLE_DEVICE_REGISTRATION_ID = "deviceRegistrationID";
+    public static final String NOTIFICATION_ID = "notificationId";
+    
     public static final String WIDGET_QUERY_PREFIX = "widget_query_";
     
     public static final String CLEAN_INBOX_INTENT = "org.dodgybits.shuffle.android.CLEAN_INBOX";
@@ -102,6 +107,29 @@ public class Preferences {
 
     public static String getTracksPassword(Context context) {
         return getSharedPreferences(context).getString(TRACKS_PASSWORD, "");
+    }
+    
+    public static int getNotificationId(Context context) {
+        return getSharedPreferences(context).getInt(NOTIFICATION_ID, 0);
+    }
+
+    public static void incrementNotificationId(Context context) {
+        int notificationId = getNotificationId(context);
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putInt(NOTIFICATION_ID, ++notificationId % 32);
+        editor.commit();
+    }
+    
+    public static String getGoogleAuthCookie(Context context) {
+        return getSharedPreferences(context).getString(GOOGLE_AUTH_COOKIE, null);
+    }
+
+    public static String getGoogleAccountName(Context context) {
+        return getSharedPreferences(context).getString(GOOGLE_ACCOUNT_NAME, null);
+    }
+    
+    public static String getGooglDeviceRegistrationId(Context context) {
+        return getSharedPreferences(context).getString(GOOGLE_DEVICE_REGISTRATION_ID, null);
     }
     
 	public static Boolean isTracksSelfSignedCert(Context context) {

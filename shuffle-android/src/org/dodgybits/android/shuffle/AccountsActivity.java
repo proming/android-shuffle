@@ -25,6 +25,7 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import java.io.IOException;
 import java.net.URI;
@@ -93,28 +94,17 @@ public class AccountsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences prefs = Util.getSharedPreferences(mContext);
-        String deviceRegistrationID = prefs.getString(Util.DEVICE_REGISTRATION_ID, null);
-        if (deviceRegistrationID == null) {
-            // Show the 'connect' screen if we are not connected
-            setScreenContent(R.layout.connect);
-        } else {
-            // Show the 'disconnect' screen if we are connected
-            setScreenContent(R.layout.disconnect);
-        }
+        setScreenContent();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences prefs = Util.getSharedPreferences(mContext);
-        String deviceRegistrationID = prefs.getString(Util.DEVICE_REGISTRATION_ID, null);
-        if (deviceRegistrationID == null) {
-            setScreenContent(R.layout.connect);
-        } else {
-            setScreenContent(R.layout.disconnect);
-        }
+        setScreenContent();
+
         return true;
     }
+    
+    
 
     /**
      * Resumes the activity.
@@ -187,8 +177,7 @@ public class AccountsActivity extends Activity {
      * Sets up the 'disconnected' screen.
      */
     private void setDisconnectScreenContent() {
-        final SharedPreferences prefs = Util.getSharedPreferences(mContext);
-        String accountName = prefs.getString(Util.ACCOUNT_NAME, "error");
+        String accountName = Preferences.getGoogleAccountName(mContext);
 
         // Format the disconnect message with the currently connected account
         // name
@@ -201,9 +190,9 @@ public class AccountsActivity extends Activity {
         disconnectButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 // Delete the current account from shared preferences
-                Editor editor = prefs.edit();
-                editor.putString(Util.AUTH_COOKIE, null);
-                editor.putString(Util.DEVICE_REGISTRATION_ID, null);
+                Editor editor = Preferences.getEditor(mContext);
+                editor.putString(Preferences.GOOGLE_AUTH_COOKIE, null);
+                editor.putString(Preferences.GOOGLE_DEVICE_REGISTRATION_ID, null);
                 editor.commit();
 
                 // Unregister in the background and terminate the activity
@@ -221,17 +210,18 @@ public class AccountsActivity extends Activity {
     }
 
     /**
-     * Sets the screen content based on the screen id.
+     * Sets the screen content based on whether a device id is set already.
      */
-    private void setScreenContent(int screenId) {
-        setContentView(screenId);
-        switch (screenId) {
-            case R.layout.disconnect:
-                setDisconnectScreenContent();
-                break;
-            case R.layout.connect:
-                setConnectScreenContent();
-                break;
+    private void setScreenContent() {
+        String deviceRegistrationID = Preferences.getGooglDeviceRegistrationId(mContext);
+        if (deviceRegistrationID == null) {
+            // Show the 'connect' screen if we are not connected
+            setContentView(R.layout.connect);
+            setConnectScreenContent();
+        } else {
+            // Show the 'disconnect' screen if we are connected
+            setContentView(R.layout.disconnect);
+            setDisconnectScreenContent();
         }
     }
 
@@ -244,10 +234,9 @@ public class AccountsActivity extends Activity {
      */
     private void register(final String accountName) {
         // Store the account name in shared preferences
-        final SharedPreferences prefs = Util.getSharedPreferences(mContext);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Util.ACCOUNT_NAME, accountName);
-        editor.putString(Util.AUTH_COOKIE, null);
+        SharedPreferences.Editor editor = Preferences.getEditor(mContext);
+        editor.putString(Preferences.GOOGLE_ACCOUNT_NAME, accountName);
+        editor.putString(Preferences.GOOGLE_AUTH_COOKIE, null);
         editor.commit();
 
         // Obtain an auth token and register
@@ -261,7 +250,7 @@ public class AccountsActivity extends Activity {
                     // We set the userId to be the same as the account name
                     String authCookie = "dev_appserver_login=" + accountName + ":false:"
                             + accountName;
-                    prefs.edit().putString(Util.AUTH_COOKIE, authCookie).commit();
+                    Preferences.getEditor(mContext).putString(Preferences.GOOGLE_AUTH_COOKIE, authCookie).commit();
                     C2DMessaging.register(mContext, Setup.SENDER_ID);
                 } else {
                     // Get the auth token from the AccountManager and convert
@@ -273,7 +262,7 @@ public class AccountsActivity extends Activity {
                                 String authToken = authTokenBundle
                                         .get(AccountManager.KEY_AUTHTOKEN).toString();
                                 String authCookie = getAuthCookie(authToken);
-                                prefs.edit().putString(Util.AUTH_COOKIE, authCookie).commit();
+                                Preferences.getEditor(mContext).putString(Preferences.GOOGLE_AUTH_COOKIE, authCookie).commit();
 
                                 C2DMessaging.register(mContext, Setup.SENDER_ID);
                             } catch (AuthenticatorException e) {

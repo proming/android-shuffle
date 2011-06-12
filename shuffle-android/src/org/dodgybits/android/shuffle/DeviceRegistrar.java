@@ -22,6 +22,7 @@ import com.google.web.bindery.requestfactory.shared.ServerFailure;
 import org.dodgybits.android.shuffle.client.MyRequestFactory;
 import org.dodgybits.android.shuffle.client.MyRequestFactory.RegistrationInfoRequest;
 import org.dodgybits.android.shuffle.shared.RegistrationInfoProxy;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import android.content.Context;
 import android.content.Intent;
@@ -48,8 +49,7 @@ public class DeviceRegistrar {
             final String deviceRegistrationId, final boolean register) {
         final Intent updateUIIntent = new Intent(Util.UPDATE_UI_INTENT);
 
-        SharedPreferences prefs = Util.getSharedPreferences(context);
-        String accountName = prefs.getString(Util.ACCOUNT_NAME, null);
+        String accountName = Preferences.getGoogleAccountName(context);
 
         RegistrationInfoRequest request = getRequest(context);
         RegistrationInfoProxy proxy = request.create(RegistrationInfoProxy.class);
@@ -76,12 +76,11 @@ public class DeviceRegistrar {
 
             @Override
             public void onSuccess(Void response) {
-                SharedPreferences settings = Util.getSharedPreferences(context);
-                SharedPreferences.Editor editor = settings.edit();
+                SharedPreferences.Editor editor = Preferences.getEditor(context);
                 if (register) {
-                    editor.putString(Util.DEVICE_REGISTRATION_ID, deviceRegistrationId);
+                    editor.putString(Preferences.GOOGLE_DEVICE_REGISTRATION_ID, deviceRegistrationId);
                 } else {
-                    editor.remove(Util.DEVICE_REGISTRATION_ID);
+                    editor.remove(Preferences.GOOGLE_DEVICE_REGISTRATION_ID);
                 }
                 editor.commit();
                 updateUIIntent.putExtra(STATUS_EXTRA, register ? REGISTERED_STATUS

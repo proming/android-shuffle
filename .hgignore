@@ -2,3 +2,7 @@
 /gen/
 /classes/
 \.DS_Store
+/appengine-generated/
+/war/WEB-INF/deploy/
+dataMessagingToken.txt
+debugging_prefs.properties

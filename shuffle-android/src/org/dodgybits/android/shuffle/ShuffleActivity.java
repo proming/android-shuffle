@@ -15,18 +15,15 @@
  */
 package org.dodgybits.android.shuffle;
 
-import com.google.web.bindery.requestfactory.shared.Receiver;
-import com.google.web.bindery.requestfactory.shared.ServerFailure;
-
 import org.dodgybits.android.shuffle.client.MyRequestFactory;
 import org.dodgybits.android.shuffle.client.MyRequestFactory.HelloWorldRequest;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +33,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.web.bindery.requestfactory.shared.Receiver;
+import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
 /**
  * Main activity - requests "Hello, World" messages from the server and provides
@@ -71,8 +71,7 @@ public class ShuffleActivity extends Activity {
             }
 
             // Display a notification
-            SharedPreferences prefs = Util.getSharedPreferences(mContext);
-            String accountName = prefs.getString(Util.ACCOUNT_NAME, "Unknown");
+            String accountName = Preferences.getGoogleAccountName(mContext);
             Util.generateNotification(mContext, String.format(message, accountName));
         }
     };
@@ -129,8 +128,7 @@ public class ShuffleActivity extends Activity {
                         MyRequestFactory requestFactory = Util.getRequestFactory(mContext,
                                 MyRequestFactory.class);
                         final HelloWorldRequest request = requestFactory.helloWorldRequest();
-                        String accountName = Util.getSharedPreferences(mContext).getString(
-                                Util.ACCOUNT_NAME, "none");
+                        String accountName = Preferences.getGoogleAccountName(mContext);
                         Log.i(TAG, "Sending request to server for account " + accountName);
                         request.getMessage().fire(new Receiver<String>() {
                             @Override

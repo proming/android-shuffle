@@ -15,13 +15,14 @@
  */
 package org.dodgybits.android.shuffle;
 
-import com.google.android.c2dm.C2DMBaseReceiver;
-
 import java.io.IOException;
+
+import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+
+import com.google.android.c2dm.C2DMBaseReceiver;
 
 /**
  * Receive a push message from the Cloud to Device Messaging (C2DM) service.
@@ -54,8 +55,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
      */
     @Override
     public void onUnregistered(Context context) {
-        SharedPreferences prefs = Util.getSharedPreferences(context);
-        String deviceRegistrationID = prefs.getString(Util.DEVICE_REGISTRATION_ID, null);
+        String deviceRegistrationID = Preferences.getGooglDeviceRegistrationId(context);
         DeviceRegistrar.registerOrUnregister(context, deviceRegistrationID, false);
     }
 

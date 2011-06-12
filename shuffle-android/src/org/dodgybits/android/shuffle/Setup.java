@@ -25,7 +25,7 @@ public class Setup {
      * The AppEngine app name, used to construct the production service URL
      * below.
      */
-    private static final String APP_NAME = "shuffle";
+    private static final String APP_NAME = "android-shuffle";
 
     /**
      * The URL of the production service.

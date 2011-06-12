@@ -34,7 +34,7 @@ import android.widget.Toast;
 /**
  * Activity that changes the options set for synchronization
  */
-public class SynchronizationSettingsActivity extends FlurryEnabledActivity {
+public class PreferencesTracksSynchronizationActivity extends FlurryEnabledActivity {
     @InjectView(R.id.url) EditText mUrlTextbox;
     @InjectView(R.id.user) EditText mUserTextbox;
     @InjectView(R.id.pass) EditText mPassTextbox;

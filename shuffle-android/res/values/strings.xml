@@ -344,6 +344,7 @@ allow that, you can turn it off under Settings.</string>
 
     <!-- App Engine synchronization -->
 
+    <string name="appengine_synchronization_settings">AppEngine settings</string>
     <!-- Menu item text -->
     <string name="accounts">Accounts</string>
     <!-- Dialog button -->
@@ -386,7 +387,7 @@ allow that, you can turn it off under Settings.</string>
     <string name="skip">Skip</string>
 
     <!-- Notification message -->
-    <string name="unregistration_succeeded">Unegistered %1$s for C2DM messaging.</string>
+    <string name="unregistration_succeeded">Unregistered %1$s for C2DM messaging.</string>
 
     <!-- list filter preferences -->
     <string name="list_settings_title">Settings</string>
