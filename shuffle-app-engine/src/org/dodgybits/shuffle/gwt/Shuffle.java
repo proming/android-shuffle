@@ -13,20 +13,21 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle.shared;
+package org.dodgybits.shuffle.gwt;
 
-import com.google.web.bindery.requestfactory.shared.ProxyForName;
-import com.google.web.bindery.requestfactory.shared.ValueProxy;
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * A proxy object containing a message destined for a particular
- * recipient, identified by email address.
+ * Entry point classes define <code>onModuleLoad()</code>.
  */
-@ProxyForName(value = "org.dodgybits.android.shuffle.server.Message",
-    locator = "org.dodgybits.android.shuffle.server.MessageLocator")
-public interface MessageProxy extends ValueProxy {
-  String getMessage();
-  String getRecipient();
-  void setRecipient(String recipient);
-  void setMessage(String message);
+public class Shuffle implements EntryPoint {
+
+  /**
+   * This is the entry point method.
+   */
+  public void onModuleLoad() {
+    ShuffleWidget widget = new ShuffleWidget();
+    RootPanel.get().add(widget);
+  }
 }

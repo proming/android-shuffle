@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle;
+package org.dodgybits.shuffle.android.synchronisation.gae;
 
 import com.google.web.bindery.requestfactory.shared.RequestTransport;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;

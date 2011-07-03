@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle.client;
+package org.dodgybits.shuffle.client;
 
 import com.google.web.bindery.requestfactory.shared.InstanceRequest;
 import com.google.web.bindery.requestfactory.shared.Request;
@@ -21,12 +21,12 @@ import com.google.web.bindery.requestfactory.shared.RequestContext;
 import com.google.web.bindery.requestfactory.shared.RequestFactory;
 import com.google.web.bindery.requestfactory.shared.ServiceName;
 
-import org.dodgybits.android.shuffle.shared.MessageProxy;
-import org.dodgybits.android.shuffle.shared.RegistrationInfoProxy;
+import org.dodgybits.shuffle.shared.MessageProxy;
+import org.dodgybits.shuffle.shared.RegistrationInfoProxy;
 
 public interface MyRequestFactory extends RequestFactory {
 
-  @ServiceName("org.dodgybits.android.shuffle.server.HelloWorldService")
+  @ServiceName("org.dodgybits.shuffle.server.HelloWorldService")
   public interface HelloWorldRequest extends RequestContext {
     /**
      * Retrieve a "Hello, World" message from the server.
@@ -34,7 +34,7 @@ public interface MyRequestFactory extends RequestFactory {
     Request<String> getMessage();
   }
 
-  @ServiceName("org.dodgybits.android.shuffle.server.RegistrationInfo")
+  @ServiceName("org.dodgybits.shuffle.server.RegistrationInfo")
   public interface RegistrationInfoRequest extends RequestContext {
     /**
      * Register a device for C2DM messages.
@@ -47,7 +47,7 @@ public interface MyRequestFactory extends RequestFactory {
     InstanceRequest<RegistrationInfoProxy, Void> unregister();
   }
 
-  @ServiceName("org.dodgybits.android.shuffle.server.Message")
+  @ServiceName("org.dodgybits.shuffle.server.Message")
   public interface MessageRequest extends RequestContext {
     /**
      * Send a message to a device using C2DM.

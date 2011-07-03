@@ -13,11 +13,13 @@
 
   <!-- Other module inherits                                          -->
   <inherits name='com.google.web.bindery.requestfactory.RequestFactory'/>
+  <inherits name="com.googlecode.objectify.Objectify" />
 
   <!-- Specify the app entry point class.                             -->
-  <entry-point class='org.dodgybits.android.shuffle.client.Shuffle'/>
+  <entry-point class='org.dodgybits.shuffle.gwt.Shuffle'/>
 
   <!-- Specify the paths for translatable code                        -->
+  <source path='gwt'/>
   <source path='client'/>
   <source path='shared'/>
 </module>

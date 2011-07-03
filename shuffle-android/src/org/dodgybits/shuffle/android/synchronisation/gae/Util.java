@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle;
+package org.dodgybits.shuffle.android.synchronisation.gae;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -25,6 +25,8 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.android.shuffle.R.drawable;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import android.app.Notification;

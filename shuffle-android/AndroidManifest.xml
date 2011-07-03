@@ -420,19 +420,19 @@
 
         <!--  App Engine synchronisation -->
         
-        <activity android:name=".ShuffleActivity" android:label="@string/app_name"
+        <activity android:name="org.dodgybits.shuffle.android.synchronisation.gae.ShuffleActivity" android:label="@string/app_name"
             android:launchMode="singleTop" android:screenOrientation="portrait">
         </activity>
         
-        <!-- Account selection activity -->
-        <activity android:name=".AccountsActivity" android:label="@string/app_name"
+        <!-- Account selection activity -->         
+        <activity android:name="org.dodgybits.shuffle.android.synchronisation.gae.AccountsActivity" android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
 
         <!-- In order to use the C2DM library, an application must declare a class 
              with the name C2DMReceiver, extending com.google.android.c2dm.C2DMBaseReceiver.
              It must also include this section in the manifest. -->
-        <service android:name=".C2DMReceiver" />
+        <service android:name="org.dodgybits.shuffle.android.synchronisation.gae.C2DMReceiver" />
 
         <!-- Only Google services can send data messages for the app. If permission
              is not set - any other app can generate it -->

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle.server;
+package org.dodgybits.shuffle.server;
 
 import com.google.android.c2dm.server.PMF;
 import com.google.appengine.api.datastore.Key;

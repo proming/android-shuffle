@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle;
+package org.dodgybits.shuffle.android.synchronisation.gae;
 
 import android.content.Context;
 import android.content.Intent;

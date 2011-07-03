@@ -13,11 +13,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle;
+package org.dodgybits.shuffle.android.synchronisation.gae;
 
-import org.dodgybits.android.shuffle.client.MyRequestFactory;
-import org.dodgybits.android.shuffle.client.MyRequestFactory.HelloWorldRequest;
+import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
+import org.dodgybits.shuffle.client.MyRequestFactory;
+import org.dodgybits.shuffle.client.MyRequestFactory.HelloWorldRequest;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;

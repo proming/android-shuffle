@@ -1,7 +1,7 @@
 package org.dodgybits.shuffle.android.preference.activity;
 
-import org.dodgybits.android.shuffle.AccountsActivity;
 import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
+import org.dodgybits.shuffle.android.synchronisation.gae.AccountsActivity;
 
 import android.content.Intent;
 import android.os.Bundle;

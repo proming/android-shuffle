@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle.client;
+package org.dodgybits.shuffle.gwt;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
@@ -33,9 +33,10 @@ import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.Request;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
-import org.dodgybits.android.shuffle.client.MyRequestFactory.HelloWorldRequest;
-import org.dodgybits.android.shuffle.client.MyRequestFactory.MessageRequest;
-import org.dodgybits.android.shuffle.shared.MessageProxy;
+import org.dodgybits.shuffle.client.MyRequestFactory;
+import org.dodgybits.shuffle.client.MyRequestFactory.HelloWorldRequest;
+import org.dodgybits.shuffle.client.MyRequestFactory.MessageRequest;
+import org.dodgybits.shuffle.shared.MessageProxy;
 
 public class ShuffleWidget extends Composite {
   private static final int STATUS_DELAY = 4000;

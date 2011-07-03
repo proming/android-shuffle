@@ -13,21 +13,19 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle.client;
+package org.dodgybits.shuffle.shared;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.web.bindery.requestfactory.shared.ProxyForName;
+import com.google.web.bindery.requestfactory.shared.ValueProxy;
 
 /**
- * Entry point classes define <code>onModuleLoad()</code>.
+ * A proxy object containing device registration information:
+ * email account name, device id, and device registration id.
  */
-public class Shuffle implements EntryPoint {
-
-  /**
-   * This is the entry point method.
-   */
-  public void onModuleLoad() {
-    ShuffleWidget widget = new ShuffleWidget();
-    RootPanel.get().add(widget);
-  }
+@ProxyForName("org.dodgybits.shuffle.server.RegistrationInfo")
+public interface RegistrationInfoProxy extends ValueProxy {
+  String getDeviceId();
+  String getDeviceRegistrationId();
+  void setDeviceId(String deviceId);
+  void setDeviceRegistrationId(String deviceRegistrationId);
 }

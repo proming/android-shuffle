@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle;
+package org.dodgybits.shuffle.android.synchronisation.gae;
 
 import com.google.android.c2dm.C2DMessaging;
 
@@ -25,6 +25,10 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.android.shuffle.R.id;
+import org.dodgybits.android.shuffle.R.layout;
+import org.dodgybits.android.shuffle.R.string;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import java.io.IOException;

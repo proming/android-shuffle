@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle.server;
+package org.dodgybits.shuffle.server;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;

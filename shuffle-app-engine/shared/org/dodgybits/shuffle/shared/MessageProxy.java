@@ -13,19 +13,20 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle.shared;
+package org.dodgybits.shuffle.shared;
 
 import com.google.web.bindery.requestfactory.shared.ProxyForName;
 import com.google.web.bindery.requestfactory.shared.ValueProxy;
 
 /**
- * A proxy object containing device registration information:
- * email account name, device id, and device registration id.
+ * A proxy object containing a message destined for a particular
+ * recipient, identified by email address.
  */
-@ProxyForName("org.dodgybits.android.shuffle.server.RegistrationInfo")
-public interface RegistrationInfoProxy extends ValueProxy {
-  String getDeviceId();
-  String getDeviceRegistrationId();
-  void setDeviceId(String deviceId);
-  void setDeviceRegistrationId(String deviceRegistrationId);
+@ProxyForName(value = "org.dodgybits.shuffle.server.Message",
+    locator = "org.dodgybits.shuffle.server.MessageLocator")
+public interface MessageProxy extends ValueProxy {
+  String getMessage();
+  String getRecipient();
+  void setRecipient(String recipient);
+  void setMessage(String message);
 }

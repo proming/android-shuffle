@@ -13,15 +13,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.dodgybits.android.shuffle;
+package org.dodgybits.shuffle.android.synchronisation.gae;
 
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.Request;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
-import org.dodgybits.android.shuffle.client.MyRequestFactory;
-import org.dodgybits.android.shuffle.client.MyRequestFactory.RegistrationInfoRequest;
-import org.dodgybits.android.shuffle.shared.RegistrationInfoProxy;
+import org.dodgybits.shuffle.client.MyRequestFactory;
+import org.dodgybits.shuffle.client.MyRequestFactory.RegistrationInfoRequest;
+import org.dodgybits.shuffle.shared.RegistrationInfoProxy;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import android.content.Context;
