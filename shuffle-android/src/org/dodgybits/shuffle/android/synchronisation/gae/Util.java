@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.android.shuffle.R.drawable;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import android.app.Notification;

@@ -15,7 +15,12 @@
  */
 package org.dodgybits.shuffle.android.synchronisation.gae;
 
-import com.google.android.c2dm.C2DMessaging;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -26,17 +31,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.android.shuffle.R.id;
-import org.dodgybits.android.shuffle.R.layout;
-import org.dodgybits.android.shuffle.R.string;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -61,6 +56,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.android.c2dm.C2DMessaging;
 
 /**
  * Account selections activity - handles device registration and unregistration.
