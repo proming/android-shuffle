@@ -17,6 +17,9 @@ public class CalendarUtils {
     private static final Uri EVENT_CONTENT_URI_FROYO_PLUS =
         Uri.parse("content://com.android.calendar/events"); // Calendars.CONTENT_URI
 
+    public static final String EVENT_BEGIN_TIME = "beginTime"; // android.provider.Calendar.EVENT_BEGIN_TIME
+    public static final String EVENT_END_TIME = "endTime"; // android.provider.Calendar.EVENT_END_TIME
+    
     public static Uri getCalendarContentUri() {
         Uri uri;
         if(OSUtils.osAtLeastFroyo()) {
