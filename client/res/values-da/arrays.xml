@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2009 Android Shuffle Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+    <array name="clean">
+        <item>Aldrig</item>
+        <item>Timebasis</item>
+        <item>Daglig</item>
+        <item>Ugentlig</item>
+    </array>
+    <array name="clean_keys">
+        <item>aldrig</item>
+        <item>timebasis</item>
+        <item>daglig</item>
+        <item>ugentlig</item>
+    </array>
+    <array name="perspectives">
+        <item>Indbakke</item>
+        <item>Forfaldne opgaver</item>
+        <item>Næste opgaver</item>
+        <item>Projekter</item>
+        <item>Kontekster</item>
+        <item>Huskeliste</item>
+    </array>
+    <array name="view_types">
+        <item>Udvidbar liste</item>
+        <item>Niveauliste</item>
+    </array>
+    <array name="help_screens">
+        <item>Introduktion</item>
+        <item>Indbakke</item>
+        <item>Projekter</item>
+        <item>Kontekster</item>
+        <item>Næste opgaver</item>
+        <item>Forfaldne opgaver</item>
+        <item>Indstillinger</item>
+        <item>Nyttige tips</item>
+        <item>Anerkendelser</item>
+    </array>
+    <array name="preference_screens">
+        <item>Handlingsudseende</item>
+        <item>Listelayout</item>
+        <item>Oprydning</item>
+    </array>
+	    
+    <array name="text_colours">
+    	<item>c5b6985</item>
+    	<item>c2c6cfc</item>
+    	<item>c1800c9</item>
+    	<item>c5528a1</item>
+    	<item>c854f61</item>
+    	<item>cca000f</item>
+
+    	<item>cdee5f2</item>
+    	<item>ce1ecfe</item>
+    	<item>ce0e2fe</item>
+    	<item>ce1d5f8</item>
+    	<item>cfde9f4</item>
+    	<item>cffe3e3</item>
+
+    	<item>cea7015</item>
+    	<item>cb16d12</item>
+    	<item>ca98b13</item>
+    	<item>c626332</item>
+    	<item>c639930</item>
+    	<item>c006634</item>
+    	
+    	<item>cfef0e2</item>
+    	<item>cf9dcb4</item>
+    	<item>cf2e7b4</item>
+    	<item>cfeffd5</item>
+    	<item>cf9ffef</item>
+    	<item>cf1f5ec</item>
+    </array>
+    <array name="background_colours">
+    	<item>cdee5f2</item>
+    	<item>ce1ecfe</item>
+    	<item>ce0e2fe</item>
+    	<item>ce1d5f8</item>
+    	<item>cfde9f4</item>
+    	<item>cffe3e3</item>
+
+    	<item>c5b6985</item>
+    	<item>c2c6cfc</item>
+    	<item>c1800c9</item>
+    	<item>c5528a1</item>
+    	<item>c854f61</item>
+    	<item>cca000f</item>
+
+    	<item>cfef0e2</item>
+    	<item>cf9dcb4</item>
+    	<item>cf2e7b4</item>
+		<item>cfeffd5</item>
+    	<item>cf9ffef</item>
+    	<item>cf1f5ec</item>
+
+    	<item>cea7015</item>
+    	<item>cb16d12</item>
+    	<item>ca98b13</item>
+    	<item>c626332</item>
+    	<item>c639930</item>
+    	<item>c006634</item>
+    </array>
+    
+    <!-- Choices for the "Reminder minutes" spinner.
+         These must be kept in sync with the reminder_minutes_values array.
+    -->
+    <string-array name="reminder_minutes_labels">
+        <item>5 minutter</item>
+        <item>10 minutter</item>
+        <item>15 minutter</item>
+        <item>20 minutter</item>
+        <item>25 minutter</item>
+        <item>30 minutter</item>
+        <item>45 minutter</item>
+        <item>1 time</item>
+        <item>2 timer</item>
+        <item>3 timer</item>
+        <item>12 timer</item>
+        <item>24 timer</item>
+        <item>2 dage</item>
+        <item>1 uge</item>
+    </string-array>
+    
+    <string-array name="reminder_minutes_values" translatable="false">
+        <item>"5"</item>
+        <item>"10"</item>
+        <item>"15"</item>
+        <item>"20"</item>
+        <item>"25"</item>
+        <item>"30"</item>
+        <item>"45"</item>
+        <item>"60"</item>
+        <item>"120"</item>
+        <item>"180"</item>
+        <item>"720"</item>
+        <item>"1440"</item>
+        <item>"2880"</item>
+        <item>"10080"</item>
+    </string-array>
+    
+    <string-array name="preferences_default_reminder_labels">
+        <item>None</item>
+        <item>5 minutter</item>
+        <item>10 minutter</item>
+        <item>15 minutter</item>
+        <item>20 minutter</item>
+        <item>25 minutter</item>
+        <item>30 minutter</item>
+        <item>45 minutter</item>
+        <item>1 time</item>
+        <item>2 timer</item>
+        <item>3 timer</item>
+        <item>12 timer</item>
+        <item>24 timer</item>
+        <item>2 dage</item>
+        <item>1 uge</item>
+    </string-array>
+    
+    <string-array name="preferences_default_reminder_values" translatable="false">
+        <item>"0"</item>
+        <item>"5"</item>
+        <item>"10"</item>
+        <item>"15"</item>
+        <item>"20"</item>
+        <item>"25"</item>
+        <item>"30"</item>
+        <item>"45"</item>
+        <item>"60"</item>
+        <item>"120"</item>
+        <item>"180"</item>
+        <item>"720"</item>
+        <item>"1440"</item>
+        <item>"2880"</item>
+        <item>"10080"</item>
+    </string-array>
+
+    <!-- don't translate these key values -->
+    <string-array name="list_preferences_flag_values" translatable="false">
+        <item>ignored</item>
+        <item>yes</item>
+        <item>no</item>
+    </string-array>
+
+    <string-array name="list_preferences_active_labels">
+        <item>Vis alle</item>
+        <item>Vis kun aktive</item>
+        <item>Gem aktive</item>
+    </string-array>
+
+    <string-array name="list_preferences_deleted_labels">
+        <item>Vis alle</item>
+        <item>Vis kun slettede</item>
+        <item>Gem slettede</item>
+    </string-array>
+
+    <string-array name="list_preferences_pending_labels">
+        <item>Vis alle</item>
+        <item>Vis kun ventende</item>
+        <item>Gem ventende</item>
+    </string-array>
+
+    <string-array name="list_preferences_completed_labels">
+        <item>Vis alle</item>
+        <item>Vis kun udførte</item>
+        <item>Gem udførte</item>
+    </string-array>
+
+</resources>
