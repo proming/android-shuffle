@@ -18,6 +18,7 @@
             </div>
 			<g:Button ui:field="sendMessageButton">Send Message</g:Button>
         </div>
+        
         <div id="footer"><p>Powered by Big Daddy</p></div>
     </div>
    </g:HTMLPanel>

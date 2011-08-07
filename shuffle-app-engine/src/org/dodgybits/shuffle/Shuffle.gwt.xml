@@ -17,6 +17,7 @@
 
   <!-- Specify the app entry point class.                             -->
   <entry-point class='org.dodgybits.shuffle.gwt.Shuffle'/>
+  <entry-point class='org.dodgybits.shuffle.gwt.SingleUploadSample'/>
 
   <!-- Specify the paths for translatable code                        -->
   <source path='gwt'/>

@@ -23,6 +23,7 @@ import com.google.web.bindery.requestfactory.shared.ServiceName;
 
 import org.dodgybits.shuffle.shared.MessageProxy;
 import org.dodgybits.shuffle.shared.RegistrationInfoProxy;
+import org.dodgybits.shuffle.shared.TaskRequest;
 
 public interface MyRequestFactory extends RequestFactory {
 
@@ -60,4 +61,6 @@ public interface MyRequestFactory extends RequestFactory {
   RegistrationInfoRequest registrationInfoRequest();
 
   MessageRequest messageRequest();
+  
+  TaskRequest taskRequest();
 }

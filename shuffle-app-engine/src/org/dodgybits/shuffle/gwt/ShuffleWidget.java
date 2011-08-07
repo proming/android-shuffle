@@ -63,6 +63,7 @@ public class ShuffleWidget extends Composite {
 
   @UiField
   Button sendMessageButton;
+  
 
   /**
    * Timer to clear the UI.

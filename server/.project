@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Shuffle</name>
+	<name>shuffle-old-gae</name>
 	<comment></comment>
 	<projects>
-		<project>Shuffle-DTO</project>
+		<project>shuffle-dto</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -53,6 +53,16 @@
     <servlet-name>dataMessagingServlet</servlet-name>
       <url-pattern>/tasks/c2dm</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>restoreBackupServlet</servlet-name>
+    <servlet-class>org.dodgybits.shuffle.server.service.RestoreBackupServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>restoreBackupServlet</servlet-name>
+    <url-pattern>/restoreBackup</url-pattern>
+  </servlet-mapping>
+  
 
   <security-constraint>
     <web-resource-collection>
