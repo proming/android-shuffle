@@ -6,7 +6,7 @@
 /war/WEB-INF/deploy/
 dataMessagingToken.txt
 debugging_prefs.properties
-\.project
-/\.settings/
+.project
+/.settings/
 /gwt-unitCache/
 
