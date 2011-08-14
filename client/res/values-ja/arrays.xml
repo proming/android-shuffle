@@ -12,10 +12,13 @@
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
-	
-	 About Japanase translation.
+
+	 Japanase translation.
 	  2011/03/23 : Based on r265 :yosi
-	
+	  2011/08/12  :by yosi
+	    Change base to 6b0e7028f628
+	    Make many changes and bug fix.
+
 -->
 
 <resources>
@@ -32,12 +35,12 @@
         <item>毎週</item>
     </array>
     <array name="perspectives">
-        <item>未決箱</item>
+        <item>新着アクション</item>
         <item>期限ありアクション</item>
         <item>次のアクション</item>
         <item>プロジェクト</item>
         <item>コンテキスト</item>
-        <item>保留箱</item>
+        <item>保留アクション</item>
     </array>
     <array name="view_types">
         <item>展開リスト</item>
@@ -45,7 +48,7 @@
     </array>
     <array name="help_screens">
         <item>はじめに</item>
-        <item>未決箱</item>
+        <item>新着アクション</item>
         <item>プロジェクト</item>
         <item>コンテキスト</item>
         <item>次のアクション</item>
@@ -194,8 +197,8 @@
 
     <string-array name="list_preferences_active_labels" translatable="false">
         <item>全て表示</item>
-        <item>有効な物だけ表示</item>
-        <item>有効な物を隠す</item>
+        <item>アクティブな物だけ表示</item>
+        <item>保留の物だけ表示</item>
     </string-array>
 
     <string-array name="list_preferences_deleted_labels" translatable="false">
@@ -206,8 +209,8 @@
 
     <string-array name="list_preferences_pending_labels" translatable="false">
         <item>全て表示</item>
-        <item>保留中の物だけ表示</item>
-        <item>保留中の物を隠す</item>
+        <item>期限前の物を表示</item>
+        <item>期限切れの物を表示</item>
     </string-array>
 
     <string-array name="list_preferences_completed_labels" translatable="false">
