@@ -23,9 +23,9 @@ import com.google.web.bindery.requestfactory.shared.ServiceName;
 
 import org.dodgybits.shuffle.shared.MessageProxy;
 import org.dodgybits.shuffle.shared.RegistrationInfoProxy;
-import org.dodgybits.shuffle.shared.TaskRequest;
+import org.dodgybits.shuffle.shared.TaskService;
 
-public interface MyRequestFactory extends RequestFactory {
+public interface ShuffleRequestFactory extends RequestFactory {
 
   @ServiceName("org.dodgybits.shuffle.server.HelloWorldService")
   public interface HelloWorldRequest extends RequestContext {
@@ -62,5 +62,5 @@ public interface MyRequestFactory extends RequestFactory {
 
   MessageRequest messageRequest();
   
-  TaskRequest taskRequest();
+  TaskService taskService();
 }

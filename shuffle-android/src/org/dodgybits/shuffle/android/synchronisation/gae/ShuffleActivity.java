@@ -17,8 +17,8 @@ package org.dodgybits.shuffle.android.synchronisation.gae;
 
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
-import org.dodgybits.shuffle.client.MyRequestFactory;
-import org.dodgybits.shuffle.client.MyRequestFactory.HelloWorldRequest;
+import org.dodgybits.shuffle.client.ShuffleRequestFactory;
+import org.dodgybits.shuffle.client.ShuffleRequestFactory.HelloWorldRequest;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -126,8 +126,8 @@ public class ShuffleActivity extends Activity {
 
                     @Override
                     protected String doInBackground(Void... arg0) {
-                        MyRequestFactory requestFactory = Util.getRequestFactory(mContext,
-                                MyRequestFactory.class);
+                        ShuffleRequestFactory requestFactory = Util.getRequestFactory(mContext,
+                        		ShuffleRequestFactory.class);
                         final HelloWorldRequest request = requestFactory.helloWorldRequest();
                         String accountName = Preferences.getGoogleAccountName(mContext);
                         Log.i(TAG, "Sending request to server for account " + accountName);

@@ -15,20 +15,20 @@
  */
 package org.dodgybits.shuffle.android.synchronisation.gae;
 
-import com.google.web.bindery.requestfactory.shared.Receiver;
-import com.google.web.bindery.requestfactory.shared.Request;
-import com.google.web.bindery.requestfactory.shared.ServerFailure;
-
-import org.dodgybits.shuffle.client.MyRequestFactory;
-import org.dodgybits.shuffle.client.MyRequestFactory.RegistrationInfoRequest;
-import org.dodgybits.shuffle.shared.RegistrationInfoProxy;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
+import org.dodgybits.shuffle.client.ShuffleRequestFactory;
+import org.dodgybits.shuffle.client.ShuffleRequestFactory.RegistrationInfoRequest;
+import org.dodgybits.shuffle.shared.RegistrationInfoProxy;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.Settings.Secure;
 import android.util.Log;
+
+import com.google.web.bindery.requestfactory.shared.Receiver;
+import com.google.web.bindery.requestfactory.shared.Request;
+import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
 /**
  * Register/unregister with the third-party App Engine server using
@@ -88,7 +88,7 @@ public class DeviceRegistrar {
     }
 
     private static RegistrationInfoRequest getRequest(Context context) {
-        MyRequestFactory requestFactory = Util.getRequestFactory(context, MyRequestFactory.class);
+        ShuffleRequestFactory requestFactory = Util.getRequestFactory(context, ShuffleRequestFactory.class);
         RegistrationInfoRequest request = requestFactory.registrationInfoRequest();
         return request;
     }

@@ -16,18 +16,41 @@
 package org.dodgybits.shuffle.gwt;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.resources.client.CssResource.NotStrict;
 import com.google.gwt.user.client.ui.RootPanel;
-
+import com.gwtplatform.mvp.client.DelayedBindRegistry;
+import org.dodgybits.shuffle.gwt.gin.ClientGinjector;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class Shuffle implements EntryPoint {
 
+    interface GlobalResources extends ClientBundle {
+        @NotStrict
+        @Source("global.css")
+        CssResource css();
+    }
+    
+	private final ClientGinjector ginjector = GWT.create(ClientGinjector.class);
+    
   /**
    * This is the entry point method.
    */
   public void onModuleLoad() {
-    ShuffleWidget widget = new ShuffleWidget();
-    RootPanel.get().add(widget);
+      // Inject global styles.
+      GWT.<GlobalResources> create(GlobalResources.class).css()
+              .ensureInjected();
+      
+		// This is required for Gwt-Platform proxy's generator
+		DelayedBindRegistry.bind(ginjector);
+	
+		ginjector.getPlaceManager().revealCurrentPlace();
+      
+      
+//    ShuffleWidget widget = new ShuffleWidget();
+//    RootPanel.get().add(widget);
   }
 }

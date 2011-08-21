@@ -17,11 +17,35 @@
                         http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
     version="2.5">
 
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>Shuffle.html</welcome-file>
-  </welcome-file-list>
+    <filter>
+        <filter-name>appstats</filter-name>
+        <filter-class>com.google.appengine.tools.appstats.AppstatsFilter</filter-class>
+        <init-param>
+            <param-name>logMessage</param-name>
+            <param-value>Appstats available: /appstats/details?time={ID}</param-value>
+        </init-param>
+    </filter>
 
+    <filter-mapping>
+        <filter-name>appstats</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>authFilter</filter-name>
+        <filter-class>org.dodgybits.shuffle.server.servlet.AuthFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>authFilter</filter-name>
+        <servlet-name>requestFactoryServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>authFilter</filter-name>
+        <servlet-name>restoreBackupServlet</servlet-name>
+    </filter-mapping>
+
+    
   <!-- RequestFactory Servlet -->
 
   <servlet>
@@ -56,13 +80,18 @@
   
   <servlet>
     <servlet-name>restoreBackupServlet</servlet-name>
-    <servlet-class>org.dodgybits.shuffle.server.service.RestoreBackupServlet</servlet-class>
+    <servlet-class>org.dodgybits.shuffle.server.servlet.RestoreBackupServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>restoreBackupServlet</servlet-name>
     <url-pattern>/restoreBackup</url-pattern>
   </servlet-mapping>
   
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>Shuffle.html</welcome-file>
+  </welcome-file-list>
+
 
   <security-constraint>
     <web-resource-collection>
@@ -82,5 +111,25 @@
       <role-name>admin</role-name>
     </auth-constraint>
   </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>admin</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>appstats</web-resource-name>
+            <url-pattern>/appstats/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
 
 </web-app>

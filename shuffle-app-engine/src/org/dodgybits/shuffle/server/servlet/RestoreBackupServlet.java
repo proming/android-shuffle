@@ -1,4 +1,4 @@
-package org.dodgybits.shuffle.server.service;
+package org.dodgybits.shuffle.server.servlet;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,22 +21,13 @@ import org.apache.commons.fileupload.util.Streams;
 import org.dodgybits.shuffle.dto.ShuffleProtos;
 import org.dodgybits.shuffle.dto.ShuffleProtos.Catalogue;
 import org.dodgybits.shuffle.server.model.Task;
-
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyService;
+import org.dodgybits.shuffle.server.service.TaskDao;
 
 @SuppressWarnings("serial")
 public class RestoreBackupServlet extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(RestoreBackupServlet.class.getName());
     
-    
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        
-        ObjectifyService.register(Task.class);
-    }
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -78,14 +69,15 @@ public class RestoreBackupServlet extends HttpServlet {
     private int saveAll(Catalogue catalogue) {
         List<ShuffleProtos.Task> protoTasks = catalogue.getTaskList();
         List<Task> tasks = new ArrayList<Task>(protoTasks.size());
+        
+        TaskDao dao = new TaskDao();
+        
         for (ShuffleProtos.Task protoTask : protoTasks) {
             logger.info("Saving task: " + protoTask.toString());
             Task task = toModelTask(protoTask);
+            dao.save(task);
             tasks.add(task);
         }
-        
-        Objectify ofy = ObjectifyService.begin();
-        ofy.put(tasks);
         
         return tasks.size();
     }

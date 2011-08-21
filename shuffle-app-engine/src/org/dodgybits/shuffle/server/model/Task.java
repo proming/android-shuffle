@@ -2,95 +2,90 @@ package org.dodgybits.shuffle.server.model;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Version;
+import org.dodgybits.shuffle.server.service.AppUserDao;
+
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Entity;
 
 @Entity
-public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long mId;
-
-    @Version
-    @Column(name = "version")
-    private Integer mVersion;
-    
-    String mDescription;
-    String mDetails;
-    Date mCreatedDate;
-    Date mModifiedDate;
-    boolean mActive = true;
-    boolean mDeleted;
+public class Task extends DatastoreObject {
+    String description;
+    String details;
+    Date createdDate;
+    Date modifiedDate;
+    boolean active = true;
+    boolean deleted;
     // 0-indexed order within a project.
-    int mOrder;
-    boolean mComplete;
+    int order;
+    boolean complete;
+    private Key<AppUser> owner;
 
     
-    public final Long getId() {
-        return mId;
-    }
-    public final void setId(Long id) {
-        mId = id;
-    }
-    public final Integer getVersion() {
-        return mVersion;
-    }
-    public final void setVersion(Integer version) {
-        mVersion = version;
-    }
     public final String getDescription() {
-        return mDescription;
+        return description;
     }
     public final void setDescription(String description) {
-        mDescription = description;
+        this.description = description;
     }
     public final String getDetails() {
-        return mDetails;
+        return details;
     }
     public final void setDetails(String details) {
-        mDetails = details;
+        this.details = details;
     }
     public final Date getCreatedDate() {
-        return mCreatedDate;
+        return createdDate;
     }
     public final void setCreatedDate(Date createdDate) {
-        mCreatedDate = createdDate;
+        this.createdDate = createdDate;
     }
     public final Date getModifiedDate() {
-        return mModifiedDate;
+        return modifiedDate;
     }
     public final void setModifiedDate(Date modifiedDate) {
-        mModifiedDate = modifiedDate;
+        this.modifiedDate = modifiedDate;
     }
     public final boolean isActive() {
-        return mActive;
+        return active;
     }
     public final void setActive(boolean active) {
-        mActive = active;
+        this.active = active;
     }
     public final boolean isDeleted() {
-        return mDeleted;
+        return deleted;
     }
     public final void setDeleted(boolean deleted) {
-        mDeleted = deleted;
+        this.deleted = deleted;
     }
     public final int getOrder() {
-        return mOrder;
+        return order;
     }
     public final void setOrder(int order) {
-        mOrder = order;
+        this.order = order;
     }
     public final boolean isComplete() {
-        return mComplete;
+        return complete;
     }
     public final void setComplete(boolean complete) {
-        mComplete = complete;
+        this.complete = complete;
     }
 
+    public AppUser getOwner()
+    {
+        try
+        {
+            return new AppUserDao().get(owner);
+        } catch (EntityNotFoundException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setOwner(AppUser owner)
+    {
+        this.owner = new AppUserDao().key(owner);
+    }
     
     
 }

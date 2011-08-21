@@ -43,7 +43,7 @@ public class SingleUploadSample implements EntryPoint {
         ListBox lb = new ListBox();
         lb.setName("listBoxFormElement");
         lb.addItem("foo", "fooValue");
-        lb.addItem("bar", "barValue");
+        lb.addItem("barry", "barValue");
         lb.addItem("baz", "bazValue");
         panel.add(lb);
 
@@ -90,6 +90,16 @@ public class SingleUploadSample implements EntryPoint {
             }
         });
 
+        
+        
         RootPanel.get().add(form);
+        
+        RootPanel.get().add(new Button("Submit", new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                form.submit();
+            }
+        }));
     }
 }
