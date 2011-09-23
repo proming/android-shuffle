@@ -1,7 +1,8 @@
 package org.dodgybits.shuffle.gwt.core;
 
+import org.dodgybits.shuffle.gwt.place.NameTokens;
+
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.Presenter;
@@ -11,7 +12,6 @@ import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealRootLayoutContentEvent;
-import org.dodgybits.shuffle.gwt.place.NameTokens;
 
 public class WelcomePresenter extends
 		Presenter<WelcomePresenter.MyView, WelcomePresenter.MyProxy> {
@@ -47,7 +47,7 @@ public class WelcomePresenter extends
 //		dispatcher.execute(new GetServerDate(), new AsyncCallback<GetServerDateResult>() {
 //			@Override
 //			public void onFailure(Throwable caught) {
-//				getView().setFormattedDate("An error occured!");				
+//				getView().setFormattedDate("An error occurred!");				
 //			}
 //			@Override
 //			public void onSuccess(GetServerDateResult result) {
