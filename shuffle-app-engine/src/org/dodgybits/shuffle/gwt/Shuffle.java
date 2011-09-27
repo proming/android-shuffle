@@ -15,14 +15,14 @@
  */
 package org.dodgybits.shuffle.gwt;
 
+import org.dodgybits.shuffle.gwt.gin.ClientGinjector;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.CssResource.NotStrict;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.gwtplatform.mvp.client.DelayedBindRegistry;
-import org.dodgybits.shuffle.gwt.gin.ClientGinjector;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */

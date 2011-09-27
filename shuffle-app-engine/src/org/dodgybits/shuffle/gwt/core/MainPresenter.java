@@ -24,15 +24,29 @@ public class MainPresenter extends
 
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> MAIN_SLOT = new Type<RevealContentHandler<?>>();
+
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> NAVIGATION_SLOT = new Type<RevealContentHandler<?>>();
+	
+	private final NavigationPresenter navigationPresenter;
 	
 	@Inject
 	public MainPresenter(final EventBus eventBus, final MyView view,
-			final MyProxy proxy) {
+			final MyProxy proxy, final NavigationPresenter navigationPresenter) {
 		super(eventBus, view, proxy);
+		
+		this.navigationPresenter = navigationPresenter;
 	}
 
 	@Override
 	protected void revealInParent() {
 		RevealRootLayoutContentEvent.fire(this, this);
 	}
+	
+    @Override
+    protected void onReveal()
+    {
+        setInSlot(NAVIGATION_SLOT, navigationPresenter);
+    }
+	
 }

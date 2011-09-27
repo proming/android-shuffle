@@ -4,7 +4,7 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
-	ui:generateLocales='default'>
+	ui:generateLocales='default' xmlns:c="urn:import:org.dodgybits.shuffle.gwt.core">
 
 	<ui:with type="org.dodgybits.shuffle.gwt.place.NameTokens" field="nameTokens" />
 
@@ -43,10 +43,24 @@
 		}
 </ui:style>
 
-	<g:LayoutPanel>
-		<g:layer left="10px" right="10px" top="10px" height="25px">
-		<g:HTML styleName="{style.loginBarBackground}" />
-		</g:layer>
+	<g:DockLayoutPanel unit="EM">
+		<g:north size="5">
+			<g:HTMLPanel>
+				<g:Label text="Header"/>
+			</g:HTMLPanel>
+		</g:north>
+		<g:south size="5">
+			<g:HTMLPanel>
+				<g:Label text="footer"/>
+			</g:HTMLPanel>
+		</g:south>
+		<g:west size="12">
+			<g:HTMLPanel ui:field="navigation"/>
+		</g:west>
+		<g:center>
+			<g:HTMLPanel ui:field="mainPanel"/>
+		</g:center>
+		<!-- 
 		<g:layer left="20px" right="20px" top="10px" height="25px">
 		<g:HTMLPanel styleName="{style.loginBarText}">
 		<div style="float: left;">&#x25C2; <g:InlineHyperlink targetHistoryToken="">back to welcome page</g:InlineHyperlink></div>
@@ -61,5 +75,6 @@
 		<g:layer left="20px" top="45px" right="20px" bottom="20px">
 		<g:HTMLPanel ui:field="mainPanel" styleName="{style.mainPanelContent}" />
 		</g:layer>
-	</g:LayoutPanel>
+		 -->
+	</g:DockLayoutPanel>
 </ui:UiBinder>

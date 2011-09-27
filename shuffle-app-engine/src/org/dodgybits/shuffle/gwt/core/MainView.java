@@ -15,7 +15,8 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 	}
 	
 	@UiField HTMLPanel mainPanel;
-
+	@UiField HTMLPanel navigation;
+	
 	@Inject
 	public MainView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
@@ -31,6 +32,9 @@ public class MainView extends ViewImpl implements MainPresenter.MyView {
 		if (slot == MainPresenter.MAIN_SLOT) {
 			mainPanel.clear();
 			mainPanel.add(widget);
+		} else if (slot == MainPresenter.NAVIGATION_SLOT) {
+			navigation.clear();
+			navigation.add(widget);
 		}
 	}
 }

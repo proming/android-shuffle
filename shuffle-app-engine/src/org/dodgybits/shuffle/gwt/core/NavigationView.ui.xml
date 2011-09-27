@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
+	ui:generateLocales='default'>
+
+	<ui:with type="org.dodgybits.shuffle.gwt.place.NameTokens" field="nameTokens" />
+
+	<g:HTMLPanel>
+		<g:Button ui:field="newAction" text="New action"/><br/>
+		<g:InlineHyperlink targetHistoryToken="{nameTokens.getInbox}">Inbox</g:InlineHyperlink><br/>
+		<g:InlineHyperlink targetHistoryToken="{nameTokens.getDueActions}">Due Actions</g:InlineHyperlink><br/>
+		<g:InlineHyperlink targetHistoryToken="{nameTokens.getNextActions}">Next Actions</g:InlineHyperlink><br/>
+		<g:InlineHyperlink targetHistoryToken="{nameTokens.getProjects}">Projects</g:InlineHyperlink><br/>
+		<g:InlineHyperlink targetHistoryToken="{nameTokens.getTickler}">Tickler</g:InlineHyperlink><br/>
+		<br/>
+		<g:InlineHyperlink targetHistoryToken="{nameTokens.getTickler}">At home</g:InlineHyperlink><br/>
+	</g:HTMLPanel>
+</ui:UiBinder>
