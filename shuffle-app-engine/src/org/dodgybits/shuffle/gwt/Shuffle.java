@@ -23,34 +23,34 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.CssResource.NotStrict;
 import com.gwtplatform.mvp.client.DelayedBindRegistry;
+
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class Shuffle implements EntryPoint {
 
-    interface GlobalResources extends ClientBundle {
-        @NotStrict
-        @Source("global.css")
-        CssResource css();
-    }
-    
+	interface GlobalResources extends ClientBundle {
+		@NotStrict
+		@Source("global.css")
+		CssResource css();
+	}
+
 	private final ClientGinjector ginjector = GWT.create(ClientGinjector.class);
-    
-  /**
-   * This is the entry point method.
-   */
-  public void onModuleLoad() {
-      // Inject global styles.
-      GWT.<GlobalResources> create(GlobalResources.class).css()
-              .ensureInjected();
-      
+
+	/**
+	 * This is the entry point method.
+	 */
+	public void onModuleLoad() {
+		// Wire the request factory and the event bus
+		ginjector.getRequestFactory().initialize(ginjector.getEventBus());
+
+		// Inject global styles.
+		GWT.<GlobalResources> create(GlobalResources.class).css()
+				.ensureInjected();
+
 		// This is required for Gwt-Platform proxy's generator
 		DelayedBindRegistry.bind(ginjector);
-	
+
 		ginjector.getPlaceManager().revealCurrentPlace();
-      
-      
-//    ShuffleWidget widget = new ShuffleWidget();
-//    RootPanel.get().add(widget);
-  }
+	}
 }

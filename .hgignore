@@ -13,3 +13,5 @@ debugging_prefs.properties
 shuffle-app-engine/\.settings
 server/\.project
 server/\.settings
+shuffle-app-engine/\.apt_generated
+shuffle-app-engine/war/shuffle/BFE55A57C48694E6083D35BA2DCC7042\.gwt\.rpc

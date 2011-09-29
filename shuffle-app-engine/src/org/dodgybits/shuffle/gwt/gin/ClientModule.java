@@ -1,7 +1,6 @@
 package org.dodgybits.shuffle.gwt.gin;
 
-import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
-import com.gwtplatform.mvp.client.gin.DefaultModule;
+import org.dodgybits.shuffle.client.ShuffleRequestFactory;
 import org.dodgybits.shuffle.gwt.core.ErrorPresenter;
 import org.dodgybits.shuffle.gwt.core.ErrorView;
 import org.dodgybits.shuffle.gwt.core.HelpPresenter;
@@ -22,6 +21,12 @@ import org.dodgybits.shuffle.gwt.place.ClientPlaceManager;
 import org.dodgybits.shuffle.gwt.place.DefaultPlace;
 import org.dodgybits.shuffle.gwt.place.ErrorPlace;
 import org.dodgybits.shuffle.gwt.place.NameTokens;
+import org.dodgybits.shuffle.shared.TaskService;
+
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
+import com.gwtplatform.mvp.client.gin.DefaultModule;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -47,16 +52,23 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenter(HelpPresenter.class, HelpPresenter.MyView.class,
 				HelpView.class, HelpPresenter.MyProxy.class);
-		
+
 		bindPresenter(InboxPresenter.class, InboxPresenter.MyView.class,
 				InboxView.class, InboxPresenter.MyProxy.class);
 
-		bindPresenter(NewActionPresenter.class, NewActionPresenter.MyView.class,
-				NewActionView.class, NewActionPresenter.MyProxy.class);
-		
-		bindPresenterWidget(NavigationPresenter.class, NavigationPresenter.MyView.class,
-				NavigationView.class);
-		
+		bindPresenter(NewActionPresenter.class,
+				NewActionPresenter.MyView.class, NewActionView.class,
+				NewActionPresenter.MyProxy.class);
+
+		bindPresenterWidget(NavigationPresenter.class,
+				NavigationPresenter.MyView.class, NavigationView.class);
+
+		bind(ShuffleRequestFactory.class).in(Singleton.class);
+	}
+
+	@Provides
+	TaskService provideTaskService(ShuffleRequestFactory requestFactory) {
+		return requestFactory.taskService();
 	}
 
 }

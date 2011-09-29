@@ -7,6 +7,8 @@ import com.google.gwt.inject.client.Ginjector;
 import com.google.inject.Provider;
 import com.gwtplatform.dispatch.client.gin.DispatchAsyncModule;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
+
+import org.dodgybits.shuffle.client.ShuffleRequestFactory;
 import org.dodgybits.shuffle.gwt.core.ErrorPresenter;
 import org.dodgybits.shuffle.gwt.core.HelpPresenter;
 import org.dodgybits.shuffle.gwt.core.InboxPresenter;
@@ -40,4 +42,5 @@ public interface ClientGinjector extends Ginjector {
 	
 	Provider<NavigationPresenter> getNavigationPresenter();
 	
+	ShuffleRequestFactory getRequestFactory();
 }
