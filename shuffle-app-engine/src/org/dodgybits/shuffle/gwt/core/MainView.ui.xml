@@ -60,21 +60,5 @@
 		<g:center>
 			<g:HTMLPanel ui:field="mainPanel"/>
 		</g:center>
-		<!-- 
-		<g:layer left="20px" right="20px" top="10px" height="25px">
-		<g:HTMLPanel styleName="{style.loginBarText}">
-		<div style="float: left;">&#x25C2; <g:InlineHyperlink targetHistoryToken="">back to welcome page</g:InlineHyperlink></div>
-		<g:InlineHyperlink targetHistoryToken="{nameTokens.getLogin}">login</g:InlineHyperlink>&nbsp;|&nbsp;
-		<g:InlineHyperlink targetHistoryToken="foobar">invalid</g:InlineHyperlink>&nbsp;|&nbsp;
-		<g:InlineHyperlink targetHistoryToken="{nameTokens.getHelp}">help</g:InlineHyperlink>
-		</g:HTMLPanel>
-		</g:layer>
-		<g:layer left="10px" top="35px" right="10px" bottom="10px">
-		<g:HTMLPanel styleName="{style.mainPanelBackground}" />
-		</g:layer>
-		<g:layer left="20px" top="45px" right="20px" bottom="20px">
-		<g:HTMLPanel ui:field="mainPanel" styleName="{style.mainPanelContent}" />
-		</g:layer>
-		 -->
 	</g:DockLayoutPanel>
 </ui:UiBinder>

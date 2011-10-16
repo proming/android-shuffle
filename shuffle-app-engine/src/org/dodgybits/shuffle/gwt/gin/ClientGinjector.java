@@ -15,7 +15,7 @@ import org.dodgybits.shuffle.gwt.core.InboxPresenter;
 import org.dodgybits.shuffle.gwt.core.LoginPresenter;
 import org.dodgybits.shuffle.gwt.core.MainPresenter;
 import org.dodgybits.shuffle.gwt.core.NavigationPresenter;
-import org.dodgybits.shuffle.gwt.core.NewActionPresenter;
+import org.dodgybits.shuffle.gwt.core.EditActionPresenter;
 import org.dodgybits.shuffle.gwt.core.WelcomePresenter;
 import org.dodgybits.shuffle.gwt.gin.ClientModule;
 
@@ -38,7 +38,7 @@ public interface ClientGinjector extends Ginjector {
 	
 	AsyncProvider<InboxPresenter> getInboxPresenter();
 
-	AsyncProvider<NewActionPresenter> getNewActionPresenter();
+	AsyncProvider<EditActionPresenter> getNewActionPresenter();
 	
 	Provider<NavigationPresenter> getNavigationPresenter();
 	

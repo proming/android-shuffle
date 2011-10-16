@@ -5,15 +5,15 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class NewActionView extends ViewImpl implements NewActionPresenter.MyView {
+public class EditActionView extends ViewImpl implements EditActionPresenter.MyView {
 
 	private final Widget widget;
 
-	public interface Binder extends UiBinder<Widget, NewActionView> {
+	public interface Binder extends UiBinder<Widget, EditActionView> {
 	}
 
 	@Inject
-	public NewActionView(final Binder binder) {
+	public EditActionView(final Binder binder) {
 		widget = binder.createAndBindUi(this);
 	}
 

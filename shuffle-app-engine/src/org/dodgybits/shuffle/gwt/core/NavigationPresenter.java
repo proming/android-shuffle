@@ -29,7 +29,7 @@ public class NavigationPresenter extends
 	}
 
 	public void onNewAction() {
-		PlaceRequest myRequest = new PlaceRequest(NameTokens.newAction);
+		PlaceRequest myRequest = new PlaceRequest(NameTokens.editAction);
 		placeManager.revealPlace( myRequest ); 
 	}
 }

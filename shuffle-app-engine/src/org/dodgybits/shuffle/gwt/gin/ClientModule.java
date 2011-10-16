@@ -13,8 +13,8 @@ import org.dodgybits.shuffle.gwt.core.MainPresenter;
 import org.dodgybits.shuffle.gwt.core.MainView;
 import org.dodgybits.shuffle.gwt.core.NavigationPresenter;
 import org.dodgybits.shuffle.gwt.core.NavigationView;
-import org.dodgybits.shuffle.gwt.core.NewActionPresenter;
-import org.dodgybits.shuffle.gwt.core.NewActionView;
+import org.dodgybits.shuffle.gwt.core.EditActionPresenter;
+import org.dodgybits.shuffle.gwt.core.EditActionView;
 import org.dodgybits.shuffle.gwt.core.WelcomePresenter;
 import org.dodgybits.shuffle.gwt.core.WelcomeView;
 import org.dodgybits.shuffle.gwt.place.ClientPlaceManager;
@@ -56,9 +56,9 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(InboxPresenter.class, InboxPresenter.MyView.class,
 				InboxView.class, InboxPresenter.MyProxy.class);
 
-		bindPresenter(NewActionPresenter.class,
-				NewActionPresenter.MyView.class, NewActionView.class,
-				NewActionPresenter.MyProxy.class);
+		bindPresenter(EditActionPresenter.class,
+				EditActionPresenter.MyView.class, EditActionView.class,
+				EditActionPresenter.MyProxy.class);
 
 		bindPresenterWidget(NavigationPresenter.class,
 				NavigationPresenter.MyView.class, NavigationView.class);

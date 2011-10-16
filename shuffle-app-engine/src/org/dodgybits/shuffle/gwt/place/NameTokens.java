@@ -11,7 +11,7 @@ public class NameTokens {
 	public static final String nextActions = "!nextActions";
 	public static final String projects = "!projects";
 	public static final String tickler = "!tickler";
-	public static final String newAction = "!newAction";
+	public static final String editAction = "!editAction";
 
 	public static String getWelcome() {
 		return welcome;
@@ -49,8 +49,8 @@ public class NameTokens {
 		return tickler;
 	}
 
-	public static String getNewAction() {
-		return newAction;
+	public static String getEditAction() {
+		return editAction;
 	}
 	
 }

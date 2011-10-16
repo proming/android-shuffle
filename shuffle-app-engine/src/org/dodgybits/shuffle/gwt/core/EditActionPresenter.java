@@ -11,20 +11,20 @@ import com.google.gwt.event.shared.EventBus;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import org.dodgybits.shuffle.gwt.core.MainPresenter;
 
-public class NewActionPresenter extends
-		Presenter<NewActionPresenter.MyView, NewActionPresenter.MyProxy> {
+public class EditActionPresenter extends
+		Presenter<EditActionPresenter.MyView, EditActionPresenter.MyProxy> {
 
 	public interface MyView extends View {
 		// TODO Put your view methods here
 	}
 
 	@ProxyCodeSplit
-	@NameToken(NameTokens.newAction)
-	public interface MyProxy extends ProxyPlace<NewActionPresenter> {
+	@NameToken(NameTokens.editAction)
+	public interface MyProxy extends ProxyPlace<EditActionPresenter> {
 	}
 
 	@Inject
-	public NewActionPresenter(final EventBus eventBus, final MyView view,
+	public EditActionPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy) {
 		super(eventBus, view, proxy);
 	}
