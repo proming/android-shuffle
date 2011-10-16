@@ -6,6 +6,9 @@
 	ui:generateLocales='default' xmlns:d="urn:import:com.google.gwt.user.datepicker.client">
 
 	<g:HTMLPanel>
+		<div class="buttonBar">
+			<g:Button ui:field="save" text="Save"/><br/>
+		</div>
 		<div class="editForm">
 			<div>
 				<span>Description</span>
