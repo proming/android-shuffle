@@ -98,13 +98,13 @@ public class TaskProtocolTranslator implements EntityProtocolTranslator<Task, or
         if (dto.hasContextId()) {
             Id contextId = Id.create(dto.getContextId());
             Context context = mContextDirectory.findById(contextId);
-            builder.setContextId(context.getLocalId());
+            builder.setContextId(context == null ? Id.NONE : context.getLocalId());
         }
 
         if (dto.hasProjectId()) {
             Id projectId = Id.create(dto.getProjectId());
             Project project = mProjectDirectory.findById(projectId);
-            builder.setProjectId(project.getLocalId());
+            builder.setProjectId(project == null ? Id.NONE : project.getLocalId());
         }
         
         if (dto.hasCalEventId()) {

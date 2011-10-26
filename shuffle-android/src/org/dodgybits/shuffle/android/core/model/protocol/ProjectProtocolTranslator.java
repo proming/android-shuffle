@@ -60,7 +60,8 @@ public class ProjectProtocolTranslator implements EntityProtocolTranslator<Proje
         if (dto.hasDefaultContextId()) {
             Id defaultContextId = Id.create(dto.getDefaultContextId());
             Context context = mContextDirectory.findById(defaultContextId);
-            builder.setDefaultContextId(context.getLocalId());
+            // it's possible the default context no longer exists so check for it
+            builder.setDefaultContextId(context == null ? Id.NONE : context.getLocalId());
         }
 
         if (dto.hasTracksId()) {

@@ -229,7 +229,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> {
     @Override
     public final String toString() {
         return String.format(
-                "[TaskSelector predefined=%1$s projects=%2$s contexts='%3$s' " +
+                "[TaskSelector predefined=%1$s projects=%2$s contexts=%3$s " +
                 "complete=%4$s sortOrder=%5$s active=%6$s deleted=%7$s pending=%8$s]",
                 mPredefined, mProjects, mContexts, mComplete, 
                 mSortOrder, mActive, mDeleted, mPending);

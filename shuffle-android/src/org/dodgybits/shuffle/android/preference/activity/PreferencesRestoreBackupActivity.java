@@ -49,7 +49,7 @@ import com.google.inject.Inject;
 public class PreferencesRestoreBackupActivity extends FlurryEnabledActivity
 	implements View.OnClickListener {
     private static final String RESTORE_BACKUP_STATE = "restoreBackupState";
-    private static final String cTag = "PreferencesRestoreBackupActivity";
+    private static final String cTag = "PrefRestoreBackup";
     
     private enum State {SELECTING, IN_PROGRESS, COMPLETE, ERROR};
     
@@ -251,7 +251,9 @@ public class PreferencesRestoreBackupActivity extends FlurryEnabledActivity
     			Catalogue catalogue = Catalogue.parseFrom(in);
     			in.close();
     			
-    			Log.d(cTag, catalogue.toString());
+    			if (Log.isLoggable(cTag, Log.DEBUG)) {
+        			Log.d(cTag, catalogue.toString());
+    			}
     			
     			EntityDirectory<Context> contextLocator = addContexts(catalogue.getContextList(), 10, 20);
     			EntityDirectory<Project> projectLocator = addProjects(catalogue.getProjectList(), contextLocator, 20, 30);
