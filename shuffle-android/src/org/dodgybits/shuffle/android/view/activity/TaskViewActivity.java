@@ -142,6 +142,8 @@ public class TaskViewActivity extends AbstractViewActivity<Task> {
                         CalendarUtils.getEventContentUri().buildUpon(),
                         mOriginalItem.getCalendarEventId().getId()).build();
 	        	Intent viewCalendarEntry = new Intent(Intent.ACTION_VIEW, eventUri);
+	        	viewCalendarEntry.putExtra(CalendarUtils.EVENT_BEGIN_TIME, mOriginalItem.getStartDate());
+	        	viewCalendarEntry.putExtra(CalendarUtils.EVENT_END_TIME, mOriginalItem.getDueDate());
 	        	startActivity(viewCalendarEntry);
 	        	break;
 	        }

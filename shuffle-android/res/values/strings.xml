@@ -123,8 +123,13 @@
 <string name="whats_new_dialog_title">Shuffle</string>
 <string name="whats_new_dialog_message">Thanks for downloading Shuffle.\n\n
 <b>New in this version:</b>\n
+\t• Fixed dates when viewing Google calendar entries\n
+\t• Improved Japanese translation\n
+\t• Added Dutch translation\n
+\n
+<b>New in version 1.7.1:</b>\n
 \t• Fixed crash creating new actions in Spanish version\n 
-\t• Ignore deleted items calculating Next Actions	
+\t• Ignore deleted items calculating Next Actions\n	
 \n
 <b>New in version 1.7.0:</b>\n
 \t• View filters, customisable in each view.\n

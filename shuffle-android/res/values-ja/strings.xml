@@ -12,15 +12,18 @@
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
-	
-	 About Japanase translation.
+
+	 Japanase translation.
 	  2011/03/23 : Based on r267 :yosi
+	  2011/08/12  :by yosi
+	    Change base to e320717c3e88
+	    Make many changes and bug fix.
 -->
 
 <resources>
 	<!--  Activity titles -->
     <string name="app_name">Shuffle</string>
-    <string name="title_inbox">未決のアクション</string>
+    <string name="title_inbox">新着アクション</string>
     <string name="title_project">プロジェクト</string>
     <string name="title_context">コンテキスト</string>
     <string name="title_next_tasks">次のアクション</string>
@@ -91,9 +94,10 @@
     <string name="context_name">コンテキスト</string>
     <string name="nothing"></string>
     <string name="deleted">削除済み</string>
-    <string name="inactive">保留中</string>
-    <string name="from_context">(コンテキストから)</string>
-    <string name="from_project">(プロジェクトから)</string>
+	<string name="active">アクティブ</string>
+	<string name="inactive">保留</string>
+    <string name="from_context">(コンテキストにて)</string>
+    <string name="from_project">(プロジェクトにて)</string>
     <string name="complete">完了</string>
     <string name="completed">完了</string>
     <string name="incomplete">未完了</string>
@@ -123,18 +127,18 @@
     <!--  What's new dialog -->
 <string name="whats_new_dialog_title">Shuffle</string>
 <string name="whats_new_dialog_message">Shuffleをインストールしていただきありがとうございます。\n\n
-<b>New in this version:</b>\n
-\t• View filters, customisable in each view.\n
-\t• Active flags on contexts and projects.\n
-\t• Deleted items are now recoverable.\n
-\t• Toolbar added to list views.\n
-\t• New 4x4 widget.\n
-\t• Tickler view for inactive actions.\n
-\t• Support for Tracks sites with self signed certificates.\n
-\t• Fixed calendar selection bug on Android 2.2.\n
-\t• Fixed action reordering in projects and Next Actions.\n
-\t• Action view screen added.\n
-\t• Spanish, Portugese and Japanese translations.\n
+<b>このバージョンでの変更点:</b>\n
+\t• 表示フィルター追加: 表示ごとに内容を設定できます。\n
+\t• プロジェクトとコンテキストにアクティブ/保留フラグを付けることができます。\n
+\t• 削除したアイテムを復活させることができます。\n
+\t• リスト表示にツールバーを追加しました。\n
+\t• 4x4のウイジェットを追加。\n
+\t• 保留にしたアクションをの一覧を表示できます。\n
+\t• Tracksとの同期での自認証をサポート。\n
+\t• バグ対応: Android 2.2でのカレンダー選択問題。\n
+\t• バグ対応: プロジェクトと次のアクションでのアクションの並べ替え問題。\n
+\t• アクション表示画面追加。\n
+\t• スペイン語、ポルトガル語、日本語対応。\n
 \n
 \n
 注意：このアプリケーションは、使用統計を匿名でサーバーに送信するようになっています。この機能を停止
@@ -186,29 +190,29 @@
 	<!--  task edit screen -->
     <string name="description_title">説明</string>
     <string name="scheduling_title">スケジュール</string>
-    <string name="scheduling_collapsed">クリックすると期日を追加できます</string>
-    <string name="scheduling_expanded">期日を隠すにはクリックしてください</string>
+    <string name="scheduling_collapsed">タップするとスケジュールを追加/編集できます</string>
+    <string name="scheduling_expanded">スケジュールを隠すにはタップしてください</string>
     <string name="start_title">着手</string>
     <string name="due_title">期限</string>
     <string name="all_day_title">終日</string>
     <string name="reminders_title">リマインダー</string>
     <string name="add_to_gcal_title">Googleカレンダーに追加</string>
-    <string name="add_to_gcal_detail_disabled">期日を設定すると有効になります。</string>
+    <string name="add_to_gcal_detail_disabled">スケジュールを設定すると有効になります。</string>
     <string name="add_to_gcal_detail">新規の項目は保存後に読み込まれます</string>
     <string name="update_gcal_title">Googleカレンダーを更新</string>
     <string name="update_gcal_detail">更新した項目は保存後に読み込まれます</string>
     <string name="completed_title">完了</string>
-    <string name="active_title">実行する</string>
+    <string name="active_title">アクティブ/保留</string>
     <string name="deleted_title">削除済み</string>
-    <string name="clear_title">期日を消去</string>
+    <string name="clear_title">スケジュールを消去</string>
 
 	<!--  project & context edit screens -->
     <string name="colour_title">色</string>
     <string name="archived_title">アーカイブ</string>
     <string name="icon_title">アイコン</string>
     <string name="name_title">名前</string>
-    <string name="sequence_title">順に処理されるアクション</string>
-    <string name="parallel_title">並行して処理されるアクション</string>
+    <string name="sequence_title">アクションを順に処理する</string>
+    <string name="parallel_title">アクション並行して処理する</string>
     <string name="default_context_title">既定のコンテキスト</string>
     <string name="preview_title">プレビュー</string>
     <string name="context_errands">買い物</string>
@@ -227,13 +231,13 @@
     <string name="display_task_list_title">アクションリストに表示</string>
     <string name="context_icon_title">アイコン</string>
     <string name="context_name_title">コンテキスト名</string>
-    <string name="due_date_title">期日</string>
+    <string name="due_date_title">期限</string>
 
 
     <string name="general_preferences">Google設定</string>
 
     <string name="title_calendar_preference">カレンダー選択</string>
-    <string name="summary_calendar_preference">新しいカレンダーを作成</string>
+    <string name="summary_calendar_preference">新しいアイテムを追加するカレンダー</string>
 
     <string name="title_send_analytics_preference">使用状況をサーバーに送る</string>
     <string name="summary_send_analytics_preference">バグ発見や必要な機能の調査に使う匿名のデータです</string>
@@ -244,10 +248,10 @@
 	<string name="summary_project_view_preference">プロジェクトのアクションを別の画面に表示します</string>
 
 	<string name="title_context_view_preference">コンテキスト表示形式</string>
-	<string name="summary_context_view_preference">プロジェクトのアクションを別の画面に表示します</string>
+	<string name="summary_context_view_preference">コンテキストのアクションを別の画面に表示します</string>
 
 	<string name="title_action_appearance_preference">アクション表示形式</string>
-	<string name="summary_action_appearance_preference">リスト中のアクションの表示形式をカスタマイズします</string>
+	<string name="summary_action_appearance_preference">リスト中のアクションの表示内容をカスタマイズします</string>
 
 
     <string name="sync_preferences">同期設定</string>
@@ -284,9 +288,9 @@
 
 	<string name="cleanup_preferences">データ消去</string>
 
-	<string name="dialog_title_cleanup_preference">完了したアクションの消去</string>
+	<string name="dialog_title_cleanup_preference">完了したアクションの削除</string>
 
-    <string name="title_delete_completed_preference">完了したアクションを消去します</string>
+    <string name="title_delete_completed_preference">完了したアクションを削除します</string>
 
     <string name="title_permanently_delete_preference">削除されたアクションの消去</string>
     <string name="summary_permanently_delete_preference">削除されたアクション・プロジェクト・コンテキストを完全に消去します</string>
@@ -304,13 +308,13 @@
     <string name="itemCreatedToast">%1$s を作成しました。</string>
 
     <string name="warning_empty_trash">削除されたアイテムを完全に消去しますか？</string>
-    <string name="toast_empty_trash">%1$s 個のアクション、%2$s 個のコンテキスト、%3$s 個のプロジェクトを消去しました </string>
+    <string name="toast_empty_trash">%1$s個のアクション、%2$s個のコンテキスト、%3$s個のプロジェクトを消去しました </string>
 
     <!-- Toast displayed when an item is saved -->
-    <string name="itemSavedToast">%1$s を保存しました。</string>
+    <string name="itemSavedToast">%1$sを保存しました。</string>
 
     <!-- Toast displayed when an item is saved -->
-    <string name="itemDeletedToast">%1$s を削除しました。</string>
+    <string name="itemDeletedToast">%1$sを削除しました。</string>
 
 
    <!-- synchronization-->
@@ -346,10 +350,10 @@
     <string name="sync_interval_3h">3 時間</string>
 
     <!-- list filter preferences -->
-    <string name="list_settings_title">設定</string>
-    <string name="active_items_title">実行するアイテム</string>
-    <string name="deleted_items_title">削除したアイテム</string>
-    <string name="pending_items_title">未着手のアクション</string>
+    <string name="list_settings_title">一覧設定</string>
+    <string name="active_items_title">アクティブ/保留アクション</string>
+    <string name="deleted_items_title">削除したアクション</string>
+    <string name="pending_items_title">アクションの期限</string>
     <string name="completed_items_title">完了したアクション</string>
 
 
@@ -358,13 +362,13 @@
     <string name="no_icon">アイコンなし</string>
     <string name="no_tasks">アクションがありません。始めるには、メニューから「アクションの追加」を選択してください。</string>
     <string name="no_due_tasks">期限ありのアクションはありません。</string>
-    <string name="no_projects">プロジェクトがありません。 始めるには、アクションを未決箱に追加してプロジェクトを設定してください。</string>
-    <string name="no_contexts">コンテキストがありません。始めるには、 アクションを未決箱に追加してコンテキストを設定してください。</string>
+    <string name="no_projects">プロジェクトがありません。 始めるにはプロジェクトを追加してください。</string>
+    <string name="no_contexts">コンテキストがありません。始めるにはコンテキストを追加してください。</string>
     <string name="delete_warning">本当に %1$s とその %2$d %3$s を削除しますか?</string>
     <string name="delete_completed_warning">全ての完了したアクションを削除しますか？</string>
     <string name="clean_slate_warning"><i>全て</i> のアクションとプロジェクト・追加したコンテキストを削除しますか？</string>
     <string name="clean_task_message">%1$d 個の完了したアクションを削除しました。</string>
-    <string name="clean_inbox_message">未決箱から、プロジェクトやコンテキストが設定されているアクションを消しました。</string>
+    <string name="clean_inbox_message">新着アクションから、プロジェクトやコンテキストが設定されているアクションを消しました。</string>
     <string name="clean_slate_message">全てのアクションとプロジェクト・追加したコンテキストを削除しました。</string>
    	<string name="error_title">エラー</string>
 	<string name="error_message">アクションの読み込みでエラーが発生しました。</string>
@@ -392,10 +396,10 @@ Shuffleは、「Getting Things Done(GTD)」に刺激を受けて作った個人�
     <string name="help1">
 ここにアクションを追加しましょう。
 \n
-<b>未決箱</b>はとりかかる前のアクションを置いておく場所です。
-定期的に未決箱の中を確認してそれぞれのアクションを調べたり削除したり、それを片づけてしまったり、
+<b>新着アクション</b>には新しく作成されたアクションが追加されていきます。
+定期的にこの中を確認してそれぞれのアクションを調べたり削除したり、それを片づけてしまったり、
 プロジェクトに入れたり、コンテキストを付けたりします。\n
-一通り中身を確認したら、メニューの「掃除する」を実行して分類の終ったアクションを未決箱から外します。
+一通り中身を確認したら、メニューの「掃除する」を実行すると分類の終ったアクションが新着アクションから外されます。
     </string>
     <string name="help2">
 \n

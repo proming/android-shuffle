@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2009 Android Shuffle Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+	<!--  Activity titles -->
+    <string name="app_name">Shuffle</string>
+    <string name="title_inbox">Indbakke</string>
+    <string name="title_project">Projekter</string>
+    <string name="title_context">Kontekster</string>
+    <string name="title_next_tasks">Næste opgaver</string>
+    <string name="title_due_tasks">Forfaldne opgaver</string>
+    <string name="title_due_today">Forfalden i dag</string>
+    <string name="title_due_next_week">Forfalden næste uge</string>
+    <string name="title_due_next_month">Forfalden næste måned</string>
+    <string name="title_tickler">Påmindelse</string>
+    <string name="title_trash">Skrald</string>
+    <string name="title_new_task">Ny opgave</string>
+    <string name="title_edit_task">Rediger opgave</string>
+    <string name="title_view_task">Vis opgave</string>
+    <string name="title_new_project">Nyt projekt</string>
+    <string name="title_edit_project">Rediger projekt</string>
+    <string name="title_new_context">Ny kontekst</string>
+    <string name="title_edit_context">Rediger kontekst</string>
+    <string name="title_task_extras">Opgaver: ekstra</string>
+    <string name="title_preferences">Generelle Indstillinger</string>
+    <string name="title_preferences_appearance">Generelle indstillinger &gt; Opgaveudseende</string>
+    <string name="title_preferences_clean">Generelle indstillinger &gt; Ryd op</string>
+    <string name="title_preferences_create_backup">Opret sikkerhedskopi</string>
+    <string name="title_preferences_restore_backup">Gendan sikkerhedskopi</string>
+    <string name="title_help">Hjælp</string>
+    <string name="title_icon_picker">Vælg ikon</string>
+    <string name="title_colour_picker">Vælg farve</string>
+    <string name="title_calendar">Opgaver forfaldne %s</string>
+    <string name="title_project_tasks">Projekter &gt; %s</string>
+    <string name="title_context_tasks">Kontekster &gt; %s</string>
+    <string name="title_shortcut_picker">Vælg genvej</string>
+    <string name="title_shuffle_2x2">Shuffle (2x2)</string>
+    <string name="title_shuffle_4x4">Shuffle (4x4)</string>
+    <string name="title_widget_picker">Vælg widget-indhold</string>
+
+	<!--  Option menu -->
+    <string name="menu_save">Gem</string>
+    <string name="menu_save_and_add">Gem og ny</string>
+    <string name="menu_delete">Slet</string>
+    <string name="menu_undelete">Fortryd slet</string>
+    <string name="menu_complete">Udført</string>
+    <string name="menu_incomplete">Ikke udført</string>
+    <string name="menu_move_up">Flyt op</string>
+    <string name="menu_move_down">Flyt ned</string>
+    <string name="menu_insert">Indsæt %s</string>
+    <string name="menu_revert">Fortryd ændringer</string>
+    <string name="menu_discard">Kassér</string>
+    <string name="menu_view">Perspektiver</string>
+    <string name="menu_preferences">Indstillinger</string>
+    <string name="menu_sync">Synkroniser</string>
+    <string name="menu_search">Søg</string>
+    <string name="menu_help">Hjælp</string>
+
+    <!--  general purpose -->
+    <string name="project_title">Projekt</string>
+    <string name="context_title">Kontekst</string>
+    <string name="details_title">Detaljer</string>
+    <string name="set_button_title">Sæt</string>
+    <string name="clear_button_title">Rens</string>
+    <string name="edit_button_title">Rediger</string>
+    <string name="extras_button_title">Ekstra detaljer...</string>
+    <string name="save_button_title">Gem</string>
+    <string name="ok_button_title">OK</string>
+    <string name="cancel_button_title">Fortryd</string>
+    <string name="replace_button_title">Erstat</string>
+	<string name="warning_title">Advarsel</string>
+	<string name="info_title">Information</string>
+    <string name="task_name">Opgave</string>
+    <string name="project_name">Projekt</string>
+    <string name="context_name">Kontekst</string>
+    <string name="nothing"></string>
+    <string name="deleted">Slettet</string>
+    <string name="active">Aktiv</string>
+    <string name="inactive">Inaktiv</string>
+    <string name="from_context">(via kontekst)</string>
+    <string name="from_project">(via projekt)</string>
+    <string name="complete">Færdig</string>
+    <string name="completed">Færdigjort</string>
+    <string name="incomplete">Ufuldstændig</string>
+    <string name="none_empty">Ingen</string>
+    <string name="undefined">Ingen</string>
+    <string name="today">I dag</string>
+    <string name="yesterday">I går</string>
+    <string name="previous_button_title">Forrige</string>
+    <string name="next_button_title">Næste</string>
+
+    
+    <!--  search -->
+    <string name="search_label_action">Shuffle opgaver</string>
+    <string name="search_hint_action">Søg opgaver via beskrivelse eller detaljer</string>
+    <string name="search_settings_description_action">Beskrivelser og detaljer for opgaver</string>
+    <string name="search_label_context">Shuffle kontekster</string>
+    <string name="search_hint_context">Søg contekst via navn</string>
+    <string name="search_settings_description_context">Navne på kontekster</string>
+    <string name="search_label_project">Shuffle projekter</string>
+    <string name="search_hint_project">Søg projekt via navn</string>
+    <string name="search_settings_description_project">Navne på projekter</string>
+
+
+    <!--  Welcome screen -->
+    <string name="sample_data_title">Demonstration</string>
+    <string name="clean_slate_title">Ingen indhold</string>
+
+    <!--  What's new dialog -->
+<string name="whats_new_dialog_title">Shuffle</string>
+<string name="whats_new_dialog_message">Tak fordi du hentede Shuffle.\n\n
+<b>Nyt i denne version: (oversættes ikke)</b>\n
+\t• Fixed crash creating new actions in Spanish version\n 
+\t• Ignore deleted items calculating Top Actions	
+\n
+<b>New in version 1.7.0:</b>\n
+\t• View filters, customisable in each view.\n
+\t• Active flags on contexts and projects.\n
+\t• Deleted items are now recoverable.\n
+\t• Toolbar added to list views.\n
+\t• New 4x4 widget.\n
+\t• Tickler view for inactive actions.\n
+\t• Support for Tracks sites with self signed certificates.\n
+\t• Fixed calendar selection bug on Android 2.2.\n
+\t• Fixed action reordering in projects and Next Actions.\n
+\t• Action view screen added.\n
+\t• Spanish, Portugese and Japanese translations.\n
+\n
+<b>New in version 1.6.3:</b>\n
+\t• Fix task editing compatibility with Android 1.5.\n
+\n
+<b>New in version 1.6.2:</b>\n
+\t• Fix bug where can\'t remove context or project from action.\n
+\n
+<b>New in version 1.6.1:</b>\n
+\t• Fixed Tracks sync bug.\n
+\t• Reverted Inbox behavior.\n
+\n
+<b>New in version 1.6.0:</b>\n
+\t• <b>Widget</b> for your favorite list.\n
+\t• Fixed Google Calendar creation on Android 2.2.\n
+\t• Big code rewrite to improve reliability and simplify addition of new features.\n
+\n
+<b>New in version 1.5.1:</b>\n
+\t• Patch for Tracks synch bugs.\n
+\n
+<b>New in version 1.5.0:</b>\n
+\t• Search actions (including in quick search box)\n
+\t• Enable removable of action scheduling\n
+\t• Remove actions from Inbox if project or context set\n
+\t• Add actions without projects to Next actions\n
+\t• Enable parallel execute of actions within a project\n
+\t• For Tracks synch, don\'t set all day flag unless a date is set\n
+\t• Show both start and due date in task lists\n
+\t• Updated Help screens\n
+\n
+\n
+Also note that this application sends anonymous usage statistics back to a server.  If you\'d rather not
+allow that, you can turn it off under Settings.</string>
+
+    <!-- task view screen -->
+    <string name="complete_toggle_button">Marker %s</string>
+    <string name="status_title">Status</string>
+    <string name="created_title">Oprettet</string>
+    <string name="modified_title">Sidst ændret</string>
+    <string name="view_calendar_entry">Se kalenderpost</string>
+
+	<!--  edit screens -->
+    <string name="menu_done">Gem</string>
+    <string name="menu_doNotSave">Kassér ændringer</string>
+
+	<!--  task edit screen -->
+    <string name="description_title">Beskrivelse</string>
+    <string name="scheduling_title">Planlægning</string>
+    <string name="scheduling_collapsed">Tryk for at se planlægningsmuligheder</string>
+    <string name="scheduling_expanded">Tryk for at gemme planlægningsmuligheder</string>
+    <string name="start_title">Start</string>
+    <string name="due_title">Forfalden</string>
+    <string name="all_day_title">Hele dagen</string>
+    <string name="reminders_title">Påmindelser</string>
+    <string name="add_to_gcal_title">Tilføj til Google Calendar</string>
+    <string name="add_to_gcal_detail_disabled">Tilføj datoer for at aktivere denne indstilling</string>
+    <string name="add_to_gcal_detail">Ny post vil opstå når der gemmes </string>
+    <string name="update_gcal_title">Opdater Google kalender</string>
+    <string name="update_gcal_detail">Opdateret post vil opstå når der gemmes</string>
+    <string name="completed_title">Afsluttet</string>
+    <string name="active_title">Aktiv</string>
+    <string name="deleted_title">Slettet</string>
+    <string name="clear_title">Fjern datoer</string>
+
+	<!--  project & context edit screens -->
+    <string name="colour_title">Farve</string>
+    <string name="archived_title">Arkiveret</string>
+    <string name="icon_title">Ikon</string>
+    <string name="name_title">Navn</string>
+    <string name="sequence_title">Opgaver udføres i rækkefølge</string>
+    <string name="parallel_title">Opgaver udføres parallelt</string>
+    <string name="default_context_title">Standardkontekst</string>
+    <string name="preview_title">Forhåndsvisning</string>
+    <string name="context_errands">Ærinder</string>
+	<string name="context_online">Online</string>
+    <string name="context_athome">Hjemme</string>
+    <string name="context_atwork">På arbejdet</string>
+	<string name="context_contact">Kontakt</string>
+	<string name="context_read">Læsning</string>
+
+	<!--  Calendar screen -->
+    <string name="day_button_title">I dag</string>
+    <string name="week_button_title">Næste uge</string>
+    <string name="month_button_title">Næste måned</string>
+	
+	<!--  preferences screen -->    
+    <string name="display_task_list_title">Visning i opgavelister</string>
+    <string name="context_icon_title">Kontekst-ikon</string>
+    <string name="context_name_title">Kontekst-navn</string>
+    <string name="due_date_title">Forfaldsdato</string>
+
+
+    <string name="general_preferences">Google-indstillinger</string>
+    
+    <string name="title_calendar_preference">Vælg kalender</string>
+    <string name="summary_calendar_preference">Til nye Google kalenderposter</string>
+    
+    <string name="title_send_analytics_preference">Send brugsdata</string>
+    <string name="summary_send_analytics_preference">Anonyme data bliver brugt til at finde fejl og prioritere funktioner.</string>
+
+	<string name="layout_preferences">Layout-indstillinger</string>
+
+	<string name="title_project_view_preference">Projekt-visning</string>
+	<string name="summary_project_view_preference">Vis projekthandlinger på separat skærm</string>
+
+	<string name="title_context_view_preference">Kontekst-visning</string>
+	<string name="summary_context_view_preference">Vis konteksthandlinger på separat skærm</string>
+
+	<string name="title_action_appearance_preference">Opgave-visning</string>
+	<string name="summary_action_appearance_preference">Tilpas visning af opgaver i lister</string>
+
+
+    <string name="sync_preferences">Synkroniserings-indstillinger</string>
+
+    <string name="changeSynchronizationSettings">Tracks-indstillinger</string>
+
+
+	<string name="backup_preferences">Backup-indstillinger</string>
+	
+	<string name="title_create_backup_preference">Backup til SD-kort</string>
+	<string name="summary_create_backup_preference">Gem alle opgaver, projekter og kontekster</string>
+
+    <string name="filename_title">Backup fil</string>
+	<string name="backup_progress">Skriver %1$s %2$s.</string>
+	<string name="toast_backup_saved">Data kopieret til %1$s.</string>
+
+	<string name="title_restore_backup_preference">Gendan fra SD-kort</string>
+	<string name="summary_restore_backup_preference">Gendan data fra backup</string>
+	<string name="toast_backup_restored">Data gendannet fra %1$s.</string>
+	<string name="restore_progress">Læser %1$s %2$s.</string>
+	<string name="restore_button_title">Gendan</string>
+
+    <string name="warning_filename_empty">Du skal angive et filnavn.</string>
+	<string name="warning_filename_exists">%1$s eksisterer allerede.</string>
+	<string name="warning_media_not_mounted">Medie er ikke monteret %1$s</string>
+	<string name="warning_backup_failed">Backup fejlede %1$s</string>
+    <string name="warning_no_files">Der er ingen filer at vise.</string>
+	<string name="warning_restore_failed">Gendannelse fejlede %1$s</string>
+    <string name="status_checking_media">Tjekker medietilstand.</string>
+    <string name="status_creating_backup">Opretter backup-fil.</string>
+    <string name="status_backup_complete">Backup fuldført.</string>
+    <string name="status_reading_backup">Læser backup-fil.</string>
+    <string name="status_restore_complete">Gendannelse fuldført.</string>
+
+	<string name="cleanup_preferences">Oprydnings-indstillinger</string>
+
+	<string name="dialog_title_cleanup_preference">Slet afsluttede opgaver</string>
+
+    <string name="title_delete_completed_preference">Slet afsluttede opgaver</string>
+
+    <string name="title_permanently_delete_preference">Fjern slettede permanent</string>
+    <string name="summary_permanently_delete_preference">Fjern alle slettede opgaver, projekter og kontekster.</string>
+
+	<string name="title_delete_all_preference">Slet alt!</string>
+	<string name="summary_delete_all_preference">Slet alle opgaver, projekter og egne kontekster.</string>
+
+    <string name="delete_completed_button_title">Slet</string>
+    <string name="clean_inbox_button_title">Ryd indbakke</string>
+    <string name="clean_slate_button_title">Slet</string>
+
+    <string name="permanently_delete_button_title">Fjern permanent</string>
+
+    <!-- Toast displayed when an item is created -->
+    <string name="itemCreatedToast">%1$s oprettet.</string>
+
+    <string name="warning_empty_trash">Fjern slettede elementer permanent?</string>
+    <string name="toast_empty_trash">Permanent fjernet %1$s opgave(r), %2$s kontekst(er) and %3$s projekt(er).</string>
+    
+    <!-- Toast displayed when an item is saved -->
+    <string name="itemSavedToast">%1$s gemt.</string>
+
+    <!-- Toast displayed when an item is deleted -->
+    <string name="itemDeletedToast">%1$s slettet.</string>
+
+    
+   <!-- synchronization-->
+    <string name="synchronizing">Synkroniserer med Tracks</string>
+    <string name="tracksUser">Brugernavn</string>
+    <string name="tracksInstallation">Mål-installation</string>
+    <string name="tracks_url">Tracks installation</string>
+    <string name="tracks_url_settings">http://my.gtdify.com</string>
+    <string name="self_signed_cert">Self-signed https certifikat (sikkerhedshul)</string>
+    <string name="tracks_user">Brugernavn</string>
+    <string name="tracks_pass">Kodeord</string>
+    <string name="readingRemoteTasks">Læser opgaver på server</string>
+    <string name="processingTasks">Behandler opgaver</string>
+    <string name="readingLocalTasks">Læser lokale opgaver</string>
+    <string name="doneWithTasks">Færdig med opgaver</string>
+    <string name="cannotSyncTasksWithoutContext">opgaver uden kontekst vil ikke fremkomme i Tracks</string>
+    <string name="readingRemoteContexts">Læser kontekster på server</string>
+    <string name="processingContexts">Behandler kontekster</string>
+    <string name="readingLocalContexts">Læser lokale kontekster</string>
+    <string name="doneWithContexts">Færdig med kontekster</string>
+    <string name="readingRemoteProjects">Læser projekter på server</string>
+    <string name="processingProjects">Behandler projekter</string>
+    <string name="readingLocalProjects">Læser lokale projekter</string>
+    <string name="doneWithProjects">Færdig meed projekter</string>
+    <string name="tracks_failed_to_check_url">Kunne ikke hente kontekster med disse indstillinger, noget er galt med dem</string>
+    <string name="tracks_background_sync">Interval for baggrundssynkronisering</string>
+    <string name="tracks_check_settings">Tjek indstillinger</string>
+    <string name="tracks_settings_valid">Indstillinger er valide</string>
+    <string name="sync_interval_none">Aldrig</string>
+    <string name="sync_interval_30min">30 minutter</string>
+    <string name="sync_interval_1h">1 time</string>
+    <string name="sync_interval_2h">2 timer</string>
+    <string name="sync_interval_3h">3 timer</string>
+
+    <!-- list filter preferences -->
+    <string name="list_settings_title">Indstillinger</string>
+    <string name="active_items_title">Aktive poster</string>
+    <string name="deleted_items_title">Slettede poster</string>
+    <string name="pending_items_title">Fremtidige opgaver</string>
+    <string name="completed_items_title">Udførte opgaver</string>
+
+
+	<!--  messages -->
+    <string name="no_due_date">Ingen forfaldsdato</string>
+    <string name="no_icon">Ingen ikon</string>
+    <string name="no_tasks">Der er ingen opgaver at vise. Kom i gang ved at vælge \"Tilføj opgave\" fra menuen.</string>
+    <string name="no_due_tasks">Der er ingen forfaldne opgaver.</string>
+    <string name="no_projects">Der er ingen projekter at vise. Kom i gang ved at oprette opgaver i indbakken og tilføje dem til projekter.</string>
+    <string name="no_contexts">Der er ingen kontekster at vise. Kom i gang ved at oprette opgaver i indbakken og tilføje dem til kontekster.</string>
+    <string name="delete_warning">Er du sikker på at du vil slette de valgte %1$s og dens %2$d %3$s(er)?</string>
+    <string name="delete_completed_warning">Slet alle udførte opgaver?</string>
+    <string name="clean_slate_warning">Slet <i>alle</i> opgaver, projekter og egne kontekster?</string>
+    <string name="clean_task_message">Slettede %1$d udførte opgaver.</string>
+    <string name="clean_inbox_message">Fjernede opgaver med projekt eller kontekst sat fra indbakken.</string>
+    <string name="clean_slate_message">Slettede alle opgave, projekter og egne kontekster.</string>
+   	<string name="error_title">Fejl</string>
+	<string name="error_message">Fejl ved indlæsning af opgave</string>
+	<string name="web_error_message">Kan ikke kontakte Tracks-serveren</string>    
+    <string name="welcome1">
+Velkommen til Shuffle, et \"Getting Things Done\"-inspireret organiseringsværktøj.
+Hvis du vil se hvordan Shuffle bedst bruges, så tryk på \"Demonstration\" for
+at indlæse en bunke eksempler på opgaver og projekter.
+Senere kan du starte på en frisk ved at vælge \"Slet alt\" fra indstillingerne. 
+    </string>
+    <string name="welcome2">
+Eller kom selv i gang uden opgaver eller projekterm og kun standardkontekster defineret...
+    </string>
+    <string name="welcome3">
+Se hjælpemenuen for flere instruktioner og tips.
+    </string>
+    <string name="help0">
+Shuffle er en \"Getting Things Done\" inspireret personligt organiserings-værktøj.
+Det lader dig hurtigt komme ind og kategorisere \'opgaver\'. Med 5 typer perspektiver,
+kan du angribe dine handlinger på den måde du vil.
+\n
+En simpel elegant arbejdsproces opmuntrer dig til at kategorisere dine opgaver i projekter og eventuelt angive en kontekst.
+Denne struktur giver dig mulighed for at nedbryde store projekter i enkelte opnåelige opgaver.\n
+Mens et projekt udvikler sig, rens gamle opgaver ud efterhånden som de udføres,
+tilføj nye opgaver og omarrangér tilbageværende opgaver, afhængigt af dine nuværende prioriteter.
+    </string>
+    <string name="help1">
+Dette er det bedste sted at tilføje dine opgaver.
+<b>Indbakken</b> er stedet, hvor alle opgaver ligger, før de er behandlet.
+Prøv regelmæssigt at se i indbakken, analysere hver enkelt opgave og enten kassere den, udføre den eller tildele den
+til et projekt og/eller kontekst.\n
+Når du har behandlet listen, skal du vælge <i>Ryd Indbakken</i> i menuen
+for at fjerne alle de kategoriserede opgaver fra din indbakke.
+    </string>
+    <string name="help2">
+<b>Projekt</b>-perspektivet viser alle dine projekter, og giver dig mulighed for at bore ned
+i hvert projekt for at se dine opgaver. Ud over de almindelige tilføj-, rediger- og slet-aktioner,
+kan du også omarrangere opgaverne i den rækkefølge, du ønsker at fuldføre dem.
+\n
+For nogle projekter, giver det mening for opgaver at blive udført i en bestemt orden. Til andre
+projekter, kan opgaver afsluttes i vilkårlig rækkefølge. Dette er konfigurerbart, når du opretter eller redigerer et projekt.
+\n
+Projekter, som kontekster, kan ses i to forskellige tilstande: separat skærm eller udvidbar oversigt.
+I separate skærme, trykkes på et projekt, og du tages til en anden skærm,
+der viser de opgaverne til dette projekt. I udvidbar tilstand, vises opgaverne på samme skærm når
+der trykkes på projektet.
+    </string>
+    <string name="help3">
+<b>Kontekster</b> er situationer, hvor du ønsker at udføre opgaver. Shuffle leveres med et par standardkontekster for at få dig i gang:
+<i>hjemme</i>, <i>på arbejde</i>, <i>online</i>, <i>ærinder</i>, <i>kontakt</i> og <i>læsning.</i> \n
+Du er velkommen til at ændre eller slette disse, eller tilføje dine egne kontekster, der passer til din situation.\n
+\n
+Ligesom projekt-perspektivet, kan kontekster ses i enten separat skræm eller udvidbar tilstand, konfigurerbart via indstillinger.
+    </string>
+    <string name="help4">
+<b>Næste opgaver</b> er det bedste sted at kigge for at bestemme, hvad der skal gøres. \n
+Det viser følgende opgaver\n
+- dem uden et projekt\n
+- den første opgave i sekventielle projekter\n
+- alle opgaver for parallelle projekter\n
+Denne liste viser dig hurtigt de vigtigste opgaver for dig at komme i gang med nu.
+    </string>
+    <string name="help5">
+I <b>Forfaldne opgaver</b> kan du holde styr på handlinger, som du har givet en eksplicit forfaldsdato.
+Der er 3 visninger - <i>i dag</i>, <i>denne uge</i> og
+<i>denne måned</i>, som hver viser opgaver forfalden i den givne tidsramme.
+Forfaldne opgaver vises i alle visninger.
+    </string>
+    <string name="help6">
+A number of aspects of Shuffle are user-configurable. The <b>Settings</b> screen is available from all Perspectives via the menu. \n
+<b>Calendar</b>  - Select a calendar to use when integrating actions with Google Calendar. \n
+<b>Project/Context view</b>  - Show projects and contexts in two screens (drill-down) or in a tree structure (expandable). \n
+<b>Action appearance</b> - Lets you customize what information to display for actions in each perspective.  \n
+<b>Tracks settings</b> - Configure synchronization with a Tracks server . \n
+<b>Backup to SD Card</b> - Save all your actions, contexts and projects to your SD Card. You can them back this up to your computer. \n
+<b>Restore from SD Card</b> - Restores all your data from a backup. No attempt is made to avoid duplicate actions, 
+so it\'s best to restore onto a clean Shuffle instance. \n
+<b>Delete completed actions</b> - Permanently delete all completed actions. \n
+<b>Delete everything!</b> - Permanently delete all actions, projects and custom contexts. \n
+
+En række aspekter af Shuffle kan konfigureres af brugeren. <b>Indstillingsskærmen</b> er tilgængelig fra alle perspektiver via menuen. \n
+<b>Kalender</b> - Vælg en kalender til at bruge, når opgaver skal integreres med Google kalender. \n
+<b>Projekt/Kontekst-visning</b> - Vis projekter og kontekster i to skærme eller i en træstruktur (udvidbar tilstand). \n
+<b>Opgave-udseende</b> - Tilpas, hvilke oplysninger der skal vises for opgaver i de enkelte perspektiver. \n
+<b>Tracks indstillinger -</b> Konfigurer synkronisering med en Tracks server. \n
+<b>Backup til SD-kort</b> - Gem alle dine opgaver, kontekster og projekter til dit SD-kort. Du kopiere denne til din computer. \n
+<b>Gendan fra SD-kort</b> - Gendanner alle dine data fra en sikkerhedskopi. Intet forsøg på at undgå dobbelt-handlinger,
+så det bedste er at genskabe på en ren Shuffle instans. \n
+<b>Slet afsluttede aktioner</b> - Permanent slette alle afsluttede opgaver. \n
+<b>Slet alt -!</b> Permanent slette alle opgaver, projekter og brugerdefinerede kontekster. \ N
+    </string>
+    <string name="help7">
+Nogle praktiske Shuffle funktioner, du måske ikke kender:\n
+1) I en liste, skal du trykke langt for at se en menu med muligheder.\n
+2) Når du trykker på knappen Tilbage gemmes før der lukkes.\n
+3) Brug <i>Gem og ny</i> menu til at oprette en masse opgaver på én gang.\n
+4) Du kan markere en opgave som udført ved at føre fingeren hen over den på en liste.\n
+5) Lav genveje på din hjemmeskærm til forskellige Shuffle-vinduer og -handlinger\n
+6) I Globale indstillinger &gt; Søg, kan du slå søgning på Shuffle-opgaver til i hurtig-søgningsfeltet (Android 1,6 + only)
+    </string>
+    <string name="help8">
+Tak til holdet bag Tango Desktop Project, en open source samling af ikoner, der anvendes i Shuffle.
+Også tak til David Gibb for at give nogle gode tilbagemeldinger på design, Morten Nielson for Tracks synkroniseringsarbejdet
+og Gudrun for at tolerere mine nætter og weekender tilbragt med at fifle med Android.\n
+\n
+Tilbagemeldinger eller fejlrapportering kan ske på http://code.google.com/p/android-shuffle/issues/list eller email mig på andy@dodgybits.org
+    </string>
+
+
+    <!-- Reminder format strings -->
+    <plurals name="Nminutes">
+        <!-- This is the label for a 1-minute reminder. -->
+        <item quantity="one">1 minut</item>
+        <!-- This is the label for 2 or more minutes. The actual number of
+             minutes is a parameter. -->
+        <item quantity="other">%1$d minutter</item>
+    </plurals>
+    <!-- We use the abbreviation "mins" instead of "minutes" to keep the string short.
+         This is the number of minutes displayed for a calendar reminder.  For example,
+         a reminder of 10 minutes would be displayed as '10 mins'.  The translation
+         should use the shortest acceptable abbreviation to save space. -->
+    <plurals name="Nmins">
+        <!-- This is the label for a 1-minute reminder. -->
+        <item quantity="one">1 min</item>
+        <!-- This is the label for 2 or more minutes. The actual number of
+             minutes is a parameter. -->
+        <item quantity="other">%1$d min</item>
+    </plurals>
+    <!-- This is the number of hours displayed for a calendar reminder.  For example,
+         a reminder of 1 hour would be displayed as '1 hour'.  The translation
+         should use the shortest acceptable abbreviation of 'hour' to save space. -->
+    <plurals name="Nhours">
+        <!-- This is the label for a 1-hour reminder. -->
+        <item quantity="one">1 time</item>
+        <!-- This is the label for a reminder of 2 or more hours. The actual number of
+             hours is a parameter. -->
+        <item quantity="other">%1$d timer</item>
+    </plurals>
+    <!-- This is the number of days displayed for a calendar reminder.  For example,
+         a reminder of 2 days would be displayed as '2 days'.  The translation
+         should use the shortest acceptable abbreviation of 'day' to save space. -->
+    <plurals name="Ndays">
+        <!-- This is the label for a reminder of 1 day. -->
+        <item quantity="one">1 dag</item>
+        <!-- This is the label for a reminder of 2 or more days. The actual number of
+             days is a parameter. -->
+        <item quantity="other">%1$d dage</item>
+    </plurals>
+    
+
+
+</resources>
