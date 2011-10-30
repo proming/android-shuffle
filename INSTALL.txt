@@ -1,0 +1,21 @@
+Shuffle uses Maven for building and dependency management.
+
+Prerequisites
+
+1) Maven 3.0.x - http://maven.apache.org/download.html
+2) Google Protocol Buffer compiler - http://code.google.com/p/protobuf/downloads/list
+3) Android SDK - http://developer.android.com/sdk/index.html
+4) Set environment variable ANDROID_HOME to the path of your installed Android SDK and add $ANDROID_HOME/tools as well as $ANDROID_HOME/platform-tools to your $PATH. (or on Windows %ANDROID_HOME%\tools and %ANDROID_HOME%\platform-tools).
+ 
+I couldn't find c2dm or flurry sdk in any publicly available maven repository, so you'll need to install them manually.
+
+From lib directory run...
+mvn install:install-file -Dfile=c2dm-server.jar -Dsources=c2dm-server-src.jar -DgroupId=com.google.android.c2dm -DartifactId=c2dm-server -Dversion=1.5.5 -Dpackaging=jar
+mvn install:install-file -Dfile=c2dm.jar -Dsources=c2dm-sources.jar -DgroupId=com.google.android.c2dm -DartifactId=c2dm -Dversion=1.5.5 -Dpackaging=jar
+mvn install:install-file -Dfile=FlurryAgent.jar -DgroupId=com.flurry -DartifactId=flurry-sdk -Dversion=2.2.1 -Dpackaging=jar
+
+Eclipse
+
+Import your maven project into eclipse using m2eclipse import wizard.
+
+

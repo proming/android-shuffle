@@ -26,7 +26,7 @@ public class TrustedSSLSocketFactory extends SSLSocketFactory {
 	public TrustedSSLSocketFactory()
 			throws NoSuchAlgorithmException, KeyManagementException,
 			KeyStoreException, UnrecoverableKeyException {
-        super(null);
+        super(null, null, null);
         if (sslContext == null) {
         	initSSLContext();
         }

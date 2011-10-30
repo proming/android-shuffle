@@ -1,6 +1,7 @@
 /bin/
 /gen/
 /classes/
+/target/
 \.DS_Store
 /appengine-generated/
 /war/WEB-INF/deploy/
@@ -8,8 +9,9 @@ dataMessagingToken.txt
 debugging_prefs.properties
 \.project
 /\.settings/
+/\.gwt/
 /gwt-unitCache/
-
+project.properties
 shuffle-app-engine/\.settings
 server/\.project
 server/\.settings
