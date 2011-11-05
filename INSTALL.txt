@@ -14,8 +14,37 @@ mvn install:install-file -Dfile=c2dm-server.jar -Dsources=c2dm-server-src.jar -D
 mvn install:install-file -Dfile=c2dm.jar -Dsources=c2dm-sources.jar -DgroupId=com.google.android.c2dm -DartifactId=c2dm -Dversion=1.5.5 -Dpackaging=jar
 mvn install:install-file -Dfile=FlurryAgent.jar -DgroupId=com.flurry -DartifactId=flurry-sdk -Dversion=2.2.1 -Dpackaging=jar
 
-Eclipse
+Eclipse Indigo
 
+
+Install m2eclipse plugin from here  http://download.eclipse.org/technology/m2e/releases
+
+I couldn't get maven to resolve the location of the generated sources if shuffle-dto project is loaded in Eclipse. If you don't load the project and instead just use the jar it works fine.
+
+
+Android App
+
+Add the following update site to pick up the latest m2e-android connector http://rgladwell.github.com/m2e-android/updates/master/
+Follow instructions here: http://rgladwell.github.com/m2e-android/
 Import your maven project into eclipse using m2eclipse import wizard.
+
+Google App Engine project
+
+Configure Eclipse following the instructions at 
+http://code.google.com/p/google-web-toolkit/wiki/WorkingWithMaven#Using_Maven_with_Google_Plugin_for_Eclipse
+
+Insall m2eclipse-wtp http://download.jboss.org/jbosstools/updates/m2eclipse-wtp
+Install m2e connector for build-helper-maven-plugin This should happen automatically when you import a project that requires it. If not, you'll see an error in the POM. To install it, go to Window > Preferences > Discovery > Open Catalog and install the buildhelper connector, then re-import the project from scratch.
+
+If you get the following error, follow the instructions here…
+http://code.google.com/p/google-web-toolkit/wiki/RequestFactoryInterfaceValidation
+
+SEVERE: Unexpected error
+java.lang.RuntimeException: The RequestFactory ValidationTool must be run for the org.dodgybits.shuffle.client.ShuffleRequestFactory RequestFactory type
+	at com.google.web.bindery.requestfactory.vm.impl.Deobfuscator$Builder.load(Deobfuscator.java:59)
+	at com.google.web.bindery.requestfactory.server.ResolverServiceLayer.updateDeobfuscator(ResolverServiceLayer.java:43)
+	at com.google.web.bindery.requestfactory.server.ResolverServiceLayer.resolveRequestFactory(ResolverServiceLayer.java:176)
+	at com.google.web.bindery.requestfactory.server.ServiceLayerDecorator.resolveRequestFactory(ServiceLayerDecorator.java:172)
+
 
 

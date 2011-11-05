@@ -72,13 +72,14 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
+        
 		<!-- GWT dependencies -->
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-servlet</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
@@ -86,21 +87,30 @@
 		</dependency>
 
 		<!-- Required for GWT RequestFactory -->
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<classifier>sources</classifier>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>com.google.web.bindery</groupId>
+            <artifactId>requestfactory-server</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- Generate the decoder needed by RequestFactory Server -->
+        <!-- Doesn't yet work in eclipse. See maven-processor-plugin below.
+        <dependency>
+            <groupId>com.google.web.bindery</groupId>
+            <artifactId>requestfactory-apt</artifactId>
+        </dependency>
+         -->
+
+        <!-- RequestFactory will use JSR 303 javax.validation if you let it -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <classifier>sources</classifier>
+        </dependency>
+        
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -116,6 +126,18 @@
 			</exclusions>
 			<scope>runtime</scope>
 		</dependency>
+        
+        <!-- Required by Hibernate validator because slf4j-log4j is
+         optional in the hibernate-validator POM  -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        
 
 		<!-- GWT-Platform dependencies -->
 		<dependency>
@@ -148,6 +170,7 @@
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
+            <version>${guice.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
@@ -166,16 +189,6 @@
 			<artifactId>gin</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
-		<!-- SLF4J logging dependencies -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
         
 		<!-- General dependencies for standard applications -->
 		<dependency>
@@ -187,37 +200,257 @@
 
 	<build>
 		<plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/webapp</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <!-- maven-gae-plugin handles deployment -->
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+		<!-- requestfactory-apt runs an annotation processor (APT) to
+		           instrument its service interfaces so that
+		           RequestFactoryServer can decode client requests. Normally
+		           you would just have a dependency on requestfactory-apt
+		           with <scope>provided</scope>, but that won't work in
+		           eclipse due to m2e bug
+		           https://bugs.eclipse.org/bugs/show_bug.cgi?id=335036 -->
+		      <plugin>
+		        <groupId>org.bsc.maven</groupId>
+		        <artifactId>maven-processor-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <id>process</id>
+		            <goals>
+		              <goal>process</goal>
+		            </goals>
+		            <phase>generate-sources</phase>
+		          </execution>
+		        </executions>
+		        <dependencies>
+		          <dependency>
+		            <groupId>com.google.web.bindery</groupId>
+		            <artifactId>requestfactory-apt</artifactId>
+		            <version>${gwt.version}</version>
+		          </dependency>
+		        </dependencies>
+		      </plugin>
+		
+		      <!-- Google Plugin for Eclipse (GPE) won't see the source
+		           generated above by requestfactory-apt unless it is exposed
+		           as an additional source dir-->
+		      <plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>build-helper-maven-plugin</artifactId>
+		        <version>1.7</version>
+		        <executions>
+		          <execution>
+		            <id>add-source</id>
+		            <phase>generate-sources</phase>
+		            <goals>
+		              <goal>add-source</goal>
+		            </goals>
+		            <configuration>
+		              <sources>
+		                <source>${project.build.directory}/generated-sources/apt</source>
+		              </sources>
+		            </configuration>
+		          </execution>
+		        </executions>
+		      </plugin>		
+		
 			<!-- GWT configuration -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.google.gwt</groupId>
+                        <artifactId>gwt-user</artifactId>
+                        <version>${gwt.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.google.gwt</groupId>
+                        <artifactId>gwt-dev</artifactId>
+                        <version>${gwt.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.google.gwt</groupId>
+                        <artifactId>gwt-servlet</artifactId>
+                        <version>${gwt.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>gwtcompile</id>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <extraJvmArgs>-Xss1024k -Xmx512M</extraJvmArgs>
+                        </configuration>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
+                    <appEngineVersion>${gae.version}</appEngineVersion>
+                    <appEngineHome>${gae.home}</appEngineHome>
+                    <logLevel>INFO</logLevel>
+                    <style>${gwt.style}</style>
+                    <hostedWebapp>${webapp.directory}</hostedWebapp>
+                    <server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>
+                    <copyWebapp>true</copyWebapp>
+                    <runTarget>Shuffle.html</runTarget>
                     <module>org.dodgybits.shuffle.Shuffle</module>
-                    
                 </configuration>
 			</plugin>
 
-			<!-- AppEngine configuration -->
-			<plugin>
-				<groupId>net.kindleit</groupId>
-				<artifactId>maven-gae-plugin</artifactId>
-			</plugin>
+            <!-- AppEngine configuration -->
+            <plugin>
+                <groupId>net.kindleit</groupId>
+                <artifactId>maven-gae-plugin</artifactId>
+                <configuration>
+                    <sdkDir>${gae.home}</sdkDir>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>install-server-jar</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>deploy</id>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
 			<!-- Attaching sources and javadoc -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.encoding}</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <sourcepath>${project.build.sourceDirectory}</sourcepath>
+                        </configuration>
+                    </execution>
+                </executions>
 			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-			</plugin>
+            
+            <!--
+             Some jars with <scope>provided</scope> are copied by gwt-maven-plugin because
+             of <copyWebapp>true</copyWebapp>. These jars can be safely removed here.
+             For more information, see this thread:
+             https://groups.google.com/d/topic/codehaus-mojo-gwt-maven-plugin-users/Si8eqJsVjdE/discussion
+             -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>remove-gwt-user-jar</id>
+                        <phase>post-installation-test</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <configuration>
+                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                            <filesets>
+                                <fileset>
+                                    <directory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</directory>
+                                    <includes>
+                                        <include>gwt-user*.jar</include>
+                                    </includes>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            
+            <!-- Eclipse configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                    <wtpversion>2.0</wtpversion>
+                    <additionalBuildcommands>
+                        <buildCommand>com.google.gwt.eclipse.core.gwtProjectValidator</buildCommand>
+                    </additionalBuildcommands>
+                    <additionalProjectnatures>
+                        <projectnature>com.google.gwt.eclipse.core.gwtNature</projectnature>
+                        <projectnature>com.google.appengine.eclipse.core.gaeNature</projectnature>
+                    </additionalProjectnatures>
+                    <sourceIncludes>
+                        <sourceInclude>*.ui.xml</sourceInclude>
+                    </sourceIncludes>
+                </configuration>
+            </plugin>
+            
 		</plugins>
 
 		<outputDirectory>${webapp.directory}/WEB-INF/classes</outputDirectory>
