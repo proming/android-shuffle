@@ -14,6 +14,12 @@ mvn install:install-file -Dfile=c2dm-server.jar -Dsources=c2dm-server-src.jar -D
 mvn install:install-file -Dfile=c2dm.jar -Dsources=c2dm-sources.jar -DgroupId=com.google.android.c2dm -DartifactId=c2dm -Dversion=1.5.5 -Dpackaging=jar
 mvn install:install-file -Dfile=FlurryAgent.jar -DgroupId=com.flurry -DartifactId=flurry-sdk -Dversion=2.2.1 -Dpackaging=jar
 
+Clone git repo from here https://github.com/mosabua/maven-android-sdk-deployer
+Then from a shell in your local clone...
+mvn clean install -N
+cd extras
+mvn clean install
+
 
 To use Eclipse
 

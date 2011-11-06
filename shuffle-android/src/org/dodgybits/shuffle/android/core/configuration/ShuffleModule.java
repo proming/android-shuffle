@@ -36,13 +36,13 @@ import org.dodgybits.shuffle.android.list.config.StandardTaskQueries;
 import org.dodgybits.shuffle.android.list.config.TaskListConfig;
 import org.dodgybits.shuffle.android.preference.model.ListPreferenceSettings;
 
-import roboguice.config.AbstractAndroidModule;
 import android.content.ContextWrapper;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.TypeLiteral;
 
-public class ShuffleModule extends AbstractAndroidModule {
+public class ShuffleModule extends AbstractModule {
 
     @Override
 	protected void configure() {

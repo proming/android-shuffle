@@ -1,5 +1,7 @@
 package org.dodgybits.shuffle.android.synchronisation.tracks.activity;
 
+import javax.annotation.Nullable;
+
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
 import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
@@ -16,7 +18,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.inject.Inject;
-import com.google.inject.internal.Nullable;
 
 /**
  * Activity to handle synchronization
@@ -25,7 +26,7 @@ import com.google.inject.internal.Nullable;
  */
 public class SynchronizeActivity extends FlurryEnabledActivity implements SyncProgressListener {
     private TracksSynchronizer synchronizer = null;
-    @InjectView(R.id.info_text) @Nullable TextView mInfo;
+    @InjectView(R.id.info_text) @Nullable  TextView mInfo;
     @InjectView(R.id.progress_horizontal) @Nullable ProgressBar mProgress;
 
     @Inject Analytics mAnalytics;

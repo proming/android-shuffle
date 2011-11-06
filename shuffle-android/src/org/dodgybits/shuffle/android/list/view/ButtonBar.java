@@ -10,8 +10,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+
+import roboguice.RoboGuice;
 import roboguice.event.EventManager;
-import roboguice.inject.InjectorProvider;
 
 public class ButtonBar extends LinearLayout implements View.OnClickListener {
     private Button mAddItemButton;
@@ -36,7 +37,7 @@ public class ButtonBar extends LinearLayout implements View.OnClickListener {
         vi.inflate(R.layout.button_bar, this, true);
 
         // wire up this component
-        ((InjectorProvider)context).getInjector().injectMembers(this);
+        RoboGuice.getInjector(context).injectMembers(this);
 
         mAddItemButton = (Button)findViewById(R.id.add_item_button);
         Drawable addIcon = getResources().getDrawable(android.R.drawable.ic_menu_add);
@@ -68,15 +69,15 @@ public class ButtonBar extends LinearLayout implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.add_item_button:
-                mEventManager.fire(getContext(), new AddItemButtonClickEvent());
+                mEventManager.fire(new AddItemButtonClickEvent());
                 break;
 
             case R.id.other_button:
-                mEventManager.fire(getContext(), new OtherButtonClickEvent());
+                mEventManager.fire(new OtherButtonClickEvent());
                 break;
 
             case R.id.filter_button:
-                mEventManager.fire(getContext(), new FilterButtonClickEvent());
+                mEventManager.fire(new FilterButtonClickEvent());
                 break;
         }
     }

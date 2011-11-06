@@ -31,15 +31,30 @@
       <dependency>
           <groupId>org.roboguice</groupId>
           <artifactId>roboguice</artifactId>
+          <exclusions>
+          	<exclusion>
+				<groupId>android.support</groupId>
+				<artifactId>compatibility-v13</artifactId>
+          	</exclusion>
+          </exclusions>
       </dependency>
+        <dependency>
+            <groupId>android.support</groupId>
+            <artifactId>compatibility-v4</artifactId>
+            <version>r4</version>
+        </dependency>
       <dependency>
           <groupId>com.google.inject</groupId>
           <artifactId>guice</artifactId>
-          <version>${roboguice-guice.version}</version>
+		  <classifier>no_aop</classifier>
       </dependency>
       <dependency>
           <groupId>com.google.web.bindery</groupId>
           <artifactId>requestfactory-client</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>com.google.code.findbugs</groupId>
+          <artifactId>jsr305</artifactId>
       </dependency>
       <dependency>
           <groupId>com.flurry</groupId>
