@@ -19,7 +19,9 @@ Then from a shell in your local clone...
 mvn clean install -N
 cd extras
 mvn clean install
-
+#To compile from the command line, you'll also need to generate v3 since the maven android
+#plugin is ignoring the exclude
+mvn clean install -DPkg.Revision=3
 
 To use Eclipse
 

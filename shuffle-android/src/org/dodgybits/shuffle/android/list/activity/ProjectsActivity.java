@@ -25,6 +25,7 @@ import org.dodgybits.shuffle.android.list.config.ProjectListConfig;
 import org.dodgybits.shuffle.android.list.view.ProjectView;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 
+import roboguice.inject.ContextSingleton;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -35,6 +36,7 @@ import android.widget.SimpleCursorAdapter;
 
 import com.google.inject.Inject;
 
+@ContextSingleton
 /**
  * Display list of projects with task children.
  */

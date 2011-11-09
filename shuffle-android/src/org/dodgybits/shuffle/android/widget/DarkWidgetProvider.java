@@ -24,6 +24,7 @@ import org.dodgybits.shuffle.android.core.util.TextColours;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
 import org.dodgybits.shuffle.android.list.config.StandardTaskQueries;
 
+import roboguice.inject.ContextSingleton;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,6 +33,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
+
+@ContextSingleton
 
 /**
  * A widget provider.  We have a string that we pull from a preference in order to show

@@ -42,6 +42,7 @@ import org.dodgybits.shuffle.android.list.config.ProjectListConfig;
 import org.dodgybits.shuffle.android.list.config.TaskListConfig;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
+import roboguice.inject.ContextSingleton;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
@@ -61,6 +62,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.inject.Inject;
+
+@ContextSingleton
 
 /**
  * Displays a list of the main activities.

@@ -27,12 +27,15 @@ import org.dodgybits.shuffle.android.list.annotation.ContextTasks;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.preference.model.ListPreferenceSettings;
 
+import roboguice.inject.ContextSingleton;
+
 import android.app.Activity;
 import android.content.ContextWrapper;
 import android.database.Cursor;
 
 import com.google.inject.Inject;
 
+@ContextSingleton
 public class ContextListConfig implements DrilldownListConfig<Context, ContextSelector> {
     private ContextPersister mGroupPersister;
     private TaskPersister mChildPersister;

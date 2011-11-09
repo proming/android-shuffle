@@ -20,8 +20,11 @@ import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 
+import roboguice.inject.ContextSingleton;
 import android.view.View;
 import android.widget.RemoteViews;
+
+@ContextSingleton
 
 /**
  * A widget provider.  We have a string that we pull from a preference in order to show

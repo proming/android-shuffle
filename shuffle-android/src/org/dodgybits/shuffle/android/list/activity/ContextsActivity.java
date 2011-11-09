@@ -26,6 +26,7 @@ import org.dodgybits.shuffle.android.list.config.ListConfig;
 import org.dodgybits.shuffle.android.list.view.ContextView;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 
+import roboguice.inject.ContextSingleton;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -36,6 +37,7 @@ import android.widget.SimpleCursorAdapter;
 
 import com.google.inject.Inject;
 
+@ContextSingleton
 /**
  * Display list of contexts with task children.
  */

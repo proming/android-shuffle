@@ -1,20 +1,28 @@
 package org.dodgybits.shuffle.android.core.model.persistence;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
-import com.google.inject.Inject;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.ACTIVE;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.DELETED;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.MODIFIED_DATE;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.TRACKS_ID;
+import static org.dodgybits.shuffle.android.persistence.provider.ProjectProvider.Projects.ARCHIVED;
+import static org.dodgybits.shuffle.android.persistence.provider.ProjectProvider.Projects.DEFAULT_CONTEXT_ID;
+import static org.dodgybits.shuffle.android.persistence.provider.ProjectProvider.Projects.NAME;
+import static org.dodgybits.shuffle.android.persistence.provider.ProjectProvider.Projects.PARALLEL;
+
 import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.Project.Builder;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
+
 import roboguice.inject.ContentResolverProvider;
-import roboguice.inject.ContextScoped;
+import roboguice.inject.ContextSingleton;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 
-import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.ACTIVE;
-import static org.dodgybits.shuffle.android.persistence.provider.ProjectProvider.Projects.*;
+import com.google.inject.Inject;
 
-@ContextScoped
+@ContextSingleton
 public class ProjectPersister extends AbstractEntityPersister<Project> {
 
     private static final int ID_INDEX = 0;

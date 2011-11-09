@@ -1,6 +1,5 @@
 package org.dodgybits.shuffle.android.widget;
 
-import roboguice.receiver.RoboBroadcastReceiver;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;

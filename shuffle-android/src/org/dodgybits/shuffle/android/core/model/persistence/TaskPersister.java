@@ -39,7 +39,7 @@ import org.dodgybits.shuffle.android.core.util.StringUtils;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 
 import roboguice.inject.ContentResolverProvider;
-import roboguice.inject.ContextScoped;
+import roboguice.inject.ContextSingleton;
 import roboguice.util.Ln;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -53,7 +53,7 @@ import android.util.SparseIntArray;
 
 import com.google.inject.Inject;
 
-@ContextScoped
+@ContextSingleton
 public class TaskPersister extends AbstractEntityPersister<Task> {
     private static final String cTag = "TaskPersister";
 

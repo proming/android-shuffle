@@ -65,7 +65,7 @@
 		<persistence-api.version>1.0</persistence-api.version>
 		<slf4f.version>1.6.2</slf4f.version>
         <protobuf.version>2.4.1</protobuf.version>
-        <roboguice.version>2.0b2</roboguice.version>
+        <roboguice.version>2.0-SNAPSHOT</roboguice.version>
         <flurry-sdk.version>2.2.1</flurry-sdk.version>
 		<validation-api.version>1.0.0.GA</validation-api.version>
         <android.version>2.2.1</android.version>
@@ -115,6 +115,16 @@
             <id>gwt-staging</id>
             <url>https://oss.sonatype.org/content/repositories/comgoogle-141/</url>
         </repository>
+        
+		<!-- For Robojuice snapshot -->
+	  <repository>
+	    <id>oss-sonatype</id>
+	    <name>oss-sonatype</name>
+	    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	  </repository>
         
 	</repositories>
 

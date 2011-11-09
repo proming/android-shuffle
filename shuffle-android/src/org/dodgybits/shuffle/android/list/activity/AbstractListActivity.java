@@ -216,10 +216,10 @@ public abstract class AbstractListActivity<T extends Entity, E extends EntitySel
 		// ... and ends with the delete command.
 		MenuUtils.addDeleteMenuItem(menu, entity.isDeleted());
 
-        OnCreateEntityContextMenu(menu, info.position, entity);
+        onCreateEntityContextMenu(menu, info.position, entity);
     }
 
-    protected void OnCreateEntityContextMenu(ContextMenu menu, int position, T entity) {
+    protected void onCreateEntityContextMenu(ContextMenu menu, int position, T entity) {
     }
 
         

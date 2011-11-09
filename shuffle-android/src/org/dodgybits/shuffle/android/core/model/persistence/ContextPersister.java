@@ -1,19 +1,27 @@
 package org.dodgybits.shuffle.android.core.model.persistence;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
-import com.google.inject.Inject;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.ACTIVE;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.DELETED;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.MODIFIED_DATE;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.TRACKS_ID;
+import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.COLOUR;
+import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.ICON;
+import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.NAME;
+
 import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Context.Builder;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
+
 import roboguice.inject.ContentResolverProvider;
-import roboguice.inject.ContextScoped;
+import roboguice.inject.ContextSingleton;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 
-import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.*;
+import com.google.inject.Inject;
 
-@ContextScoped
+@ContextSingleton
 public class ContextPersister extends AbstractEntityPersister<Context> {
 
     private static final int ID_INDEX = 0;

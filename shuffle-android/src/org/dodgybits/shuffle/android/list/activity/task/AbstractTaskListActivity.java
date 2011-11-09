@@ -30,6 +30,7 @@ import org.dodgybits.shuffle.android.list.view.TaskView;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 
 import roboguice.event.Observes;
+import roboguice.inject.ContextScopedProvider;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -44,14 +45,13 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public abstract class AbstractTaskListActivity extends AbstractListActivity<Task,TaskSelector> 
 	implements SwipeListItemListener {
 
 	private static final String cTag = "AbstractTaskListActivity";
 
-    @Inject Provider<TaskView> mTaskViewProvider;
+    @Inject ContextScopedProvider<TaskView> mTaskViewProvider;
 	
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -63,7 +63,7 @@ public abstract class AbstractTaskListActivity extends AbstractListActivity<Task
 	}
 
     @Override
-    protected void OnCreateEntityContextMenu(ContextMenu menu, int position, Task task) {
+    protected void onCreateEntityContextMenu(ContextMenu menu, int position, Task task) {
 		// ... add complete command.
     	MenuUtils.addCompleteMenuItem(menu, task.isComplete());
     }
@@ -103,7 +103,7 @@ public abstract class AbstractTaskListActivity extends AbstractListActivity<Task
 				if (convertView instanceof TaskView) {
 					taskView = (TaskView) convertView;
 				} else {
-                    taskView = mTaskViewProvider.get();
+                    taskView = mTaskViewProvider.get(AbstractTaskListActivity.this);
 				}
 				taskView.setShowContext(getTaskListConfig().showTaskContext());
 				taskView.setShowProject(getTaskListConfig().showTaskProject());

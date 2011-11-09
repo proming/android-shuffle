@@ -26,6 +26,7 @@ import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
+import roboguice.inject.ContextSingleton;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -39,6 +40,7 @@ import android.widget.TextView;
 
 import com.google.inject.Inject;
 
+@ContextSingleton
 public class TaskView extends ItemView<Task> {
     private EntityCache<Context> mContextCache;
     private EntityCache<Project> mProjectCache;

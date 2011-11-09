@@ -111,7 +111,7 @@ public class ProjectTasksActivity extends AbstractTaskListActivity {
     }
 
     @Override
-    protected void OnCreateEntityContextMenu(ContextMenu menu, int position, Task task) {
+    protected void onCreateEntityContextMenu(ContextMenu menu, int position, Task task) {
     	MenuUtils.addMoveMenuItems(menu,
     			moveUpPermitted(position), moveDownPermitted(position));
     }
