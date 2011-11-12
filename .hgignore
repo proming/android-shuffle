@@ -7,4 +7,9 @@
 \.classpath
 \.settings/
 \.gwt/
+\.idea/
 project.properties
+
+# use glob syntax.
+syntax: glob
+*.iml
