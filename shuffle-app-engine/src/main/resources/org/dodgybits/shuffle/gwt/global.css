@@ -1,0 +1,25 @@
+body {
+  font-family: "Segoe UI", Segoe, Calibri, Arial, sans-serif;
+  color: #000;
+  background: #fff;
+}
+
+/* Action tables */
+
+  .action-title {
+    white-space: nowrap;
+  }
+
+  .action-details {
+    white-space: nowrap;
+    color: gray;
+  }
+
+  .action-due-in-future {
+  }
+
+  .action-due-in-pass {
+    color: red;
+  }
+
+

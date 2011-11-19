@@ -110,9 +110,9 @@ public class InboxView extends ViewImpl implements InboxPresenter.MyView {
 			})) {
 	      @Override
 	      public String getValue(TaskProxy taskValue) {
-	  		String description = "<div class='actionTitle'>"
+	  		String description = "<div class='action-title'>"
 	  				+ SafeHtmlUtils.htmlEscape(taskValue.getDescription())
-				+ "<span class='actionDetails'> - "
+				+ "<span class='action-details'> - "
 				+ SafeHtmlUtils.htmlEscape(taskValue.getDetails()) + "</span></div>";
 	        return description;
 	      }

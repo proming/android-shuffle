@@ -1,0 +1,74 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:d="urn:import:com.google.gwt.user.datepicker.client"
+        >
+
+    <ui:style>
+        .edit-form {
+            text-align: left;
+        }
+
+        .edit-form span {
+            font-weight: bold;
+            text-align: right;
+            width: 6em;
+            float: left;
+            padding-right: 1em;
+            padding-top: 3px;
+        }
+
+        .button-bar {
+            float: right;
+            width: 100%;
+        }
+
+        .details {
+            padding: 4px;
+            border: 1px solid #ccc;
+            border-top: 1px solid #666;
+            font-size: 100%;
+            -moz-box-shadow: 1px 1px 2px hsla(0, 0%, 0%, .3);
+            -webkit-box-shadow: 1px 1px 2px hsla(0, 0%, 0%, .3);
+            box-shadow: 1px 1px 2px hsla(0, 0%, 0%, .3); /* Opera, IE 9 */
+        }
+
+    </ui:style>
+
+    <g:HTMLPanel>
+        <div class="{style.edit-form}">
+            <div>
+                <span>Description</span>
+                <g:TextBox ui:field="description"/>
+            </div>
+            <div>
+                <span>Project</span>
+                <g:TextBox ui:field="project"/>
+            </div>
+            <div>
+                <span>Context</span>
+                <g:TextBox ui:field="context"/>
+            </div>
+            <div>
+                <span>Details</span>
+                <g:TextArea styleName="{style.details}" ui:field="details" visibleLines="3"/>
+            </div>
+        </div>
+        <div class='dates'>
+            <div>
+                <span>Show from</span>
+                <d:DateBox ui:field="from"/>
+            </div>
+            <div>
+                <span>Due</span>
+                <d:DateBox ui:field="due"/>
+            </div>
+        </div>
+        <div class="{style.button-bar}">
+            <g:Button ui:field="save" text="Save"/>
+            <br/>
+        </div>
+    </g:HTMLPanel>
+
+</ui:UiBinder>

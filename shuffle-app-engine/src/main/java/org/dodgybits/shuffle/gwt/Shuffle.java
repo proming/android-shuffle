@@ -31,7 +31,7 @@ public class Shuffle implements EntryPoint {
 
 	interface GlobalResources extends ClientBundle {
 		@NotStrict
-		@Source("global.css")
+		@Source("../../../../../resources/org/dodgybits/shuffle/gwt/global.css")
 		CssResource css();
 	}
 
