@@ -263,6 +263,11 @@
 		            <version>${gwt.version}</version>
 		          </dependency>
 		        </dependencies>
+                  <configuration>
+                      <!-- This is hacky but I couldn't figure out another way of doing it.
+                      See  http://stackoverflow.com/questions/7718320/requestfactory-validation-on-multi-project-setup -->
+                      <sourceDirectory>../shuffle-shared/src/main/java</sourceDirectory>
+                  </configuration>
 		      </plugin>
 		
 		      <!-- Google Plugin for Eclipse (GPE) won't see the source
@@ -272,18 +277,18 @@
 		        <groupId>org.codehaus.mojo</groupId>
 		        <artifactId>build-helper-maven-plugin</artifactId>
 		        <executions>
-		          <execution>
-		            <id>add-source</id>
-		            <phase>generate-sources</phase>
-		            <goals>
-		              <goal>add-source</goal>
-		            </goals>
-		            <configuration>
-		              <sources>
-		                <source>${project.build.directory}/generated-sources/apt</source>
-		              </sources>
-		            </configuration>
-		          </execution>
+                    <execution>
+                      <id>add-source</id>
+                      <phase>generate-sources</phase>
+                      <goals>
+                        <goal>add-source</goal>
+                      </goals>
+                      <configuration>
+                        <sources>
+                            <source>${project.build.directory}/generated-sources/apt</source>
+                        </sources>
+                      </configuration>
+                    </execution>
 		        </executions>
 		      </plugin>		
 		
