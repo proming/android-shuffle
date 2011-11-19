@@ -40,7 +40,6 @@ import android.widget.TextView;
 
 import com.google.inject.Inject;
 
-@ContextSingleton
 public class TaskView extends ItemView<Task> {
     private EntityCache<Context> mContextCache;
     private EntityCache<Project> mProjectCache;
