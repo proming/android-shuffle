@@ -15,4 +15,7 @@ public interface TaskService extends RequestContext {
     Request<TaskProxy> saveAndReturn(TaskProxy newTask);
 
     Request<Void> deleteTask(TaskProxy task);
+
+    Request<TaskProxy> findById(Long id);
+
 }

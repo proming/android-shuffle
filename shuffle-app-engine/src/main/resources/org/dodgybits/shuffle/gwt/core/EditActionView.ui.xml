@@ -5,36 +5,7 @@
              xmlns:d="urn:import:com.google.gwt.user.datepicker.client"
         >
 
-    <ui:style>
-        .edit-form {
-            text-align: left;
-        }
-
-        .edit-form span {
-            font-weight: bold;
-            text-align: right;
-            width: 6em;
-            float: left;
-            padding-right: 1em;
-            padding-top: 3px;
-        }
-
-        .button-bar {
-            float: right;
-            width: 100%;
-        }
-
-        .details {
-            padding: 4px;
-            border: 1px solid #ccc;
-            border-top: 1px solid #666;
-            font-size: 100%;
-            -moz-box-shadow: 1px 1px 2px hsla(0, 0%, 0%, .3);
-            -webkit-box-shadow: 1px 1px 2px hsla(0, 0%, 0%, .3);
-            box-shadow: 1px 1px 2px hsla(0, 0%, 0%, .3); /* Opera, IE 9 */
-        }
-
-    </ui:style>
+    <ui:style src="editAction.css"/>
 
     <g:HTMLPanel>
         <div class="{style.edit-form}">
@@ -55,7 +26,7 @@
                 <g:TextArea styleName="{style.details}" ui:field="details" visibleLines="3"/>
             </div>
         </div>
-        <div class='dates'>
+        <div class='{style.edit-form}'>
             <div>
                 <span>Show from</span>
                 <d:DateBox ui:field="from"/>
@@ -66,8 +37,8 @@
             </div>
         </div>
         <div class="{style.button-bar}">
+            <g:Button ui:field="cancel" text="Cancel"/>
             <g:Button ui:field="save" text="Save"/>
-            <br/>
         </div>
     </g:HTMLPanel>
 

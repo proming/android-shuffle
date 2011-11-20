@@ -2,6 +2,7 @@ package org.dodgybits.shuffle.server.service;
 
 import java.util.List;
 
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import org.dodgybits.shuffle.server.model.AppUser;
 import org.dodgybits.shuffle.server.model.Task;
 
@@ -36,5 +37,21 @@ public class TaskDao extends ObjectifyDao<Task> {
     public void deleteTask(Task task)
     {
         this.delete(task);
+    }
+
+    public Task findById(Long id)
+    {
+        Task task = null;
+        try {
+            task = super.get(id);
+            AppUser loggedInUser = LoginService.getLoggedInUser();
+            if (!task.getOwner().equals(loggedInUser)) {
+                // wrong user - bail
+                task = null;
+            }
+        } catch (EntityNotFoundException e) {
+            // couldn't find task
+        }
+        return task;
     }
 }
