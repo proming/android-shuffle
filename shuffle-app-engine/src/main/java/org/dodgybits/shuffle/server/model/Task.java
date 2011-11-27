@@ -86,6 +86,15 @@ public class Task extends DatastoreObject {
     {
         this.owner = new AppUserDao().key(owner);
     }
-    
-    
+
+    public Key<AppUser> getOwnerKey()
+    {
+        return owner;
+    }
+
+    public void setOwnerKey(Key<AppUser> owner)
+    {
+        this.owner = owner;
+    }
+
 }

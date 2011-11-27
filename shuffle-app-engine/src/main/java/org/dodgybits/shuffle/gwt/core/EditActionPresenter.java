@@ -39,7 +39,7 @@ public class EditActionPresenter extends
     public interface MyProxy extends ProxyPlace<EditActionPresenter> {
     }
 
-    private final TaskService mTaskService;
+    private final Provider<TaskService> mTaskServiceProvider;
     private PlaceManager placeManager;
     private Action mAction;
     private TaskProxy mTask = null;
@@ -49,8 +49,8 @@ public class EditActionPresenter extends
                                final MyProxy proxy, final PlaceManager placeManager, final Provider<TaskService> taskServiceProvider) {
         super(eventBus, view, proxy);
         this.placeManager = placeManager;
+        this.mTaskServiceProvider = taskServiceProvider;
 
-        this.mTaskService = taskServiceProvider.get();
         getView().setUiHandlers(this);
     }
 
@@ -68,6 +68,7 @@ public class EditActionPresenter extends
             try {
                 taskId = Long.valueOf(placeRequest.getParameter("taskId", null));
             } catch (NumberFormatException e) {
+                GWT.log(e.getMessage());
             }
 
             if (taskId == null) {
@@ -87,7 +88,7 @@ public class EditActionPresenter extends
 
     private void load(Long taskId) {
         // Send a message using RequestFactory
-        Request<TaskProxy> taskListRequest = mTaskService.findById(taskId);
+        Request<TaskProxy> taskListRequest = mTaskServiceProvider.get().findById(taskId);
         taskListRequest.fire(new Receiver<TaskProxy>() {
             @Override
             public void onFailure(ServerFailure error) {
@@ -105,20 +106,23 @@ public class EditActionPresenter extends
 
     @Override
     public void save(String description, String details) {
-        if (mAction == Action.NEW)
-        {
-            mTask = mTaskService.create(TaskProxy.class);
+        TaskService service = mTaskServiceProvider.get();
+        if (mAction == Action.NEW) {
+            mTask = service.create(TaskProxy.class);
+        } else {
+            mTask = service.edit(mTask);
         }
 
         mTask.setDescription(description);
         mTask.setDetails(details);
 
-        Request<Void> saveRequest = mTaskService.save(mTask);
+        Request<Void> saveRequest = service.save(mTask);
         saveRequest.fire(new Receiver<Void>() {
             @Override
             public void onFailure(ServerFailure error) {
                 GWT.log(error.getMessage());
             }
+
             @Override
             public void onSuccess(Void response) {
                 GWT.log("Success");
@@ -133,7 +137,7 @@ public class EditActionPresenter extends
     }
 
     private void goBack() {
-        // TODO - go back to previous page
+        placeManager.navigateBack();
     }
 
 }

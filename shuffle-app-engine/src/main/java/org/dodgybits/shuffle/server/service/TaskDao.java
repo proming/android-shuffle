@@ -1,14 +1,18 @@
 package org.dodgybits.shuffle.server.service;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.googlecode.objectify.Key;
 import org.dodgybits.shuffle.server.model.AppUser;
 import org.dodgybits.shuffle.server.model.Task;
 
 
 public class TaskDao extends ObjectifyDao<Task> {
-    
+    private static final Logger log = Logger.getLogger(TaskDao.class.getName());
+
     @Override
     public List<Task> listAll()
     {
@@ -44,13 +48,16 @@ public class TaskDao extends ObjectifyDao<Task> {
         Task task = null;
         try {
             task = super.get(id);
+            log.log(Level.FINE, "Looking up task {0}", id);
             AppUser loggedInUser = LoginService.getLoggedInUser();
             if (!task.getOwner().equals(loggedInUser)) {
+                log.log(Level.WARNING, "User {0} for task {1} doesn't match logged in user {2}",
+                        new Object[] {task.getOwner(), id, loggedInUser});
                 // wrong user - bail
                 task = null;
             }
         } catch (EntityNotFoundException e) {
-            // couldn't find task
+            log.log(Level.WARNING, "Task {0} not found", id);
         }
         return task;
     }

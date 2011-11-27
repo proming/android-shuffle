@@ -29,4 +29,11 @@ public class AppUser extends DatastoreObject
 	{
 		this.email = email;
 	}
+
+    @Override
+    public boolean equals(Object user)
+    {
+        return user instanceof AppUser && ((AppUser)user).getId() == getId();
+    }
+
 }

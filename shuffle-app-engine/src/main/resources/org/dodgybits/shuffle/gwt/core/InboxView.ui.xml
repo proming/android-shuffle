@@ -7,53 +7,17 @@
              ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
              ui:generateLocales='default'>
 
-    <ui:image field='gradient' src='../gradient_bg_dark.png'
-              repeatStyle='Horizontal'/>
-
     <ui:style>
         .outer {
             border-left: 1px solid #999;
             border-bottom: 1px solid #999;
-            cursor: pointer;
-            cursor: hand;
-        }
-
-        @sprite .header {
-            gwt-image: 'gradient';
-            background-color: #d3d6dd;
-            table-layout: fixed;
-            width: 100%;
-            height: 100%;
-        }
-
-        .header td {
-            font-weight: bold;
-            text-shadow: #fff 0 2px 2px;
-            padding: 2px 0 1px 10px;
-            border-top: 1px solid #999;
-            border-bottom: 1px solid #999;
-        }
-
-        .table {
-            table-layout: auto;
-            width: 100%;
-        }
-
-        .table td {
-            border-top: 1px solid #fff;
-            border-bottom: 1px solid #fff;
-            padding: 2px 0 2px 10px;
-            white-space: nowrap;
+            cursor: move;
         }
     </ui:style>
 
-    <g:HTMLPanel>
-        <g:ScrollPanel height="200px">
-            <c:CellTable
-                    addStyleNames='{style.table}'
-                    pageSize='100'
-                    ui:field='table'
-                    />
-        </g:ScrollPanel>
-    </g:HTMLPanel>
+    <c:DataGrid
+            height="100%"
+            pageSize='50'
+            ui:field='grid'
+            />
 </ui:UiBinder>

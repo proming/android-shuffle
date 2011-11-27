@@ -49,11 +49,6 @@
 				<g:Label text="Header"/>
 			</g:HTMLPanel>
 		</g:north>
-		<g:south size="5">
-			<g:HTMLPanel>
-				<g:Label text="footer"/>
-			</g:HTMLPanel>
-		</g:south>
 		<g:west size="12">
 			<g:HTMLPanel ui:field="navigation"/>
 		</g:west>
