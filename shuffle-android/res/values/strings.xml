@@ -123,6 +123,10 @@
 <string name="whats_new_dialog_title">Shuffle</string>
 <string name="whats_new_dialog_message">Thanks for downloading Shuffle.\n\n
 <b>New in this version:</b>\n
+\t• Support for ICS\n
+\t• Integrated with Shuffle website\n
+\n
+<b>New in version 1.7.2:</b>\n
 \t• Fixed dates when viewing Google calendar entries\n
 \t• Improved Japanese translation\n
 \t• Added Dutch translation\n
