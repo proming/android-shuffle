@@ -46,11 +46,6 @@ public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements
     @UiField(provided = true)
     DataGrid<TaskProxy> grid;
 
-    /**
-     * The provider that holds the list of contacts in the database.
-     */
-    private ListDataProvider<TaskProxy> dataProvider = new ListDataProvider<TaskProxy>();
-
     @Inject
     public InboxView(final Binder binder) {
         mFormatter = new ActionDateFormatter();
@@ -80,18 +75,10 @@ public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements
     }
 
     @Override
-    public void displayTasks(List<TaskProxy> tasks) {
-        GWT.log("Displaying " + tasks.size() + " tasks");
-        dataProvider.setList(tasks);
-        dataProvider.addDataDisplay(grid);
-    }
-
-    @Override
-    public void redraw() {
-        if (grid != null)
-        {
-            GWT.log("Redrawing grid");
-            grid.redraw();
+    public void setUiHandlers(TaskListUiHandlers uiHandlers) {
+        super.setUiHandlers(uiHandlers);
+        if (getUiHandlers() != null) {
+            getUiHandlers().getDataProvider().addDataDisplay(grid);
         }
     }
 

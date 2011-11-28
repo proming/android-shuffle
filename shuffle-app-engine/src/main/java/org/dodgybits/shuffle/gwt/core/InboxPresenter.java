@@ -2,6 +2,7 @@ package org.dodgybits.shuffle.gwt.core;
 
 import java.util.List;
 
+import com.google.gwt.view.client.ListDataProvider;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
@@ -28,9 +29,6 @@ public class InboxPresenter extends
     implements TaskListUiHandlers {
 
 	public interface MyView extends View, HasUiHandlers<TaskListUiHandlers> {
-
-		void displayTasks(List<TaskProxy> tasks);
-        void redraw();
 	}
 
 	@ProxyCodeSplit
@@ -42,7 +40,10 @@ public class InboxPresenter extends
 
     private PlaceManager placeManager;
 
-    private List<TaskProxy> mTasks;
+    /**
+     * The provider that holds the list of contacts in the database.
+     */
+    private ListDataProvider<TaskProxy> mDataProvider = new ListDataProvider<TaskProxy>();
 
     private Long mEditedTaskId = null;
 
@@ -68,13 +69,11 @@ public class InboxPresenter extends
 
         GWT.log("InboxPresenter onReveal()");
 
-        if (mTasks == null) {
+        if (mDataProvider.getList().isEmpty()) {
             loadTasks();
         } else if (mEditedTaskId != null) {
             updateEditedTask();
         }
-
-
     }
 
     @Override
@@ -84,6 +83,11 @@ public class InboxPresenter extends
                 .with("action", "edit")
                 .with("taskId", String.valueOf(mEditedTaskId));
         placeManager.revealPlace( myRequest );
+    }
+
+    @Override
+    public ListDataProvider<TaskProxy> getDataProvider() {
+        return mDataProvider;
     }
 
     private void loadTasks() {
@@ -97,9 +101,8 @@ public class InboxPresenter extends
 
             @Override
             public void onSuccess(List<TaskProxy> tasks) {
-                mTasks = tasks;
                 GWT.log("Success - got " + tasks.size() + " tasks");
-                getView().displayTasks(mTasks);
+                mDataProvider.setList(tasks);
             }
           });
     }
@@ -116,9 +119,10 @@ public class InboxPresenter extends
             @Override
             public void onSuccess(TaskProxy task) {
                 boolean found = false;
+                List<TaskProxy> tasks = mDataProvider.getList();
                 int i;
-                for (i = 0; i < mTasks.size(); i++) {
-                    TaskProxy currentTask =  mTasks.get(i);
+                for (i = 0; i < tasks.size(); i++) {
+                    TaskProxy currentTask =  tasks.get(i);
                     GWT.log("Checking task " + currentTask.getId());
 
                     if (currentTask.getId() == mEditedTaskId)
@@ -129,9 +133,9 @@ public class InboxPresenter extends
                 }
                 if (found) {
                     GWT.log("Replace with edited task " + task.getDetails() + " and update view");
-                    mTasks.set(i, task);
-                    getView().redraw();
+                    tasks.set(i, task);
                 }
+                mEditedTaskId = null;
             }
           });
     }
