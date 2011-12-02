@@ -103,7 +103,6 @@ public class ObjectifyDao<T> extends DAOBase
 	 * @param propName
 	 * @param propValue
 	 * @return T matching Object
-	 * @throws TooManyResultsException
 	 */
 	public T getByProperty(String propName, Object propValue)
 	{
@@ -122,6 +121,15 @@ public class ObjectifyDao<T> extends DAOBase
 		}
 		return obj;
 	}
+
+    public List<T> listByProperty(String propName, Object propValue, int offset, int limit)
+    {
+        Query<T> q = ofy().query(clazz);
+        q.filter(propName, propValue);
+        q.offset(offset);
+        q.limit(limit);
+        return q.list();
+    }
 
 	public List<T> listByProperty(String propName, Object propValue)
 	{
@@ -228,6 +236,13 @@ public class ObjectifyDao<T> extends DAOBase
 		return listByProperty("owner", userKey);
 	}
 
+    public List<T> listRangeForUser(int offset, int limit)
+    {
+        Key<AppUser> userKey = new Key<AppUser>(AppUser.class, getCurrentUser()
+                .getId());
+        return listByProperty("owner", userKey, offset, limit);
+
+    }
 	private AppUser getCurrentUser()
 	{
 		return (AppUser) RequestFactoryServlet.getThreadLocalRequest()

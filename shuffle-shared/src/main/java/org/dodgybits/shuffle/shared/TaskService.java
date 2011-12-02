@@ -10,6 +10,8 @@ import com.google.web.bindery.requestfactory.shared.ServiceName;
 public interface TaskService extends RequestContext {
     Request<List<TaskProxy>> listAll();
 
+    Request<List<TaskProxy>> listRange(int offset, int limit);
+
     Request<Void> save(TaskProxy newTask);
 
     Request<TaskProxy> saveAndReturn(TaskProxy newTask);

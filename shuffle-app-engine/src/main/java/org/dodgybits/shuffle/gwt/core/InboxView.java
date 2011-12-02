@@ -14,6 +14,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.*;
 import com.google.inject.Inject;
@@ -44,6 +45,9 @@ public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements
     private ActionDateFormatter mFormatter;
 
     @UiField(provided = true)
+    SimplePager pager;
+
+    @UiField(provided = true)
     DataGrid<TaskProxy> grid;
 
     @Inject
@@ -57,6 +61,11 @@ public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements
         // change.
         grid = new DataGrid<TaskProxy>(KEY_PROVIDER);
         grid.setWidth("100%");
+
+        // Create a Pager to control the table.
+        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+        pager = new SimplePager(SimplePager.TextLocation.CENTER, pagerResources, false, 0, true);
+        pager.setDisplay(grid);
 
         // Add a selection model so we can select cells.
         final SelectionModel<TaskProxy> selectionModel = new MultiSelectionModel<TaskProxy>(KEY_PROVIDER);

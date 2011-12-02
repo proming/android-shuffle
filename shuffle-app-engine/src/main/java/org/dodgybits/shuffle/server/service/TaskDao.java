@@ -1,13 +1,12 @@
 package org.dodgybits.shuffle.server.service;
 
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import org.dodgybits.shuffle.server.model.AppUser;
+import org.dodgybits.shuffle.server.model.Task;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.googlecode.objectify.Key;
-import org.dodgybits.shuffle.server.model.AppUser;
-import org.dodgybits.shuffle.server.model.Task;
 
 
 public class TaskDao extends ObjectifyDao<Task> {
@@ -18,6 +17,11 @@ public class TaskDao extends ObjectifyDao<Task> {
     {
         List<Task> tasks = listAllForUser();
         return tasks;
+    }
+
+    public List<Task> listRange(int offset, int limit)
+    {
+        return listRangeForUser(offset, limit);
     }
 
     /**

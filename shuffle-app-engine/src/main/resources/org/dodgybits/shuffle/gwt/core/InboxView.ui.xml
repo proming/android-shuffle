@@ -7,17 +7,38 @@
              ui:generateKeys='com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator'
              ui:generateLocales='default'>
 
+
     <ui:style>
         .outer {
             border-left: 1px solid #999;
             border-bottom: 1px solid #999;
+            padding-right: 20px;
             cursor: move;
         }
+
+        .dataGrid {
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+            width: 100%;
+            height: 90%;
+            margin-bottom: 4px;
+        }
+
+        .pager {
+            height: 10%;
+        }
+
     </ui:style>
 
-    <c:DataGrid
-            height="100%"
-            pageSize='50'
-            ui:field='grid'
-            />
+    <g:HTMLPanel height="100%" addStyleNames="{style.outer}">
+            <c:DataGrid
+                    addStyleNames='{style.dataGrid}'
+                    pageSize='15'
+
+                    ui:field='grid'/>
+        <c:SimplePager
+                addStyleNames='{style.pager}'
+                ui:field='pager'/>
+    </g:HTMLPanel>
+
 </ui:UiBinder>

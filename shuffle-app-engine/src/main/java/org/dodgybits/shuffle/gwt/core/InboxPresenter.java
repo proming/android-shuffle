@@ -1,8 +1,12 @@
 package org.dodgybits.shuffle.gwt.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.Range;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
@@ -43,7 +47,13 @@ public class InboxPresenter extends
     /**
      * The provider that holds the list of contacts in the database.
      */
-    private ListDataProvider<TaskProxy> mDataProvider = new ListDataProvider<TaskProxy>();
+    private AsyncDataProvider<TaskProxy> mDataProvider = new AsyncDataProvider<TaskProxy>() {
+        @Override
+        protected void onRangeChanged(final HasData<TaskProxy> display) {
+            final Range range = display.getVisibleRange();
+            loadTasks(display);
+        }
+      };
 
     private Long mEditedTaskId = null;
 
@@ -54,7 +64,6 @@ public class InboxPresenter extends
 		
         this.placeManager = placeManager;
 		this.taskServiceProvider = taskServiceProvider;
-
         getView().setUiHandlers(this);
 	}
 
@@ -68,10 +77,7 @@ public class InboxPresenter extends
         super.onReveal();
 
         GWT.log("InboxPresenter onReveal()");
-
-        if (mDataProvider.getList().isEmpty()) {
-            loadTasks();
-        } else if (mEditedTaskId != null) {
+        if (mEditedTaskId != null) {
             updateEditedTask();
         }
     }
@@ -86,13 +92,16 @@ public class InboxPresenter extends
     }
 
     @Override
-    public ListDataProvider<TaskProxy> getDataProvider() {
+    public AsyncDataProvider<TaskProxy> getDataProvider() {
         return mDataProvider;
     }
 
-    private void loadTasks() {
+    private void loadTasks(final HasData<TaskProxy> display) {
         // Send a message using RequestFactory
-        Request<List<TaskProxy>> taskListRequest = taskServiceProvider.get().listAll();
+        final int start = display.getVisibleRange().getStart();
+        final int limit = display.getVisibleRange().getLength();
+        GWT.log("Loading tasks " + start + " through " + (start + limit));
+        Request<List<TaskProxy>> taskListRequest = taskServiceProvider.get().listRange(start, limit);
         taskListRequest.fire(new Receiver<List<TaskProxy>>() {
             @Override
             public void onFailure(ServerFailure error) {
@@ -102,7 +111,8 @@ public class InboxPresenter extends
             @Override
             public void onSuccess(List<TaskProxy> tasks) {
                 GWT.log("Success - got " + tasks.size() + " tasks");
-                mDataProvider.setList(tasks);
+                mDataProvider.updateRowData(start, tasks);
+                mDataProvider.updateRowCount(40, true);
             }
           });
     }
@@ -119,22 +129,22 @@ public class InboxPresenter extends
             @Override
             public void onSuccess(TaskProxy task) {
                 boolean found = false;
-                List<TaskProxy> tasks = mDataProvider.getList();
-                int i;
-                for (i = 0; i < tasks.size(); i++) {
-                    TaskProxy currentTask =  tasks.get(i);
-                    GWT.log("Checking task " + currentTask.getId());
-
-                    if (currentTask.getId() == mEditedTaskId)
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-                if (found) {
-                    GWT.log("Replace with edited task " + task.getDetails() + " and update view");
-                    tasks.set(i, task);
-                }
+//                List<TaskProxy> tasks = mDataProvider.getList();
+//                int i;
+//                for (i = 0; i < tasks.size(); i++) {
+//                    TaskProxy currentTask =  tasks.get(i);
+//                    GWT.log("Checking task " + currentTask.getId());
+//
+//                    if (currentTask.getId() == mEditedTaskId)
+//                    {
+//                        found = true;
+//                        break;
+//                    }
+//                }
+//                if (found) {
+//                    GWT.log("Replace with edited task " + task.getDetails() + " and update view");
+//                    tasks.set(i, task);
+//                }
                 mEditedTaskId = null;
             }
           });
