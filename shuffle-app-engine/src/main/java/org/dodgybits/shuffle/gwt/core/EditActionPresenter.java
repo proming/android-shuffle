@@ -116,15 +116,15 @@ public class EditActionPresenter extends
         mTask.setDescription(description);
         mTask.setDetails(details);
 
-        Request<Void> saveRequest = service.save(mTask);
-        saveRequest.fire(new Receiver<Void>() {
+        Request<TaskProxy> saveRequest = service.save(mTask);
+        saveRequest.fire(new Receiver<TaskProxy>() {
             @Override
             public void onFailure(ServerFailure error) {
                 GWT.log(error.getMessage());
             }
 
             @Override
-            public void onSuccess(Void response) {
+            public void onSuccess(TaskProxy response) {
                 GWT.log("Success");
                 goBack();
             }

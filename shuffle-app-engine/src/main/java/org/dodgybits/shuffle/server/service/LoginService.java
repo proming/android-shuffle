@@ -16,6 +16,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 public class LoginService
 {
 	public static final String AUTH_USER = "loggedInUser";
+	public static final String AUTH_USER_KEY = "loggedInUserKey";
 
 	public static AppUser login(HttpServletRequest req, HttpServletResponse res)
 	{

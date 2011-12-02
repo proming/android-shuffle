@@ -11,8 +11,7 @@ import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import org.dodgybits.shuffle.gwt.place.NameTokens;
-import org.dodgybits.shuffle.shared.TaskProxy;
-import org.dodgybits.shuffle.shared.TaskService;
+import org.dodgybits.shuffle.shared.*;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -101,18 +100,25 @@ public class InboxPresenter extends
         final int start = display.getVisibleRange().getStart();
         final int limit = display.getVisibleRange().getLength();
         GWT.log("Loading tasks " + start + " through " + (start + limit));
-        Request<List<TaskProxy>> taskListRequest = taskServiceProvider.get().listRange(start, limit);
-        taskListRequest.fire(new Receiver<List<TaskProxy>>() {
+        TaskService service = taskServiceProvider.get();
+        TaskQueryProxy query = service.create(TaskQueryProxy.class);
+        query.setActive(Flag.yes);
+        query.setDeleted(Flag.no);
+        query.setOffset(start);
+        query.setCount(limit);
+        query.setPredefinedQuery(PredefinedQuery.inbox);
+        Request<TaskQueryResultProxy> queryRequest = service.query(query);
+        queryRequest.fire(new Receiver<TaskQueryResultProxy>() {
             @Override
             public void onFailure(ServerFailure error) {
                 GWT.log(error.getMessage());
             }
 
             @Override
-            public void onSuccess(List<TaskProxy> tasks) {
-                GWT.log("Success - got " + tasks.size() + " tasks");
-                mDataProvider.updateRowData(start, tasks);
-                mDataProvider.updateRowCount(40, true);
+            public void onSuccess(TaskQueryResultProxy result) {
+                GWT.log("Success - got " + result.getEntities().size() + " tasks");
+                mDataProvider.updateRowData(result.getOffset(), result.getEntities());
+                mDataProvider.updateRowCount(result.getTotalCount(), true);
             }
           });
     }

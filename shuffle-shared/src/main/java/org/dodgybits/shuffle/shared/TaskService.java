@@ -1,23 +1,24 @@
 package org.dodgybits.shuffle.shared;
 
-import java.util.List;
+import java.util.*;
 
 import com.google.web.bindery.requestfactory.shared.Request;
 import com.google.web.bindery.requestfactory.shared.RequestContext;
 import com.google.web.bindery.requestfactory.shared.ServiceName;
 
-@ServiceName(value = "org.dodgybits.shuffle.server.service.TaskDao", locator="org.dodgybits.shuffle.server.locator.DaoServiceLocator")
+@ServiceName(value = "org.dodgybits.shuffle.server.service.TaskService", locator="org.dodgybits.shuffle.server.locator.DaoServiceLocator")
 public interface TaskService extends RequestContext {
-    Request<List<TaskProxy>> listAll();
 
-    Request<List<TaskProxy>> listRange(int offset, int limit);
+    Request<TaskProxy> save(TaskProxy newTask);
 
-    Request<Void> save(TaskProxy newTask);
-
-    Request<TaskProxy> saveAndReturn(TaskProxy newTask);
-
-    Request<Void> deleteTask(TaskProxy task);
+    Request<Void> delete(TaskProxy task);
 
     Request<TaskProxy> findById(Long id);
+
+    Request<Void> emptyTrash();
+
+    Request<Integer> deleteCompletedTasks();
+
+    Request<TaskQueryResultProxy> query(TaskQueryProxy query);
 
 }

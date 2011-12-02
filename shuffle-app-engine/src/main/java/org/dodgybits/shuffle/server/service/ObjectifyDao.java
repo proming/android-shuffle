@@ -45,11 +45,34 @@ public class ObjectifyDao<T> extends DAOBase
 				.getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
-	public Key<T> put(T entity)
+    public Query<T> userQuery() {
+        Query<T> q = ofy().query(clazz);
+        Key<AppUser> userKey = new Key<AppUser>(AppUser.class, getCurrentUser()
+                .getId());
+        q.filter("owner", userKey);
+        return q;
+    }
 
-	{
-		return ofy().put(entity);
-	}
+    private AppUser getCurrentUser()
+    {
+        return (AppUser) RequestFactoryServlet.getThreadLocalRequest()
+                .getAttribute(LoginService.AUTH_USER);
+    }
+
+    private List<T> listByProperty(String propName, Object propValue, int offset, int limit)
+    {
+        Query<T> q = ofy().query(clazz);
+        q.filter(propName, propValue);
+        q.offset(offset);
+        q.limit(limit);
+        return q.list();
+    }
+
+    public Key<T> put(T entity)
+
+    {
+        return ofy().put(entity);
+    }
 
 	public Map<Key<T>, T> putAll(Iterable<T> entities)
 	{
@@ -99,7 +122,7 @@ public class ObjectifyDao<T> extends DAOBase
 
 	/**
 	 * Convenience method to get all objects matching a single property
-	 * 
+	 *
 	 * @param propName
 	 * @param propValue
 	 * @return T matching Object
@@ -121,132 +144,103 @@ public class ObjectifyDao<T> extends DAOBase
 		}
 		return obj;
 	}
-
-    public List<T> listByProperty(String propName, Object propValue, int offset, int limit)
-    {
-        Query<T> q = ofy().query(clazz);
-        q.filter(propName, propValue);
-        q.offset(offset);
-        q.limit(limit);
-        return q.list();
-    }
-
-	public List<T> listByProperty(String propName, Object propValue)
-	{
-		Query<T> q = ofy().query(clazz);
-		q.filter(propName, propValue);
-		return q.list();
-	}
-
-	public List<Key<T>> listKeysByProperty(String propName, Object propValue)
-	{
-		Query<T> q = ofy().query(clazz);
-		q.filter(propName, propValue);
-		return q.listKeys();
-	}
-
-	public T getByExample(T exampleObj)
-	{
-		Query<T> q = buildQueryByExample(exampleObj);
-		Iterator<T> fetch = q.limit(2).list().iterator();
-		if (!fetch.hasNext())
-		{
-			return null;
-		}
-		T obj = fetch.next();
-		if (fetch.hasNext())
-		{
-			throw new RuntimeException(q.toString()
-					+ " returned too many results");
-		}
-		return obj;
-	}
-
-	public List<T> listByExample(T exampleObj)
-	{
-		Query<T> queryByExample = buildQueryByExample(exampleObj);
-		return queryByExample.list();
-	}
-
-	public Key<T> getKey(Long id)
-	{
-		return new Key<T>(this.clazz, id);
-	}
-
+//
+//
+//	public List<T> listByProperty(String propName, Object propValue)
+//	{
+//		Query<T> q = ofy().query(clazz);
+//		q.filter(propName, propValue);
+//		return q.list();
+//	}
+//
+//	public List<Key<T>> listKeysByProperty(String propName, Object propValue)
+//	{
+//		Query<T> q = ofy().query(clazz);
+//		q.filter(propName, propValue);
+//		return q.listKeys();
+//	}
+//
+//	public T getByExample(T exampleObj)
+//	{
+//		Query<T> q = buildQueryByExample(exampleObj);
+//		Iterator<T> fetch = q.limit(2).list().iterator();
+//		if (!fetch.hasNext())
+//		{
+//			return null;
+//		}
+//		T obj = fetch.next();
+//		if (fetch.hasNext())
+//		{
+//			throw new RuntimeException(q.toString()
+//					+ " returned too many results");
+//		}
+//		return obj;
+//	}
+//
+//	public List<T> listByExample(T exampleObj)
+//	{
+//		Query<T> queryByExample = buildQueryByExample(exampleObj);
+//		return queryByExample.list();
+//	}
+//
+//	public Key<T> getKey(Long id)
+//	{
+//		return new Key<T>(this.clazz, id);
+//	}
+//
 	public Key<T> key(T obj)
 	{
 		return ObjectifyService.factory().getKey(obj);
 	}
+//
+//	public List<T> listChildren(Object parent)
+//	{
+//		return ofy().query(clazz).ancestor(parent).list();
+//	}
+//
+//	public List<Key<T>> listChildKeys(Object parent)
+//	{
+//		return ofy().query(clazz).ancestor(parent).listKeys();
+//	}
+//
+//	protected Query<T> buildQueryByExample(T exampleObj)
+//	{
+//		Query<T> q = ofy().query(clazz);
+//
+//		// Add all non-null properties to query filter
+//		for (Field field : clazz.getDeclaredFields())
+//		{
+//			// Ignore transient, embedded, array, and collection properties
+//			if (field.isAnnotationPresent(Transient.class)
+//					|| (field.isAnnotationPresent(Embedded.class))
+//					|| (field.getType().isArray())
+//					|| (field.getType().isArray())
+//					|| (Collection.class.isAssignableFrom(field.getType()))
+//					|| ((field.getModifiers() & BAD_MODIFIERS) != 0))
+//				continue;
+//
+//			field.setAccessible(true);
+//
+//			Object value;
+//			try
+//			{
+//				value = field.get(exampleObj);
+//			} catch (IllegalArgumentException e)
+//			{
+//				throw new RuntimeException(e);
+//			} catch (IllegalAccessException e)
+//			{
+//				throw new RuntimeException(e);
+//			}
+//			if (value != null)
+//			{
+//				q.filter(field.getName(), value);
+//			}
+//		}
+//
+//		return q;
+//	}
+//
 
-	public List<T> listChildren(Object parent)
-	{
-		return ofy().query(clazz).ancestor(parent).list();
-	}
-
-	public List<Key<T>> listChildKeys(Object parent)
-	{
-		return ofy().query(clazz).ancestor(parent).listKeys();
-	}
-
-	protected Query<T> buildQueryByExample(T exampleObj)
-	{
-		Query<T> q = ofy().query(clazz);
-
-		// Add all non-null properties to query filter
-		for (Field field : clazz.getDeclaredFields())
-		{
-			// Ignore transient, embedded, array, and collection properties
-			if (field.isAnnotationPresent(Transient.class)
-					|| (field.isAnnotationPresent(Embedded.class))
-					|| (field.getType().isArray())
-					|| (field.getType().isArray())
-					|| (Collection.class.isAssignableFrom(field.getType()))
-					|| ((field.getModifiers() & BAD_MODIFIERS) != 0))
-				continue;
-
-			field.setAccessible(true);
-
-			Object value;
-			try
-			{
-				value = field.get(exampleObj);
-			} catch (IllegalArgumentException e)
-			{
-				throw new RuntimeException(e);
-			} catch (IllegalAccessException e)
-			{
-				throw new RuntimeException(e);
-			}
-			if (value != null)
-			{
-				q.filter(field.getName(), value);
-			}
-		}
-
-		return q;
-	}
-
-	/*
-	 * Application-specific methods to retrieve items owned by a specific user
-	 */
-	public List<T> listAllForUser()
-	{
-		Key<AppUser> userKey = new Key<AppUser>(AppUser.class, getCurrentUser()
-				.getId());
-		return listByProperty("owner", userKey);
-	}
-
-    public List<T> listRangeForUser(int offset, int limit)
-    {
-        Key<AppUser> userKey = new Key<AppUser>(AppUser.class, getCurrentUser()
-                .getId());
-        return listByProperty("owner", userKey, offset, limit);
-
-    }
-	private AppUser getCurrentUser()
-	{
-		return (AppUser) RequestFactoryServlet.getThreadLocalRequest()
-				.getAttribute(LoginService.AUTH_USER);
-	}
 
 }

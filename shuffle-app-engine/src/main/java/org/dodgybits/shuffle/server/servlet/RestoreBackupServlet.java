@@ -22,6 +22,7 @@ import org.dodgybits.shuffle.dto.ShuffleProtos;
 import org.dodgybits.shuffle.dto.ShuffleProtos.Catalogue;
 import org.dodgybits.shuffle.server.model.Task;
 import org.dodgybits.shuffle.server.service.TaskDao;
+import org.dodgybits.shuffle.server.service.TaskService;
 
 @SuppressWarnings("serial")
 public class RestoreBackupServlet extends HttpServlet {
@@ -70,12 +71,12 @@ public class RestoreBackupServlet extends HttpServlet {
         List<ShuffleProtos.Task> protoTasks = catalogue.getTaskList();
         List<Task> tasks = new ArrayList<Task>(protoTasks.size());
         
-        TaskDao dao = new TaskDao();
+        TaskService service = new TaskService();
         
         for (ShuffleProtos.Task protoTask : protoTasks) {
             logger.info("Saving task: " + protoTask.toString());
             Task task = toModelTask(protoTask);
-            dao.save(task);
+            service.save(task);
             tasks.add(task);
         }
         

@@ -149,31 +149,31 @@ public class ShuffleWidget extends Composite {
       }
     });
 
-    fetchTasksButton.addClickHandler(new ClickHandler() {
-    public void onClick(ClickEvent event) {
-        setStatus("Connecting...", false);
-        fetchTasksButton.setEnabled(false);
-
-        // Send a message using RequestFactory
-        TaskService service = requestFactory.taskService();
-        Request<List<TaskProxy>> taskListRequest = service.listAll();
-        taskListRequest.fire(new Receiver<List<TaskProxy>>() {
-            @Override
-            public void onFailure(ServerFailure error) {
-                fetchTasksButton.setEnabled(true);
-              setStatus(error.getMessage(), true);
-            }
-
-            @Override
-            public void onSuccess(List<TaskProxy> tasks) {
-                fetchTasksButton.setEnabled(true);
-              setStatus("Success - got " + tasks.size(), false);
-              displayActions(tasks);
-            }
-          });        
-      }
-    
-    });
+//    fetchTasksButton.addClickHandler(new ClickHandler() {
+//    public void onClick(ClickEvent event) {
+//        setStatus("Connecting...", false);
+//        fetchTasksButton.setEnabled(false);
+//
+//        // Send a message using RequestFactory
+//        TaskService service = requestFactory.taskService();
+//        Request<List<TaskProxy>> taskListRequest = service.listAll();
+//        taskListRequest.fire(new Receiver<List<TaskProxy>>() {
+//            @Override
+//            public void onFailure(ServerFailure error) {
+//                fetchTasksButton.setEnabled(true);
+//              setStatus(error.getMessage(), true);
+//            }
+//
+//            @Override
+//            public void onSuccess(List<TaskProxy> tasks) {
+//                fetchTasksButton.setEnabled(true);
+//              setStatus("Success - got " + tasks.size(), false);
+//              displayActions(tasks);
+//            }
+//          });
+//      }
+//
+//    });
 
     sayHelloButton.addClickHandler(new ClickHandler() {
       public void onClick(ClickEvent event) {
