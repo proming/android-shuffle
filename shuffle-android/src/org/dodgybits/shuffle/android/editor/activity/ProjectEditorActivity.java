@@ -94,7 +94,9 @@ public class ProjectEditorActivity extends AbstractEditorActivity<Project> {
     private void findViewsAndAddListeners() {
         Cursor contactCursor = getContentResolver().query(
                 ContextProvider.Contexts.CONTENT_URI,
-                new String[] {ContextProvider.Contexts._ID, ContextProvider.Contexts.NAME}, null, null, null);
+                new String[] {ContextProvider.Contexts._ID, ContextProvider.Contexts.NAME},
+                null, null,
+                ContextProvider.Contexts.NAME + " ASC");
         int size = contactCursor.getCount() + 1;
         mContextIds = new long[size];
         mContextIds[0] = 0;
