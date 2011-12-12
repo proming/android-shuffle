@@ -55,17 +55,6 @@ public class AlertUtils {
 		builder.create().show();
 	}
 	
-	public static void showCleanUpInboxMessage(final Context context) {
-		CharSequence title = context.getString(R.string.info_title);
-		CharSequence message = context.getString(R.string.clean_inbox_message);
-		CharSequence buttonText = context.getString(R.string.ok_button_title);
-		Builder builder = new Builder(context);
-		builder.setTitle(title).setIcon(R.drawable.dialog_information)
-			.setMessage(message)
-			.setPositiveButton(buttonText, null);
-		builder.create().show();
-	}
-	
 	public static void showWarning(final Context context, final String message) {
 		CharSequence title = context.getString(R.string.warning_title);
 		CharSequence buttonText = context.getString(R.string.ok_button_title);

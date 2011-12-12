@@ -65,7 +65,6 @@ public class MenuUtils {
     public static final int HELP_ID = Menu.FIRST + 21;
     public static final int SYNC_ID = Menu.FIRST + 22;
     public static final int SEARCH_ID = Menu.FIRST + 23;
-    public static final int CLEAN_INBOX_ID = Menu.FIRST + 50;
     public static final int PERMANENTLY_DELETE_ID = Menu.FIRST + 51;
 
     // Menu item for activity specific items
@@ -93,7 +92,6 @@ public class MenuUtils {
     private static final int INSERT_ORDER = 1;
     private static final int INSERT_CHILD_ORDER = 1;
     private static final int INSERT_GROUP_ORDER = 2;
-    private static final int CLEAN_INBOX_ORDER = 101;
     private static final int PERMANENTLY_DELETE_ORDER = 102;
     
     
@@ -219,11 +217,6 @@ public class MenuUtils {
         	.setIcon(android.R.drawable.ic_menu_delete).setAlphabeticShortcut('d');
     }
 
-	public static void addCleanInboxMenuItem(Menu menu) {
-        menu.add(Menu.NONE, CLEAN_INBOX_ID, CLEAN_INBOX_ORDER, R.string.clean_inbox_button_title)
-        	.setIcon(R.drawable.edit_clear).setAlphabeticShortcut('i');
-    }
-	
 	public static void addPermanentlyDeleteMenuItem(Menu menu) {
 	    menu.add(Menu.NONE, PERMANENTLY_DELETE_ID, PERMANENTLY_DELETE_ORDER, R.string.permanently_delete_button_title)
 	    .setIcon(R.drawable.icon_delete);

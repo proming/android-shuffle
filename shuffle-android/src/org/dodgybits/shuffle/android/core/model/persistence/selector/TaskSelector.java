@@ -8,13 +8,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import android.net.Uri;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.util.StringUtils;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.model.ListPreferenceSettings;
-import org.dodgybits.shuffle.android.preference.model.Preferences;
 
+import android.net.Uri;
 import android.text.format.DateUtils;
 import android.util.Log;
 
@@ -153,9 +152,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> {
                 break;
                 
             case inbox:
-                long lastCleanMS = Preferences.getLastInboxClean(context);
-                result = "((projectId is null AND contextId is null) OR (created > " +
-                    lastCleanMS + "))";
+                result = "(projectId is null AND contextId is null)";
                 break;
                 
             case tickler:

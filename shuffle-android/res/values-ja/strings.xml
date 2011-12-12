@@ -299,7 +299,6 @@
 	<string name="summary_delete_all_preference">全てのアクション・プロジェクト・コンテキストを完全に消去します</string>
 
     <string name="delete_completed_button_title">削除</string>
-    <string name="clean_inbox_button_title">掃除する</string>
     <string name="clean_slate_button_title">削除</string>
 
     <string name="permanently_delete_button_title">完全に消去</string>
@@ -368,7 +367,6 @@
     <string name="delete_completed_warning">全ての完了したアクションを削除しますか？</string>
     <string name="clean_slate_warning"><i>全て</i> のアクションとプロジェクト・追加したコンテキストを削除しますか？</string>
     <string name="clean_task_message">%1$d 個の完了したアクションを削除しました。</string>
-    <string name="clean_inbox_message">新着アクションから、プロジェクトやコンテキストが設定されているアクションを消しました。</string>
     <string name="clean_slate_message">全てのアクションとプロジェクト・追加したコンテキストを削除しました。</string>
    	<string name="error_title">エラー</string>
 	<string name="error_message">アクションの読み込みでエラーが発生しました。</string>

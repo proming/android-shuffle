@@ -208,7 +208,6 @@
 	<string name="summary_delete_all_preference">Alle Handlungen, Projekte und selbsterstellten Kategorien werden entfernt.</string>
 
     <string name="delete_completed_button_title">Löschen</string>
-    <string name="clean_inbox_button_title">Eingang aufräumen</string>
     <string name="clean_slate_button_title">Löschen</string>
 
     <!-- Toast displayed when an item is created -->
@@ -224,8 +223,6 @@
     <string name="synchronizing">Synchronisierung mit Hilfe von Tracks</string>
     <string name="tracksUser">Benutzer</string>
     <string name="tracksInstallation">Zielinstallation</string>
-    <string name="sync_preferences">Synchronisationseinstellungen</string>
-    <string name="changeSynchronizationSettings">Synchronisationseinstellungen ändern</string>
     <string name="tracks_url">Installation von Tracks</string>
     <string name="tracks_url_settings">http://my.gtdify.com</string>
     <string name="self_signed_cert">Selbst signiertes https Zertifikat (Sicherheitslücke)</string>
@@ -263,7 +260,6 @@
     <string name="delete_completed_warning">Alle erledigten Handlungen entfernen?</string>
     <string name="clean_slate_warning">Wirklich <i>alle</i> Handlungen, Projekte und selbsterstellten Kategorien entfernen?</string>
     <string name="clean_task_message">%d erledigte Aufgaben wurden gelöscht.</string>
-    <string name="clean_inbox_message">Handlungen, die einem Projekt zugewiesen sind, wurden aus dem Eingang entfernt.</string>
     <string name="clean_slate_message">Alle Handlungen, Projekte und selbsterstellten Kategorien wurden entfernt.</string>
    	<string name="error_title">Fehler</string>
 	<string name="error_message">Fehler beim Laden der Handlung</string>
@@ -293,7 +289,6 @@ Wenn das Projekt fortschreitet, können erledigte Handlungen entfernt werden, an
 Hier ist der beste Platz, um neue Handlungen zu erstellen.
 Der <b>Eingang</b> sammelt alle Handlungen, bevor sie weiterverarbeitet werden.
 Sie sollten Ihren Eingang regelmäßig durchgehen, jede Handlung überprüfen, und diese dann verwerfen bzw. löschen, erledigen oder einem Projekt zuweisen.\n
-Nachdem Sie die Liste durchgearbeitet haben, können Sie den <i>Eingang aufräumen</i>, d.h. es werden alle Handlungen entfernt, die einem Projekt zugewiesen wurden.
     </string>
     <string name="help2">
 Die <b>Projektansicht</b> listet alle Ihre Projekte auf und erlaubt Ihnen, die Handlungen eines jeden Projekts anzusehen. Zusätzlich zu den Standardfunktionen \"Hinzufügen\", \"Bearbeiten\" und \"Löschen\" können Sie hier die Handlungen neu anordnen, um diese in der von Ihnen gewünschten Reihenfolge abzuarbeiten.

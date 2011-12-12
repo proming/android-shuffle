@@ -17,7 +17,6 @@
 package org.dodgybits.shuffle.android.preference.model;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -32,7 +31,6 @@ public class Preferences {
 	public static final String SCREEN_KEY = "screen";
 	public static final String DELETE_COMPLETED_PERIOD_KEY = "delete_complete_period_str";
 	public static final String LAST_DELETE_COMPLETED_KEY = "last_delete_completed";
-	public static final String LAST_INBOX_CLEAN_KEY = "last_inbox_clean";
 	public static final String LAST_VERSION = "last_version";
 	
 	public static final String DISPLAY_CONTEXT_ICON_KEY = "display_context_icon";
@@ -63,7 +61,6 @@ public class Preferences {
     
     public static final String WIDGET_QUERY_PREFIX = "widget_query_";
     
-    public static final String CLEAN_INBOX_INTENT = "org.dodgybits.shuffle.android.CLEAN_INBOX";
 
     public static boolean validateTracksSettings(Context context) {
         String url = getTracksUrl(context);
@@ -144,10 +141,6 @@ public class Preferences {
 		return getSharedPreferences(context).getLong(LAST_DELETE_COMPLETED_KEY, 0L);
 	}
 
-	public static long getLastInboxClean(Context context) {
-		return getSharedPreferences(context).getLong(LAST_INBOX_CLEAN_KEY, 0L);
-	}
-	
 	public static int getDefaultReminderMinutes(Context context) {
         String durationString =
         	getSharedPreferences(context).getString(Preferences.DEFAULT_REMINDER_KEY, "0");
@@ -222,13 +215,5 @@ public class Preferences {
 	public static SharedPreferences.Editor getEditor(Context context) {
 		return getSharedPreferences(context).edit();
 	}
-	
-	public static void cleanUpInbox(Context context) {
-		SharedPreferences.Editor ed = getEditor(context);
-		ed.putLong(LAST_INBOX_CLEAN_KEY, System.currentTimeMillis());
-		ed.commit();
-		context.sendBroadcast(new Intent(CLEAN_INBOX_INTENT));
-	}
-
 	
 }

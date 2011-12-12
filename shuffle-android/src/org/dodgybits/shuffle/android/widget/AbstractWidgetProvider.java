@@ -54,7 +54,6 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
         if (TaskProvider.UPDATE_INTENT.equals(action) ||
                 ProjectProvider.UPDATE_INTENT.equals(action) ||
                 ContextProvider.UPDATE_INTENT.equals(action) ||
-                Preferences.CLEAN_INBOX_INTENT.equals(action) ||
                 ListPreferenceSettings.LIST_PREFERENCES_UPDATED.equals(action)) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             // Retrieve the identifiers for each instance of your chosen widget.

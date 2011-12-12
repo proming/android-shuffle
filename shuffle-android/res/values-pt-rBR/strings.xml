@@ -288,7 +288,6 @@ esse comportamento, poderá desligá-lo nas Preferências.</string>
 	<string name="summary_delete_all_preference">Remove todas as ações, projetos e contextos personalizados.</string>
 
     <string name="delete_completed_button_title">Excluir</string>
-    <string name="clean_inbox_button_title">Limpar Cx. Entrada</string>
     <string name="clean_slate_button_title">Excluir</string>
 
     <string name="permanently_delete_button_title">Excluir permanentemente</string>
@@ -355,7 +354,6 @@ esse comportamento, poderá desligá-lo nas Preferências.</string>
     <string name="delete_completed_warning">Excluir todas as tarefas completadas?</string>
     <string name="clean_slate_warning">Excluir <i>tudo:</i> ações, projetos e contextos personalizados?</string>
     <string name="clean_task_message">Excluídas %1$d ações completadas.</string>
-    <string name="clean_inbox_message">As ações com projetos ou contextos foram apagadas da Caixa de Entrada.</string>
     <string name="clean_slate_message">Excluídas todas as ações, projetos e contextos personalizados.</string>
    	<string name="error_title">Erro</string>
 	<string name="error_message">Erro ao carregar ação</string>

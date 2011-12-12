@@ -267,7 +267,6 @@ Ten en cuenta que la aplicación realiza estadísticas anónimas de uso y las ma
 	<string name="summary_delete_all_preference">Borrar todas las acciones, proyectos y contextos definidos por el usuario.</string>
 
     <string name="delete_completed_button_title">Borrar</string>
-    <string name="clean_inbox_button_title">Borrar bandeja de entrada</string>
     <string name="clean_slate_button_title">Borrar</string>
 
     <string name="permanently_delete_button_title">Borrado permanente</string>
@@ -335,7 +334,6 @@ Ten en cuenta que la aplicación realiza estadísticas anónimas de uso y las ma
     <string name="delete_completed_warning">¿Borrar acciones completadas?</string>
     <string name="clean_slate_warning">¿Borrar <i>todas</i> las acciones, proyectos y contextos definidos por el usuario?</string>
     <string name="clean_task_message">Borrar las acciones completadas %1$s.</string>
-    <string name="clean_inbox_message">Quitar las acciones que tengan definidos proyectos o contextos de la bandeja de entrada.</string>
     <string name="clean_slate_message">Se han borrado todas las acciones, proyectos y contextos definidos por el usuario.</string>
    	<string name="error_title">Error</string>
 	<string name="error_message">Se ha producido un error al cargar la acción</string>

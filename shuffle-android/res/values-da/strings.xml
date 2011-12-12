@@ -294,7 +294,6 @@ allow that, you can turn it off under Settings.</string>
 	<string name="summary_delete_all_preference">Slet alle opgaver, projekter og egne kontekster.</string>
 
     <string name="delete_completed_button_title">Slet</string>
-    <string name="clean_inbox_button_title">Ryd indbakke</string>
     <string name="clean_slate_button_title">Slet</string>
 
     <string name="permanently_delete_button_title">Fjern permanent</string>
@@ -363,7 +362,6 @@ allow that, you can turn it off under Settings.</string>
     <string name="delete_completed_warning">Slet alle udførte opgaver?</string>
     <string name="clean_slate_warning">Slet <i>alle</i> opgaver, projekter og egne kontekster?</string>
     <string name="clean_task_message">Slettede %1$d udførte opgaver.</string>
-    <string name="clean_inbox_message">Fjernede opgaver med projekt eller kontekst sat fra indbakken.</string>
     <string name="clean_slate_message">Slettede alle opgave, projekter og egne kontekster.</string>
    	<string name="error_title">Fejl</string>
 	<string name="error_message">Fejl ved indlæsning af opgave</string>

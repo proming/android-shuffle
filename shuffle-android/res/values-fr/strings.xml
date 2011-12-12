@@ -187,7 +187,6 @@
 	<string name="summary_delete_all_preference">Tout supprimer: tâches, projets et contextes personnels.</string>
 
     <string name="delete_completed_button_title">Supprimer</string>
-    <string name="clean_inbox_button_title">Purger la Inbox</string>
     <string name="clean_slate_button_title">Supprimer</string>
 
     <!-- Toast displayed when an item is created -->
@@ -244,7 +243,6 @@
     <string name="delete_completed_warning">Supprimer toutes les tâches terminées?</string>
     <string name="clean_slate_warning"><i>Tout</i> supprimer: tâches, projets et contextes personnels?</string>
     <string name="clean_task_message">%d tâches (terminées) supprimées.</string>
-    <string name="clean_inbox_message">Tâches avec projets effacées de la Inbox.</string>
     <string name="clean_slate_message">Tous les projets, tâches et contextes personnels ont été supprimés.</string>
    	<string name="error_title">Erreur</string>
 	<string name="error_message">Erreur lors du chargement d\'une tâche</string>

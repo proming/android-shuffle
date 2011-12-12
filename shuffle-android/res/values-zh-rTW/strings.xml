@@ -202,7 +202,6 @@
 	<string name="summary_delete_all_preference">移除全部活動, 內容和自訂情景。</string>
 
     <string name="delete_completed_button_title">移除</string>
-    <string name="clean_inbox_button_title">清空活動清單</string>
     <string name="clean_slate_button_title">移除</string>
 
     <!-- Toast displayed when an item is created -->
@@ -254,7 +253,6 @@
     <string name="delete_completed_warning">移除所有已完成工作?</string>
     <string name="clean_slate_warning">移除 <i>全部</i> 活動, 內容和定義的情景?</string>
     <string name="clean_task_message">移除 %d 條已完成活動。</string>
-    <string name="clean_inbox_message">清除清單中的活動及它的內容或情景</string>
     <string name="clean_slate_message">移除全部活動, 內容和定義的情景。</string>
    	<string name="error_title">錯誤</string>
 	<string name="error_message">載入活動錯誤</string>
