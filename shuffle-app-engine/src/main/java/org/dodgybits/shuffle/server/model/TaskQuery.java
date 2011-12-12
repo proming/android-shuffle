@@ -7,8 +7,6 @@ public class TaskQuery {
 
     private Flag mActive;
     private Flag mDeleted;
-    private int mCount;
-    private int mOffset;
     private PredefinedQuery mPredefinedQuery;
 
     public Flag getActive() {
@@ -26,21 +24,6 @@ public class TaskQuery {
         mDeleted = value;
     }
 
-    public int getCount() {
-        return mCount;
-    }
-    public void setCount(int value) {
-        mCount = value;
-    }
-
-    public int getOffset() {
-        return mOffset;
-    }
-
-    public void setOffset(int offset) {
-        mOffset = offset;
-    }
-
     public PredefinedQuery getPredefinedQuery() {
         return mPredefinedQuery;
     }
@@ -51,7 +34,7 @@ public class TaskQuery {
 
     @Override
     public String toString() {
-        return String.format("TaskQuery active=%s deleted=%s count=%d offset=%d predefined=%s",
-                mActive, mDeleted, mCount, mOffset, mPredefinedQuery);
+        return String.format("TaskQuery active=%s deleted=%s predefined=%s",
+                mActive, mDeleted, mPredefinedQuery);
     }
 }

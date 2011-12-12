@@ -12,18 +12,6 @@ public interface TaskQueryProxy extends ValueProxy {
     Flag getDeleted();
     void setDeleted(Flag value);
 
-    /**
-     * @return maximum number of results requested
-     */
-    int getCount();
-    void setCount(int value);
-
-    /**
-     * @return offset from the start when retrieving results
-     */
-    int getOffset();
-    void setOffset(int value);
-
     PredefinedQuery getPredefinedQuery();
     void setPredefinedQuery(PredefinedQuery query);
 

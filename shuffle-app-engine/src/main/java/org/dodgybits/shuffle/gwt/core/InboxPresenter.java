@@ -1,11 +1,7 @@
 package org.dodgybits.shuffle.gwt.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.Range;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
@@ -39,9 +35,9 @@ public class InboxPresenter extends
 	public interface MyProxy extends ProxyPlace<InboxPresenter> {
 	}
 
-	private final Provider<TaskService> taskServiceProvider;
+	private final Provider<TaskService> mTaskServiceProvider;
 
-    private PlaceManager placeManager;
+    private PlaceManager mPlaceManager;
 
     /**
      * The provider that holds the list of contacts in the database.
@@ -61,8 +57,8 @@ public class InboxPresenter extends
 			final MyProxy proxy, final Provider<TaskService> taskServiceProvider, PlaceManager placeManager) {
 		super(eventBus, view, proxy);
 		
-        this.placeManager = placeManager;
-		this.taskServiceProvider = taskServiceProvider;
+        this.mPlaceManager = placeManager;
+		this.mTaskServiceProvider = taskServiceProvider;
         getView().setUiHandlers(this);
 	}
 
@@ -87,7 +83,7 @@ public class InboxPresenter extends
         PlaceRequest myRequest = new PlaceRequest(NameTokens.editAction)
                 .with("action", "edit")
                 .with("taskId", String.valueOf(mEditedTaskId));
-        placeManager.revealPlace( myRequest );
+        mPlaceManager.revealPlace( myRequest );
     }
 
     @Override
@@ -100,14 +96,12 @@ public class InboxPresenter extends
         final int start = display.getVisibleRange().getStart();
         final int limit = display.getVisibleRange().getLength();
         GWT.log("Loading tasks " + start + " through " + (start + limit));
-        TaskService service = taskServiceProvider.get();
+        TaskService service = mTaskServiceProvider.get();
         TaskQueryProxy query = service.create(TaskQueryProxy.class);
         query.setActive(Flag.yes);
         query.setDeleted(Flag.no);
-        query.setOffset(start);
-        query.setCount(limit);
         query.setPredefinedQuery(PredefinedQuery.inbox);
-        Request<TaskQueryResultProxy> queryRequest = service.query(query);
+        Request<TaskQueryResultProxy> queryRequest = service.query(query, start, limit);
         queryRequest.fire(new Receiver<TaskQueryResultProxy>() {
             @Override
             public void onFailure(ServerFailure error) {
@@ -125,7 +119,7 @@ public class InboxPresenter extends
 
     private void updateEditedTask() {
         GWT.log("Update task that was just edited " + mEditedTaskId);
-        Request<TaskProxy> taskListRequest = taskServiceProvider.get().findById(mEditedTaskId);
+        Request<TaskProxy> taskListRequest = mTaskServiceProvider.get().findById(mEditedTaskId);
         taskListRequest.fire(new Receiver<TaskProxy>() {
             @Override
             public void onFailure(ServerFailure error) {

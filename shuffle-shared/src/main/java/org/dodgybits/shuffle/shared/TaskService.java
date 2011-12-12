@@ -19,6 +19,6 @@ public interface TaskService extends RequestContext {
 
     Request<Integer> deleteCompletedTasks();
 
-    Request<TaskQueryResultProxy> query(TaskQueryProxy query);
+    Request<TaskQueryResultProxy> query(TaskQueryProxy query, int start, int limit);
 
 }
