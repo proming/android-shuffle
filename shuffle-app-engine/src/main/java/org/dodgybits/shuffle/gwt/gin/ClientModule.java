@@ -17,6 +17,7 @@ import org.dodgybits.shuffle.gwt.core.EditActionPresenter;
 import org.dodgybits.shuffle.gwt.core.EditActionView;
 import org.dodgybits.shuffle.gwt.core.WelcomePresenter;
 import org.dodgybits.shuffle.gwt.core.WelcomeView;
+import org.dodgybits.shuffle.gwt.cursor.TaskNavigator;
 import org.dodgybits.shuffle.gwt.place.ClientPlaceManager;
 import org.dodgybits.shuffle.gwt.place.DefaultPlace;
 import org.dodgybits.shuffle.gwt.place.ErrorPlace;
@@ -64,6 +65,8 @@ public class ClientModule extends AbstractPresenterModule {
 				NavigationPresenter.MyView.class, NavigationView.class);
 
 		bind(ShuffleRequestFactory.class).in(Singleton.class);
+        
+        bind(TaskNavigator.class).in(Singleton.class);
 	}
 
 	@Provides

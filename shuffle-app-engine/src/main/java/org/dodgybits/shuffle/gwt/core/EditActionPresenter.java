@@ -5,6 +5,7 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
+import org.dodgybits.shuffle.gwt.cursor.TaskNavigator;
 import org.dodgybits.shuffle.gwt.place.NameTokens;
 
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
@@ -40,22 +41,28 @@ public class EditActionPresenter extends
     }
 
     private final Provider<TaskService> mTaskServiceProvider;
-    private PlaceManager placeManager;
+    private final PlaceManager mPlaceManager;
+    private final TaskNavigator mTaskNavigator;
+
     private Action mAction;
     private TaskProxy mTask = null;
 
     @Inject
-    public EditActionPresenter(final EventBus eventBus, final MyView view,
-                               final MyProxy proxy, final PlaceManager placeManager, final Provider<TaskService> taskServiceProvider) {
+    public EditActionPresenter(
+            final EventBus eventBus, final MyView view,
+            final MyProxy proxy, final PlaceManager placeManager,
+            final Provider<TaskService> taskServiceProvider,
+            final TaskNavigator taskNavigator) {
         super(eventBus, view, proxy);
-        this.placeManager = placeManager;
-        this.mTaskServiceProvider = taskServiceProvider;
+        mPlaceManager = placeManager;
+        mTaskServiceProvider = taskServiceProvider;
+        mTaskNavigator = taskNavigator;
 
         getView().setUiHandlers(this);
     }
 
     @Override
-    public void prepareFromRequest(PlaceRequest placeRequest) {
+    public void prepareFromRequest(final PlaceRequest placeRequest) {
         super.prepareFromRequest(placeRequest);
 
         // In the next call, "view" is the default value,
@@ -63,45 +70,26 @@ public class EditActionPresenter extends
         String actionString = placeRequest.getParameter("action", "new");
         mAction = Action.NEW;
         if ("edit".equals(actionString)) {
-            Long taskId = null;
             mAction = Action.EDIT;
-            try {
-                taskId = Long.valueOf(placeRequest.getParameter("taskId", null));
-            } catch (NumberFormatException e) {
-                GWT.log(e.getMessage());
-            }
+            mTaskNavigator.requestCurrentTask(new Receiver<TaskProxy>() {
+                @Override
+                public void onSuccess(TaskProxy task) {
+                    mTask = task;
+                    GWT.log("Success - got " + task);
+                    getView().displayTask(task);
+                }
 
-            if (taskId == null) {
-                placeManager.revealErrorPlace(placeRequest.getNameToken());
-                return;
-            }
-
-            load(taskId);
+                @Override
+                public void onFailure(ServerFailure error) {
+                    mPlaceManager.revealErrorPlace(placeRequest.getNameToken());
+                }
+            });
         }
     }
 
     @Override
     protected void revealInParent() {
         RevealContentEvent.fire(this, MainPresenter.MAIN_SLOT, this);
-    }
-
-
-    private void load(Long taskId) {
-        // Send a message using RequestFactory
-        Request<TaskProxy> taskListRequest = mTaskServiceProvider.get().findById(taskId);
-        taskListRequest.fire(new Receiver<TaskProxy>() {
-            @Override
-            public void onFailure(ServerFailure error) {
-                GWT.log(error.getMessage());
-            }
-
-            @Override
-            public void onSuccess(TaskProxy task) {
-                mTask = task;
-                GWT.log("Success - got " + task);
-                getView().displayTask(task);
-            }
-        });
     }
 
     @Override
@@ -126,6 +114,8 @@ public class EditActionPresenter extends
             @Override
             public void onSuccess(TaskProxy response) {
                 GWT.log("Success");
+                // TODO update task via navigator
+                mTaskNavigator.updateCurrentTask(mTask);
                 goBack();
             }
         });
@@ -137,7 +127,7 @@ public class EditActionPresenter extends
     }
 
     private void goBack() {
-        placeManager.navigateBack();
+        mPlaceManager.navigateBack();
     }
 
 }

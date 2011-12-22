@@ -87,7 +87,7 @@ public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements
     public void setUiHandlers(TaskListUiHandlers uiHandlers) {
         super.setUiHandlers(uiHandlers);
         if (getUiHandlers() != null) {
-            getUiHandlers().getDataProvider().addDataDisplay(grid);
+            getUiHandlers().setDisplay(grid);
         }
     }
 
@@ -136,7 +136,7 @@ public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements
             @Override
             public void update(int index, TaskProxy object, String value) {
                 if (getUiHandlers() != null) {
-                    getUiHandlers().onEditAction(object);
+                    getUiHandlers().onEditAction(index, object);
                 }
             }
         }
