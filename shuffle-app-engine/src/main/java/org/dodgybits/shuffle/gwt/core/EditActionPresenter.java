@@ -71,19 +71,7 @@ public class EditActionPresenter extends
         mAction = Action.NEW;
         if ("edit".equals(actionString)) {
             mAction = Action.EDIT;
-            mTaskNavigator.requestCurrentTask(new Receiver<TaskProxy>() {
-                @Override
-                public void onSuccess(TaskProxy task) {
-                    mTask = task;
-                    GWT.log("Success - got " + task);
-                    getView().displayTask(task);
-                }
-
-                @Override
-                public void onFailure(ServerFailure error) {
-                    mPlaceManager.revealErrorPlace(placeRequest.getNameToken());
-                }
-            });
+            fetchTask();
         }
     }
 
@@ -124,6 +112,30 @@ public class EditActionPresenter extends
     @Override
     public void cancel() {
         goBack();
+    }
+
+    @Override
+    public void next() {
+        mTaskNavigator.incrementIndex();
+        fetchTask();
+    }
+
+    @Override
+    public void previous() {
+        mTaskNavigator.decrementIndex();
+        fetchTask();
+    }
+
+    private void fetchTask() {
+        mTaskNavigator.requestCurrentTask(new Receiver<TaskProxy>() {
+            @Override
+            public void onSuccess(TaskProxy task) {
+                mTask = task;
+                GWT.log("Success - got " + task);
+                getView().displayTask(task);
+            }
+
+        });
     }
 
     private void goBack() {

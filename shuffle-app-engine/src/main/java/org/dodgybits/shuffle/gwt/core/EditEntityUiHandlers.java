@@ -6,4 +6,6 @@ import org.dodgybits.shuffle.shared.TaskProxy;
 public interface EditEntityUiHandlers extends UiHandlers {
     void save(String description, String details);
     void cancel();
+    void previous();
+    void next();
 }

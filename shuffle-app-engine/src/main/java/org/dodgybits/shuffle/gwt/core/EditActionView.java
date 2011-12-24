@@ -25,6 +25,9 @@ public class EditActionView extends ViewWithUiHandlers<EditEntityUiHandlers> imp
     @UiField Button save;
     @UiField Button cancel;
 
+    @UiField Button previous;
+    @UiField Button next;
+
 	@UiField
 	TextBox description;
 
@@ -76,6 +79,22 @@ public class EditActionView extends ViewWithUiHandlers<EditEntityUiHandlers> imp
       if (getUiHandlers() != null) {
           getUiHandlers().cancel();
       }
+    }
+
+    @UiHandler("previous")
+    void onPreviousButtonClicked(ClickEvent event) {
+        GWT.log("Previous task");
+        if (getUiHandlers() != null) {
+            getUiHandlers().previous();
+        }
+    }
+
+    @UiHandler("next")
+    void onNextButtonClicked(ClickEvent event) {
+        GWT.log("Next task");
+        if (getUiHandlers() != null) {
+            getUiHandlers().next();
+        }
     }
 
 }

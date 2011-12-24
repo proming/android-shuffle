@@ -39,6 +39,8 @@
         <div class="{style.button-bar}">
             <g:Button ui:field="cancel" text="Cancel"/>
             <g:Button ui:field="save" text="Save"/>
+            <g:Button ui:field="previous" text="Previous"/>
+            <g:Button ui:field="next" text="Next"/>
         </div>
     </g:HTMLPanel>
 
