@@ -66,7 +66,7 @@ public class InboxPresenter extends
 
     @Override
     public void onEditAction(int index, TaskProxy proxy) {
-        mTaskNavigator.setIndex(index);
+        mTaskNavigator.setCurrentIndex(index);
         PlaceRequest myRequest = new PlaceRequest(NameTokens.editAction)
                 .with("action", "edit");
         mPlaceManager.revealPlace( myRequest );

@@ -88,14 +88,18 @@ public class TaskNavigator {
     }
 
     public void decrementIndex() {
-        mCurrentIndex--;
+        setCurrentIndex(mCurrentIndex - 1);
     }
 
     public void incrementIndex() {
-        mCurrentIndex++;
+        setCurrentIndex(mCurrentIndex + 1);
     }
 
-    public void setIndex(int value) {
+    public void setCurrentIndex(int value) {
+        value = Math.max(0, value);
+        if (mDisplay != null && mDisplay.isRowCountExact()) {
+            value = Math.min(mDisplay.getRowCount() - 1, value);
+        }
         mCurrentIndex = value;
     }
 
@@ -168,6 +172,5 @@ public class TaskNavigator {
         }
         return task;
     }
-
 
 }
