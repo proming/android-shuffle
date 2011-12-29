@@ -22,6 +22,8 @@ import org.dodgybits.shuffle.gwt.place.ClientPlaceManager;
 import org.dodgybits.shuffle.gwt.place.DefaultPlace;
 import org.dodgybits.shuffle.gwt.place.ErrorPlace;
 import org.dodgybits.shuffle.gwt.place.NameTokens;
+import org.dodgybits.shuffle.shared.ContextService;
+import org.dodgybits.shuffle.shared.ProjectService;
 import org.dodgybits.shuffle.shared.TaskService;
 
 import com.google.inject.Provides;
@@ -73,5 +75,15 @@ public class ClientModule extends AbstractPresenterModule {
 	TaskService provideTaskService(ShuffleRequestFactory requestFactory) {
 		return requestFactory.taskService();
 	}
+
+    @Provides
+    ContextService provideContextService(ShuffleRequestFactory requestFactory) {
+        return requestFactory.contextService();
+    }
+
+    @Provides
+    ProjectService provideProjectService(ShuffleRequestFactory requestFactory) {
+        return requestFactory.projectService();
+    }
 
 }

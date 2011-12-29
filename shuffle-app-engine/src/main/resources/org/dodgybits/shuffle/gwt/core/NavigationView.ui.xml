@@ -16,6 +16,6 @@
 		<g:InlineHyperlink targetHistoryToken="{nameTokens.getProjects}">Projects</g:InlineHyperlink><br/>
 		<g:InlineHyperlink targetHistoryToken="{nameTokens.getTickler}">Tickler</g:InlineHyperlink><br/>
 		<br/>
-		<g:InlineHyperlink targetHistoryToken="{nameTokens.getTickler}">At home</g:InlineHyperlink><br/>
+        <g:VerticalPanel ui:field="contextLinks"/>
 	</g:HTMLPanel>
 </ui:UiBinder>

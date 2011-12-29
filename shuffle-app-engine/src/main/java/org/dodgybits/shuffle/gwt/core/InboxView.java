@@ -125,10 +125,15 @@ public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements
                 })) {
             @Override
             public String getValue(TaskProxy taskValue) {
+                String contexts = "";
+                for (Long id : taskValue.getContextIds()) {
+                    contexts += String.valueOf(id) + " ";
+                }
                 String description = "<div class='action-title'>"
                         + SafeHtmlUtils.htmlEscape(taskValue.getDescription())
                         + "<span class='action-details'> - "
-                        + SafeHtmlUtils.htmlEscape(taskValue.getDetails()) + "</span></div>";
+                        + SafeHtmlUtils.htmlEscape(taskValue.getDetails()) + "</span>"
+                        + contexts + "</div>";
                 return description;
             }
         };
