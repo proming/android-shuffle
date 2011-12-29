@@ -18,6 +18,7 @@ public class ContextService {
         log.log(Level.FINEST, "Fetching all contexts");
 
         Query<Context> q = mDao.userQuery();
+        q.order("name");
         return q.list();
     }
 

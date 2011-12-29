@@ -18,6 +18,7 @@ public class ProjectService {
         log.log(Level.FINEST, "Fetching all projects");
 
         Query<Project> q = mDao.userQuery();
+        q.order("name");
         return q.list();
     }
 
