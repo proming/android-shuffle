@@ -29,13 +29,13 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <tasks>
-                                <mkdir dir="target/generated-sources"/>
+                                <mkdir dir="target/generated-sources/protoc"/>
                                 <exec executable="protoc">
-                                    <arg value="--java_out=target/generated-sources"/>
+                                    <arg value="--java_out=target/generated-sources/protoc"/>
                                     <arg value="src/main/resources/shuffle.proto"/>
                                 </exec>
                             </tasks>
-                            <sourceRoot>target/generated-sources</sourceRoot>
+                            <sourceRoot>target/generated-sources/protoc</sourceRoot>
                         </configuration>
                         <goals>
                             <goal>run</goal>
@@ -55,7 +55,7 @@
 		            </goals>
 		            <configuration>
 		              <sources>
-		                <source>${project.build.directory}/generated-sources</source>
+		                <source>${project.build.directory}/generated-sources/protoc</source>
 		              </sources>
 		            </configuration>
 		          </execution>

@@ -37,9 +37,13 @@
             <groupId>javax.jdo</groupId>
             <artifactId>jdo2-api</artifactId>
 			<scope>compile</scope>
-        </dependency>        
-        
-		<!-- AppEngine dependencies -->
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
+        <!-- AppEngine dependencies -->
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-1.0-sdk</artifactId>
@@ -267,6 +271,7 @@
                       <!-- This is hacky but I couldn't figure out another way of doing it.
                       See  http://stackoverflow.com/questions/7718320/requestfactory-validation-on-multi-project-setup -->
                       <sourceDirectory>../shuffle-shared/src/main/java</sourceDirectory>
+                      <!--sourceDirectory>src/main/java</sourceDirectory-->
                   </configuration>
 		      </plugin>
 		
@@ -328,7 +333,7 @@
                 <configuration>
                     <appEngineVersion>${gae.version}</appEngineVersion>
                     <appEngineHome>${gae.home}</appEngineHome>
-                    <logLevel>INFO</logLevel>
+                    <logLevel>TRACE</logLevel>
                     <style>${gwt.style}</style>
                     <hostedWebapp>${webapp.directory}</hostedWebapp>
                     <server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>

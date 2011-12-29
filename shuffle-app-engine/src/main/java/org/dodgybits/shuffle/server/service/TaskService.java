@@ -16,7 +16,8 @@ public class TaskService {
     private TaskDao mDao = new TaskDao();
 
     public TaskQueryResult query(TaskQuery query, int start, int limit) {
-        log.log(Level.FINEST, "Looking up using {0}", query);
+        log.log(Level.FINEST, "Looking up using {0} start {1} limit {2}",
+                new Object[] {query, start, limit});
 
         TaskQueryResult result = new TaskQueryResult();
 
@@ -25,6 +26,7 @@ public class TaskService {
         q.limit(limit).offset(start);
         result.setEntities(q.list());
         result.setOffset(start);
+
         return result;
     }
 

@@ -21,9 +21,7 @@ import com.google.web.bindery.requestfactory.shared.RequestContext;
 import com.google.web.bindery.requestfactory.shared.RequestFactory;
 import com.google.web.bindery.requestfactory.shared.ServiceName;
 
-import org.dodgybits.shuffle.shared.MessageProxy;
-import org.dodgybits.shuffle.shared.RegistrationInfoProxy;
-import org.dodgybits.shuffle.shared.TaskService;
+import org.dodgybits.shuffle.shared.*;
 
 public interface ShuffleRequestFactory extends RequestFactory {
 
@@ -63,4 +61,8 @@ public interface ShuffleRequestFactory extends RequestFactory {
   MessageRequest messageRequest();
   
   TaskService taskService();
+
+  ContextService contextService();
+
+  ProjectService projectService();
 }

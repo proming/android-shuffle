@@ -11,6 +11,8 @@ import java.util.Map;
 import javax.persistence.Embedded;
 import javax.persistence.Transient;
 
+import org.dodgybits.shuffle.server.model.Context;
+import org.dodgybits.shuffle.server.model.Project;
 import org.dodgybits.shuffle.server.model.Task;
 import org.dodgybits.shuffle.server.model.AppUser;
 
@@ -33,6 +35,8 @@ public class ObjectifyDao<T> extends DAOBase
 	static
 	{
         ObjectifyService.register(Task.class);
+        ObjectifyService.register(Context.class);
+        ObjectifyService.register(Project.class);
 		ObjectifyService.register(AppUser.class);
 	}
 
