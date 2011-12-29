@@ -1,15 +1,16 @@
 package org.dodgybits.shuffle.server.model;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
-import org.dodgybits.shuffle.server.service.AppUserDao;
+import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.Unindexed;
 
 import javax.persistence.PrePersist;
 import java.util.Date;
 
 @Entity
+@Unindexed
 public class Context extends UserDatastoreObject {
+    @Indexed
     private String name;
     private int colourIndex;
     private String iconName;

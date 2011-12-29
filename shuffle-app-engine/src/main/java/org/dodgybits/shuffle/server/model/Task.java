@@ -52,12 +52,12 @@ public class Task extends UserDatastoreObject {
     }
     
     public void setContextIds(List<Long> ids) {
-        contexts = Lists.transform(ids, new Function<Long, Key<Context>>() {
+        contexts = Lists.newArrayList(Lists.transform(ids, new Function<Long, Key<Context>>() {
             @Override
             public Key<Context> apply(@Nullable Long input) {
                 return new Key<Context>(Context.class, input);
             }
-        });
+        }));
     }
 
     public Key<Project> getProjectKey() {

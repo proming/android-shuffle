@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class ProjectService {
     private static final Logger log = Logger.getLogger(ProjectService.class.getName());
 
-    private ProjectDao mDao = new ProjectDao();
+    private ObjectifyDao<Project> mDao = ObjectifyDao.newDao(Project.class);
 
     public List<Project> fetchAll() {
         log.log(Level.FINEST, "Fetching all projects");

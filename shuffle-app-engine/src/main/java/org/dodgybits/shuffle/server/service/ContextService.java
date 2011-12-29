@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class ContextService {
     private static final Logger log = Logger.getLogger(ContextService.class.getName());
 
-    private ContextDao mDao = new ContextDao();
+    private ObjectifyDao<Context> mDao = ObjectifyDao.newDao(Context.class);
 
     public List<Context> fetchAll() {
         log.log(Level.FINEST, "Fetching all contexts");

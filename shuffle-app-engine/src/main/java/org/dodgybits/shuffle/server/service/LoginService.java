@@ -43,14 +43,14 @@ public class LoginService
 
 	private static AppUser findUser(String userEmail)
 	{
-		AppUserDao userDao = new AppUserDao();
+        ObjectifyDao<AppUser> userDao = ObjectifyDao.newDao(AppUser.class);
 		// Query for user by email
 		return userDao.getByProperty("email", userEmail);
 	}
 
 	private static AppUser addUser(String email)
 	{
-		AppUserDao userDao = new AppUserDao();
+        ObjectifyDao<AppUser> userDao = ObjectifyDao.newDao(AppUser.class);
 		AppUser newUser = new AppUser(email);
 		userDao.put(newUser);
 

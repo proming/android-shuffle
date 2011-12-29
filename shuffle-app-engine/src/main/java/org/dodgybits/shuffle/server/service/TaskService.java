@@ -7,13 +7,15 @@ import org.dodgybits.shuffle.server.model.Task;
 import org.dodgybits.shuffle.server.model.TaskQuery;
 import org.dodgybits.shuffle.server.model.TaskQueryResult;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TaskService {
     private static final Logger log = Logger.getLogger(TaskService.class.getName());
 
-    private TaskDao mDao = new TaskDao();
+    private ObjectifyDao<Task> mTaskDao = ObjectifyDao.newDao(Task.class);
+    private ObjectifyDao<TaskQuery> mTaskQueryDao = ObjectifyDao.newDao(TaskQuery.class);
 
     public TaskQueryResult query(TaskQuery query, int start, int limit) {
         log.log(Level.FINEST, "Looking up using {0} start {1} limit {2}",
@@ -21,7 +23,7 @@ public class TaskService {
 
         TaskQueryResult result = new TaskQueryResult();
 
-        Query<Task> q = mDao.userQuery();
+        Query<Task> q = mTaskDao.userQuery();
         result.setTotalCount(q.count());
         q.limit(limit).offset(start);
         result.setEntities(q.list());
@@ -34,20 +36,20 @@ public class TaskService {
     {
         AppUser loggedInUser = LoginService.getLoggedInUser();
         task.setOwner(loggedInUser);
-        mDao.put(task);
+        mTaskDao.put(task);
         return task;
     }
 
     public void delete(Task task)
     {
-        mDao.delete(task);
+        mTaskDao.delete(task);
     }
 
     public Task findById(Long id)
     {
         Task task = null;
         try {
-            task = mDao.get(id);
+            task = mTaskDao.get(id);
             log.log(Level.FINE, "Looking up task {0}", id);
             AppUser loggedInUser = LoginService.getLoggedInUser();
             if (!task.getOwner().equals(loggedInUser)) {
@@ -70,4 +72,26 @@ public class TaskService {
         log.log(Level.FINE, "Deleting completed tasks");
         return 0;
     }
+
+    public TaskQuery save(TaskQuery query) {
+        AppUser loggedInUser = LoginService.getLoggedInUser();
+        query.setOwner(loggedInUser);
+        mTaskQueryDao.put(query);
+        return query;
+    }
+
+    public TaskQuery findQueryByName(String name) {
+        TaskQuery taskQuery = null;
+        Query<TaskQuery> query = mTaskQueryDao.userQuery();
+        query.filter("name", name);
+        log.log(Level.FINE, "Looking up task query {0}", name);
+        List<TaskQuery> queries = query.list();
+        if (queries.size() == 1) {
+            taskQuery = queries.get(0);
+        } else if (queries.size() > 1) {
+            throw new IllegalStateException("More than query found for name " + name);
+        }
+        return taskQuery;
+    }
+    
 }

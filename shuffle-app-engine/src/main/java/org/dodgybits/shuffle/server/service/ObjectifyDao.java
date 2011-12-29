@@ -1,27 +1,17 @@
 package org.dodgybits.shuffle.server.service;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Embedded;
-import javax.persistence.Transient;
-
-import org.dodgybits.shuffle.server.model.Context;
-import org.dodgybits.shuffle.server.model.Project;
-import org.dodgybits.shuffle.server.model.Task;
-import org.dodgybits.shuffle.server.model.AppUser;
-
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.web.bindery.requestfactory.server.RequestFactoryServlet;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
+import org.dodgybits.shuffle.server.model.*;
+
+import java.lang.reflect.Modifier;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Generic DAO for use with Objectify
@@ -35,6 +25,7 @@ public class ObjectifyDao<T> extends DAOBase
 	static
 	{
         ObjectifyService.register(Task.class);
+        ObjectifyService.register(TaskQuery.class);
         ObjectifyService.register(Context.class);
         ObjectifyService.register(Project.class);
 		ObjectifyService.register(AppUser.class);
@@ -42,11 +33,13 @@ public class ObjectifyDao<T> extends DAOBase
 
 	protected Class<T> clazz;
 
-	@SuppressWarnings("unchecked")
-    public ObjectifyDao()
+    public static <T> ObjectifyDao<T> newDao(Class<T> clazz) {
+        return new ObjectifyDao<T>(clazz);
+    }
+
+    public ObjectifyDao(Class<T> clazz)
 	{
-		clazz = (Class<T>) ((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[0];
+		this.clazz = clazz;
 	}
 
     public Query<T> userQuery() {

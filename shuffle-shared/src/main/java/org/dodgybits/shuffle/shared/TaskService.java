@@ -20,4 +20,9 @@ public interface TaskService extends RequestContext {
 
     Request<TaskQueryResultProxy> query(TaskQueryProxy query, int start, int limit);
 
+    Request<TaskQueryProxy> save(TaskQueryProxy query);
+
+    Request<TaskQueryProxy> findQueryByName(String name);
+
+    
 }

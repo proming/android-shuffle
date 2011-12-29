@@ -52,7 +52,7 @@
 
 		<!-- Dependencies versions -->
 		<aopalliance.version>1.0</aopalliance.version>
-		<gae.version>1.5.5</gae.version>
+		<gae.version>1.6.1</gae.version>
         <c2dm.version>1.5.5</c2dm.version>
 		<gin.version>1.5.0</gin.version>
 		<guice.version>3.0</guice.version>
