@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (C) 2009 Android Shuffle Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
 	<!--  Activity titles -->
     <string name="app_name">Shuffle</string>
     <string name="title_inbox">Eingang</string>
@@ -25,7 +25,9 @@
     <string name="title_due_today">Heute fällig</string>
     <string name="title_due_next_week">Nächste Woche fällig</string>
     <string name="title_due_next_month">Nächsten Monat fällig</string>
-    <string name="title_new_task">Neu</string>
+    <string name="title_tickler">Erinnerung</string>
+    <string name="title_trash">Müll</string>
+	<string name="title_new_task">Neu</string>
     <string name="title_edit_task">Bearbeiten</string>
     <string name="title_view_task">Ansehen</string>
     <string name="title_new_project">Neues Projekt</string>
@@ -45,13 +47,17 @@
     <string name="title_project_tasks">Projekte &gt; %s</string>
     <string name="title_context_tasks">Kategorien &gt; %s</string>
     <string name="title_shortcut_picker">Bildschirm für Verknüpfung wählen</string>
+    <string name="title_shuffle_2x2">Shuffle (2x2)</string>
+    <string name="title_shuffle_4x4">Shuffle (4x4)</string>
     <string name="title_widget_picker">Bildschirm für Widget wählen</string>
 
 	<!--  Option menu -->
     <string name="menu_save">Speichern</string>
     <string name="menu_save_and_add">Speichern und Neu</string>
     <string name="menu_delete">Löschen</string>
-    <string name="menu_complete">"Erledigt" umschalten</string>
+    <string name="menu_undelete">Wiederherstellen</string>
+    <string name="menu_complete">Als erledigt markieren</string>
+    <string name="menu_incomplete">Als nicht erledigt markieren</string>
     <string name="menu_move_up">Aufwärts bewegen</string>
     <string name="menu_move_down">Abwärts bewegen</string>
     <string name="menu_insert">%s hinzufügen</string>
@@ -81,6 +87,14 @@
     <string name="project_name">Projekt</string>
     <string name="context_name">Kategorie</string>
     <string name="nothing"/>
+     <string name="deleted">Deleted</string>
+    <string name="active">Aktiv</string>
+    <string name="inactive">Inaktiv</string>
+    <string name="from_context">(via Kategorie)</string>
+    <string name="from_project">(via Projekt)</string>
+    <string name="complete">Vollständig</string><!--TODO Check for correct translation -->
+    <string name="completed">Erledigt</string><!--TODO Check for correct translation -->
+    <string name="incomplete">Unvollständig</string><!--TODO Check for correct translation -->
     <string name="none_empty">Nichts</string>
     <string name="undefined">Nichts</string>
     <string name="today">Heute</string>
@@ -91,11 +105,86 @@
     <!--  search -->
     <string name="search_label">Shuffle</string>
     <string name="search_hint">Beschreibung oder Details durchsuchen</string>
-    <string name="search_settings_description">Beschreibung und Details von Handlungen</string>
-    
+    <string name="search_settings_description_action">Beschreibungen und Details von Handlungen</string>
+    <string name="search_label_context">Shuffle Kategorien</string>
+    <string name="search_hint_context">Suche Kategorie durch Name</string>
+    <string name="search_settings_description">Beschreibung und Details von Handlungen</string><!-- TODO Check for correct translation -->
+    <string name="search_label_project">Shuffle Projekte</string>
+    <string name="search_hint_project">Suche Projekt durch Name</string>
+    <string name="search_settings_description_project">Namen der Projekte</string>
+
+
     <!--  Welcome screen -->
     <string name="sample_data_title">Beispieleinträge</string>
     <string name="clean_slate_title">Ohne Einträge</string>
+
+	<!--  What's new dialog --><!--TODO-->
+<string name="whats_new_dialog_title">Shuffle</string>
+<string name="whats_new_dialog_message">Thanks for downloading Shuffle.\n\n
+<b>New in this version:</b>\n
+\t• Support for ICS\n
+\t• Integrated with Shuffle website\n
+\n
+<b>New in version 1.7.2:</b>\n
+\t• Fixed dates when viewing Google calendar entries\n
+\t• Improved Japanese translation\n
+\t• Added Dutch translation\n
+\n
+<b>New in version 1.7.1:</b>\n
+\t• Fixed crash creating new actions in Spanish version\n 
+\t• Ignore deleted items calculating Next Actions\n	
+\n
+<b>New in version 1.7.0:</b>\n
+\t• View filters, customisable in each view.\n
+\t• Active flags on contexts and projects.\n
+\t• Deleted items are now recoverable.\n
+\t• Toolbar added to list views.\n
+\t• New 4x4 widget.\n
+\t• Tickler view for inactive actions.\n
+\t• Support for Tracks sites with self signed certificates.\n
+\t• Fixed calendar selection bug on Android 2.2.\n
+\t• Fixed action reordering in projects and Next Actions.\n
+\t• Action view screen added.\n
+\t• Spanish, Portugese and Japanese translations.\n
+\n
+<b>New in version 1.6.3:</b>\n
+\t• Fix task editing compatibility with Android 1.5.\n
+\n
+<b>New in version 1.6.2:</b>\n
+\t• Fix bug where can\'t remove context or project from action.\n
+\n
+<b>New in version 1.6.1:</b>\n
+\t• Fixed Tracks sync bug.\n
+\t• Reverted Inbox behavior.\n
+\n
+<b>New in version 1.6.0:</b>\n
+\t• <b>Widget</b> for your favorite list.\n
+\t• Fixed Google Calendar creation on Android 2.2.\n
+\t• Big code rewrite to improve reliability and simplify addition of new features.\n
+\n
+<b>New in version 1.5.1:</b>\n
+\t• Patch for Tracks synch bugs.\n
+\n
+<b>New in version 1.5.0:</b>\n
+\t• Search actions (including in quick search box)\n
+\t• Enable removable of action scheduling\n
+\t• Remove actions from Inbox if project or context set\n
+\t• Add actions without projects to Next actions\n
+\t• Enable parallel execute of actions within a project\n
+\t• For Tracks synch, don\'t set all day flag unless a date is set\n
+\t• Show both start and due date in task lists\n
+\t• Updated Help screens\n
+\n
+\n
+Also note that this application sends anonymous usage statistics back to a server.  If you\'d rather not
+allow that, you can turn it off under Settings.</string>
+
+    <!-- task view screen -->
+    <string name="complete_toggle_button">Mark %s</string><!-- TODO -->
+    <string name="status_title">Status</string>
+    <string name="created_title">Erstellt</string>
+    <string name="modified_title">zuletzt geändert</string>
+    <string name="view_calendar_entry">Kalendereintrag ansehen</string>
 
 	<!--  edit screens -->
     <string name="menu_done">Speichern</string>
@@ -115,6 +204,8 @@
     <string name="add_to_gcal_detail">Neuer Eintrag wird nach dem Speichern geladen</string>
     <string name="update_gcal_title">Kalender aktualisieren</string>
     <string name="update_gcal_detail">Aktualisierter Eintrag wird nach dem Speichern geladen</string>
+    <string name="completed_title">Abgeschlossen</string>
+    <string name="active_title">Aktiv</string>
     <string name="completed_title">Erledigt</string>
     <string name="clear_title">Beginn und Frist löschen</string>
 
@@ -138,7 +229,7 @@
     <string name="day_button_title">Heute</string>
     <string name="week_button_title">Woche</string>
     <string name="month_button_title">Monat</string>
-
+	
 	<!--  preferences screen -->
     <string name="display_task_list_title">In Handlungsliste anzeigen</string>
     <string name="context_icon_title">Kategorieicon</string>
@@ -210,16 +301,25 @@
     <string name="delete_completed_button_title">Löschen</string>
     <string name="clean_slate_button_title">Löschen</string>
 
+    <string name="delete_completed_button_title">Löschen</string>
+    <string name="clean_slate_button_title">Löschen</string>
+
+    <string name="permanently_delete_button_title">Dauerhaft löschen</string>
+
     <!-- Toast displayed when an item is created -->
     <string name="itemCreatedToast"><xliff:g id="itemName">%s</xliff:g> wurde erstellt.</string>
 
+    <string name="warning_empty_trash">Alle gelöschten Einträge dauerhaft löschen?</string>
+    <string name="toast_empty_trash">%1$s Handlung(en), %2$s Kategorie(n) und %3$s Projekt(e) dauerhaft gelöscht.</string>
+    
     <!-- Toast displayed when an item is saved -->
     <string name="itemSavedToast"><xliff:g id="itemName">%s</xliff:g> wurde gespeichert.</string>
 
     <!-- Toast displayed when an item is saved -->
     <string name="itemDeletedToast"><xliff:g id="itemName">%s</xliff:g> wurde gelöscht.</string>
 
-       <!-- synchronization-->
+    
+    <!-- Tracks synchronization-->
     <string name="synchronizing">Synchronisierung mit Hilfe von Tracks</string>
     <string name="tracksUser">Benutzer</string>
     <string name="tracksInstallation">Zielinstallation</string>
@@ -249,7 +349,62 @@
     <string name="sync_interval_2h">2 Stunden</string>
     <string name="sync_interval_3h">3 Stunden</string>
 
-	<!--  messages -->
+	<!-- App Engine synchronization -->
+
+    <string name="appengine_synchronization_settings">AppEngine settings</string>
+    <!-- Menu item text -->
+    <string name="accounts">Accounts</string>
+    <!-- Dialog button -->
+    <string name="add_account">Account hinzufügen...</string>
+    <!-- Dialog title text -->
+    <string name="attention">Achtung</string>
+    <!-- Button text -->
+    <string name="connect">Verbinden</string>
+    <!-- Message text for "Connect" screen -->
+    <string name="connect_text">Shuffle möchte ihr mobiles Gerät zur Cloud verbinden.</string>
+    <!-- Header text for "Connect" screen -->
+    <string name="connect_to_the_cloud">Zur Cloud verbinden</string>
+    <!-- Header text for "Connected" screen -->
+    <string name="connected_to_the_cloud">Zur Cloud verbunden</string>
+    <!-- Message text -->
+    <string name="contacting_server">Kontaktiere Server...</string>
+    <!-- Button text -->
+    <string name="disconnect">Trennen</string>
+    <!-- Informational text for "Connected" screen with placeholder for account name -->
+    <string name="disconnect_text">Dieses Gerät ist unter dem Namen %1$s mit der Cloud verbunden. Drücken Sie den Button weiter unten, um die Verbindung zu trennen.</string>
+    <!-- Footer text for "Connect" screen -->
+    <string name="do_you_want_to_connect">Verbindung herstellen?</string>
+    <!-- Button text -->
+    <string name="exit">Schließen</string>
+    <!-- Initial "hello, world" informational message -->
+    <string name="hello_world_info_text">Drücken Sie den \"Hallo!\"-Button, um eine Nachricht vom App Engine Server zu erhalten.</string>
+    <!-- Initial "hello, world" response message -->
+    <string name="hello_world_text">Hallo!</string>
+    <!-- Dialog message text -->
+    <string name="needs_account">Um Benachrichtigungen über diese App zu erhalten, müssen Sie zuerst einen Account erstellen.</string>
+    <!-- Notification message -->
+    <string name="registration_error">Registrierung/Abmeldung von %1$s fehlgeschlagen.</string>
+    <!-- Notification message -->
+    <string name="registration_succeeded">%1$s für C2DM-Nachrichten angemeldet.</string>
+    <!-- Button text -->
+    <string name="say_hello">Hallo sagen</string>
+    <!-- List view header text -->
+    <string name="select_account">Wählen Sie den Acvcount, den Sie berechtigen wollen:</string>
+    <!-- Dialog button text -->
+    <string name="skip">Überspringen</string>
+
+    <!-- Notification message -->
+    <string name="unregistration_succeeded">%1$s für C2DM-Nachrichten abgemeldet.</string>
+
+    <!-- list filter preferences -->
+    <string name="list_settings_title">Einstellungen</string>
+    <string name="active_items_title">Aktive Elemente</string>
+    <string name="deleted_items_title">Gelöschte Elemente</string>
+    <string name="pending_items_title">Zukpnftige Handlungen</string>
+    <string name="completed_items_title">Abgeschlossene Handlungen</string>
+    
+
+    <!--  messages -->
     <string name="no_due_date">Keine Frist</string>
     <string name="no_icon">Kein Icon</string>
     <string name="no_tasks">Es wurden noch keine Handlungen erstellt. Erzeugen Sie neue Handlungen über \"Handlung hinzufügen\" im Menü.</string>
@@ -271,6 +426,7 @@ Willkommen in Shuffle, einem Organisationsprogramm, das von \"Getting Things Don
 Wenn Sie erfahren wollen, wie Sie Shuffle am besten benutzen, wählen Sie \"Beispieleinträge\". Es werden dann einige Beispiele geladen.
 Später können Sie noch einmal neu anfangen, indem Sie \"Alles Löschen!\" im Einstellungsmenü wählen.     
     </string>
+
     <string name="welcome2">
 Natürlich können Sie auch direkt ohne Beispiele beginnen. Es werden nur die Standardkategorien erstellt.
     </string>
@@ -285,11 +441,14 @@ Ein einfacher Arbeitsablauf ermutigt Sie dazu, ihre Handlungen in Projekten zusa
 Durch dieses Vorgehen können schwierige Projekte in kleine, machbare Aufgaben geteilt werden.\n
 Wenn das Projekt fortschreitet, können erledigte Handlungen entfernt werden, anfallende Handlungen neu erzeugt werden und Ihre verbleibenden Handlungen nach Ihren Prioritäten angeordnet werden.
     </string>
+
+
     <string name="help1">
 Hier ist der beste Platz, um neue Handlungen zu erstellen.
 Der <b>Eingang</b> sammelt alle Handlungen, bevor sie weiterverarbeitet werden.
 Sie sollten Ihren Eingang regelmäßig durchgehen, jede Handlung überprüfen, und diese dann verwerfen bzw. löschen, erledigen oder einem Projekt zuweisen.\n
     </string>
+   
     <string name="help2">
 Die <b>Projektansicht</b> listet alle Ihre Projekte auf und erlaubt Ihnen, die Handlungen eines jeden Projekts anzusehen. Zusätzlich zu den Standardfunktionen \"Hinzufügen\", \"Bearbeiten\" und \"Löschen\" können Sie hier die Handlungen neu anordnen, um diese in der von Ihnen gewünschten Reihenfolge abzuarbeiten.
 \n
@@ -297,6 +456,12 @@ Projekte können genau wie Kategorien mit verschiedenen Ansichten betrachtet wer
 Bei Einzelansicht öffnet der Klick auf ein Projekt einen neuen Bildschirm, auf dem die Handlungen zu sehen sind.
 In der Erweiterungsansicht werden die Handlungen nach einem Klick auf dem selben Bildschirm gezeigt.
     </string>
+    
+
+
+
+
+
     <string name="help3">
 <b>Kategorien</b> sind verschiedene Situationen, in denen Sie Handlungen erledigen können. Shuffle erstellt zu Beginn folgende Standardkategorien:
 <i>Zu Hause</i>, <i>Auf der Arbeit</i>, <i>Online</i>, <i>Besorgungen</i>, <i>Kontakte</i> und <i>Zu Lesen</i>.\n
@@ -308,6 +473,10 @@ Wie auch die Projektansicht kann die Kategorieansicht entweder mit Einzelansicht
 Unter <b>Nächste Schritte</b> können Sie am besten feststellen, was als nächstes erledigt werden muss.\n
 Hier werden jeweils die ersten unerledigten Handlungen Ihrer Projekte gezeigt.
 Die Reihenfolge, in der die Handlungen erledigt werden müssen, können Sie in der Prjektansicht selbst festlegen.</string>
+    
+
+
+
     <string name="help5">
 Unter <b>Fällige Handlungen</b> können Sie feststellen, welchen Handlungen Sie einen bestimmten Fälligkeitstermin zugewiesen haben.
 Es gibt hier 3 Ansichten - <i>Heute</i>, <i>Woche</i> und
@@ -320,6 +489,12 @@ Viele Teile von Shuffle sind an den Benutzer anpassbar. Die <b>Einstellungen</b>
 <b>Handlungsansicht</b> - Hier können Sie anpassen, welche Informationen über jede Handlung angezeigt werden. Diese Einstellung betrifft jede Ansicht.\n
 <b>Aufräumen</b> - Löscht entweder alle erledigten Handlungen oder alles. \n
     </string>
+    
+
+
+
+
+
     <string name="help7">
 Einige nützliche Tipps für Sie:\n
 1) In jeder Liste können Sie lange auf einen Eintrag drücken, um ein Menü anzuzeigen.\n
@@ -328,12 +503,15 @@ Einige nützliche Tipps für Sie:\n
 4) Um eine Handlung als erledigt anzuzeigen, können Sie diese mit Ihrem Finger "durchstreichen".\n
 5) Sie können eine Verknüpfung auf ihrem Bildschirm einfügen, mit der Sie neue Handlungen erstellen können.\n
     </string>
+    
     <string name="help8">
 Danke an das Team vom Tango Desktop Project, welches eine Open-Source-Sammlung an Icons bereitstellt, die in Shuffle verwendet wird.
 Danke auch an David Gibb, der mir tolles Feedback bezüglich des Designs gegeben hat, und an Gudrun, die es toleriert hat, dass ich meine Nächte und Wochenenden mit Android verbracht habe.\n
-Ebenfalls Danke an Jan Lippert, der Shuffle ins Deutsche übersetzt hat.\n
 \n
 Um Feedback oder einen Bugreport einzureichen, besuchen Sie bitte http://code.google.com/p/android-shuffle/issues/list oder schicken Sie eine Mail an andy@dodgybits.org (nur Englisch).</string>
+
+
+
 
     <!-- Reminder format strings -->
     <plurals name="Nminutes">
@@ -375,4 +553,6 @@ Um Feedback oder einen Bugreport einzureichen, besuchen Sie bitte http://code.go
         <item quantity="other"><xliff:g id="count">%d</xliff:g> Tage</item>
     </plurals>
     
+
+
 </resources>
