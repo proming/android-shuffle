@@ -1,10 +1,14 @@
 package org.dodgybits.shuffle.gwt.core;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
 import com.gwtplatform.mvp.client.annotations.NameToken;
+import org.dodgybits.shuffle.gwt.cursor.ContextEntityCache;
+import org.dodgybits.shuffle.gwt.cursor.ProjectEntityCache;
 import org.dodgybits.shuffle.gwt.cursor.TaskNavigator;
 import org.dodgybits.shuffle.gwt.place.NameTokens;
 
@@ -19,8 +23,13 @@ import com.google.web.bindery.requestfactory.shared.ServerFailure;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
+import org.dodgybits.shuffle.shared.ContextProxy;
+import org.dodgybits.shuffle.shared.ProjectProxy;
 import org.dodgybits.shuffle.shared.TaskProxy;
 import org.dodgybits.shuffle.shared.TaskService;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class EditActionPresenter extends
         Presenter<EditActionPresenter.MyView, EditActionPresenter.MyProxy>
@@ -33,6 +42,8 @@ public class EditActionPresenter extends
 
     public interface MyView extends View, HasUiHandlers<EditEntityUiHandlers> {
         void displayTask(TaskProxy task);
+        void displayProject(ProjectProxy project);
+        void displayContexts(List<ContextProxy> contexts);
     }
 
     @ProxyCodeSplit
@@ -43,7 +54,8 @@ public class EditActionPresenter extends
     private final Provider<TaskService> mTaskServiceProvider;
     private final PlaceManager mPlaceManager;
     private final TaskNavigator mTaskNavigator;
-
+    private final ContextEntityCache mContextCache;
+    private final ProjectEntityCache mProjectCache;
     private Action mAction;
     private TaskProxy mTask = null;
 
@@ -52,11 +64,15 @@ public class EditActionPresenter extends
             final EventBus eventBus, final MyView view,
             final MyProxy proxy, final PlaceManager placeManager,
             final Provider<TaskService> taskServiceProvider,
+            final ContextEntityCache contextCache,
+            final ProjectEntityCache projectCache,
             final TaskNavigator taskNavigator) {
         super(eventBus, view, proxy);
         mPlaceManager = placeManager;
         mTaskServiceProvider = taskServiceProvider;
         mTaskNavigator = taskNavigator;
+        mContextCache = contextCache;
+        mProjectCache = projectCache;
 
         getView().setUiHandlers(this);
     }
@@ -72,6 +88,8 @@ public class EditActionPresenter extends
         if ("edit".equals(actionString)) {
             mAction = Action.EDIT;
             fetchTask();
+            requestContexts();
+            requestProjects();
         }
     }
 
@@ -133,6 +151,7 @@ public class EditActionPresenter extends
                 mTask = task;
                 GWT.log("Success - got " + task);
                 getView().displayTask(task);
+
             }
 
         });
@@ -140,6 +159,45 @@ public class EditActionPresenter extends
 
     private void goBack() {
         mPlaceManager.navigateBack();
+    }
+
+    @Override
+    public List<ContextProxy> getContexts(TaskProxy task) {
+        return Lists.transform(task.getContextIds(), new Function<Long, ContextProxy>() {
+            @Override
+            public ContextProxy apply(@Nullable Long input) {
+                return mContextCache.findById(input);
+            }
+        });
+    }
+
+    @Override
+    public ProjectProxy getProject(TaskProxy task) {
+        return mProjectCache.findById(task.getProjectId());
+    }
+
+    private void requestProjects() {
+        mProjectCache.requestEntities(new Receiver<List<ProjectProxy>>() {
+            @Override
+            public void onSuccess(List<ProjectProxy> response) {
+                if (mTask != null) {
+                    ProjectProxy project = getProject(mTask);
+                    getView().displayProject(project);
+                }
+            }
+        });
+    }
+
+    private void requestContexts() {
+        mContextCache.requestEntities(new Receiver<List<ContextProxy>>() {
+            @Override
+            public void onSuccess(List<ContextProxy> response) {
+                if (mTask != null) {
+                    List<ContextProxy> contexts = getContexts(mTask);
+                    getView().displayContexts(contexts);
+                }
+            }
+        });
     }
 
 }

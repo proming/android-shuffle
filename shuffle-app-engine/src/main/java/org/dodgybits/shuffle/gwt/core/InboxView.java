@@ -16,11 +16,15 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.*;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.inject.Inject;
-import com.gwtplatform.mvp.client.ViewImpl;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import org.dodgybits.shuffle.gwt.formatter.ActionDateFormatter;
+import org.dodgybits.shuffle.shared.ContextProxy;
+import org.dodgybits.shuffle.shared.ProjectProxy;
 import org.dodgybits.shuffle.shared.TaskProxy;
 
 import java.util.Date;
@@ -91,6 +95,11 @@ public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements
         }
     }
 
+    @Override
+    public void redraw() {
+        grid.redraw();
+    }
+
     /**
      * Add the columns to the grid.
      */
@@ -125,15 +134,24 @@ public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements
                 })) {
             @Override
             public String getValue(TaskProxy taskValue) {
-                String contexts = "";
-                for (Long id : taskValue.getContextIds()) {
-                    contexts += String.valueOf(id) + " ";
+                String contextNames = " (";
+                List<ContextProxy> contexts = getUiHandlers().getContexts(taskValue);
+                for (ContextProxy context : contexts) {
+                    contextNames += context == null ? "" : context.getName();
                 }
+                contextNames += ") ";
+
+                String projectName = "";
+                ProjectProxy project = getUiHandlers().getProject(taskValue);
+                if (project != null) {
+                    projectName = "<b>" + project.getName() + "</b>";
+                }
+
                 String description = "<div class='action-title'>"
                         + SafeHtmlUtils.htmlEscape(taskValue.getDescription())
                         + "<span class='action-details'> - "
                         + SafeHtmlUtils.htmlEscape(taskValue.getDetails()) + "</span>"
-                        + contexts + "</div>";
+                        + contextNames + projectName + "</div>";
                 return description;
             }
         };

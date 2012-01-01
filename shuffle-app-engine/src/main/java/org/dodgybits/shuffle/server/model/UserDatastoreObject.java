@@ -1,6 +1,5 @@
 package org.dodgybits.shuffle.server.model;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Indexed;
 import org.dodgybits.shuffle.server.service.ObjectifyDao;
@@ -12,14 +11,8 @@ public class UserDatastoreObject extends DatastoreObject {
 
     public AppUser getOwner()
     {
-        try
-        {
-            ObjectifyDao<AppUser> userDao = ObjectifyDao.newDao(AppUser.class);
-            return userDao.get(owner);
-        } catch (EntityNotFoundException e)
-        {
-            throw new RuntimeException(e);
-        }
+        ObjectifyDao<AppUser> userDao = ObjectifyDao.newDao(AppUser.class);
+        return userDao.get(owner);
     }
 
     public void setOwner(AppUser owner)

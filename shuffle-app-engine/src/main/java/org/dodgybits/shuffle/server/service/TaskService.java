@@ -1,11 +1,10 @@
 package org.dodgybits.shuffle.server.service;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Query;
-import org.dodgybits.shuffle.server.model.AppUser;
-import org.dodgybits.shuffle.server.model.Task;
-import org.dodgybits.shuffle.server.model.TaskQuery;
-import org.dodgybits.shuffle.server.model.TaskQueryResult;
+import org.dodgybits.shuffle.server.model.*;
+import org.dodgybits.shuffle.shared.Flag;
+import org.dodgybits.shuffle.shared.PredefinedQuery;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -24,18 +23,59 @@ public class TaskService {
         TaskQueryResult result = new TaskQueryResult();
 
         Query<Task> q = mTaskDao.userQuery();
+
+        applyPredefinedQuery(query.getPredefinedQuery(), q);
+        applyFlag(query.getActive(), "active", q);
+        applyFlag(query.getDeleted(), "deleted", q);
+
+        result.setOffset(start);
         result.setTotalCount(q.count());
+
         q.limit(limit).offset(start);
         result.setEntities(q.list());
-        result.setOffset(start);
 
         return result;
+    }
+
+    private void applyPredefinedQuery(PredefinedQuery predefinedQuery, Query<Task> q) {
+        switch (predefinedQuery) {
+            case inbox:
+//                result = "(projectId is null AND contextId is null)";
+                q.filter("project", null);
+                q.filter("contexts", null);
+                break;
+            case nextTasks:
+                q.filter("topTask", true);
+                break;
+        }
+    }
+
+    private void applyFlag(Flag flag, String field, Query<Task> q) {
+        switch (flag) {
+            case yes:
+                q.filter(field, true);
+                break;
+            case no:
+                q.filter(field, false);
+        }
+        // TODO - apply values from contexts and project too
     }
 
     public Task save(Task task)
     {
         AppUser loggedInUser = LoginService.getLoggedInUser();
         task.setOwner(loggedInUser);
+
+        if (task.getId() != null) {
+            Task oldTask = mTaskDao.get(task.getId());
+            boolean activeChanged = oldTask.isActive() != task.isActive();
+            boolean deletedChanged = oldTask.isDeleted() != task.isDeleted();
+            if (activeChanged || deletedChanged) {
+                log.log(Level.FINE, "Active changed {0} deleted changed {1}",
+                        new Object[] {activeChanged, deletedChanged});
+            }
+        }
+        
         mTaskDao.put(task);
         return task;
     }
@@ -58,7 +98,7 @@ public class TaskService {
                 // wrong user - bail
                 task = null;
             }
-        } catch (EntityNotFoundException e) {
+        } catch (NotFoundException e) {
             log.log(Level.WARNING, "Task {0} not found", id);
         }
         return task;
@@ -94,4 +134,17 @@ public class TaskService {
         return taskQuery;
     }
     
+    public void swapTasks(Task firstTask, Task secondTask) {
+        int tmpOrder = secondTask.getOrder();
+        secondTask.setOrder(firstTask.getOrder());
+        firstTask.setOrder(tmpOrder);
+
+        boolean tmpTopTask = secondTask.isTopTask();
+        secondTask.setTopTask(tmpTopTask);
+        firstTask.setTopTask(tmpTopTask);
+
+        save(firstTask);
+        save(secondTask);
+    }
+
 }

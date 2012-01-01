@@ -24,5 +24,6 @@ public interface TaskService extends RequestContext {
 
     Request<TaskQueryProxy> findQueryByName(String name);
 
-    
+    Request<Void> swapTasks(TaskProxy firstTask, TaskProxy secondTask);
+
 }

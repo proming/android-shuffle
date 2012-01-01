@@ -1,13 +1,14 @@
 package org.dodgybits.shuffle.server.service;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.web.bindery.requestfactory.server.RequestFactoryServlet;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.ObjectifyOpts;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.googlecode.objectify.util.DAOBase;
 import org.dodgybits.shuffle.server.model.*;
+import org.dodgybits.shuffle.server.servlet.AuthFilter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
 import java.util.List;
@@ -42,6 +43,12 @@ public class ObjectifyDao<T> extends DAOBase
 		this.clazz = clazz;
 	}
 
+    public ObjectifyDao(Class<T> clazz, ObjectifyOpts opts)
+    {
+        super(opts);
+        this.clazz = clazz;
+    }
+
     public Query<T> userQuery() {
         Query<T> q = ofy().query(clazz);
         Key<AppUser> userKey = new Key<AppUser>(AppUser.class, getCurrentUser()
@@ -52,8 +59,9 @@ public class ObjectifyDao<T> extends DAOBase
 
     private AppUser getCurrentUser()
     {
-        return (AppUser) RequestFactoryServlet.getThreadLocalRequest()
-                .getAttribute(LoginService.AUTH_USER);
+        HttpServletRequest request = AuthFilter.getThreadLocalRequest();
+        AppUser currentUser = (AppUser)request.getAttribute(LoginService.AUTH_USER);
+        return currentUser;
     }
 
     private List<T> listByProperty(String propName, Object propValue, int offset, int limit)
@@ -96,12 +104,12 @@ public class ObjectifyDao<T> extends DAOBase
 		ofy().delete(keys);
 	}
 
-	public T get(Long id) throws EntityNotFoundException
+	public T get(Long id)
 	{
-		return ofy().get(this.clazz, id);
+        return ofy().get(this.clazz, id);
 	}
 
-	public T get(Key<T> key) throws EntityNotFoundException
+	public T get(Key<T> key)
 	{
 		return ofy().get(key);
 	}
