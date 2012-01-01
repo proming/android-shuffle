@@ -41,7 +41,7 @@
         <dependency>
             <groupId>android.support</groupId>
             <artifactId>compatibility-v4</artifactId>
-            <version>r4</version>
+            <version>r6</version>
         </dependency>
       <dependency>
           <groupId>com.google.inject</groupId>
