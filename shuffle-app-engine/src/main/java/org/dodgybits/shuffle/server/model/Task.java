@@ -39,6 +39,9 @@ public class Task extends UserDatastoreObject {
     private boolean complete;
 
     @Indexed
+    private boolean inboxTask = true;
+
+    @Indexed
     private boolean topTask;
 
     private boolean deletedTask;
@@ -59,6 +62,7 @@ public class Task extends UserDatastoreObject {
 
     public void setContextKeys(List<Key<Context>> contexts) {
         this.contexts = contexts;
+        updateInbox();
     }
     
     public List<Long> getContextIds() {
@@ -75,12 +79,12 @@ public class Task extends UserDatastoreObject {
     }
     
     public void setContextIds(List<Long> ids) {
-        contexts = Lists.newArrayList(Lists.transform(ids, new Function<Long, Key<Context>>() {
+        setContextKeys(Lists.newArrayList(Lists.transform(ids, new Function<Long, Key<Context>>() {
             @Override
             public Key<Context> apply(@Nullable Long input) {
                 return new Key<Context>(Context.class, input);
             }
-        }));
+        })));
     }
 
     public Key<Project> getProjectKey() {
@@ -90,8 +94,13 @@ public class Task extends UserDatastoreObject {
     public void setProjectKey(Key<Project> project) {
         this.project = project;
         updateOrderAndTopTask();
+        updateInbox();
     }
-    
+
+    private void updateInbox() {
+        inboxTask = project == null && contexts.isEmpty();
+    }
+
     private void updateOrderAndTopTask() {
         // TODO take into account deleted, active and completed flags
 

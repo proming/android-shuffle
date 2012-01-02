@@ -111,9 +111,9 @@ public class InboxPresenter extends
     private TaskQueryProxy createQuery() {
         TaskService service = mTaskServiceProvider.get();
         TaskQueryProxy query = service.create(TaskQueryProxy.class);
-        query.setActive(Flag.ignored);
-        query.setDeleted(Flag.ignored);
-        query.setPredefinedQuery(PredefinedQuery.all);
+        query.setActive(Flag.yes);
+        query.setDeleted(Flag.no);
+        query.setPredefinedQuery(PredefinedQuery.inbox);
         return query;
     }
     

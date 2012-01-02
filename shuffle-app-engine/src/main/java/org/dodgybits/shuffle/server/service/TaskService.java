@@ -41,8 +41,7 @@ public class TaskService {
         switch (predefinedQuery) {
             case inbox:
 //                result = "(projectId is null AND contextId is null)";
-                q.filter("project", null);
-                q.filter("contexts", null);
+                q.filter("inboxTask", true);
                 break;
             case nextTasks:
                 q.filter("topTask", true);
