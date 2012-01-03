@@ -11,6 +11,7 @@ public class NameTokens {
 	public static final String nextActions = "!nextActions";
 	public static final String projects = "!projects";
 	public static final String tickler = "!tickler";
+	public static final String restoreFromBackup = "!restore";
 	public static final String editAction = "!editAction";
 
 	public static String getWelcome() {
@@ -48,6 +49,10 @@ public class NameTokens {
 	public static String getTickler() {
 		return tickler;
 	}
+
+    public static String getRestoreFromBackup() {
+        return restoreFromBackup;
+    }
 
 	public static String getEditAction() {
 		return editAction;

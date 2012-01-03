@@ -24,6 +24,8 @@ import org.dodgybits.shuffle.gwt.place.ClientPlaceManager;
 import org.dodgybits.shuffle.gwt.place.DefaultPlace;
 import org.dodgybits.shuffle.gwt.place.ErrorPlace;
 import org.dodgybits.shuffle.gwt.place.NameTokens;
+import org.dodgybits.shuffle.gwt.settings.RestoreFromBackupPresenter;
+import org.dodgybits.shuffle.gwt.settings.RestoreFromBackupView;
 import org.dodgybits.shuffle.shared.ContextService;
 import org.dodgybits.shuffle.shared.ProjectService;
 import org.dodgybits.shuffle.shared.TaskService;
@@ -67,6 +69,9 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindPresenterWidget(NavigationPresenter.class,
 				NavigationPresenter.MyView.class, NavigationView.class);
+
+        bindPresenter(RestoreFromBackupPresenter.class, RestoreFromBackupPresenter.MyView.class,
+                RestoreFromBackupView.class, RestoreFromBackupPresenter.MyProxy.class);
 
 		bind(ShuffleRequestFactory.class).in(Singleton.class);
         
