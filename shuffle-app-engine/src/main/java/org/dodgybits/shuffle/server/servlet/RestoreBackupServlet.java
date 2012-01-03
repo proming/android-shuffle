@@ -13,6 +13,7 @@ import org.dodgybits.shuffle.dto.ShuffleProtos.Catalogue;
 import org.dodgybits.shuffle.server.model.Context;
 import org.dodgybits.shuffle.server.model.Project;
 import org.dodgybits.shuffle.server.model.Task;
+import org.dodgybits.shuffle.server.model.WatchedTask;
 import org.dodgybits.shuffle.server.service.ContextService;
 import org.dodgybits.shuffle.server.service.ProjectService;
 import org.dodgybits.shuffle.server.service.TaskService;
@@ -167,7 +168,7 @@ public class RestoreBackupServlet extends HttpServlet {
 
         for (ShuffleProtos.Task protoTask : protoTasks) {
             logger.info("Saving: " + protoTask.toString());
-            Task task = toModelTask(protoTask, contextMap, projectMap);
+            WatchedTask task = toModelTask(protoTask, contextMap, projectMap);
             taskService.save(task);
             tasks.add(task);
         }
@@ -175,9 +176,9 @@ public class RestoreBackupServlet extends HttpServlet {
         return tasks.size();
     }
     
-    private Task toModelTask(ShuffleProtos.Task protoTask,
+    private WatchedTask toModelTask(ShuffleProtos.Task protoTask,
                              Map<Long, Key<Context>> contextMap, Map<Long, Key<Project>> projectMap) {
-        Task task = new Task();
+        WatchedTask task = new WatchedTask();
         task.setDescription(protoTask.getDescription());
         task.setDetails(protoTask.getDetails());
         if (protoTask.hasActive()) {

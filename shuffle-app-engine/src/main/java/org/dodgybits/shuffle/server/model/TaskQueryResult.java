@@ -1,20 +1,18 @@
 package org.dodgybits.shuffle.server.model;
 
-import org.dodgybits.shuffle.shared.TaskProxy;
-
 import java.util.List;
 
 public class TaskQueryResult {
 
-    private List<Task> mEntities;
+    private List<WatchedTask> mEntities;
     private int mTotalCount;
     private int mOffset;
 
-    public List<Task> getEntities() {
+    public List<WatchedTask> getEntities() {
         return mEntities;
     }
 
-    public void setEntities(List<Task> entities) {
+    public void setEntities(List<WatchedTask> entities) {
         mEntities = entities;
     }
 

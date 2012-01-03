@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class TaskService {
     private static final Logger log = Logger.getLogger(TaskService.class.getName());
 
-    private ObjectifyDao<Task> mTaskDao = ObjectifyDao.newDao(Task.class);
+    private ObjectifyDao<WatchedTask> mTaskDao = ObjectifyDao.newDao(WatchedTask.class);
     private ObjectifyDao<TaskQuery> mTaskQueryDao = ObjectifyDao.newDao(TaskQuery.class);
 
     public TaskQueryResult query(TaskQuery query, int start, int limit) {
@@ -22,7 +22,7 @@ public class TaskService {
 
         TaskQueryResult result = new TaskQueryResult();
 
-        Query<Task> q = mTaskDao.userQuery();
+        Query<WatchedTask> q = mTaskDao.userQuery();
 
         applyPredefinedQuery(query.getPredefinedQuery(), q);
         applyFlag(query.getActive(), "active", q);
@@ -37,7 +37,7 @@ public class TaskService {
         return result;
     }
 
-    private void applyPredefinedQuery(PredefinedQuery predefinedQuery, Query<Task> q) {
+    private void applyPredefinedQuery(PredefinedQuery predefinedQuery, Query<WatchedTask> q) {
         switch (predefinedQuery) {
             case inbox:
 //                result = "(projectId is null AND contextId is null)";
@@ -49,7 +49,7 @@ public class TaskService {
         }
     }
 
-    private void applyFlag(Flag flag, String field, Query<Task> q) {
+    private void applyFlag(Flag flag, String field, Query<WatchedTask> q) {
         switch (flag) {
             case yes:
                 q.filter(field, true);
@@ -60,13 +60,13 @@ public class TaskService {
         // TODO - apply values from contexts and project too
     }
 
-    public Task save(Task task)
+    public WatchedTask save(WatchedTask task)
     {
         AppUser loggedInUser = LoginService.getLoggedInUser();
         task.setOwner(loggedInUser);
 
         if (task.getId() != null) {
-            Task oldTask = mTaskDao.get(task.getId());
+            WatchedTask oldTask = mTaskDao.get(task.getId());
             boolean activeChanged = oldTask.isActive() != task.isActive();
             boolean deletedChanged = oldTask.isDeleted() != task.isDeleted();
             if (activeChanged || deletedChanged) {
@@ -79,7 +79,7 @@ public class TaskService {
         return task;
     }
 
-    public void delete(Task task)
+    public void delete(WatchedTask task)
     {
         mTaskDao.delete(task);
     }
@@ -133,14 +133,12 @@ public class TaskService {
         return taskQuery;
     }
     
-    public void swapTasks(Task firstTask, Task secondTask) {
+    public void swapTasks(WatchedTask firstTask, WatchedTask secondTask) {
         int tmpOrder = secondTask.getOrder();
         secondTask.setOrder(firstTask.getOrder());
         firstTask.setOrder(tmpOrder);
 
-        boolean tmpTopTask = secondTask.isTopTask();
-        secondTask.setTopTask(tmpTopTask);
-        firstTask.setTopTask(tmpTopTask);
+        // TODO update top task setting
 
         save(firstTask);
         save(secondTask);

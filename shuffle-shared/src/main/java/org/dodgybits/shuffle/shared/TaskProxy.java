@@ -6,7 +6,7 @@ import com.google.web.bindery.requestfactory.shared.ProxyForName;
 import java.util.Date;
 import java.util.List;
 
-@ProxyForName(value = "org.dodgybits.shuffle.server.model.Task",
+@ProxyForName(value = "org.dodgybits.shuffle.server.model.WatchedTask",
         locator="org.dodgybits.shuffle.server.locator.ObjectifyLocator"  )
 public interface TaskProxy extends EntityProxy {
 
