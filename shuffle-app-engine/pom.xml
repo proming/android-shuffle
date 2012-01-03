@@ -337,7 +337,7 @@
                 <configuration>
                     <appEngineVersion>${gae.version}</appEngineVersion>
                     <appEngineHome>${gae.home}</appEngineHome>
-                    <logLevel>TRACE</logLevel>
+                    <logLevel>WARN</logLevel>
                     <style>${gwt.style}</style>
                     <hostedWebapp>${webapp.directory}</hostedWebapp>
                     <server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>
