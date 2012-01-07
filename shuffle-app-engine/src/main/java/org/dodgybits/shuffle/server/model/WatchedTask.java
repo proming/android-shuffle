@@ -1,14 +1,12 @@
 package org.dodgybits.shuffle.server.model;
 
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Query;
 import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.NotSaved;
 import com.googlecode.objectify.condition.IfDefault;
-import org.dodgybits.shuffle.server.service.ObjectifyDao;
 
+import javax.persistence.Transient;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WatchedTask extends Task {
@@ -18,81 +16,115 @@ public class WatchedTask extends Task {
     private boolean inboxTask = true;
 
     @Indexed
-    private boolean topTask = false;
+    private boolean topTask = true;
 
     @NotSaved(IfDefault.class)
-    private boolean deletedProject = false;
+    private int activeContextCount = 0;
 
     @NotSaved(IfDefault.class)
     private int deletedContextCount = 0;
 
-    @Indexed
-    private boolean deleted;
+    @Transient
+    private boolean contextsChanged = false;
 
     @NotSaved(IfDefault.class)
     private boolean activeProject = true;
 
     @NotSaved(IfDefault.class)
-    private int activeContextCount = 0;
+    private boolean deletedProject = false;
+
+    @NotSaved(IfDefault.class)
+    private boolean parallelProject = false;
+
+    @Transient
+    private Key<WatchedProject> previousSequentialProjectKey = null;
+    
+    @Transient
+    private boolean projectChanged = false;
+
+    @Indexed
+    private boolean deleted = false;
 
     @Indexed
     private boolean active = true;
 
     @Override
-    public void setContextKeys(List<Key<Context>> contexts) {
-        super.setContextKeys(contexts);
-        updateInbox();
-    }
+    public void setContextKeys(List<Key<WatchedContext>> contexts) {
+        if (!contexts.equals(getContextKeys())) {
+            super.setContextKeys(contexts);
 
-    @Override
-    public void setProjectKey(Key<Project> project) {
-        super.setProjectKey(project);
-        updateOrderAndTopTask();
-        updateInbox();
-    }
-
-    private void updateInbox() {
-        inboxTask = getProjectKey() == null && getContextKeys().isEmpty();
-    }
-
-    private void updateOrderAndTopTask() {
-        // TODO take into account deleted, active and completed flags
-
-        if (getProjectKey() == null) {
-            log.log(Level.FINER, "Task {0} is topTask since it has no project", getId());
-            topTask = true;
-        } else {
-            Project project = getProject();
-            ObjectifyDao<WatchedTask> taskDao = ObjectifyDao.newDao(WatchedTask.class);
-            // if adding to a project, add as last task
-            Query<WatchedTask> q = taskDao.userQuery().filter("project", getProjectKey()).order("-order").limit(1);
-            WatchedTask task = q.get();
-            if (task == null) {
-                log.log(Level.FINER, "Task {0} is topTask since it is the only task in this project", getId());
-                topTask = true;
-                order = 0;
-            } else {
-                order = task.order + 1;
-                if (project.isParallel()) {
-                    log.log(Level.FINER, "Task {0} is topTask since it is in a parallel project", getId());
-                    topTask = true;
-                } else {
-                    log.log(Level.FINER, "Task {0} is not a topTask since it is not the first task in the project", getId());
-                    topTask = false;
-                }
-            }
+            updateContextFlags();
+            updateInbox();
+            contextsChanged = true;
         }
     }
 
     @Override
-    public void setActive(boolean active) {
-        super.setActive(active);
+    public void setProjectKey(Key<WatchedProject> project) {
+        Key<WatchedProject> previousProjectKey = getProjectKey();
+        if (project != previousProjectKey) {
+            if (previousProjectKey != null && !parallelProject) {
+                this.previousSequentialProjectKey = previousProjectKey;
+            }
+            super.setProjectKey(project);
+
+            updateProjectFlags();
+            updateInbox();
+            projectChanged = true;
+        }
+    }
+
+    public boolean isParallelProject() {
+        return parallelProject;
+    }
+
+    public void setParallelProject(boolean parallel) {
+        parallelProject = parallel;
+    }
+
+    public boolean isProjectChanged() {
+        return projectChanged;
+    }
+
+    public Key<WatchedProject> getPreviousSequentialProjectKey() {
+        return previousSequentialProjectKey;
+    }
+
+    public boolean isContextsChanged() {
+        return contextsChanged;
+    }
+
+    public final boolean isActive() {
+        return active;
+    }
+
+    public final boolean isDeleted() {
+        return deleted;
+    }
+
+    @Override
+    public void setActiveTask(boolean active) {
+        super.setActiveTask(active);
         updateActive();
+    }
+
+    @Override
+    public void setDeletedTask(boolean deleted) {
+        super.setDeletedTask(deleted);
+        updateDeleted();
     }
 
     public void setActiveProject(boolean active) {
         this.activeProject = active;
         updateActive();
+    }
+
+    public void setTopTask(boolean topTask) {
+        this.topTask = topTask;
+    }
+
+    public boolean isTopTask() {
+        return topTask;
     }
 
     public void decrementActiveContextCount() {
@@ -103,11 +135,6 @@ public class WatchedTask extends Task {
     public void incrementActiveContextCount() {
         activeContextCount++;
         updateActive();
-    }
-
-    private void updateActive() {
-        active = (isActive() && activeProject &&
-                (getContextKeys().size() == 0 || activeContextCount > 0));
     }
 
     public final void setDeletedProject(boolean deleted) {
@@ -125,9 +152,54 @@ public class WatchedTask extends Task {
         updateDeleted();
     }
 
+    private void updateContextFlags() {
+        activeContextCount = deletedContextCount = 0;
+        if (!getContextKeys().isEmpty()) {
+            List<WatchedContext> contextList = getContexts();
+            for (WatchedContext watchedContext : contextList) {
+                if (watchedContext.isActive()) {
+                    activeContextCount++;
+                }
+                if (watchedContext.isDeleted()) {
+                    deletedContextCount++;
+                }
+            }
+        }
+    }
+
+    private void updateProjectFlags() {
+        Project newProject = getProject();
+        if (newProject == null) {
+            parallelProject = false;
+            activeProject = true;
+            deletedProject = false;
+        } else {
+            parallelProject = newProject.isParallel();
+            activeProject = newProject.isActive();
+            deletedProject = newProject.isDeleted();
+        }
+    }
+
+    private void updateInbox() {
+        inboxTask = getProjectKey() == null && getContextKeys().isEmpty();
+    }
+
+    private void updateActive() {
+        active = (isActiveTask() && activeProject &&
+                (getContextKeys().isEmpty() || activeContextCount > 0));
+    }
+
     private void updateDeleted() {
-        deleted = (isDeleted() || deletedProject ||
+        deleted = (isDeletedTask() || deletedProject ||
                 (getContextKeys().size() > 0 && deletedContextCount == getContextKeys().size()));
     }
+
+    @Override
+    protected void prePersist() {
+        super.prePersist();
+        projectChanged = contextsChanged = false;
+        previousSequentialProjectKey = null;
+    }
+
 
 }

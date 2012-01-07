@@ -50,7 +50,7 @@ public class Context extends UserDatastoreObject {
         return active;
     }
 
-    public final void setActive(boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
@@ -58,12 +58,12 @@ public class Context extends UserDatastoreObject {
         return deleted;
     }
 
-    public final void setDeleted(boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 
     @PrePersist
-    private void PrePersist() {
+    protected void prePersist() {
         modifiedDate = new Date();
     }
 

@@ -5,7 +5,7 @@ import com.google.web.bindery.requestfactory.shared.ProxyForName;
 
 import java.util.Date;
 
-@ProxyForName(value = "org.dodgybits.shuffle.server.model.Context",
+@ProxyForName(value = "org.dodgybits.shuffle.server.model.WatchedContext",
         locator="org.dodgybits.shuffle.server.locator.ObjectifyLocator"  )
 public interface ContextProxy extends EntityProxy {
 

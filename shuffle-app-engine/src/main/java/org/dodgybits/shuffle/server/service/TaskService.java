@@ -1,12 +1,17 @@
 package org.dodgybits.shuffle.server.service;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Query;
 import org.dodgybits.shuffle.server.model.*;
 import org.dodgybits.shuffle.shared.Flag;
 import org.dodgybits.shuffle.shared.PredefinedQuery;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +20,9 @@ public class TaskService {
 
     private ObjectifyDao<WatchedTask> mTaskDao = ObjectifyDao.newDao(WatchedTask.class);
     private ObjectifyDao<TaskQuery> mTaskQueryDao = ObjectifyDao.newDao(TaskQuery.class);
-
+    private ObjectifyDao<WatchedContext> mContextDao = ObjectifyDao.newDao(WatchedContext.class);
+    private ObjectifyDao<WatchedProject> mProjectDao = ObjectifyDao.newDao(WatchedProject.class);
+    
     public TaskQueryResult query(TaskQuery query, int start, int limit) {
         log.log(Level.FINEST, "Looking up using {0} start {1} limit {2}",
                 new Object[] {query, start, limit});
@@ -27,6 +34,14 @@ public class TaskService {
         applyPredefinedQuery(query.getPredefinedQuery(), q);
         applyFlag(query.getActive(), "active", q);
         applyFlag(query.getDeleted(), "deleted", q);
+
+        if (query.getDueDateFrom() != null) {
+            q.filter("dueDate >=", query.getDueDateFrom());
+        }
+        
+        if (query.getDueDateTo() != null) {
+            q.filter("dueDate <=", query.getDueDateTo());
+        }
 
         result.setOffset(start);
         result.setTotalCount(q.count());
@@ -40,7 +55,6 @@ public class TaskService {
     private void applyPredefinedQuery(PredefinedQuery predefinedQuery, Query<WatchedTask> q) {
         switch (predefinedQuery) {
             case inbox:
-//                result = "(projectId is null AND contextId is null)";
                 q.filter("inboxTask", true);
                 break;
             case nextTasks:
@@ -57,7 +71,6 @@ public class TaskService {
             case no:
                 q.filter(field, false);
         }
-        // TODO - apply values from contexts and project too
     }
 
     public WatchedTask save(WatchedTask task)
@@ -65,19 +78,114 @@ public class TaskService {
         AppUser loggedInUser = LoginService.getLoggedInUser();
         task.setOwner(loggedInUser);
 
-        if (task.getId() != null) {
-            WatchedTask oldTask = mTaskDao.get(task.getId());
-            boolean activeChanged = oldTask.isActive() != task.isActive();
-            boolean deletedChanged = oldTask.isDeleted() != task.isDeleted();
-            if (activeChanged || deletedChanged) {
-                log.log(Level.FINE, "Active changed {0} deleted changed {1}",
-                        new Object[] {activeChanged, deletedChanged});
+        Key<WatchedProject> previousSequentialProjectKey = null;
+        Key<WatchedProject> currentSequentialProjectKey = null;
+        
+        if (task.isProjectChanged()) {
+            if (task.getPreviousSequentialProjectKey() != null && task.isTopTask()) {
+                // just moved from a sequential project where this was the top task
+                // need to find a new top task
+                previousSequentialProjectKey = task.getPreviousSequentialProjectKey();
+            }
+        }
+
+        // active and deleted flags are now all up to date
+        // topTask needs to be recalculated
+        if (task.getProjectKey() == null) {
+            task.setTopTask(isCandidateTopTask(task));
+        } else {
+            if (task.isParallelProject()) {
+                task.setTopTask(isCandidateTopTask(task));
+            } else {
+                if (task.isTopTask() != isCandidateTopTask(task)) {
+                    // either this wasn't a top task and could now be one,
+                    // or this was a top task and no longer can be one
+                    // either way we need to pick a new top task for this project
+                    currentSequentialProjectKey = task.getProjectKey();
+                }
+            }
+        }
+
+        mTaskDao.put(task);
+
+        if (previousSequentialProjectKey != null) {
+            updateTopTaskForSequentialProject(previousSequentialProjectKey);
+        }
+        if (currentSequentialProjectKey != null) {
+            updateTopTaskForSequentialProject(currentSequentialProjectKey);
+        }
+
+        if (task.getProjectKey() != null && (task.getId() == null || task.isProjectChanged())) {
+            // either this is a brand new task, or has just moved into a project
+            // in either case, move it to the correct order in the new project
+            addTaskToProject(task.getProjectKey(), task);
+        }        
+
+        return task;
+    }
+
+    /**
+     * @return true if the task is active and not deleted
+     */
+    private boolean isCandidateTopTask(WatchedTask task) {
+        return task.isActive() && !task.isDeleted();
+    }
+
+    /**
+     * Reposition a task within a project.
+     * 
+     * @param movedTask task that is being moved
+     * @param desiredOrder where the task should go.
+     */
+    public void moveBelow(WatchedTask movedTask, int desiredOrder) {
+        int currentOrder = movedTask.getOrder();
+        boolean moveUp = desiredOrder < currentOrder;
+
+        boolean mayBecomeTopTask = false;
+        boolean mayLoseTopTask = false;
+        
+        if (!movedTask.isParallelProject()) {
+            if (moveUp) {
+                if (isCandidateTopTask(movedTask) && !movedTask.isTopTask()) {
+                    // check if this becomes the top task after the move
+                    mayBecomeTopTask = true;
+                }
+            } else {
+                if (movedTask.isTopTask()) {
+                    // check if this is no longer the top task after the move
+                    mayLoseTopTask = true;
+                }
             }
         }
         
-        mTaskDao.put(task);
-        return task;
+        List<WatchedTask> tasks = mTaskDao.userQuery().
+                filter("project", movedTask.getProjectKey()).
+                filter("order >=", moveUp ? desiredOrder : currentOrder + 1).
+                filter("order <=", moveUp ? currentOrder - 1 : desiredOrder).
+                order("order").list();
+        movedTask.setOrder(desiredOrder);
+        for (WatchedTask task : tasks) {
+            int order = task.getOrder();
+            if (moveUp) {
+                task.setOrder(order + 1);
+                if (mayBecomeTopTask && task.isTopTask()) {
+                    task.setTopTask(false);
+                    movedTask.setTopTask(true);
+                    mayBecomeTopTask = false;
+                }
+            } else {
+                task.setOrder(order - 1);
+                if (mayLoseTopTask && isCandidateTopTask(task)) {
+                    task.setTopTask(true);
+                    movedTask.setTopTask(false);
+                    mayLoseTopTask = false;
+                }
+            }
+        }
+        mTaskDao.put(movedTask);
+        mTaskDao.putAll(tasks);
     }
+    
 
     public void delete(WatchedTask task)
     {
@@ -103,13 +211,39 @@ public class TaskService {
         return task;
     }
 
-    public void emptyTrash() {
+    public List<Integer> emptyTrash() {
         log.log(Level.FINE, "Emptying trash");
-    }
 
-    public Integer deleteCompletedTasks() {
-        log.log(Level.FINE, "Deleting completed tasks");
-        return 0;
+        List<Integer> deletedCounts = Lists.newArrayList();
+        
+        List<WatchedTask> tasks = mTaskDao.userQuery().filter("deleted", true).list();
+        deletedCounts.add(tasks.size());
+        log.log(Level.INFO, "Permanently deleting {0} tasks", tasks.size());
+        mTaskDao.deleteAll(tasks);
+        
+        List<WatchedProject> projects = mProjectDao.userQuery().filter("deleted", true).list();
+        deletedCounts.add(projects.size());
+        log.log(Level.INFO, "Permanently deleting {0} projects", projects.size());
+        mProjectDao.deleteAll(projects);
+
+        List<WatchedContext> contexts = mContextDao.userQuery().filter("deleted", true).list();
+        deletedCounts.add(contexts.size());
+        log.log(Level.INFO, "Permanently deleting {0} contexts", contexts.size());
+        mContextDao.deleteAll(contexts);
+
+        return deletedCounts;
+    }    
+    
+    public int deleteCompletedTasks() {
+        List<WatchedTask> tasks = mTaskDao.userQuery().filter("completed", true).list();
+        log.log(Level.INFO, "Deleting {0} completed tasks", tasks.size());
+
+        for (WatchedTask task : tasks) {
+            task.setDeletedTask(true);
+        }
+        mTaskDao.putAll(tasks);
+        
+        return tasks.size();
     }
 
     public TaskQuery save(TaskQuery query) {
@@ -128,20 +262,161 @@ public class TaskService {
         if (queries.size() == 1) {
             taskQuery = queries.get(0);
         } else if (queries.size() > 1) {
-            throw new IllegalStateException("More than query found for name " + name);
+            throw new IllegalStateException("More than 1 query found for name " + name);
         }
         return taskQuery;
     }
-    
-    public void swapTasks(WatchedTask firstTask, WatchedTask secondTask) {
-        int tmpOrder = secondTask.getOrder();
-        secondTask.setOrder(firstTask.getOrder());
-        firstTask.setOrder(tmpOrder);
 
-        // TODO update top task setting
-
-        save(firstTask);
-        save(secondTask);
+    /**
+     * A flag on the project has changed that has an impact on task related queries.
+     */
+    public void onProjectChanged(WatchedProject project, Key<WatchedProject> key) {
+        List<WatchedTask> tasks = mTaskDao.userQuery().filter("project", key).order("order").list();
+        boolean sequentialTopTaskFound = false;
+        for (WatchedTask task : tasks) {
+            if (project.isActiveChanged()) {
+                task.setActiveProject(project.isActive());
+            }
+            if (project.isDeletedChanged()) {
+                task.setDeletedProject(project.isDeleted());
+            }
+            if (project.isParallelChanged()) {
+                task.setParallelProject(project.isParallel());
+            }
+            
+            boolean isCandidate = isCandidateTopTask(task);
+            task.setTopTask(isCandidate && (project.isParallel() || !sequentialTopTaskFound));
+            if (!project.isParallel() && task.isTopTask()) {
+                sequentialTopTaskFound = true;
+            }
+        }
+        mTaskDao.putAll(tasks);
     }
 
+    /**
+     * A flag on the context has changed that has an impact on task related queries.
+     */
+    public void onContextChanged(WatchedContext context, Key<WatchedContext> key) {
+        List<WatchedTask> tasks = mTaskDao.userQuery().filter("contexts", key).list();
+        Set<Key<WatchedProject>> projectsToUpdate = Sets.newHashSet();
+        
+        for (WatchedTask task : tasks) {
+            boolean wasCandidate = isCandidateTopTask(task);
+            if (context.isActiveChanged()) {
+                if (context.isActive()) {
+                    task.incrementActiveContextCount();
+                } else {
+                    task.decrementActiveContextCount();
+                }
+            }
+            if (context.isDeletedChanged()) {
+                if (context.isDeleted()) {
+                    task.incrementDeletedContextCount();
+                } else {
+                    task.decrementDeletedContextCount();
+                }
+            }
+
+            boolean isCandidate = isCandidateTopTask(task);
+            if (task.isParallelProject()) {
+                task.setTopTask(isCandidate);
+            } else {
+                if (task.isTopTask() && !isCandidate) {
+                    // this was the project top task, but no longer - need to find a new top task for this project
+                    projectsToUpdate.add(task.getProjectKey());
+                } else if (!task.isTopTask() && !wasCandidate && isCandidate) {
+                    // this wasn't a top task or a candidate, but now it is - check if it is the new top task for this project
+                    projectsToUpdate.add(task.getProjectKey());
+                }
+            }
+        }
+        mTaskDao.putAll(tasks);
+
+        for (Key<WatchedProject> projectKey : projectsToUpdate) {
+            updateTopTaskForSequentialProject(projectKey);
+        }
+    }
+
+    /**
+     * Insert the task into the project with the appropriate order, shuffling later
+     * tasks down as needed.
+     * If the task has a due date, insert it before the first task
+     * it finds with a later due date. Otherwise add to the end of the list.
+     * All task order attributes should be sequential starting at 0.
+     *
+     * @param projectKey project to update
+     * @param newTask either a brand new task or one that has just moved into this project
+     */
+    private void addTaskToProject(Key<WatchedProject> projectKey, WatchedTask newTask) {
+        List<WatchedTask> tasks = mTaskDao.userQuery().filter("project", projectKey).order("order").list();
+        int order = 0;
+        ArrayList<WatchedTask> changedTasks = Lists.newArrayList();
+        boolean hasDueDate = newTask.getDueDate() != null;
+        boolean placedNewTask = false;
+        
+        for (WatchedTask task : tasks) {
+            if (task.getId().equals(newTask.getId())) {
+                // ignore new task in list for now
+                continue;
+            }
+            
+            if (hasDueDate && !placedNewTask) {
+                if (task.getDueDate() != null &&
+                        task.getDueDate().after(newTask.getDueDate())) {
+                    if (newTask.getOrder() != order) {
+                        newTask.setOrder(order++);
+                        changedTasks.add(newTask);
+                    }
+                    placedNewTask = true;
+                }
+            }
+            
+            if (task.getOrder() != order) {
+                task.setOrder(order++);
+                changedTasks.add(task);
+            }
+        }
+        if (!placedNewTask && newTask.getOrder() != order) {
+            newTask.setOrder(order);
+            changedTasks.add(newTask);
+        }
+        
+        if (!changedTasks.isEmpty()) {
+            mTaskDao.putAll(changedTasks);
+        }
+    }
+
+    /**
+     * Reassign a top task for the given sequential project.
+     * 
+     * @param projectKey sequential project to find the top task for
+     */
+    private void updateTopTaskForSequentialProject(Key<WatchedProject> projectKey) {
+        List<WatchedTask> tasks = mTaskDao.userQuery().filter("project", projectKey).order("order").list();
+        boolean topTaskFound = false;
+        ArrayList<WatchedTask> changedTasks = Lists.newArrayList();
+
+        for (WatchedTask task : tasks) {
+            if (!topTaskFound && isCandidateTopTask(task)) {
+                log.log(Level.FINE, "Found new top task {0} for project {1}", 
+                        new Object[] {task, projectKey});
+                topTaskFound = true;
+                if (!task.isTopTask()) {
+                    task.setTopTask(true);
+                    changedTasks.add(task);
+                }
+            } else {
+                if (task.isTopTask()) {
+                    task.setTopTask(false);
+                    changedTasks.add(task);
+                }
+            }
+        }
+        if (!changedTasks.isEmpty()) {            
+            mTaskDao.putAll(changedTasks);
+        }
+    }
+
+
+    
 }

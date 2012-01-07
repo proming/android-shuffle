@@ -28,10 +28,10 @@ public interface TaskProxy extends EntityProxy {
     Date getCreatedDate();
     void setCreatedDate(Date createdDate);
     Date getModifiedDate();
-    boolean isActive();
-    void setActive(boolean active);
-    boolean isDeleted();
-    void setDeleted(boolean deleted);
+    boolean isActiveTask();
+    void setActiveTask(boolean active);
+    boolean isDeletedTask();
+    void setDeletedTask(boolean deleted);
     int getOrder();
     void setOrder(int order);
     boolean isComplete();

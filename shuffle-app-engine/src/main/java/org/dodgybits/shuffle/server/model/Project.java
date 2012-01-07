@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 @Unindexed
 public class Project extends UserDatastoreObject {
-    private Key<Context> defaultContext;
+    private Key<WatchedContext> defaultContext;
     private boolean parallel;
     private boolean archived;
     @Indexed
@@ -20,11 +20,11 @@ public class Project extends UserDatastoreObject {
     private boolean deleted;
     private boolean active = true;
 
-    public Key<Context> getDefaultContextKey() {
+    public Key<WatchedContext> getDefaultContextKey() {
         return defaultContext;
     }
 
-    public void setDefaultContextKey(Key<Context> defaultContextKey) {
+    public void setDefaultContextKey(Key<WatchedContext> defaultContextKey) {
         this.defaultContext = defaultContextKey;
     }
 
@@ -40,7 +40,7 @@ public class Project extends UserDatastoreObject {
         if (contextId == null) {
             defaultContext = null;
         } else {
-            defaultContext = new Key<Context>(Context.class, contextId);
+            defaultContext = new Key<WatchedContext>(WatchedContext.class, contextId);
         }
     }
 
@@ -76,7 +76,7 @@ public class Project extends UserDatastoreObject {
         return active;
     }
 
-    public final void setActive(boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
@@ -84,14 +84,13 @@ public class Project extends UserDatastoreObject {
         return deleted;
     }
 
-    public final void setDeleted(boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 
     @PrePersist
-    private void PrePersist() {
+    protected void prePersist() {
         modifiedDate = new Date();
     }
-
 
 }

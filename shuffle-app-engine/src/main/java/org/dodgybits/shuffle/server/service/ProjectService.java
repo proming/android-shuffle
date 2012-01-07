@@ -2,9 +2,7 @@ package org.dodgybits.shuffle.server.service;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Query;
-import org.dodgybits.shuffle.server.model.AppUser;
-import org.dodgybits.shuffle.server.model.Project;
-import org.dodgybits.shuffle.server.model.Task;
+import org.dodgybits.shuffle.server.model.*;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -13,54 +11,38 @@ import java.util.logging.Logger;
 public class ProjectService {
     private static final Logger log = Logger.getLogger(ProjectService.class.getName());
 
-    private ObjectifyDao<Project> mDao = ObjectifyDao.newDao(Project.class);
-    private ObjectifyDao<Task> mTaskDao = ObjectifyDao.newDao(Task.class);
+    private ObjectifyDao<WatchedProject> mDao = ObjectifyDao.newDao(WatchedProject.class);
+    private TaskService mTaskService = new TaskService();
 
-    public List<Project> fetchAll() {
+    public List<WatchedProject> fetchAll() {
         log.log(Level.FINEST, "Fetching all projects");
 
-        Query<Project> q = mDao.userQuery();
+        Query<WatchedProject> q = mDao.userQuery();
         q.order("name");
         return q.list();
     }
 
-    public Project save(Project project)
+    public WatchedProject save(WatchedProject project)
     {
         AppUser loggedInUser = LoginService.getLoggedInUser();
         project.setOwner(loggedInUser);
-        
-        // check if active or deleted flags were changed
-        if (project.getId() != null) {
-            Project oldProject = mDao.get(project.getId());
-            boolean activeChanged = oldProject.isActive() != project.isActive();
-            boolean deletedChanged = oldProject.isDeleted() != project.isDeleted();
-            if (activeChanged || deletedChanged) {
-                onInheritedFlagChange(project, activeChanged, deletedChanged);
-            }
+
+        if (project.getId() != null && (project.isActiveChanged() || project.isDeletedChanged() ||
+                project.isParallelChanged())) {
+            mTaskService.onProjectChanged(project, mDao.key(project));
         }
 
         mDao.put(project);
+
         return project;
     }
 
-    /**
-     * When a project active or deleted flag changes, all its tasks need to be updated
-     * to take account of this change (since we can't use joins).
-     */
-    private void onInheritedFlagChange(Project project, boolean activeChanged, boolean deletedChanged) {
-        Query<Task> query = mTaskDao.userQuery().filter("project", mDao.key(project)).order("order");
-        List<Task> tasks = query.list();
-        boolean first = true;
-        for (Task task : tasks) {
-        }
-    }
-
-    public void delete(Project project)
+    public void delete(WatchedProject project)
     {
         mDao.delete(project);
     }
 
-    public Key<Project> getKey(Project project) {
+    public Key<WatchedProject> getKey(WatchedProject project) {
         return mDao.key(project);
     }
 

@@ -5,7 +5,7 @@ import com.google.web.bindery.requestfactory.shared.ProxyForName;
 
 import java.util.Date;
 
-@ProxyForName(value = "org.dodgybits.shuffle.server.model.Project",
+@ProxyForName(value = "org.dodgybits.shuffle.server.model.WatchedProject",
         locator="org.dodgybits.shuffle.server.locator.ObjectifyLocator"  )
 public interface ProjectProxy extends EntityProxy {
 

@@ -13,6 +13,7 @@ import org.dodgybits.shuffle.server.service.ObjectifyDao;
 
 import javax.annotation.Nullable;
 import javax.persistence.PrePersist;
+import javax.persistence.Transient;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -24,8 +25,15 @@ public class Task extends UserDatastoreObject {
 
     private String description;
     private Text details;
-    private List<Key<Context>> contexts = Lists.newArrayList();
-    private Key<Project> project;
+    
+    private List<Key<WatchedContext>> contexts = Lists.newArrayList();
+    @Transient
+    private List<WatchedContext> watchedContexts = Lists.newArrayList();
+    
+    private Key<WatchedProject> project;
+    @Transient
+    private WatchedProject watchedProject;
+    
     private Date createdDate;
     @Indexed
     private Date modifiedDate;
@@ -35,8 +43,8 @@ public class Task extends UserDatastoreObject {
     @NotSaved(IfDefault.class)
     private boolean mAllDay = false;
     // 0-indexed order within a project.
-    @Indexed()
-    protected int order;
+    @Indexed
+    protected int order = -1;
     @Indexed
     private boolean complete;
 
@@ -46,18 +54,19 @@ public class Task extends UserDatastoreObject {
     @NotSaved(IfDefault.class)
     private boolean activeTask = true;
 
-    public List<Key<Context>> getContextKeys() {
+    public List<Key<WatchedContext>> getContextKeys() {
         return contexts;
     }
 
-    public void setContextKeys(List<Key<Context>> contexts) {
+    public void setContextKeys(List<Key<WatchedContext>> contexts) {
         this.contexts = contexts;
+        watchedContexts.clear();
     }
     
     public List<Long> getContextIds() {
-        return Lists.transform(contexts, new Function<Key<Context>, Long>() {
+        return Lists.transform(contexts, new Function<Key<WatchedContext>, Long>() {
             @Override
-            public Long apply(@Nullable Key<Context> contextKey) {
+            public Long apply(@Nullable Key<WatchedContext> contextKey) {
                 Long id = null;
                 if (contextKey != null) {
                     id = contextKey.getId();
@@ -68,20 +77,29 @@ public class Task extends UserDatastoreObject {
     }
     
     public void setContextIds(List<Long> ids) {
-        setContextKeys(Lists.newArrayList(Lists.transform(ids, new Function<Long, Key<Context>>() {
+        setContextKeys(Lists.newArrayList(Lists.transform(ids, new Function<Long, Key<WatchedContext>>() {
             @Override
-            public Key<Context> apply(@Nullable Long input) {
-                return new Key<Context>(Context.class, input);
+            public Key<WatchedContext> apply(@Nullable Long input) {
+                return new Key<WatchedContext>(WatchedContext.class, input);
             }
         })));
     }
 
-    public Key<Project> getProjectKey() {
+    public List<WatchedContext> getContexts() {
+        if (watchedContexts.isEmpty() && !contexts.isEmpty()) {
+            ObjectifyDao<WatchedContext> contextDao = ObjectifyDao.newDao(WatchedContext.class);
+            watchedContexts.addAll(contextDao.get(contexts).values());
+        }
+        return watchedContexts;
+    }
+    
+    public Key<WatchedProject> getProjectKey() {
         return project;
     }
 
-    public void setProjectKey(Key<Project> project) {
+    public void setProjectKey(Key<WatchedProject> project) {
         this.project = project;
+        watchedProject = null;
     }
 
     public Long getProjectId() {
@@ -96,17 +114,16 @@ public class Task extends UserDatastoreObject {
         if (id == null) {
             setProjectKey(null);
         } else {
-            setProjectKey(new Key<Project>(Project.class, id));
+            setProjectKey(new Key<WatchedProject>(WatchedProject.class, id));
         }
     }
     
-    public Project getProject() {
-        Project project = null;
-        if (this.project != null) {
-            ObjectifyDao<Project> projectDao = ObjectifyDao.newDao(Project.class);
-            project = projectDao.get(this.project);
+    public WatchedProject getProject() {
+        if (watchedProject == null && this.project != null) {
+            ObjectifyDao<WatchedProject> projectDao = ObjectifyDao.newDao(WatchedProject.class);
+            watchedProject = projectDao.get(this.project);
         }
-        return project;
+        return watchedProject;
     }
 
     public Date getShowFromDate() {
@@ -161,19 +178,19 @@ public class Task extends UserDatastoreObject {
         return modifiedDate;
     }
 
-    public final boolean isActive() {
+    public final boolean isActiveTask() {
         return activeTask;
     }
 
-    public void setActive(boolean active) {
+    public void setActiveTask(boolean active) {
         this.activeTask = active;
     }
 
-    public final boolean isDeleted() {
+    public final boolean isDeletedTask() {
         return deletedTask;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeletedTask(boolean deleted) {
         this.deletedTask = deleted;
     }
 
@@ -195,7 +212,7 @@ public class Task extends UserDatastoreObject {
     }
 
     @PrePersist
-    private void PrePersist() {
+    protected void prePersist() {
         modifiedDate = new Date();
     }
 

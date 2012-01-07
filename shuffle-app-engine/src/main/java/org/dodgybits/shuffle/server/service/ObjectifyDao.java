@@ -27,8 +27,8 @@ public class ObjectifyDao<T> extends DAOBase
 	{
         ObjectifyService.register(WatchedTask.class);
         ObjectifyService.register(TaskQuery.class);
-        ObjectifyService.register(Context.class);
-        ObjectifyService.register(Project.class);
+        ObjectifyService.register(WatchedContext.class);
+        ObjectifyService.register(WatchedProject.class);
 		ObjectifyService.register(AppUser.class);
 	}
 

@@ -10,9 +10,9 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.dodgybits.shuffle.dto.ShuffleProtos;
 import org.dodgybits.shuffle.dto.ShuffleProtos.Catalogue;
-import org.dodgybits.shuffle.server.model.Context;
-import org.dodgybits.shuffle.server.model.Project;
 import org.dodgybits.shuffle.server.model.Task;
+import org.dodgybits.shuffle.server.model.WatchedContext;
+import org.dodgybits.shuffle.server.model.WatchedProject;
 import org.dodgybits.shuffle.server.model.WatchedTask;
 import org.dodgybits.shuffle.server.service.ContextService;
 import org.dodgybits.shuffle.server.service.ProjectService;
@@ -63,8 +63,8 @@ public class RestoreBackupServlet extends HttpServlet {
                     // Process the input stream
                     Catalogue catalogue = Catalogue.parseFrom(stream);
 
-                    Map<Long, Key<Context>> contextMap = saveContexts(catalogue);
-                    Map<Long, Key<Project>> projectMap = saveProjects(catalogue, contextMap);
+                    Map<Long, Key<WatchedContext>> contextMap = saveContexts(catalogue);
+                    Map<Long, Key<WatchedProject>> projectMap = saveProjects(catalogue, contextMap);
                     int tasksSaved = saveTasks(catalogue, contextMap, projectMap);
                     response.getWriter().println("Saved " + tasksSaved + " actions.");
                     response.flushBuffer();
@@ -75,24 +75,24 @@ public class RestoreBackupServlet extends HttpServlet {
         }
     }
 
-    private Map<Long, Key<Context>> saveContexts(Catalogue catalogue) {
+    private Map<Long, Key<WatchedContext>> saveContexts(Catalogue catalogue) {
         List<ShuffleProtos.Context> protoContexts = catalogue.getContextList();
-        Map<Long, Key<Context>> contextMap = Maps.newHashMap();
+        Map<Long, Key<WatchedContext>> contextMap = Maps.newHashMap();
         ContextService contextService = new ContextService();
 
         for (ShuffleProtos.Context protoContext : protoContexts) {
             logger.info("Saving: " + protoContext.toString());
-            Context context = toModelContext(protoContext);
+            WatchedContext context = toModelContext(protoContext);
             contextService.save(context);
-            Key<Context> key = contextService.getKey(context);
+            Key<WatchedContext> key = contextService.getKey(context);
             contextMap.put(protoContext.getId(), key);
         }
 
         return contextMap;
     }
 
-    private Context toModelContext(ShuffleProtos.Context protoContext) {
-        Context context = new Context();
+    private WatchedContext toModelContext(ShuffleProtos.Context protoContext) {
+        WatchedContext context = new WatchedContext();
         context.setName(protoContext.getName());
         context.setColourIndex(protoContext.getColourIndex());
         if (protoContext.hasActive()) {
@@ -113,24 +113,24 @@ public class RestoreBackupServlet extends HttpServlet {
         return context;
     }
 
-    private Map<Long, Key<Project>> saveProjects(Catalogue catalogue, Map<Long, Key<Context>> contextMap) {
+    private Map<Long, Key<WatchedProject>> saveProjects(Catalogue catalogue, Map<Long, Key<WatchedContext>> contextMap) {
         List<ShuffleProtos.Project> protoProjects = catalogue.getProjectList();
-        Map<Long, Key<Project>> projectMap = Maps.newHashMap();
+        Map<Long, Key<WatchedProject>> projectMap = Maps.newHashMap();
         ProjectService projectService = new ProjectService();
 
         for (ShuffleProtos.Project protoProject : protoProjects) {
             logger.info("Saving: " + protoProject.toString());
-            Project project = toModelProject(protoProject, contextMap);
+            WatchedProject project = toModelProject(protoProject, contextMap);
             projectService.save(project);
-            Key<Project> key = projectService.getKey(project);
+            Key<WatchedProject> key = projectService.getKey(project);
             projectMap.put(protoProject.getId(), key);
         }
 
         return projectMap;
     }
 
-    private Project toModelProject(ShuffleProtos.Project protoProject, Map<Long, Key<Context>> contextMap) {
-        Project project = new Project();
+    private WatchedProject toModelProject(ShuffleProtos.Project protoProject, Map<Long, Key<WatchedContext>> contextMap) {
+        WatchedProject project = new WatchedProject();
         project.setName(protoProject.getName());
         if (protoProject.hasParallel()) {
             project.setParallel(protoProject.getParallel());
@@ -142,7 +142,7 @@ public class RestoreBackupServlet extends HttpServlet {
 
         }
         if (protoProject.hasDefaultContextId()) {
-            Key<Context> contextKey = contextMap.get(protoProject.getDefaultContextId());
+            Key<WatchedContext> contextKey = contextMap.get(protoProject.getDefaultContextId());
             if (contextKey != null) {
                 project.setDefaultContextKey(contextKey);
             }
@@ -161,9 +161,9 @@ public class RestoreBackupServlet extends HttpServlet {
         return project;
     }
 
-    private int saveTasks(Catalogue catalogue, Map<Long, Key<Context>> contextMap, Map<Long, Key<Project>> projectMap) {
+    private int saveTasks(Catalogue catalogue, Map<Long, Key<WatchedContext>> contextMap, Map<Long, Key<WatchedProject>> projectMap) {
         List<ShuffleProtos.Task> protoTasks = catalogue.getTaskList();
-        List<Task> tasks = Lists.newArrayListWithCapacity(protoTasks.size());
+        List<WatchedTask> tasks = Lists.newArrayListWithCapacity(protoTasks.size());
         TaskService taskService = new TaskService();
 
         for (ShuffleProtos.Task protoTask : protoTasks) {
@@ -177,19 +177,19 @@ public class RestoreBackupServlet extends HttpServlet {
     }
     
     private WatchedTask toModelTask(ShuffleProtos.Task protoTask,
-                             Map<Long, Key<Context>> contextMap, Map<Long, Key<Project>> projectMap) {
+                             Map<Long, Key<WatchedContext>> contextMap, Map<Long, Key<WatchedProject>> projectMap) {
         WatchedTask task = new WatchedTask();
         task.setDescription(protoTask.getDescription());
         task.setDetails(protoTask.getDetails());
         if (protoTask.hasActive()) {
-            task.setActive(protoTask.getActive());
+            task.setActiveTask(protoTask.getActive());
         } else {
-            task.setActive(true);
+            task.setActiveTask(true);
         }
         if (protoTask.hasDeleted()) {
-            task.setDeleted(protoTask.getDeleted());
+            task.setDeletedTask(protoTask.getDeleted());
         } else {
-            task.setDeleted(false);
+            task.setDeletedTask(false);
         }
         task.setComplete(protoTask.getComplete());
         task.setCreatedDate(toDate(protoTask.getCreated()));
@@ -201,7 +201,7 @@ public class RestoreBackupServlet extends HttpServlet {
             task.setProjectKey(projectMap.get(protoTask.getProjectId()));
         }
         if (protoTask.hasContextId()) {
-            Key<Context> key = contextMap.get(protoTask.getContextId());
+            Key<WatchedContext> key = contextMap.get(protoTask.getContextId());
             if (key != null) {
                 task.setContextKeys(Lists.newArrayList(key));
             }
