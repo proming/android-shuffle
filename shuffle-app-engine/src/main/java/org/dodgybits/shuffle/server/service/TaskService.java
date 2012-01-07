@@ -19,10 +19,7 @@ public class TaskService {
     private static final Logger log = Logger.getLogger(TaskService.class.getName());
 
     private ObjectifyDao<WatchedTask> mTaskDao = ObjectifyDao.newDao(WatchedTask.class);
-    private ObjectifyDao<TaskQuery> mTaskQueryDao = ObjectifyDao.newDao(TaskQuery.class);
-    private ObjectifyDao<WatchedContext> mContextDao = ObjectifyDao.newDao(WatchedContext.class);
-    private ObjectifyDao<WatchedProject> mProjectDao = ObjectifyDao.newDao(WatchedProject.class);
-    
+
     public TaskQueryResult query(TaskQuery query, int start, int limit) {
         log.log(Level.FINEST, "Looking up using {0} start {1} limit {2}",
                 new Object[] {query, start, limit});
@@ -211,29 +208,6 @@ public class TaskService {
         return task;
     }
 
-    public List<Integer> emptyTrash() {
-        log.log(Level.FINE, "Emptying trash");
-
-        List<Integer> deletedCounts = Lists.newArrayList();
-        
-        List<WatchedTask> tasks = mTaskDao.userQuery().filter("deleted", true).list();
-        deletedCounts.add(tasks.size());
-        log.log(Level.INFO, "Permanently deleting {0} tasks", tasks.size());
-        mTaskDao.deleteAll(tasks);
-        
-        List<WatchedProject> projects = mProjectDao.userQuery().filter("deleted", true).list();
-        deletedCounts.add(projects.size());
-        log.log(Level.INFO, "Permanently deleting {0} projects", projects.size());
-        mProjectDao.deleteAll(projects);
-
-        List<WatchedContext> contexts = mContextDao.userQuery().filter("deleted", true).list();
-        deletedCounts.add(contexts.size());
-        log.log(Level.INFO, "Permanently deleting {0} contexts", contexts.size());
-        mContextDao.deleteAll(contexts);
-
-        return deletedCounts;
-    }    
-    
     public int deleteCompletedTasks() {
         List<WatchedTask> tasks = mTaskDao.userQuery().filter("completed", true).list();
         log.log(Level.INFO, "Deleting {0} completed tasks", tasks.size());
@@ -244,27 +218,6 @@ public class TaskService {
         mTaskDao.putAll(tasks);
         
         return tasks.size();
-    }
-
-    public TaskQuery save(TaskQuery query) {
-        AppUser loggedInUser = LoginService.getLoggedInUser();
-        query.setOwner(loggedInUser);
-        mTaskQueryDao.put(query);
-        return query;
-    }
-
-    public TaskQuery findQueryByName(String name) {
-        TaskQuery taskQuery = null;
-        Query<TaskQuery> query = mTaskQueryDao.userQuery();
-        query.filter("name", name);
-        log.log(Level.FINE, "Looking up task query {0}", name);
-        List<TaskQuery> queries = query.list();
-        if (queries.size() == 1) {
-            taskQuery = queries.get(0);
-        } else if (queries.size() > 1) {
-            throw new IllegalStateException("More than 1 query found for name " + name);
-        }
-        return taskQuery;
     }
 
     /**

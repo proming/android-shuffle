@@ -14,15 +14,9 @@ public interface TaskService extends RequestContext {
 
     Request<Void> delete(TaskProxy task);
 
-    Request<List<Integer>> emptyTrash();
-
     Request<Integer> deleteCompletedTasks();
 
     Request<TaskQueryResultProxy> query(TaskQueryProxy query, int start, int limit);
-
-    Request<TaskQueryProxy> save(TaskQueryProxy query);
-
-    Request<TaskQueryProxy> findQueryByName(String name);
 
     Request<Void> moveBelow(TaskProxy movedTask, int desiredOrder);
 

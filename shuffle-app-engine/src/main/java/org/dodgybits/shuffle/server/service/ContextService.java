@@ -5,6 +5,7 @@ import com.googlecode.objectify.Query;
 import org.dodgybits.shuffle.server.model.AppUser;
 import org.dodgybits.shuffle.server.model.WatchedContext;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,33 @@ public class ContextService {
 
         Query<WatchedContext> q = mDao.userQuery();
         q.order("name");
-        return q.list();
+        List<WatchedContext> contexts = q.list();
+        if (contexts.isEmpty()) {
+            // no contexts found - add the defaults
+            createPresetContexts(contexts);
+            mDao.putAll(contexts);
+        }
+
+        return contexts;
+    }
+
+    private void createPresetContexts(List<WatchedContext> contexts) {
+        contexts.addAll(Arrays.asList(
+            createPresetContext("At home", 5, "go_home"),
+            createPresetContext("At work", 19, "system_file_manager"),
+            createPresetContext("Online", 1, "applications_internet"),
+            createPresetContext("Errands", 14, "applications_development"),
+            createPresetContext("Contact", 22, "system_users"),
+            createPresetContext("Read", 16, "format_justify_fill")
+        ));
+    }
+    
+    private WatchedContext createPresetContext(String name, int colorIndex, String iconName) {
+        WatchedContext context = new WatchedContext();
+        context.setName(name);
+        context.setColourIndex(colorIndex);
+        context.setIconName(iconName);
+        return context;
     }
 
     public WatchedContext save(WatchedContext context)

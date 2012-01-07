@@ -10,11 +10,11 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.dodgybits.shuffle.dto.ShuffleProtos;
 import org.dodgybits.shuffle.dto.ShuffleProtos.Catalogue;
-import org.dodgybits.shuffle.server.model.Task;
 import org.dodgybits.shuffle.server.model.WatchedContext;
 import org.dodgybits.shuffle.server.model.WatchedProject;
 import org.dodgybits.shuffle.server.model.WatchedTask;
 import org.dodgybits.shuffle.server.service.ContextService;
+import org.dodgybits.shuffle.server.service.GlobalService;
 import org.dodgybits.shuffle.server.service.ProjectService;
 import org.dodgybits.shuffle.server.service.TaskService;
 
@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,62 +32,103 @@ import java.util.logging.Logger;
 @SuppressWarnings("serial")
 public class RestoreBackupServlet extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(RestoreBackupServlet.class.getName());
+    private static final Logger log = Logger.getLogger(RestoreBackupServlet.class.getName());
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-     // Check that we have a file upload request
-        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-
-        logger.log(Level.FINE, "Request multipart " + isMultipart);
-        
-     // Create a new file upload handler
         ServletFileUpload upload = new ServletFileUpload();
+        upload.setFileSizeMax(100000);
+        boolean deleteExisting = false;
+        FileItemIterator itemIterator;
+        Catalogue catalogue = null;
 
-        // Parse the request
         try
         {
-            FileItemIterator iter = upload.getItemIterator(request);
-            while (iter.hasNext()) {
-                FileItemStream item = iter.next();
-                String name = item.getFieldName();
-                InputStream stream = item.openStream();
-                if (item.isFormField()) {
-                    System.out.println("Form field " + name + " with value "
-                        + Streams.asString(stream) + " detected.");
-                } else {
-                    System.out.println("File field " + name + " with file name "
-                        + item.getName() + " detected.");
-                    // Process the input stream
-                    Catalogue catalogue = Catalogue.parseFrom(stream);
+            // Parse the request
+            itemIterator = upload.getItemIterator(request);
 
-                    Map<Long, Key<WatchedContext>> contextMap = saveContexts(catalogue);
-                    Map<Long, Key<WatchedProject>> projectMap = saveProjects(catalogue, contextMap);
-                    int tasksSaved = saveTasks(catalogue, contextMap, projectMap);
-                    response.getWriter().println("Saved " + tasksSaved + " actions.");
-                    response.flushBuffer();
+            while (itemIterator.hasNext()) {
+                FileItemStream fileItemStream = itemIterator.next();
+                if (fileItemStream.isFormField()) {
+                    String fieldName = fileItemStream.getFieldName();
+                    if ("deleteExisting".equals(fieldName))
+                    {
+                        String deleteStr = Streams.asString(fileItemStream.openStream());
+                        deleteExisting = "on".equals(deleteStr);
+                        log.log(Level.INFO, "Deleting existing {0}", deleteExisting);
+                    } else {
+                        log.log(Level.FINE, "Ignoring unknown form field {0}", fieldName);
+                    }
+                } else {
+                    log.log(Level.INFO, "File {0} detected", fileItemStream.getName());
+                    catalogue = Catalogue.parseFrom(fileItemStream.openStream());
                 }
+
             }
         } catch (FileUploadException e) {
             throw new ServletException(e);
         }
+
+        if (catalogue == null) {
+            throw new ServletException("No backup file found");
+        }
+
+        if (deleteExisting) {
+            GlobalService globalService = new GlobalService();
+            globalService.deleteEverything();
+        }
+
+        Map<Long, Key<WatchedContext>> contextMap = saveContexts(catalogue.getContextList());
+        Map<Long, Key<WatchedProject>> projectMap = saveProjects(catalogue.getProjectList(), contextMap);
+        int tasksSaved = saveTasks(catalogue.getTaskList(), contextMap, projectMap);
+
+        String responseString = String.format("Saved %s contexts %s projects and %s actions",
+                contextMap.size(), projectMap.size(), tasksSaved);
+        log.log(Level.INFO, responseString);
+
+        response.getWriter().println(responseString);
+        response.flushBuffer();
     }
 
-    private Map<Long, Key<WatchedContext>> saveContexts(Catalogue catalogue) {
-        List<ShuffleProtos.Context> protoContexts = catalogue.getContextList();
+    private Map<Long, Key<WatchedContext>> saveContexts(List<ShuffleProtos.Context> protoContexts) {
         Map<Long, Key<WatchedContext>> contextMap = Maps.newHashMap();
         ContextService contextService = new ContextService();
+        List<WatchedContext> existingContexts = contextService.fetchAll();
+        Map<String, WatchedContext> existingContextsByName = indexContextsByName(existingContexts);
 
         for (ShuffleProtos.Context protoContext : protoContexts) {
-            logger.info("Saving: " + protoContext.toString());
-            WatchedContext context = toModelContext(protoContext);
-            contextService.save(context);
-            Key<WatchedContext> key = contextService.getKey(context);
+            WatchedContext backupContext = toModelContext(protoContext);
+            WatchedContext existingContext = existingContextsByName.get(backupContext.getName());
+            if (existingContext == null) {
+                log.log(Level.FINEST, "Saving new context {0}", protoContext);
+            } else {
+                log.log(Level.FINEST, "Updating existing context from {0}", protoContext);
+                updateExistingContext(existingContext, backupContext);
+                backupContext = existingContext;
+            }
+
+            contextService.save(backupContext);
+            Key<WatchedContext> key = contextService.getKey(backupContext);
             contextMap.put(protoContext.getId(), key);
         }
 
         return contextMap;
+    }
+
+    private void updateExistingContext(WatchedContext existingContext, WatchedContext backupContext) {
+        existingContext.setColourIndex(backupContext.getColourIndex());
+        existingContext.setIconName(backupContext.getIconName());
+        existingContext.setActive(backupContext.isActive());
+        existingContext.setDeleted(backupContext.isDeleted());
+    }
+
+    private Map<String, WatchedContext> indexContextsByName(List<WatchedContext> contexts) {
+        Map<String, WatchedContext> result = Maps.newHashMapWithExpectedSize(contexts.size());
+        for (WatchedContext context : contexts) {
+            result.put(context.getName(), context);
+        }
+        return result;
     }
 
     private WatchedContext toModelContext(ShuffleProtos.Context protoContext) {
@@ -113,20 +153,46 @@ public class RestoreBackupServlet extends HttpServlet {
         return context;
     }
 
-    private Map<Long, Key<WatchedProject>> saveProjects(Catalogue catalogue, Map<Long, Key<WatchedContext>> contextMap) {
-        List<ShuffleProtos.Project> protoProjects = catalogue.getProjectList();
+    private Map<Long, Key<WatchedProject>> saveProjects(
+            List<ShuffleProtos.Project> protoProjects, Map<Long, Key<WatchedContext>> contextMap) {
         Map<Long, Key<WatchedProject>> projectMap = Maps.newHashMap();
         ProjectService projectService = new ProjectService();
+        List<WatchedProject> existingProjects = projectService.fetchAll();
+        Map<String, WatchedProject> existingProjectsByName = indexProjectsByName(existingProjects);
 
         for (ShuffleProtos.Project protoProject : protoProjects) {
-            logger.info("Saving: " + protoProject.toString());
-            WatchedProject project = toModelProject(protoProject, contextMap);
-            projectService.save(project);
-            Key<WatchedProject> key = projectService.getKey(project);
+            WatchedProject backupProject = toModelProject(protoProject, contextMap);
+            WatchedProject existingProject = existingProjectsByName.get(backupProject.getName());
+            if (existingProject == null) {
+                log.log(Level.FINEST, "Saving new project {0}", protoProject);
+            } else {
+                log.log(Level.FINEST, "Updating existing project from {0}", protoProject);
+                updateExistingProject(existingProject, backupProject);
+                backupProject = existingProject;
+            }
+
+            projectService.save(backupProject);
+            Key<WatchedProject> key = projectService.getKey(backupProject);
             projectMap.put(protoProject.getId(), key);
         }
 
         return projectMap;
+    }
+
+    private void updateExistingProject(WatchedProject existingProject, WatchedProject backupProject) {
+        existingProject.setParallel(backupProject.isParallel());
+        existingProject.setDefaultContextKey(backupProject.getDefaultContextKey());
+        existingProject.setArchived(backupProject.isArchived());
+        existingProject.setActive(backupProject.isActive());
+        existingProject.setDeleted(backupProject.isDeleted());
+    }
+
+    private Map<String, WatchedProject> indexProjectsByName(List<WatchedProject> projects) {
+        Map<String, WatchedProject> result = Maps.newHashMapWithExpectedSize(projects.size());
+        for (WatchedProject project : projects) {
+            result.put(project.getName(), project);
+        }
+        return result;
     }
 
     private WatchedProject toModelProject(ShuffleProtos.Project protoProject, Map<Long, Key<WatchedContext>> contextMap) {
@@ -161,13 +227,14 @@ public class RestoreBackupServlet extends HttpServlet {
         return project;
     }
 
-    private int saveTasks(Catalogue catalogue, Map<Long, Key<WatchedContext>> contextMap, Map<Long, Key<WatchedProject>> projectMap) {
-        List<ShuffleProtos.Task> protoTasks = catalogue.getTaskList();
+    private int saveTasks(
+            List<ShuffleProtos.Task> protoTasks,
+            Map<Long, Key<WatchedContext>> contextMap, Map<Long, Key<WatchedProject>> projectMap) {
         List<WatchedTask> tasks = Lists.newArrayListWithCapacity(protoTasks.size());
         TaskService taskService = new TaskService();
 
         for (ShuffleProtos.Task protoTask : protoTasks) {
-            logger.info("Saving: " + protoTask.toString());
+            log.log(Level.FINEST, "Saving: {0}", protoTask);
             WatchedTask task = toModelTask(protoTask, contextMap, projectMap);
             taskService.save(task);
             tasks.add(task);
