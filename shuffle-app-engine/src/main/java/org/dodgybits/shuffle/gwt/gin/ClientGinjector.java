@@ -18,16 +18,10 @@ public interface ClientGinjector extends Ginjector {
 
 	PlaceManager getPlaceManager();
 
-	Provider<WelcomePresenter> getWelcomePresenter();
-
 	AsyncProvider<ErrorPresenter> getErrorPresenter();
 
 	Provider<MainPresenter> getMainPresenter();
 
-	AsyncProvider<LoginPresenter> getLoginPresenter();
-
-	AsyncProvider<HelpPresenter> getHelpPresenter();
-	
 	AsyncProvider<InboxPresenter> getInboxPresenter();
 
 	AsyncProvider<EditActionPresenter> getNewActionPresenter();
