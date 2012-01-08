@@ -1,16 +1,16 @@
 package org.dodgybits.shuffle.gwt.cursor;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.Range;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.web.bindery.requestfactory.shared.Receiver;
-import com.google.web.bindery.requestfactory.shared.Request;
-import com.google.web.bindery.requestfactory.shared.ServerFailure;
+import com.google.web.bindery.requestfactory.shared.*;
 import org.dodgybits.shuffle.shared.*;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,6 +36,8 @@ public class TaskNavigator {
         }
       };
 
+    private final EventBus mEventBus;
+
     private HasData<TaskProxy> mDisplay;
 
     private TaskQueryProxy mTaskQuery;
@@ -47,8 +49,18 @@ public class TaskNavigator {
     private Receiver<TaskProxy> mReceiver;
 
     @Inject
-    public TaskNavigator(final Provider<TaskService> taskServiceProvider) {
+    public TaskNavigator(final EventBus eventBus, final Provider<TaskService> taskServiceProvider) {
         mTaskServiceProvider = taskServiceProvider;
+        mEventBus = eventBus;
+
+        EntityProxyChange.registerForProxyType(eventBus, TaskProxy.class,
+                new EntityProxyChange.Handler<TaskProxy>() {
+                    @Override
+                    public void onProxyChange(EntityProxyChange<TaskProxy> event) {
+                        TaskNavigator.this.onTaskChanged(event);
+                    }
+                });
+
     }
 
     public HasData<TaskProxy> getDisplay() {
@@ -102,6 +114,51 @@ public class TaskNavigator {
         }
         mCurrentIndex = value;
     }
+
+    private void onTaskChanged(EntityProxyChange<TaskProxy> event) {
+        if (WriteOperation.PERSIST.equals(event.getWriteOperation())) {
+            GWT.log("Refetching tasks");
+            // Re-fetch if we're already displaying the last page
+//            if (table.isRowCountExact()) {
+//                fetch(lastFetch + 1);
+//            }
+        }
+        if (WriteOperation.UPDATE.equals(event.getWriteOperation())) {
+            EntityProxyId<TaskProxy> taskId = event.getProxyId();
+            GWT.log("Received update for task " + taskId);
+
+
+            // Is the changing record onscreen?
+            int displayOffset = offsetOf(taskId);
+            if (displayOffset != -1) {
+                // Record is onscreen and may differ from our data
+                mTaskServiceProvider.get().find(taskId).fire(new Receiver<TaskProxy>() {
+                    @Override
+                    public void onSuccess(TaskProxy task) {
+                        // Re-check offset in case of changes while waiting for data
+                        int offset = offsetOf(task.stableId());
+                        if (offset != -1 && mDisplay != null) {
+                            mDisplay.setRowData(mDisplay.getVisibleRange().getStart() + offset,
+                                    Collections.singletonList(task));
+                        }
+                    }
+                });
+            }
+        }
+
+    }
+
+    private int offsetOf(EntityProxyId<TaskProxy> taskId) {
+        if (mTasks != null) {
+            for (int offset = 0, j = mTasks.size(); offset < j; offset++) {
+                if (taskId.equals(mTasks.get(offset).stableId())) {
+                    return offset;
+                }
+            }
+        }
+        return -1;
+    }
+
 
     public void updateCurrentTask(TaskProxy task) {
         mTasks.set(mCurrentIndex - mDisplay.getVisibleRange().getStart(), task);

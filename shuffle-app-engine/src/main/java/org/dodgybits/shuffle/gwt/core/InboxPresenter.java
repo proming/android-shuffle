@@ -84,7 +84,8 @@ public class InboxPresenter extends
     public void onEditAction(int index, TaskProxy proxy) {
         mTaskNavigator.setCurrentIndex(index);
         PlaceRequest myRequest = new PlaceRequest(NameTokens.editAction)
-                .with("action", "edit");
+                .with("action", "edit")
+                .with("id", proxy.stableId().;
         mPlaceManager.revealPlace( myRequest );
     }
 

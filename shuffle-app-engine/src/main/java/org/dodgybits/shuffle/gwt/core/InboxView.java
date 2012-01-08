@@ -6,6 +6,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -16,10 +17,7 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
-import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SelectionModel;
+import com.google.gwt.view.client.*;
 import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import org.dodgybits.shuffle.gwt.formatter.ActionDateFormatter;
@@ -33,8 +31,15 @@ import java.util.List;
 public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements InboxPresenter.MyView {
 
     private final Widget widget;
+    private final EventBus mEventBus;
 
     public interface Binder extends UiBinder<Widget, InboxView> {
+    }
+
+    interface TableResources extends DataGrid.Resources {
+        @Override
+        @Source(value = {DataGrid.Style.DEFAULT_CSS, "DataGridPatch.css"})
+        DataGrid.Style dataGridStyle();
     }
 
     private static final ProvidesKey<TaskProxy> KEY_PROVIDER =
@@ -49,27 +54,24 @@ public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements
     private ActionDateFormatter mFormatter;
 
     @UiField(provided = true)
-    SimplePager pager;
+    SimplePager pager = new SimplePager();
 
     @UiField(provided = true)
     DataGrid<TaskProxy> grid;
 
     @Inject
-    public InboxView(final Binder binder) {
+    public InboxView(final EventBus eventBus, final Binder binder) {
+        mEventBus = eventBus;
         mFormatter = new ActionDateFormatter();
+
 
         // Create a grid.
 
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        grid = new DataGrid<TaskProxy>(KEY_PROVIDER);
-        grid.setWidth("100%");
-
-        // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        pager = new SimplePager(SimplePager.TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setDisplay(grid);
+        grid = new DataGrid<TaskProxy>(15,
+                GWT.<TableResources> create(TableResources.class), KEY_PROVIDER);
 
         // Add a selection model so we can select cells.
         final SelectionModel<TaskProxy> selectionModel = new MultiSelectionModel<TaskProxy>(KEY_PROVIDER);

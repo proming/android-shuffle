@@ -17,6 +17,7 @@
         }
 
         .dataGrid {
+            table-layout: fixed;
             border-bottom: 1px solid #ccc;
             text-align: left;
             width: 100%;
@@ -24,21 +25,21 @@
             margin-bottom: 4px;
         }
 
-        .pager {
-            height: 10%;
+        .displayInline {
+            display: inline;
         }
 
     </ui:style>
 
     <g:HTMLPanel height="100%" addStyleNames="{style.outer}">
             <c:DataGrid
-                    addStyleNames='{style.dataGrid}'
-                    pageSize='15'
-
+                    stylePrimaryName='{style.dataGrid}'
                     ui:field='grid'/>
         <c:SimplePager
-                addStyleNames='{style.pager}'
-                ui:field='pager'/>
+                stylePrimaryName="{style.displayInline}"
+                ui:field='pager'
+                display="{grid}"
+                />
     </g:HTMLPanel>
 
 </ui:UiBinder>

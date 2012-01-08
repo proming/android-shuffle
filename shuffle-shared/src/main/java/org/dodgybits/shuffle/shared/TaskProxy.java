@@ -1,6 +1,7 @@
 package org.dodgybits.shuffle.shared;
 
 import com.google.web.bindery.requestfactory.shared.EntityProxy;
+import com.google.web.bindery.requestfactory.shared.EntityProxyId;
 import com.google.web.bindery.requestfactory.shared.ProxyForName;
 
 import java.util.Date;
@@ -36,5 +37,6 @@ public interface TaskProxy extends EntityProxy {
     void setOrder(int order);
     boolean isComplete();
     void setComplete(boolean complete);
+    EntityProxyId<TaskProxy> stableId();
 
 }

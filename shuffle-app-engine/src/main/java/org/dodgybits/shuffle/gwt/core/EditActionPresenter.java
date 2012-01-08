@@ -120,8 +120,6 @@ public class EditActionPresenter extends
             @Override
             public void onSuccess(TaskProxy response) {
                 GWT.log("Success");
-                // TODO update task via navigator
-                mTaskNavigator.updateCurrentTask(mTask);
                 goBack();
             }
         });
