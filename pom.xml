@@ -207,6 +207,11 @@
                 <version>${gae.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.google.appengine</groupId>
+                <artifactId>appengine-tools-sdk</artifactId>
+                <version>${gae.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.google.android.c2dm</groupId>
                 <artifactId>c2dm-server</artifactId>
                 <version>${c2dm.version}</version>

@@ -53,6 +53,10 @@
 			<artifactId>appengine-api-1.0-sdk</artifactId>
 		</dependency>
         <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-tools-sdk</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.android.c2dm</groupId>
             <artifactId>c2dm-server</artifactId>
         </dependency>
@@ -69,6 +73,7 @@
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-labs</artifactId>
+            <scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>
@@ -100,13 +105,6 @@
             <artifactId>requestfactory-server</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!-- Generate the decoder needed by RequestFactory Server -->
-        <!-- Doesn't yet work in eclipse. See maven-processor-plugin below.
-        <dependency>
-            <groupId>com.google.web.bindery</groupId>
-            <artifactId>requestfactory-apt</artifactId>
-        </dependency>
-         -->
 
         <!-- RequestFactory will use JSR 303 javax.validation if you let it -->
         <dependency>
@@ -375,9 +373,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-                <configuration>
-                    <encoding>${project.encoding}</encoding>
-                </configuration>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -403,45 +398,7 @@
                     </execution>
                 </executions>
 			</plugin>
-            
-            <!--
-             Some jars with <scope>provided</scope> are copied by gwt-maven-plugin because
-             of <copyWebapp>true</copyWebapp>. These jars can be safely removed here.
-             For more information, see this thread:
-             https://groups.google.com/d/topic/codehaus-mojo-gwt-maven-plugin-users/Si8eqJsVjdE/discussion
-             -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-clean</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>remove-gwt-user-jar</id>
-                        <phase>post-installation-test</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                        <configuration>
-                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
-                            <filesets>
-                                <fileset>
-                                    <directory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</directory>
-                                    <includes>
-                                        <include>gwt-user*.jar</include>
-                                    </includes>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            
+
             
             <!-- Eclipse configuration -->
             <plugin>
