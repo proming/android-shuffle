@@ -113,7 +113,7 @@ public class InboxPresenter extends
         TaskQueryProxy query = service.create(TaskQueryProxy.class);
         query.setActive(Flag.yes);
         query.setDeleted(Flag.no);
-        query.setPredefinedQuery(PredefinedQuery.inbox);
+        query.setPredefinedQuery(PredefinedQuery.all);
         return query;
     }
     

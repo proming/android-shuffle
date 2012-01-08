@@ -53,10 +53,6 @@
 			<artifactId>appengine-api-1.0-sdk</artifactId>
 		</dependency>
         <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-tools-sdk</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.google.android.c2dm</groupId>
             <artifactId>c2dm-server</artifactId>
         </dependency>

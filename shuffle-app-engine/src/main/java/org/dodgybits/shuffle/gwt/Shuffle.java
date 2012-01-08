@@ -15,6 +15,10 @@
  */
 package org.dodgybits.shuffle.gwt;
 
+import com.google.web.bindery.requestfactory.gwt.client.RequestFactoryLogHandler;
+import com.google.web.bindery.requestfactory.shared.LoggingRequest;
+import org.dodgybits.shuffle.client.ShuffleRequestFactory;
+import org.dodgybits.shuffle.gwt.core.ErrorDialog;
 import org.dodgybits.shuffle.gwt.gin.ClientGinjector;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -23,6 +27,10 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.CssResource.NotStrict;
 import com.gwtplatform.mvp.client.DelayedBindRegistry;
+
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -42,7 +50,9 @@ public class Shuffle implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		// Wire the request factory and the event bus
-		ginjector.getRequestFactory().initialize(ginjector.getEventBus());
+        final ShuffleRequestFactory requestFactory = ginjector.getRequestFactory();
+
+        requestFactory.initialize(ginjector.getEventBus());
 
 		// Inject global styles.
 		GWT.<GlobalResources> create(GlobalResources.class).css()
@@ -51,6 +61,18 @@ public class Shuffle implements EntryPoint {
 		// This is required for Gwt-Platform proxy's generator
 		DelayedBindRegistry.bind(ginjector);
 
+        // Add remote logging handler
+        RequestFactoryLogHandler.LoggingRequestProvider provider = new RequestFactoryLogHandler.LoggingRequestProvider() {
+            public LoggingRequest getLoggingRequest() {
+                return requestFactory.loggingRequest();
+            }
+        };
+
+        Logger.getLogger("").addHandler(new ErrorDialog().getHandler());
+        Logger.getLogger("").addHandler(
+                new RequestFactoryLogHandler(provider, Level.WARNING,
+                        new ArrayList<String>()));
+        
 		ginjector.getPlaceManager().revealCurrentPlace();
 	}
 }
