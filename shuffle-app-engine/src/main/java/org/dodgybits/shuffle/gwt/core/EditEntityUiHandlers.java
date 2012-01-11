@@ -12,7 +12,4 @@ public interface EditEntityUiHandlers extends UiHandlers {
     void cancel();
     void previous();
     void next();
-    ProjectProxy getProject(TaskProxy task);
-    List<ContextProxy> getContexts(TaskProxy task);
-
 }

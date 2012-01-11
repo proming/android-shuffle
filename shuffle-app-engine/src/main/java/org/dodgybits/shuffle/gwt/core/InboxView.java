@@ -136,15 +136,15 @@ public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements
                 })) {
             @Override
             public String getValue(TaskProxy taskValue) {
-                String contextNames = " (";
-                List<ContextProxy> contexts = getUiHandlers().getContexts(taskValue);
+                String contextNames = "[";
+                List<ContextProxy> contexts = taskValue.getContexts();
                 for (ContextProxy context : contexts) {
                     contextNames += context == null ? "" : context.getName();
                 }
-                contextNames += ") ";
+                contextNames += "] ";
 
                 String projectName = "";
-                ProjectProxy project = getUiHandlers().getProject(taskValue);
+                ProjectProxy project = taskValue.getProject();
                 if (project != null) {
                     projectName = "<b>" + project.getName() + "</b>";
                 }

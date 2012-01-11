@@ -1,6 +1,7 @@
 package org.dodgybits.shuffle.shared;
 
 import com.google.web.bindery.requestfactory.shared.EntityProxy;
+import com.google.web.bindery.requestfactory.shared.EntityProxyId;
 import com.google.web.bindery.requestfactory.shared.ProxyForName;
 
 import java.util.Date;
@@ -23,5 +24,6 @@ public interface ProjectProxy extends EntityProxy {
     void setActive(boolean active);
     boolean isDeleted();
     void setDeleted(boolean deleted);
+    EntityProxyId<ProjectProxy> stableId();
 
 }

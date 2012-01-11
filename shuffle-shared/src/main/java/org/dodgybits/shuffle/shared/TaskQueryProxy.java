@@ -1,6 +1,7 @@
 package org.dodgybits.shuffle.shared;
 
 import com.google.web.bindery.requestfactory.shared.EntityProxy;
+import com.google.web.bindery.requestfactory.shared.EntityProxyId;
 import com.google.web.bindery.requestfactory.shared.ProxyForName;
 import com.google.web.bindery.requestfactory.shared.ValueProxy;
 
@@ -34,5 +35,7 @@ public interface TaskQueryProxy extends EntityProxy {
 
     PredefinedQuery getPredefinedQuery();
     void setPredefinedQuery(PredefinedQuery query);
+
+    EntityProxyId<TaskQueryProxy> stableId();
 
 }

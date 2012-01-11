@@ -116,36 +116,38 @@ public class TaskNavigator {
     }
 
     private void onTaskChanged(EntityProxyChange<TaskProxy> event) {
-        if (WriteOperation.PERSIST.equals(event.getWriteOperation())) {
-            GWT.log("Refetching tasks");
-            // Re-fetch if we're already displaying the last page
-//            if (table.isRowCountExact()) {
-//                fetch(lastFetch + 1);
-//            }
-        }
-        if (WriteOperation.UPDATE.equals(event.getWriteOperation())) {
-            EntityProxyId<TaskProxy> taskId = event.getProxyId();
-            GWT.log("Received update for task " + taskId);
+        EntityProxyId<TaskProxy> taskId = event.getProxyId();
+        switch (event.getWriteOperation()) {
+            case PERSIST:
+                GWT.log("New task " + taskId);
+                updateDisplay();
+                break;
 
+            case UPDATE:
+                GWT.log("Received update for task " + taskId);
 
-            // Is the changing record onscreen?
-            int displayOffset = offsetOf(taskId);
-            if (displayOffset != -1) {
-                // Record is onscreen and may differ from our data
-                mTaskServiceProvider.get().find(taskId).fire(new Receiver<TaskProxy>() {
-                    @Override
-                    public void onSuccess(TaskProxy task) {
-                        // Re-check offset in case of changes while waiting for data
-                        int offset = offsetOf(task.stableId());
-                        if (offset != -1 && mDisplay != null) {
-                            mDisplay.setRowData(mDisplay.getVisibleRange().getStart() + offset,
-                                    Collections.singletonList(task));
+                // Is the changing record onscreen?
+                int displayOffset = offsetOf(taskId);
+                if (displayOffset != -1) {
+                    // Record is onscreen and may differ from our data
+                    mTaskServiceProvider.get().find(taskId).fire(new Receiver<TaskProxy>() {
+                        @Override
+                        public void onSuccess(TaskProxy task) {
+                            // Re-check offset in case of changes while waiting for data
+                            int offset = offsetOf(task.stableId());
+                            if (offset != -1 && mDisplay != null) {
+                                mDisplay.setRowData(mDisplay.getVisibleRange().getStart() + offset,
+                                        Collections.singletonList(task));
+                            }
                         }
-                    }
-                });
-            }
-        }
+                    });
+                }
+                break;
 
+            case DELETE:
+                GWT.log("Task deleted " + taskId);
+                break;
+        }
     }
 
     private int offsetOf(EntityProxyId<TaskProxy> taskId) {
@@ -182,7 +184,8 @@ public class TaskNavigator {
         query.setDeleted(mTaskQuery.getDeleted());
         query.setPredefinedQuery(mTaskQuery.getPredefinedQuery());
 
-        Request<TaskQueryResultProxy> queryRequest = service.query(query, start, limit);
+        Request<TaskQueryResultProxy> queryRequest = service.query(query, start, limit).
+                with("entities.contexts").with("entities.project");
         queryRequest.fire(new Receiver<TaskQueryResultProxy>() {
             @Override
             public void onFailure(ServerFailure error) {

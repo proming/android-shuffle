@@ -8,6 +8,7 @@ import com.google.gwt.view.client.HasData;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.web.bindery.requestfactory.shared.Receiver;
+import com.google.web.bindery.requestfactory.shared.RequestFactory;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
@@ -40,26 +41,18 @@ public class InboxPresenter extends
 	}
 
 	private final Provider<TaskService> mTaskServiceProvider;
-
     private final PlaceManager mPlaceManager;
     private final TaskNavigator mTaskNavigator;
-    private final ContextEntityCache mContextCache;
-    private final ProjectEntityCache mProjectCache;
-
 
 	@Inject
 	public InboxPresenter(final EventBus eventBus, final MyView view,
 			final MyProxy proxy, final Provider<TaskService> taskServiceProvider,
-            final ContextEntityCache contextCache,
-            final ProjectEntityCache projectCache,
             PlaceManager placeManager, TaskNavigator taskNavigator) {
 		super(eventBus, view, proxy);
 		
         mPlaceManager = placeManager;
 		mTaskServiceProvider = taskServiceProvider;
         mTaskNavigator = taskNavigator;
-        mContextCache = contextCache;
-        mProjectCache = projectCache;
 
         getView().setUiHandlers(this);
 	}
@@ -76,37 +69,30 @@ public class InboxPresenter extends
         GWT.log("InboxPresenter onReveal()");
 
         mTaskNavigator.setTaskQuery(createQuery());
-        requestContexts();
-        requestProjects();
     }
 
     @Override
-    public void onEditAction(int index, TaskProxy proxy) {
+    protected void onHide() {
+        super.onHide();
+
+        GWT.log("InboxPresenter onReveal()");
+
+    }
+
+    @Override
+    public void onEditAction(int index, TaskProxy task) {
         mTaskNavigator.setCurrentIndex(index);
+        RequestFactory factory = mTaskServiceProvider.get().getRequestFactory();
+        String idToken = factory.getHistoryToken(task.stableId());
         PlaceRequest myRequest = new PlaceRequest(NameTokens.editAction)
                 .with("action", "edit")
-                .with("id", proxy.stableId().;
-        mPlaceManager.revealPlace( myRequest );
+                .with("id", idToken);
+        mPlaceManager.revealPlace(myRequest);
     }
 
     @Override
     public void setDisplay(HasData<TaskProxy> view) {
         mTaskNavigator.setDisplay(view);
-    }
-
-    @Override
-    public List<ContextProxy> getContexts(TaskProxy task) {
-        return Lists.transform(task.getContextIds(), new Function<Long, ContextProxy>() {
-            @Override
-            public ContextProxy apply(@Nullable Long input) {
-                return mContextCache.findById(input);
-            }
-        });
-    }
-
-    @Override
-    public ProjectProxy getProject(TaskProxy task) {
-        return mProjectCache.findById(task.getProjectId());
     }
 
     private TaskQueryProxy createQuery() {
@@ -116,26 +102,6 @@ public class InboxPresenter extends
         query.setDeleted(Flag.no);
         query.setPredefinedQuery(PredefinedQuery.all);
         return query;
-    }
-    
-    private void requestProjects() {
-        mProjectCache.requestEntities(new Receiver<List<ProjectProxy>>() {
-            @Override
-            public void onSuccess(List<ProjectProxy> response) {
-                // notify view
-                getView().redraw();
-            }
-        });
-    }
-    
-    private void requestContexts() {
-        mContextCache.requestEntities(new Receiver<List<ContextProxy>>() {
-            @Override
-            public void onSuccess(List<ContextProxy> response) {
-                // notify view
-                getView().redraw();
-            }
-        });
     }
 
 }

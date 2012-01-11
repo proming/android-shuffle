@@ -70,8 +70,8 @@ public class EditActionView extends ViewWithUiHandlers<EditEntityUiHandlers> imp
         from.setValue(task.getShowFromDate());
         due.setValue(task.getDueDate());
 
-        displayProject(getUiHandlers().getProject(task));
-        displayContexts(getUiHandlers().getContexts(task));
+        displayProject(task.getProject());
+        displayContexts(task.getContexts());
     }
 
     @Override

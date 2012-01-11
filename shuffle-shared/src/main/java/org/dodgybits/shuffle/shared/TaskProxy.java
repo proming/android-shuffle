@@ -14,8 +14,10 @@ public interface TaskProxy extends EntityProxy {
     Long getId();
     List<Long> getContextIds();
     void setContextIds(List<Long> contextIds);
+    List<ContextProxy> getContexts();
     Long getProjectId();
     void setProjectId(Long projectId);
+    ProjectProxy getProject();
     Date getShowFromDate();
     void setShowFromDate(Date showFromDate);
     Date getDueDate();

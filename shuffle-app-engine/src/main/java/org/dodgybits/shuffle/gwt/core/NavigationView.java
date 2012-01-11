@@ -35,6 +35,7 @@ public class NavigationView extends ViewWithUiHandlers<NavigationUiHandlers> imp
 
     @Override
     public void showContexts(List<ContextProxy> contexts) {
+        contextLinks.clear();
         for (ContextProxy context : contexts) {
             contextLinks.add(new InlineHyperlink(context.getName(), "!contexts"));
         }
