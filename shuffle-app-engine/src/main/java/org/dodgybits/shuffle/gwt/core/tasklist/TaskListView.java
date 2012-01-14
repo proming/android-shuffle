@@ -1,4 +1,4 @@
-package org.dodgybits.shuffle.gwt.core;
+package org.dodgybits.shuffle.gwt.core.tasklist;
 
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;
@@ -28,12 +28,12 @@ import org.dodgybits.shuffle.shared.TaskProxy;
 import java.util.Date;
 import java.util.List;
 
-public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements InboxPresenter.MyView {
+public class TaskListView extends ViewWithUiHandlers<TaskListUiHandlers> implements TaskListPresenter.MyView {
 
     private final Widget widget;
     private final EventBus mEventBus;
 
-    public interface Binder extends UiBinder<Widget, InboxView> {
+    public interface Binder extends UiBinder<Widget, TaskListView> {
     }
 
     interface TableResources extends DataGrid.Resources {
@@ -60,7 +60,7 @@ public class InboxView extends ViewWithUiHandlers<TaskListUiHandlers> implements
     DataGrid<TaskProxy> grid;
 
     @Inject
-    public InboxView(final EventBus eventBus, final Binder binder) {
+    public TaskListView(final EventBus eventBus, final Binder binder) {
         mEventBus = eventBus;
         mFormatter = new ActionDateFormatter();
 

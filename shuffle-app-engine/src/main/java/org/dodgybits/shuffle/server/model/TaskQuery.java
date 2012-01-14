@@ -3,6 +3,11 @@ package org.dodgybits.shuffle.server.model;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.NotSaved;
+import com.googlecode.objectify.annotation.Unindexed;
+import com.googlecode.objectify.condition.IfDefault;
 import org.dodgybits.shuffle.shared.Flag;
 import org.dodgybits.shuffle.shared.PredefinedQuery;
 
@@ -10,16 +15,30 @@ import javax.annotation.Nullable;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Unindexed
 public class TaskQuery extends UserDatastoreObject {
 
+    @Indexed
     private String mName;
+
     private List<Key<Project>> mProjects = Lists.newArrayList();
     private List<Key<Context>> mContexts = Lists.newArrayList();
-    private Flag mActive;
-    private Flag mDeleted;
-    private Date mDueDateFrom;
-    private Date mDueDateTo;
-    private PredefinedQuery mPredefinedQuery;
+
+    @NotSaved(IfDefault.class)
+    private Flag mActive = Flag.yes;
+
+    @NotSaved(IfDefault.class)
+    private Flag mDeleted = Flag.no;
+
+    @NotSaved(IfDefault.class)
+    private Date mDueDateFrom = null;
+
+    @NotSaved(IfDefault.class)
+    private Date mDueDateTo = null;
+
+    @NotSaved(IfDefault.class)
+    private PredefinedQuery mPredefinedQuery = PredefinedQuery.all;
 
     public String getName() {
         return mName;

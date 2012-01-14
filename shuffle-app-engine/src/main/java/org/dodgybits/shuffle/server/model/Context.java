@@ -12,10 +12,18 @@ import java.util.Date;
 public class Context extends UserDatastoreObject {
     @Indexed
     private String name;
+
     private int colourIndex;
+
     private String iconName;
+
+    @Indexed
     private Date modifiedDate;
-    private boolean deleted;
+
+    @Indexed
+    private boolean deleted = false;
+
+    @Indexed
     private boolean active = true;
 
     public String getName() {

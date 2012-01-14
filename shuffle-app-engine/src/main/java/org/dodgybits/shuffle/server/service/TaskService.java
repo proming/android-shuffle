@@ -49,27 +49,6 @@ public class TaskService {
         return result;
     }
 
-    private void applyPredefinedQuery(PredefinedQuery predefinedQuery, Query<WatchedTask> q) {
-        switch (predefinedQuery) {
-            case inbox:
-                q.filter("inboxTask", true);
-                break;
-            case nextTasks:
-                q.filter("topTask", true);
-                break;
-        }
-    }
-
-    private void applyFlag(Flag flag, String field, Query<WatchedTask> q) {
-        switch (flag) {
-            case yes:
-                q.filter(field, true);
-                break;
-            case no:
-                q.filter(field, false);
-        }
-    }
-
     public WatchedTask save(WatchedTask task)
     {
         AppUser loggedInUser = LoginService.getLoggedInUser();
@@ -119,13 +98,6 @@ public class TaskService {
         }        
 
         return task;
-    }
-
-    /**
-     * @return true if the task is active and not deleted
-     */
-    private boolean isCandidateTopTask(WatchedTask task) {
-        return task.isActive() && !task.isDeleted();
     }
 
     /**
@@ -289,6 +261,35 @@ public class TaskService {
             updateTopTaskForSequentialProject(projectKey);
         }
     }
+
+    /**
+     * @return true if the task is active and not deleted
+     */
+    private boolean isCandidateTopTask(WatchedTask task) {
+        return task.isActive() && !task.isDeleted();
+    }
+
+    private void applyPredefinedQuery(PredefinedQuery predefinedQuery, Query<WatchedTask> q) {
+        switch (predefinedQuery) {
+            case inbox:
+                q.filter("inboxTask", true);
+                break;
+            case nextTasks:
+                q.filter("topTask", true);
+                break;
+        }
+    }
+
+    private void applyFlag(Flag flag, String field, Query<WatchedTask> q) {
+        switch (flag) {
+            case yes:
+                q.filter(field, true);
+                break;
+            case no:
+                q.filter(field, false);
+        }
+    }
+
 
     /**
      * Insert the task into the project with the appropriate order, shuffling later

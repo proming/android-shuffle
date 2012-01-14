@@ -3,7 +3,9 @@ package org.dodgybits.shuffle.server.model;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.NotSaved;
 import com.googlecode.objectify.annotation.Unindexed;
+import com.googlecode.objectify.condition.IfDefault;
 
 import javax.persistence.PrePersist;
 import java.util.Date;
@@ -11,13 +13,25 @@ import java.util.Date;
 @Entity
 @Unindexed
 public class Project extends UserDatastoreObject {
+
     private Key<WatchedContext> defaultContext;
-    private boolean parallel;
-    private boolean archived;
+
+    @NotSaved(IfDefault.class)
+    private boolean parallel = false;
+
+    @NotSaved(IfDefault.class)
+    private boolean archived = false;
+
     @Indexed
     private String name;
+
+    @Indexed
     private Date modifiedDate;
-    private boolean deleted;
+
+    @Indexed
+    private boolean deleted = false;
+
+    @Indexed
     private boolean active = true;
 
     public Key<WatchedContext> getDefaultContextKey() {

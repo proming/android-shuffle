@@ -31,24 +31,6 @@ public class ContextService {
         return contexts;
     }
 
-    private void createPresetContexts(List<WatchedContext> contexts) {
-        contexts.addAll(Arrays.asList(
-            createPresetContext("At home", 5, "go_home"),
-            createPresetContext("At work", 19, "system_file_manager"),
-            createPresetContext("Online", 1, "applications_internet"),
-            createPresetContext("Errands", 14, "applications_development"),
-            createPresetContext("Contact", 22, "system_users"),
-            createPresetContext("Read", 16, "format_justify_fill")
-        ));
-    }
-    
-    private WatchedContext createPresetContext(String name, int colorIndex, String iconName) {
-        WatchedContext context = new WatchedContext();
-        context.setName(name);
-        context.setColourIndex(colorIndex);
-        context.setIconName(iconName);
-        return context;
-    }
 
     public WatchedContext save(WatchedContext context)
     {
@@ -70,6 +52,25 @@ public class ContextService {
     
     public Key<WatchedContext> getKey(WatchedContext context) {
         return mDao.key(context);
+    }
+
+    private void createPresetContexts(List<WatchedContext> contexts) {
+        contexts.addAll(Arrays.asList(
+                createPresetContext("At home", 5, "go_home"),
+                createPresetContext("At work", 19, "system_file_manager"),
+                createPresetContext("Online", 1, "applications_internet"),
+                createPresetContext("Errands", 14, "applications_development"),
+                createPresetContext("Contact", 22, "system_users"),
+                createPresetContext("Read", 16, "format_justify_fill")
+        ));
+    }
+
+    private WatchedContext createPresetContext(String name, int colorIndex, String iconName) {
+        WatchedContext context = new WatchedContext();
+        context.setName(name);
+        context.setColourIndex(colorIndex);
+        context.setIconName(iconName);
+        return context;
     }
 
 }

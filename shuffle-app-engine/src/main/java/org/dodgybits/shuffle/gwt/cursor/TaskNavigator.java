@@ -2,6 +2,7 @@ package org.dodgybits.shuffle.gwt.cursor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.util.tools.shared.StringUtils;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.Range;
@@ -20,7 +21,7 @@ import java.util.List;
 public class TaskNavigator {
     private String mQueryName;
 
-    private final Provider<TaskService> mTaskServiceProvider;
+    private final Provider<EntityService> mEntityServiceProvider;
 
     /**
      * The provider that holds the list of contacts in the database.
@@ -40,7 +41,7 @@ public class TaskNavigator {
 
     private HasData<TaskProxy> mDisplay;
 
-    private TaskQueryProxy mTaskQuery;
+    private String mTaskQueryName;
 
     private int mCurrentIndex = -1;
 
@@ -49,8 +50,8 @@ public class TaskNavigator {
     private Receiver<TaskProxy> mReceiver;
 
     @Inject
-    public TaskNavigator(final EventBus eventBus, final Provider<TaskService> taskServiceProvider) {
-        mTaskServiceProvider = taskServiceProvider;
+    public TaskNavigator(final EventBus eventBus, final Provider<EntityService> entityServiceProvider) {
+        mEntityServiceProvider = entityServiceProvider;
         mEventBus = eventBus;
 
         EntityProxyChange.registerForProxyType(eventBus, TaskProxy.class,
@@ -77,13 +78,15 @@ public class TaskNavigator {
         }
     }
 
-    public void setTaskQuery(TaskQueryProxy query) {
-        mTaskQuery = query;
+    public void setTaskQueryName(String queryName) {
+        if (queryName != null && !queryName.equals(mTaskQueryName)) {
+            mTaskQueryName = queryName;
 
-        mCurrentIndex = -1;
-        mTasks = null;
-        mReceiver = null;
-        updateDisplay();
+            mCurrentIndex = -1;
+            mTasks = null;
+            mReceiver = null;
+            updateDisplay();
+        }
     }
 
     public void requestCurrentTask(Receiver<TaskProxy> receiver) {
@@ -130,7 +133,7 @@ public class TaskNavigator {
                 int displayOffset = offsetOf(taskId);
                 if (displayOffset != -1) {
                     // Record is onscreen and may differ from our data
-                    mTaskServiceProvider.get().find(taskId).fire(new Receiver<TaskProxy>() {
+                    mEntityServiceProvider.get().find(taskId).fire(new Receiver<TaskProxy>() {
                         @Override
                         public void onSuccess(TaskProxy task) {
                             // Re-check offset in case of changes while waiting for data
@@ -168,7 +171,7 @@ public class TaskNavigator {
     }
 
     private void updateDisplay() {
-        if (mTaskQuery == null || mDisplay == null) {
+        if (mTaskQueryName == null || mDisplay == null) {
             return;
         }
 
@@ -176,15 +179,9 @@ public class TaskNavigator {
         final int start = mDisplay.getVisibleRange().getStart();
         final int limit = mDisplay.getVisibleRange().getLength();
         GWT.log("Loading tasks " + start + " through " + (start + limit));
-        TaskService service = mTaskServiceProvider.get();
+        EntityService service = mEntityServiceProvider.get();
 
-        // TODO - is this necessary?
-        TaskQueryProxy query = service.create(TaskQueryProxy.class);
-        query.setActive(mTaskQuery.getActive());
-        query.setDeleted(mTaskQuery.getDeleted());
-        query.setPredefinedQuery(mTaskQuery.getPredefinedQuery());
-
-        Request<TaskQueryResultProxy> queryRequest = service.query(query, start, limit).
+        Request<TaskQueryResultProxy> queryRequest = service.query(mTaskQueryName, start, limit).
                 with("entities.contexts").with("entities.project");
         queryRequest.fire(new Receiver<TaskQueryResultProxy>() {
             @Override

@@ -7,14 +7,14 @@ import com.google.web.bindery.requestfactory.shared.EntityProxyChange;
 import com.google.web.bindery.requestfactory.shared.EntityProxyId;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.Request;
+import org.dodgybits.shuffle.shared.EntityService;
 import org.dodgybits.shuffle.shared.ProjectProxy;
-import org.dodgybits.shuffle.shared.ProjectService;
 
 import java.util.Comparator;
 import java.util.List;
 
 public class ProjectEntityCache extends EntityCache<ProjectProxy> {
-    private final Provider<ProjectService> mProjectServiceProvider;
+    private final Provider<EntityService> mEntityServiceProvider;
 
     private final Comparator<ProjectProxy> mComparator = new Comparator<ProjectProxy>() {
         @Override
@@ -25,9 +25,9 @@ public class ProjectEntityCache extends EntityCache<ProjectProxy> {
 
     @Inject
     public ProjectEntityCache(
-            final Provider<ProjectService> projectServiceProvider,
+            final Provider<EntityService> entityServiceProvider,
             final EventBus eventBus)  {
-        this.mProjectServiceProvider = projectServiceProvider;
+        this.mEntityServiceProvider = entityServiceProvider;
 
         registerChangeHandler(eventBus);
     }
@@ -56,8 +56,8 @@ public class ProjectEntityCache extends EntityCache<ProjectProxy> {
 
     @Override
     protected void fetchAll(Receiver<List<ProjectProxy>> listReceiver) {
-        ProjectService service = mProjectServiceProvider.get();
-        Request<List<ProjectProxy>> request = service.fetchAll();
+        EntityService service = mEntityServiceProvider.get();
+        Request<List<ProjectProxy>> request = service.fetchAllProjects();
         request.fire(listReceiver);
     }
 
@@ -72,7 +72,7 @@ public class ProjectEntityCache extends EntityCache<ProjectProxy> {
     }
 
     private void onUpdateProject(EntityProxyId<ProjectProxy> proxyId, final boolean isNew) {
-        mProjectServiceProvider.get().find(proxyId).fire(new Receiver<ProjectProxy>() {
+        mEntityServiceProvider.get().find(proxyId).fire(new Receiver<ProjectProxy>() {
             @Override
             public void onSuccess(ProjectProxy response) {
                 if (isNew) {

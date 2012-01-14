@@ -25,12 +25,16 @@ public class Task extends UserDatastoreObject {
 
     private String description;
     private Text details;
-    
+
+    @Indexed
     private List<Key<WatchedContext>> contexts = Lists.newArrayList();
+
     @Transient
     private List<WatchedContext> watchedContexts = Lists.newArrayList();
-    
+
+    @Indexed
     private Key<WatchedProject> project;
+
     @Transient
     private WatchedProject watchedProject;
     

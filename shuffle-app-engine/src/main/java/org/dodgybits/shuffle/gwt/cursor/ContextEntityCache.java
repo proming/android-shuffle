@@ -8,13 +8,13 @@ import com.google.web.bindery.requestfactory.shared.EntityProxyId;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.Request;
 import org.dodgybits.shuffle.shared.ContextProxy;
-import org.dodgybits.shuffle.shared.ContextService;
+import org.dodgybits.shuffle.shared.EntityService;
 
 import java.util.Comparator;
 import java.util.List;
 
 public class ContextEntityCache extends EntityCache<ContextProxy> {
-    private final Provider<ContextService> mContextServiceProvider;
+    private final Provider<EntityService> mEntityServiceProvider;
 
     private final Comparator<ContextProxy> mComparator = new Comparator<ContextProxy>() {
         @Override
@@ -25,9 +25,9 @@ public class ContextEntityCache extends EntityCache<ContextProxy> {
 
     @Inject
     public ContextEntityCache(
-            final Provider<ContextService> contextServiceProvider,
+            final Provider<EntityService> entityServiceProvider,
             final EventBus eventBus)  {
-        this.mContextServiceProvider = contextServiceProvider;
+        this.mEntityServiceProvider = entityServiceProvider;
 
         registerChangeHandler(eventBus);
     }
@@ -56,8 +56,8 @@ public class ContextEntityCache extends EntityCache<ContextProxy> {
 
     @Override
     protected void fetchAll(Receiver<List<ContextProxy>> listReceiver) {
-        ContextService service = mContextServiceProvider.get();
-        Request<List<ContextProxy>> request = service.fetchAll();
+        EntityService service = mEntityServiceProvider.get();
+        Request<List<ContextProxy>> request = service.fetchAllContexts();
         request.fire(listReceiver);
     }
 
@@ -72,7 +72,7 @@ public class ContextEntityCache extends EntityCache<ContextProxy> {
     }
 
     private void onUpdateContext(EntityProxyId<ContextProxy> proxyId, final boolean isNew) {
-        mContextServiceProvider.get().find(proxyId).fire(new Receiver<ContextProxy>() {
+        mEntityServiceProvider.get().find(proxyId).fire(new Receiver<ContextProxy>() {
             @Override
             public void onSuccess(ContextProxy response) {
                 if (isNew) {

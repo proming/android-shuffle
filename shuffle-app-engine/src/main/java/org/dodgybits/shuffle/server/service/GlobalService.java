@@ -14,7 +14,6 @@ public class GlobalService {
     private static final Logger log = Logger.getLogger(GlobalService.class.getName());
 
     private ObjectifyDao<WatchedTask> mTaskDao = ObjectifyDao.newDao(WatchedTask.class);
-    private ObjectifyDao<TaskQuery> mTaskQueryDao = ObjectifyDao.newDao(TaskQuery.class);
     private ObjectifyDao<WatchedContext> mContextDao = ObjectifyDao.newDao(WatchedContext.class);
     private ObjectifyDao<WatchedProject> mProjectDao = ObjectifyDao.newDao(WatchedProject.class);
 

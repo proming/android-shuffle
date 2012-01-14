@@ -4,11 +4,8 @@ public class NameTokens {
 
 	public static final String error = "!error";
 	public static final String help = "!help";
-	public static final String inbox = "!inbox";
-	public static final String dueActions = "!dueActions";
-	public static final String nextActions = "!nextActions";
+	public static final String taskList = "!actions";
 	public static final String projects = "!projects";
-	public static final String tickler = "!tickler";
 	public static final String restoreFromBackup = "!restore";
 	public static final String editAction = "!editAction";
 
@@ -21,15 +18,15 @@ public class NameTokens {
 	}
 	
 	public static String getInbox() {
-		return inbox;
+		return taskList;
 	}
 
 	public static String getDueActions() {
-		return dueActions;
+		return taskList + ";q=dueActions";
 	}
 
 	public static String getNextActions() {
-		return nextActions;
+		return taskList + ";q=nextActions";
 	}
 
 	public static String getProjects() {
@@ -37,7 +34,7 @@ public class NameTokens {
 	}
 
 	public static String getTickler() {
-		return tickler;
+        return taskList + ";q=ticker";
 	}
 
     public static String getRestoreFromBackup() {

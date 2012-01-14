@@ -165,18 +165,20 @@ public class WatchedTask extends Task {
                 }
             }
         }
+        updateActive();
+        updateDeleted();
     }
 
     private void updateProjectFlags() {
         Project newProject = getProject();
         if (newProject == null) {
-            parallelProject = false;
-            activeProject = true;
-            deletedProject = false;
+            setParallelProject(false);
+            setActiveProject(true);
+            setDeletedProject(false);
         } else {
-            parallelProject = newProject.isParallel();
-            activeProject = newProject.isActive();
-            deletedProject = newProject.isDeleted();
+            setParallelProject(newProject.isParallel());
+            setActiveProject(newProject.isActive());
+            setDeletedProject(newProject.isDeleted());
         }
     }
 

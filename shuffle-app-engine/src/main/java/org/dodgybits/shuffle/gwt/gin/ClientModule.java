@@ -6,6 +6,8 @@ import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 import org.dodgybits.shuffle.client.ShuffleRequestFactory;
 import org.dodgybits.shuffle.gwt.core.*;
+import org.dodgybits.shuffle.gwt.core.tasklist.TaskListPresenter;
+import org.dodgybits.shuffle.gwt.core.tasklist.TaskListView;
 import org.dodgybits.shuffle.gwt.cursor.ContextEntityCache;
 import org.dodgybits.shuffle.gwt.cursor.ProjectEntityCache;
 import org.dodgybits.shuffle.gwt.cursor.TaskNavigator;
@@ -15,9 +17,7 @@ import org.dodgybits.shuffle.gwt.place.ErrorPlace;
 import org.dodgybits.shuffle.gwt.place.NameTokens;
 import org.dodgybits.shuffle.gwt.settings.RestoreFromBackupPresenter;
 import org.dodgybits.shuffle.gwt.settings.RestoreFromBackupView;
-import org.dodgybits.shuffle.shared.ContextService;
-import org.dodgybits.shuffle.shared.ProjectService;
-import org.dodgybits.shuffle.shared.TaskService;
+import org.dodgybits.shuffle.shared.EntityService;
 
 public class ClientModule extends AbstractPresenterModule {
 
@@ -25,7 +25,7 @@ public class ClientModule extends AbstractPresenterModule {
 	protected void configure() {
 		install(new DefaultModule(ClientPlaceManager.class));
 
-		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.inbox);
+		bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.taskList);
 
 		bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error);
 
@@ -35,8 +35,8 @@ public class ClientModule extends AbstractPresenterModule {
 		bindPresenter(MainPresenter.class, MainPresenter.MyView.class,
 				MainView.class, MainPresenter.MyProxy.class);
 
-		bindPresenter(InboxPresenter.class, InboxPresenter.MyView.class,
-				InboxView.class, InboxPresenter.MyProxy.class);
+		bindPresenter(TaskListPresenter.class, TaskListPresenter.MyView.class,
+				TaskListView.class, TaskListPresenter.MyProxy.class);
 
 		bindPresenter(EditActionPresenter.class,
 				EditActionPresenter.MyView.class, EditActionView.class,
@@ -58,18 +58,8 @@ public class ClientModule extends AbstractPresenterModule {
 	}
 
 	@Provides
-	TaskService provideTaskService(ShuffleRequestFactory requestFactory) {
-		return requestFactory.taskService();
+    EntityService provideEntityService(ShuffleRequestFactory requestFactory) {
+		return requestFactory.entityService();
 	}
-
-    @Provides
-    ContextService provideContextService(ShuffleRequestFactory requestFactory) {
-        return requestFactory.contextService();
-    }
-
-    @Provides
-    ProjectService provideProjectService(ShuffleRequestFactory requestFactory) {
-        return requestFactory.projectService();
-    }
 
 }

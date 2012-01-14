@@ -1,34 +1,28 @@
 package org.dodgybits.shuffle.gwt.core;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.gwtplatform.mvp.client.HasUiHandlers;
-import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.NameToken;
-import org.dodgybits.shuffle.gwt.cursor.ContextEntityCache;
-import org.dodgybits.shuffle.gwt.cursor.ProjectEntityCache;
-import org.dodgybits.shuffle.gwt.cursor.TaskNavigator;
-import org.dodgybits.shuffle.gwt.place.NameTokens;
-
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.PlaceRequest;
-import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.Request;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.EventBus;
+import com.gwtplatform.mvp.client.HasUiHandlers;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
+import org.dodgybits.shuffle.gwt.cursor.TaskNavigator;
+import org.dodgybits.shuffle.gwt.place.NameTokens;
 import org.dodgybits.shuffle.shared.ContextProxy;
+import org.dodgybits.shuffle.shared.EntityService;
 import org.dodgybits.shuffle.shared.ProjectProxy;
 import org.dodgybits.shuffle.shared.TaskProxy;
-import org.dodgybits.shuffle.shared.TaskService;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class EditActionPresenter extends
@@ -51,7 +45,7 @@ public class EditActionPresenter extends
     public interface MyProxy extends ProxyPlace<EditActionPresenter> {
     }
 
-    private final Provider<TaskService> mTaskServiceProvider;
+    private final Provider<EntityService> mEntityServiceProvider;
     private final PlaceManager mPlaceManager;
     private final TaskNavigator mTaskNavigator;
     private Action mAction;
@@ -61,11 +55,11 @@ public class EditActionPresenter extends
     public EditActionPresenter(
             final EventBus eventBus, final MyView view,
             final MyProxy proxy, final PlaceManager placeManager,
-            final Provider<TaskService> taskServiceProvider,
+            final Provider<EntityService> entityServiceProvider,
             final TaskNavigator taskNavigator) {
         super(eventBus, view, proxy);
         mPlaceManager = placeManager;
-        mTaskServiceProvider = taskServiceProvider;
+        mEntityServiceProvider = entityServiceProvider;
         mTaskNavigator = taskNavigator;
 
         getView().setUiHandlers(this);
@@ -92,7 +86,7 @@ public class EditActionPresenter extends
 
     @Override
     public void save(String description, String details) {
-        TaskService service = mTaskServiceProvider.get();
+        EntityService service = mEntityServiceProvider.get();
         if (mAction == Action.NEW) {
             mTask = service.create(TaskProxy.class);
         } else {

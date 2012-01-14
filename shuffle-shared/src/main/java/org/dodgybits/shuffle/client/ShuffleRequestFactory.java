@@ -56,14 +56,8 @@ public interface ShuffleRequestFactory extends RequestFactory {
 
   MessageRequest messageRequest();
 
+  EntityService entityService();
 
-
-  TaskService taskService();
-
-  ContextService contextService();
-
-  ProjectService projectService();
-
-    LoggingRequest loggingRequest();
+  LoggingRequest loggingRequest();
 
 }

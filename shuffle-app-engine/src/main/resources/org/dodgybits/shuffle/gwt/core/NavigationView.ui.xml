@@ -12,9 +12,9 @@
 		<g:Button ui:field="newAction" text="New action"/><br/>
 		<g:InlineHyperlink targetHistoryToken="{nameTokens.getInbox}">Inbox</g:InlineHyperlink><br/>
 		<g:InlineHyperlink targetHistoryToken="{nameTokens.getDueActions}">Due Actions</g:InlineHyperlink><br/>
-		<g:InlineHyperlink targetHistoryToken="{nameTokens.getNextActions}">Next Actions</g:InlineHyperlink><br/>
+		<g:InlineHyperlink targetHistoryToken="{nameTokens.getNextActions};q=nextActions">Next Actions</g:InlineHyperlink><br/>
 		<g:InlineHyperlink targetHistoryToken="{nameTokens.getProjects}">Projects</g:InlineHyperlink><br/>
-		<g:InlineHyperlink targetHistoryToken="{nameTokens.getTickler}">Tickler</g:InlineHyperlink><br/>
+		<g:InlineHyperlink targetHistoryToken="{nameTokens.getTickler};q=tickler">Tickler</g:InlineHyperlink><br/>
         <br/>
         <g:InlineHyperlink targetHistoryToken="{nameTokens.getRestoreFromBackup}">Restore from Backup</g:InlineHyperlink><br/>
 		<br/>

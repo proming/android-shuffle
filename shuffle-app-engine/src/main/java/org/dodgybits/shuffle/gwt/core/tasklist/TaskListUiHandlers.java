@@ -1,4 +1,4 @@
-package org.dodgybits.shuffle.gwt.core;
+package org.dodgybits.shuffle.gwt.core.tasklist;
 
 import com.google.gwt.view.client.HasData;
 import com.gwtplatform.mvp.client.UiHandlers;

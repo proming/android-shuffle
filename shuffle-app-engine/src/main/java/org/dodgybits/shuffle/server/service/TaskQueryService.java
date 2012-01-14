@@ -3,6 +3,7 @@ package org.dodgybits.shuffle.server.service;
 import com.googlecode.objectify.Query;
 import org.dodgybits.shuffle.server.model.AppUser;
 import org.dodgybits.shuffle.server.model.TaskQuery;
+import org.dodgybits.shuffle.shared.PredefinedQuery;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -25,14 +26,26 @@ public class TaskQueryService {
         Query<TaskQuery> query = mTaskQueryDao.userQuery();
         query.filter("name", name);
         log.log(Level.FINE, "Looking up task query {0}", name);
-        List<TaskQuery> queries = query.list();
-        if (queries.size() == 1) {
-            taskQuery = queries.get(0);
-        } else if (queries.size() > 1) {
-            throw new IllegalStateException("More than 1 query found for name " + name);
+        taskQuery = query.get();
+        if (taskQuery == null) {
+            taskQuery = createDefaultQuery(name);
         }
         return taskQuery;
     }
 
+    private TaskQuery createDefaultQuery(String name) {
+        TaskQuery query = new TaskQuery();
+        if ("tickler".equals(name)) {
+            query.setPredefinedQuery(PredefinedQuery.all);
+        } else if ("nextActions".equals(name)) {
+            query.setPredefinedQuery(PredefinedQuery.nextTasks);
+        } else {
+            if (!"inbox".equals(name)) {
+                log.log(Level.WARNING, "Unknown queryName %s defaulting to inbox", name);
+            }
+            query.setPredefinedQuery(PredefinedQuery.inbox);
+        }
 
+        return query;
+    }
 }
