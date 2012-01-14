@@ -92,7 +92,7 @@
                 <artifactId>android-maven-plugin</artifactId>
                 <configuration>
                     <sdk>
-                        <platform>2.2</platform>
+                        <platform>4.0</platform>
                     </sdk>
                     <dex>
                         <jvmArguments>

@@ -16,9 +16,6 @@
 
 <resources>
 
-    <style name="ShuffleTheme" parent="@android:Theme" >        
-    </style>
-
     <style name="activity" parent="ShuffleTheme">
         <!--  <item name="android:background">@drawable/pale_weak_cyan</item> 
         <item name="android:cacheColorHint">@null</item>
