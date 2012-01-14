@@ -16,7 +16,7 @@
     android:versionCode="40" android:versionName="2.0.0">
 
     <!--  C2DM requires Android SDK version 2.2 (API level 8) or above -->
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="8" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14" />
 
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.READ_CALENDAR" />
