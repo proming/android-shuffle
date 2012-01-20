@@ -71,6 +71,7 @@
 		<validation-api.version>1.0.0.GA</validation-api.version>
         <android.version>4.0.1.2</android.version>
         <android-compatibility-v4.version>r6</android-compatibility-v4.version>
+        <actionbarsherlock.version>4.0.0-SNAPSHOT</actionbarsherlock.version>
 		<hibernate-validator.version>4.0.2.GA</hibernate-validator.version>
         <commons-io.version>2.0.1</commons-io.version>
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
@@ -127,6 +128,22 @@
 	      <enabled>true</enabled>
 	    </snapshots>
 	  </repository>
+
+        <!-- For ActionBarSherlock -->
+        <repository>
+            <id>jakewharton-snapshot</id>
+            <name>jakewharton-snapshot</name>
+            <url>http://r.jakewharton.com/maven/snapshot/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>jakewharton-release</id>
+            <name>jakewharton-release</name>
+            <url>http://r.jakewharton.com/maven/release/</url>
+        </repository>
+
         
 	</repositories>
 
@@ -182,6 +199,12 @@
                 <groupId>android.support</groupId>
                 <artifactId>compatibility-v4</artifactId>
                 <version>${android-compatibility-v4.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.actionbarsherlock</groupId>
+                <artifactId>library</artifactId>
+                <version>${actionbarsherlock.version}</version>
+                <type>apklib</type>
             </dependency>
             <dependency>
                 <groupId>javax.jdo</groupId>
