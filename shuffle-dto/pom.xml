@@ -30,7 +30,7 @@
                         <configuration>
                             <tasks>
                                 <mkdir dir="target/generated-sources/protoc"/>
-                                <exec executable="protoc">
+                                <exec executable="${PROTOC_HOME}/protoc">
                                     <arg value="--java_out=target/generated-sources/protoc"/>
                                     <arg value="src/main/resources/shuffle.proto"/>
                                 </exec>

@@ -26,8 +26,9 @@ Shuffle uses Maven for building and dependency management.\
 \pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural
 \ls1\ilvl0\cf0 {\listtext	1.	}Maven 3.0.x - http://maven.apache.org/download.html\
 {\listtext	2.	}Google Protocol Buffer compiler - http://code.google.com/p/protobuf/downloads/list\
-{\listtext	3.	}Android SDK - http://developer.android.com/sdk/index.html\
-{\listtext	4.	}Set environment variable ANDROID_HOME to the path of your installed Android SDK and add $ANDROID_HOME/tools as well as $ANDROID_HOME/platform-tools to your $PATH. (or on Windows %ANDROID_HOME%\\tools and %ANDROID_HOME%\\platform-tools).\
+{\listtext	3.	}Set environment variable PROTOC_HOME to point to the directory holding the protoc executable\
+{\listtext	4.	}Android SDK - http://developer.android.com/sdk/index.html\
+{\listtext	5.	}Set environment variable ANDROID_HOME to the path of your installed Android SDK and add $ANDROID_HOME/tools as well as $ANDROID_HOME/platform-tools to your $PATH. (or on Windows %ANDROID_HOME%\\tools and %ANDROID_HOME%\\platform-tools).\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
 \cf0 \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
@@ -113,6 +114,8 @@ If you get the following error in Eclipse, in Project preferences > Google switc
 
 \fs24 \cf0 \
 For OS X, you'll probably need to set ANDROID_HOME in ~/.MacOSX/environment.plist, logout then in again. See http://developer.apple.com/library/mac/#qa/qa2001/qa1067.html\
+\
+Set PROTOC_HOME variable in Preferences > Maven > Runner to the directory holding the protoc executable\
 \
 New project > Import project from external model > Maven\
 Remove GWT facet from all but the shuffle-app-engine module\
