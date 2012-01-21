@@ -405,6 +405,14 @@ allow that, you can turn it off under Settings.</string>
     <string name="completed_items_title">Completed actions</string>
 
 
+    <!-- new task list -->
+
+    <!-- A long placeholder string to be used in template XML files message_list_item_*.xml.
+         Used only in layout computation, and never actually exposed to the user. -->
+    <string name="long_string" translatable="false">looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong</string>
+
+    <string name="task_list_contents_snippet_divider"> - </string>
+
 	<!--  messages -->
     <string name="no_due_date">No due date</string>
     <string name="no_icon">No icon</string>

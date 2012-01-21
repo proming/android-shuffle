@@ -68,6 +68,10 @@
 			android:name="org.dodgybits.shuffle.android.core.activity.TopLevelActivity"
 			android:label="@string/app_name" />
 
+        <activity
+                android:name="org.dodgybits.shuffle.android.list.activity.EntityListsActivity"
+                android:label="@string/app_name" />
+
 		<activity android:name="org.dodgybits.shuffle.android.core.activity.HelpActivity"
 			android:label="@string/title_help" android:theme="@android:style/Theme.Light">
 			<intent-filter>

@@ -44,4 +44,14 @@
 	<drawable name="dark_gray">#313031</drawable>
 	<drawable name="black">#000000</drawable>
 
+
+    <color name="description_text_color_incomplete">#555555</color>
+    <color name="snippet_text_color_incomplete">#555555</color>
+    <color name="project_text_color_incomplete">#333333</color>
+    <color name="description_text_color_complete">#777777</color>
+    <color name="snippet_text_color_complete">#777777</color>
+    <color name="project_text_color_complete">#555555</color>
+    <color name="date_text_color_incomplete">@color/project_text_color_incomplete</color>
+    <color name="date_text_color_complete">@color/project_text_color_complete</color>
+
 </resources>

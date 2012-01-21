@@ -16,35 +16,9 @@
 
 package org.dodgybits.shuffle.android.core.activity;
 
-import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledListActivity;
-import org.dodgybits.shuffle.android.core.model.Context;
-import org.dodgybits.shuffle.android.core.model.Entity;
-import org.dodgybits.shuffle.android.core.model.Project;
-import org.dodgybits.shuffle.android.core.model.Task;
-import org.dodgybits.shuffle.android.core.model.persistence.selector.ContextSelector;
-import org.dodgybits.shuffle.android.core.model.persistence.selector.EntitySelector;
-import org.dodgybits.shuffle.android.core.model.persistence.selector.ProjectSelector;
-import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
-import org.dodgybits.shuffle.android.core.util.Constants;
-import org.dodgybits.shuffle.android.core.view.IconArrayAdapter;
-import org.dodgybits.shuffle.android.core.view.MenuUtils;
-import org.dodgybits.shuffle.android.list.annotation.Contexts;
-import org.dodgybits.shuffle.android.list.annotation.DueTasks;
-import org.dodgybits.shuffle.android.list.annotation.Inbox;
-import org.dodgybits.shuffle.android.list.annotation.Projects;
-import org.dodgybits.shuffle.android.list.annotation.Tickler;
-import org.dodgybits.shuffle.android.list.annotation.TopTasks;
-import org.dodgybits.shuffle.android.list.config.ContextListConfig;
-import org.dodgybits.shuffle.android.list.config.DueActionsListConfig;
-import org.dodgybits.shuffle.android.list.config.ListConfig;
-import org.dodgybits.shuffle.android.list.config.ProjectListConfig;
-import org.dodgybits.shuffle.android.list.config.TaskListConfig;
-import org.dodgybits.shuffle.android.preference.model.Preferences;
-
-import roboguice.inject.ContextSingleton;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
@@ -60,8 +34,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import com.google.inject.Inject;
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledListActivity;
+import org.dodgybits.shuffle.android.core.model.Context;
+import org.dodgybits.shuffle.android.core.model.Entity;
+import org.dodgybits.shuffle.android.core.model.Project;
+import org.dodgybits.shuffle.android.core.model.Task;
+import org.dodgybits.shuffle.android.core.model.persistence.selector.ContextSelector;
+import org.dodgybits.shuffle.android.core.model.persistence.selector.EntitySelector;
+import org.dodgybits.shuffle.android.core.model.persistence.selector.ProjectSelector;
+import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
+import org.dodgybits.shuffle.android.core.util.Constants;
+import org.dodgybits.shuffle.android.core.view.IconArrayAdapter;
+import org.dodgybits.shuffle.android.core.view.MenuUtils;
+import org.dodgybits.shuffle.android.list.activity.EntityListsActivity;
+import org.dodgybits.shuffle.android.list.annotation.*;
+import org.dodgybits.shuffle.android.list.config.*;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
+import roboguice.inject.ContextSingleton;
 
 @ContextSingleton
 
@@ -171,7 +162,11 @@ public class TopLevelActivity extends FlurryEnabledListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        MenuUtils.checkCommonItemsSelected(position + MenuUtils.INBOX_ID, this, -1, false);
+        if (position == 0) {
+            startActivity(new Intent(this, EntityListsActivity.class));
+        } else {
+            MenuUtils.checkCommonItemsSelected(position + MenuUtils.INBOX_ID, this, -1, false);
+        }
     }
     
     

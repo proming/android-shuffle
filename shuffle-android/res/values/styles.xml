@@ -89,6 +89,8 @@
     <style name="text_dropdown" parent="text_editable">
     </style>
 
+
+
     <style name="list_text" parent="ShuffleTheme">
         <item name="android:textColor">@drawable/description</item>
         <item name="android:typeface">sans</item>
@@ -226,5 +228,11 @@
         <item name="android:src">@drawable/widget_list</item>
     </style>
 
-            
+
+    <!-- new styles -->
+
+    <style name="task_list_item">
+    </style>
+
+
 </resources>
