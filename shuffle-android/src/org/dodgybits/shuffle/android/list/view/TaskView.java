@@ -16,17 +16,6 @@
 
 package org.dodgybits.shuffle.android.list.view;
 
-import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.model.Context;
-import org.dodgybits.shuffle.android.core.model.Project;
-import org.dodgybits.shuffle.android.core.model.Task;
-import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
-import org.dodgybits.shuffle.android.core.util.DateUtils;
-import org.dodgybits.shuffle.android.core.view.ContextIcon;
-import org.dodgybits.shuffle.android.core.view.DrawableUtils;
-import org.dodgybits.shuffle.android.preference.model.Preferences;
-
-import roboguice.inject.ContextSingleton;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -37,8 +26,16 @@ import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
 import com.google.inject.Inject;
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.model.Context;
+import org.dodgybits.shuffle.android.core.model.Project;
+import org.dodgybits.shuffle.android.core.model.Task;
+import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
+import org.dodgybits.shuffle.android.core.util.DateUtils;
+import org.dodgybits.shuffle.android.core.view.ContextIcon;
+import org.dodgybits.shuffle.android.core.view.DrawableUtils;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 public class TaskView extends ItemView<Task> {
     private EntityCache<Context> mContextCache;

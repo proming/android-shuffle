@@ -10,13 +10,17 @@ import android.text.*;
 import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import com.google.common.base.Objects;
+import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.Task;
+import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
+import org.dodgybits.shuffle.android.core.util.TextColours;
 
 /**
  * This custom View is the list item for the MessageList activity, and serves two purposes:
@@ -34,27 +38,30 @@ public class TaskListItem extends View {
     private TaskListItemCoordinates mCoordinates;
     private Context mContext;
 
+    private final EntityCache<org.dodgybits.shuffle.android.core.model.Context> mContextCache;
+    private final EntityCache<Project> mProjectCache;
+    
     private boolean mDownEvent;
 
-    public TaskListItem(Context context) {
-        super(context);
-        init(context);
-    }
-
-    public TaskListItem(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
-    }
-
-    public TaskListItem(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context);
+    @Inject
+    public TaskListItem(
+            android.content.Context androidContext,
+            EntityCache<org.dodgybits.shuffle.android.core.model.Context> contextCache,
+            EntityCache<Project> projectCache) {
+        super(androidContext);
+        mContextCache = contextCache;
+        mProjectCache = projectCache;
+        init(androidContext);
     }
 
     private static boolean sInit = false;
+    private static TextColours sTextColours;
     private static final TextPaint sDefaultPaint = new TextPaint();
     private static final TextPaint sBoldPaint = new TextPaint();
     private static final TextPaint sDatePaint = new TextPaint();
+    private static final TextPaint sContextPaint = new TextPaint();
+    private static final Paint sContextBackgroundPaint = new Paint();
+
     private static int sBadgeMargin;
     private static Bitmap sSelectedIconOn;
     private static Bitmap sSelectedIconOff;
@@ -73,14 +80,17 @@ public class TaskListItem extends View {
     private static int DATE_TEXT_COLOR_COMPLETE;
     private static int DATE_TEXT_COLOR_INCOMPLETE;
 
-    public String mProject;
-    public SpannableStringBuilder mText;
-    public String mSnippet;
+    private String mProject;
+    private SpannableStringBuilder mText;
+    private String mSnippet;
     private String mDescription;
     private StaticLayout mContentsLayout;
-    public boolean mCompleted;
-    public boolean mIsActive = true;
-    public boolean mIsDeleted = false;
+    private boolean mCompleted;
+    private boolean mIsActive = true;
+    private boolean mIsDeleted = false;
+    private String mContextName; 
+    private int mContextTextColor;
+    private int mContextBackgroundColor;
 
     private int mViewWidth = 0;
     private int mViewHeight = 0;
@@ -98,7 +108,9 @@ public class TaskListItem extends View {
 
     private void init(Context context) {
         mContext = context;
+        
         if (!sInit) {
+            sTextColours = TextColours.getInstance(context);
             Resources r = context.getResources();
             sContentsSnippetDivider = r.getString(R.string.task_list_contents_snippet_divider);
             sItemHeight =
@@ -110,6 +122,8 @@ public class TaskListItem extends View {
             sDatePaint.setAntiAlias(true);
             sBoldPaint.setTypeface(Typeface.DEFAULT_BOLD);
             sBoldPaint.setAntiAlias(true);
+            sContextPaint.setTypeface(Typeface.DEFAULT);
+            sContextPaint.setAntiAlias(true);
 
             sBadgeMargin = r.getDimensionPixelSize(R.dimen.message_list_badge_margin);
             sSelectedIconOff =
@@ -152,13 +166,34 @@ public class TaskListItem extends View {
 
         mTaskId = task.getLocalId().getId();
         mCompleted = task.isComplete();
-        mProject = task.getProjectId().toString();
+        setProject(task.getProjectId());
+        setContext(task.getContextId());
         mIsActive = task.isActive();
         mIsDeleted = task.isDeleted();
         setText(task.getDescription(), task.getDetails(), false);
         setTimestamp(task.getDueDate());
     }
 
+    private void setProject(Id projectId) {
+        mProject = "";
+        if (projectId.isInitialised()) {
+            Project project = mProjectCache.findById(projectId);
+            if (project != null) {
+                mProject = project.getName();
+            }
+        }
+    }
+    
+    private void setContext(Id contextId) {
+        mContextName = "";
+        if (contextId.isInitialised()) {
+            org.dodgybits.shuffle.android.core.model.Context context = mContextCache.findById(contextId);
+            mContextName = context.getName();
+            mContextTextColor = sTextColours.getTextColour(context.getColourIndex());
+            mContextBackgroundColor = sTextColours.getBackgroundColour(context.getColourIndex());
+        }
+    }
+    
     /**
      * Sets message contents and snippet safely, ensuring the cache is invalidated.
      */
@@ -203,7 +238,7 @@ public class TaskListItem extends View {
         }
     }
 
-    private Drawable mCurentBackground = null; // Only used by updateBackground()
+    private Drawable mCurrentBackground = null; // Only used by updateBackground()
 
     private void updateBackground() {
         final Drawable newBackground;
@@ -220,10 +255,10 @@ public class TaskListItem extends View {
             }
             newBackground = mIncompleteSelector;
         }
-        if (newBackground != mCurentBackground) {
+        if (newBackground != mCurrentBackground) {
             // setBackgroundDrawable is a heavy operation.  Only call it when really needed.
             setBackgroundDrawable(newBackground);
-            mCurentBackground = newBackground;
+            mCurrentBackground = newBackground;
         }
     }
 
@@ -254,7 +289,6 @@ public class TaskListItem extends View {
         mContentsLayout = new StaticLayout(mText, sDefaultPaint,
                 mCoordinates.contentsWidth, Layout.Alignment.ALIGN_NORMAL, 1, 0, false /* includePad */);
         if (mCoordinates.contentsLineCount < mContentsLayout.getLineCount()) {
-            // TODO: ellipsize.
             int end = mContentsLayout.getLineEnd(mCoordinates.contentsLineCount - 1);
             mContentsLayout = new StaticLayout(mText.subSequence(0, end),
                     sDefaultPaint, mCoordinates.contentsWidth, Layout.Alignment.ALIGN_NORMAL, 1, 0, true);
@@ -371,6 +405,19 @@ public class TaskListItem extends View {
         canvas.drawText(mFormattedDate, 0, mFormattedDate.length(),
                 dateX, mCoordinates.dateY - mCoordinates.dateAscent, sDatePaint);
 
+        int padding = 5;
+        int contextPadding = mCoordinates.dateX - (mCoordinates.contextsX + mCoordinates.contextsWidth + padding);
+        int contextsX = dateX - (mCoordinates.contextsWidth + contextPadding);
+
+        // Draw the context
+        sContextBackgroundPaint.setColor(mContextBackgroundColor);
+        canvas.drawRect(contextsX - padding, mCoordinates.contextsY - padding, contextsX + mCoordinates.contextsWidth + padding,
+                mCoordinates.contextsY + mCoordinates.contextsHeight + padding, sContextBackgroundPaint);
+        sContextPaint.setTextSize(mCoordinates.contextsFontSize);
+        sContextPaint.setColor(getFontColor(mContextTextColor));
+        canvas.drawText(mContextName, 0, mContextName.length(),
+                contextsX, mCoordinates.contextsY - mCoordinates.contextsAscent,
+                sContextPaint);
     }
 
     /**

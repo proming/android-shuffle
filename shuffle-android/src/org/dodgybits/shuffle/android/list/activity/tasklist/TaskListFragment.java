@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.view.*;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.google.inject.Inject;
@@ -31,8 +34,10 @@ public class TaskListFragment extends RoboListFragment
 
     private static final int LOADER_ID_MESSAGES_LOADER = 1;
 
-    private TaskListAdaptor mListAdapter;
     private boolean mIsFirstLoad;
+
+    @Inject
+    private TaskListAdaptor mListAdapter;
 
     /**
      * {@link ActionMode} shown when 1 or more message is selected.
@@ -47,7 +52,7 @@ public class TaskListFragment extends RoboListFragment
     private boolean mIsViewCreated;
 
     @Inject
-    private TaskPersister mPersister;
+    TaskPersister mPersister;
 
     /**
      * Create a new instance with initialization parameters.
@@ -87,20 +92,10 @@ public class TaskListFragment extends RoboListFragment
         mActivity = getActivity();
         setHasOptionsMenu(true);
 
-        mListAdapter = new TaskListAdaptor(mActivity, this, mPersister);
+        mListAdapter.setCallback(this);
         mIsFirstLoad = true;
 
     }
-
-    @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Use a custom layout, which includes the original layout with "send messages" panel.
-        View root = inflater.inflate(R.layout.task_list_fragment,null);
-        mIsViewCreated = true;
-        return root;
-    }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -111,7 +106,7 @@ public class TaskListFragment extends RoboListFragment
         lv.setItemsCanFocus(false);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-//        setEmptyText(getString(R.string.no_tasks));
+        setEmptyText(getString(R.string.no_tasks));
 
         if (savedInstanceState != null) {
             // Fragment doesn't have this method.  Call it manually.

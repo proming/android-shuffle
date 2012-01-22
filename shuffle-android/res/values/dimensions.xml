@@ -10,6 +10,7 @@
     <dimen name="project_font_size">18sp</dimen>
     <dimen name="contents_font_size">14sp</dimen>
     <dimen name="date_font_size">12sp</dimen>
+    <dimen name="contexts_font_size">12sp</dimen>
 
     <dimen name="message_list_badge_margin">4dip</dimen>
 

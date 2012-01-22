@@ -1,8 +1,6 @@
 package org.dodgybits.shuffle.android.list.activity.tasklist;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.text.TextPaint;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,10 +48,13 @@ public class TaskListItemCoordinates {
     // Contexts
     int contextsX;
     int contextsY;
+    int contextsFontSize;
     int contextsWidth;
     int contextsHeight;
+    int contextsAscent;
 
     // Date.
+    int dateX;
     int dateXEnd;
     int dateY;
     int dateFontSize;
@@ -62,13 +63,6 @@ public class TaskListItemCoordinates {
     // Cache to save Coordinates based on view width.
     private static SparseArray<TaskListItemCoordinates> mCache =
             new SparseArray<TaskListItemCoordinates>();
-
-    private static TextPaint sPaint = new TextPaint();
-
-    static {
-        sPaint.setTypeface(Typeface.DEFAULT);
-        sPaint.setAntiAlias(true);
-    }
 
     // Not directly instantiable.
     private TaskListItemCoordinates() {}
@@ -180,13 +174,16 @@ public class TaskListItemCoordinates {
             coordinates.contentsFontSize = (int) contents.getTextSize();
             coordinates.contentsAscent = Math.round(contents.getPaint().ascent());
 
-            View contexts = view.findViewById(R.id.contexts);
+            TextView contexts = (TextView) view.findViewById(R.id.contexts);
             coordinates.contextsX = UiUtilities.getX(contexts);
             coordinates.contextsY = UiUtilities.getY(contexts);
             coordinates.contextsWidth = getWidth(contexts, false);
             coordinates.contextsHeight = getHeight(contexts, false);
+            coordinates.contextsFontSize = (int) contexts.getTextSize();
+            coordinates.contextsAscent = Math.round(contexts.getPaint().ascent());
 
             TextView date = (TextView) view.findViewById(R.id.date);
+            coordinates.dateX = UiUtilities.getX(date);
             coordinates.dateXEnd = UiUtilities.getX(date) + date.getWidth();
             coordinates.dateY = UiUtilities.getY(date);
             coordinates.dateFontSize = (int) date.getTextSize();

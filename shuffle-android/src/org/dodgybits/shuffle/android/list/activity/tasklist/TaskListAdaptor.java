@@ -8,11 +8,13 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
 import org.dodgybits.shuffle.android.core.util.CollectionUtils;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
+import roboguice.inject.ContextScopedProvider;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +30,8 @@ public class TaskListAdaptor extends CursorAdapter {
 
     private final TaskPersister mPersister;
 
+    private final ContextScopedProvider<TaskListItem> mTaskListItemProvider;
+
     /**
      * Callback from MessageListAdapter.  All methods are called on the UI thread.
      */
@@ -37,12 +41,17 @@ public class TaskListAdaptor extends CursorAdapter {
                                       int mSelectedCount);
     }
 
-    private final Callback mCallback;
+    private Callback mCallback;
 
-
-    public TaskListAdaptor(Context context, Callback callback, TaskPersister persister) {
+    @Inject
+    public TaskListAdaptor(Context context, TaskPersister persister,
+                           ContextScopedProvider<TaskListItem> taskListItemProvider) {
         super(context.getApplicationContext(), null, 0 /* no auto requery */);
         mPersister = persister;
+        mTaskListItemProvider = taskListItemProvider;
+    }
+
+    public void setCallback(Callback callback) {
         mCallback = callback;
     }
 
@@ -91,7 +100,7 @@ public class TaskListAdaptor extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        TaskListItem item = new TaskListItem(context);
+        TaskListItem item = mTaskListItemProvider.get(context);
         item.setVisibility(View.VISIBLE);
         return item;
     }
