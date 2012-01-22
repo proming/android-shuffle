@@ -19,6 +19,7 @@
                 android:layout_marginTop="@dimen/activestate_margin_top"
                 android:layout_marginLeft="@dimen/activestate_margin_left"
                 android:layout_alignParentTop="true"
+                android:src="@drawable/ic_badge_reply_holo_light"
                 />
         <ImageView
                 android:id="@+id/checkmark"
@@ -27,7 +28,7 @@
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/btn_check_on_normal_holo_light"
                 android:layout_marginTop="@dimen/checkmark_margin_top"
-                android:layout_below="@id/active_state"
+                android:layout_below="@+id/active_state"
                 />
     </RelativeLayout>
 

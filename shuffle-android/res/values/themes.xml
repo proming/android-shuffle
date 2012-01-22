@@ -16,6 +16,6 @@
 
 <resources>
 
-    <style name="ShuffleTheme" parent="@android:style/Theme" >
+    <style name="ShuffleTheme" parent="@android:style/Theme.Light" >
     </style>
 </resources>

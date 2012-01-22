@@ -122,7 +122,7 @@ public class TaskListItem extends View {
             sStateDeleted =
                     BitmapFactory.decodeResource(r, R.drawable.ic_badge_forward_holo_light);
 
-            ACTIVATED_TEXT_COLOR = r.getColor(android.R.color.white);
+            ACTIVATED_TEXT_COLOR = r.getColor(android.R.color.black);
             DESCRIPTION_TEXT_COLOR_COMPLETE = r.getColor(R.color.description_text_color_complete);
             DESCRIPTION_TEXT_COLOR_INCOMPLETE = r.getColor(R.color.description_text_color_incomplete);
             SNIPPET_TEXT_COLOR_COMPLETE = r.getColor(R.color.snippet_text_color_complete);
@@ -326,7 +326,7 @@ public class TaskListItem extends View {
     }
 
     private int getFontColor(int defaultColor) {
-        return  (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB || isActivated()) ? ACTIVATED_TEXT_COLOR : defaultColor;
+        return  (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && isActivated()) ? ACTIVATED_TEXT_COLOR : defaultColor;
     }
 
     @Override

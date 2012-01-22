@@ -9,10 +9,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.google.inject.Inject;
@@ -96,6 +93,16 @@ public class TaskListFragment extends RoboListFragment
     }
 
     @Override
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Use a custom layout, which includes the original layout with "send messages" panel.
+        View root = inflater.inflate(R.layout.task_list_fragment,null);
+        mIsViewCreated = true;
+        return root;
+    }
+
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -104,7 +111,7 @@ public class TaskListFragment extends RoboListFragment
         lv.setItemsCanFocus(false);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        setEmptyText(getString(R.string.no_tasks));
+//        setEmptyText(getString(R.string.no_tasks));
 
         if (savedInstanceState != null) {
             // Fragment doesn't have this method.  Call it manually.
@@ -132,7 +139,7 @@ public class TaskListFragment extends RoboListFragment
             toggled = true;
         }
 
-        return toggled; // D&D not allowed.
+        return toggled;
     }
 
     /**
