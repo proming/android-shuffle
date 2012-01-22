@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.*;
 import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
@@ -325,7 +326,7 @@ public class TaskListItem extends View {
     }
 
     private int getFontColor(int defaultColor) {
-        return isActivated() ? ACTIVATED_TEXT_COLOR : defaultColor;
+        return  (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB || isActivated()) ? ACTIVATED_TEXT_COLOR : defaultColor;
     }
 
     @Override
@@ -391,7 +392,8 @@ public class TaskListItem extends View {
             final Configuration config = res.getConfiguration();
             final float density = res.getDisplayMetrics().density;
             final float sizeAndDensity;
-            if (config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_XLARGE)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB &&
+                    config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_XLARGE)) {
                 sizeAndDensity = density * 1.5f;
             } else {
                 sizeAndDensity = density;

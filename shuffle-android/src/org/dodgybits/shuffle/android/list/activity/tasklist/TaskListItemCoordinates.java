@@ -7,9 +7,9 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.TextView;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.util.UiUtilities;
 
 /**
  * Represents the coordinates of elements inside a TaskListItem
@@ -91,31 +91,6 @@ public class TaskListItemCoordinates {
         return context.getResources().getDimensionPixelSize(R.dimen.task_list_item_height);
     }
 
-    /**
-     * Returns the x coordinates of a view by tracing up its hierarchy.
-     */
-    private static int getX(View view) {
-        int x = 0;
-        while (view != null) {
-            x += (int) view.getX();
-            ViewParent parent = view.getParent();
-            view = parent != null ? (View) parent : null;
-        }
-        return x;
-    }
-
-    /**
-     * Returns the y coordinates of a view by tracing up its hierarchy.
-     */
-    private static int getY(View view) {
-        int y = 0;
-        while (view != null) {
-            y += (int) view.getY();
-            ViewParent parent = view.getParent();
-            view = parent != null ? (View) parent : null;
-        }
-        return y;
-    }
 
     /**
      * Returns the width of a view.
@@ -181,39 +156,39 @@ public class TaskListItemCoordinates {
 
             // Records coordinates.
             View checkmark = view.findViewById(R.id.checkmark);
-            coordinates.checkmarkX = getX(checkmark);
-            coordinates.checkmarkY = getY(checkmark);
+            coordinates.checkmarkX = UiUtilities.getX(checkmark);
+            coordinates.checkmarkY = UiUtilities.getY(checkmark);
             coordinates.checkmarkWidthIncludingMargins = getWidth(checkmark, true);
 
             View state = view.findViewById(R.id.active_state);
-            coordinates.stateX = getX(state);
-            coordinates.stateY = getY(state);
+            coordinates.stateX = UiUtilities.getX(state);
+            coordinates.stateY = UiUtilities.getY(state);
 
             TextView project = (TextView) view.findViewById(R.id.project);
-            coordinates.projectX = getX(project);
-            coordinates.projectY = getY(project);
+            coordinates.projectX = UiUtilities.getX(project);
+            coordinates.projectY = UiUtilities.getY(project);
             coordinates.projectWidth = getWidth(project, false);
             coordinates.projectLineCount = getLineCount(project);
             coordinates.projectFontSize = (int) project.getTextSize();
             coordinates.projectAscent = Math.round(project.getPaint().ascent());
 
             TextView contents = (TextView) view.findViewById(R.id.contents);
-            coordinates.contentsX = getX(contents);
-            coordinates.contentsY = getY(contents);
+            coordinates.contentsX = UiUtilities.getX(contents);
+            coordinates.contentsY = UiUtilities.getY(contents);
             coordinates.contentsWidth = getWidth(contents, false);
             coordinates.contentsLineCount = getLineCount(contents);
             coordinates.contentsFontSize = (int) contents.getTextSize();
             coordinates.contentsAscent = Math.round(contents.getPaint().ascent());
 
             View contexts = view.findViewById(R.id.contexts);
-            coordinates.contextsX = getX(contexts);
-            coordinates.contextsY = getY(contexts);
+            coordinates.contextsX = UiUtilities.getX(contexts);
+            coordinates.contextsY = UiUtilities.getY(contexts);
             coordinates.contextsWidth = getWidth(contexts, false);
             coordinates.contextsHeight = getHeight(contexts, false);
 
             TextView date = (TextView) view.findViewById(R.id.date);
-            coordinates.dateXEnd = getX(date) + date.getWidth();
-            coordinates.dateY = getY(date);
+            coordinates.dateXEnd = UiUtilities.getX(date) + date.getWidth();
+            coordinates.dateY = UiUtilities.getY(date);
             coordinates.dateFontSize = (int) date.getTextSize();
             coordinates.dateAscent = Math.round(date.getPaint().ascent());
         }

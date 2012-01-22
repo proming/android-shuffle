@@ -1,8 +1,10 @@
 package org.dodgybits.shuffle.android.core.util;
 
 import android.app.Activity;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.ViewParent;
 
 public class UiUtilities {
     private UiUtilities() {
@@ -64,6 +66,44 @@ public class UiUtilities {
      */
     public static void setVisibilitySafe(View parent, int viewId, int visibility) {
         setVisibilitySafe(parent.findViewById(viewId), visibility);
+    }
+
+    /**
+     * Returns the x coordinates of a view by tracing up its hierarchy.
+     */
+    public static int getX(View view) {
+        int x = 0;
+        while (view != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            {
+                x += (int) view.getX();
+            } else {
+                x += view.getLeft();
+            }
+            ViewParent parent = view.getParent();
+            view = parent != null ? (View) parent : null;
+        }
+        return x;
+    }
+
+    /**
+     * Returns the y coordinates of a view by tracing up its hierarchy.
+     */
+    public static int getY(View view) {
+        int y = 0;
+        while (view != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            {
+                y += (int) view.getY();
+            }
+            else
+            {
+                y += view.getTop();
+            }
+            ViewParent parent = view.getParent();
+            view = parent != null ? (View) parent : null;
+        }
+        return y;
     }
 
     /**
