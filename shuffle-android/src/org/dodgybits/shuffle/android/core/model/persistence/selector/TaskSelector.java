@@ -1,29 +1,28 @@
 package org.dodgybits.shuffle.android.core.model.persistence.selector;
 
-import static org.dodgybits.shuffle.android.core.model.persistence.selector.Flag.ignored;
-import static org.dodgybits.shuffle.android.core.model.persistence.selector.Flag.no;
-import static org.dodgybits.shuffle.android.core.model.persistence.selector.Flag.yes;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.format.DateUtils;
+import android.util.Log;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.util.StringUtils;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.model.ListPreferenceSettings;
 
-import android.net.Uri;
-import android.text.format.DateUtils;
-import android.util.Log;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
-public class TaskSelector extends AbstractEntitySelector<TaskSelector> {
+import static org.dodgybits.shuffle.android.core.model.persistence.selector.Flag.*;
+
+public class TaskSelector extends AbstractEntitySelector<TaskSelector> implements Parcelable {
     private static final String cTag = "TaskSelector";
     private static final String[] cUndefinedArgs = new String[] {};
 
     private PredefinedQuery mPredefined; 
-    private List<Id> mProjects;
-    private List<Id> mContexts;
+    private Id mProjectId = Id.NONE;
+    private Id mContextId = Id.NONE;
     private Flag mComplete = ignored;
     private Flag mPending = ignored;
 
@@ -37,12 +36,12 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> {
         return mPredefined;
     }
     
-    public final List<Id> getProjects() {
-        return mProjects;
+    public final Id getProjectId() {
+        return mProjectId;
     }
 
-    public final List<Id> getContexts() {
-        return mContexts;
+    public final Id getContextId() {
+        return mContextId;
     }
 
     public final Flag getComplete() {
@@ -58,6 +57,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> {
         return TaskProvider.Tasks.CONTENT_URI;
     }
 
+    @Override
     public final String getSelection(android.content.Context context) {
         if (mSelection == null) {
             List<String> expressions = getSelectionExpressions(context);
@@ -79,13 +79,53 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> {
         addDeletedExpression(expressions);
         addPendingExpression(expressions);
 
-        addListExpression(expressions, TaskProvider.Tasks.PROJECT_ID, mProjects);
-        addListExpression(expressions, TaskProvider.Tasks.CONTEXT_ID, mContexts);
+        addIdCheckExpression(expressions, TaskProvider.Tasks.PROJECT_ID, mProjectId);
+        addIdCheckExpression(expressions, TaskProvider.Tasks.CONTEXT_ID, mContextId);
         addFlagExpression(expressions, TaskProvider.Tasks.COMPLETE, mComplete);
         
         return expressions;
     }
-    
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getPredefinedQuery().name());
+        dest.writeLong(getContextId().getId());
+        dest.writeLong(getProjectId().getId());
+    }
+
+    public static final Parcelable.Creator<TaskSelector> CREATOR
+        = new Parcelable.Creator<TaskSelector>() {
+
+        @Override
+        public TaskSelector createFromParcel(Parcel source) {
+            String queryName = source.readString();
+            long contextId = source.readLong();
+            long projectId = source.readLong();
+            TaskSelector.PredefinedQuery query = TaskSelector.PredefinedQuery.valueOf(queryName);
+            TaskSelector.Builder builder = TaskSelector.newBuilder().setPredefined(query);
+            if (contextId != 0L) {
+                builder.setContextId(Id.create(contextId));
+            }
+            if (projectId != 0L) {
+                builder.setProjectId(Id.create(projectId));
+            }
+
+            return builder.build();
+        }
+
+        @Override
+        public TaskSelector[] newArray(int size) {
+            return new TaskSelector[size];
+        }
+    };
+
+
     private void addActiveExpression(List<String> expressions) {
         if (mActive == yes) {
             // A task is active if it is active and both project and context are active.
@@ -156,6 +196,9 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> {
                 break;
                 
             case tickler:
+            case all:
+            case context:
+            case project:
                 // by default show all results (completely customizable)
                 result = "(1 == 1)";
                 break;
@@ -204,13 +247,13 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> {
         }
         return endMS;
     }
-    
 
+    @Override
     public final String[] getSelectionArgs() {
         if (mSelectionArgs == cUndefinedArgs) {
             List<String> args = new ArrayList<String>();
-            addIdListArgs(args, mProjects);
-            addIdListArgs(args, mContexts);
+            addIdArg(args, mProjectId);
+            addIdArg(args, mContextId);
 
             Log.d(cTag,args.toString());
             mSelectionArgs = args.size() > 0 ? args.toArray(new String[0]): null;
@@ -226,9 +269,9 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> {
     @Override
     public final String toString() {
         return String.format(
-                "[TaskSelector predefined=%1$s projects=%2$s contexts=%3$s " +
+                "[TaskSelector predefined=%1$s project=%2$s context=%3$s " +
                 "complete=%4$s sortOrder=%5$s active=%6$s deleted=%7$s pending=%8$s]",
-                mPredefined, mProjects, mContexts, mComplete, 
+                mPredefined, mProjectId, mContextId, mComplete, 
                 mSortOrder, mActive, mDeleted, mPending);
     }
     
@@ -257,21 +300,21 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> {
             return this;
         }
 
-        public List<Id> getProjects() {
-            return mResult.mProjects;
+        public Id getProjectId() {
+            return mResult.mProjectId;
         }
 
-        public Builder setProjects(List<Id> value) {
-            mResult.mProjects = value;
+        public Builder setProjectId(Id value) {
+            mResult.mProjectId = value;
             return this;
         }
         
-        public List<Id> getContexts() {
-            return mResult.mContexts;
+        public Id getContextId() {
+            return mResult.mContextId;
         }
 
-        public Builder setContexts(List<Id> value) {
-            mResult.mContexts = value;
+        public Builder setContextId(Id value) {
+            mResult.mContextId = value;
             return this;
         }
                 
@@ -297,8 +340,8 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> {
             super.mergeFrom(query);
 
             setPredefined(query.mPredefined);
-            setProjects(query.mProjects);
-            setContexts(query.mContexts);
+            setProjectId(query.mProjectId);
+            setContextId(query.mContextId);
             setComplete(query.mComplete);
             setPending(query.mPending);
 
@@ -317,7 +360,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> {
     }
 
     public enum PredefinedQuery {
-        nextTasks, dueToday, dueNextWeek, dueNextMonth, inbox, tickler
+        all, inbox, nextTasks, dueToday, dueNextWeek, dueNextMonth, tickler, context, project
     }
 
 }

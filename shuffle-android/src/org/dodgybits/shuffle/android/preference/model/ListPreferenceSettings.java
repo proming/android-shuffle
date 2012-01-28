@@ -1,13 +1,12 @@
 package org.dodgybits.shuffle.android.preference.model;
 
-import org.dodgybits.shuffle.android.core.model.persistence.selector.Flag;
-
-import roboguice.util.Ln;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import org.dodgybits.shuffle.android.core.model.persistence.selector.Flag;
+import roboguice.util.Ln;
 
 public class ListPreferenceSettings {
 
@@ -29,6 +28,7 @@ public class ListPreferenceSettings {
     private static final String PENDING_ENABLED = "pendingEnabled";
     private static final String DELETED_ENABLED = "deletedEnabled";
     private static final String ACTIVE_ENABLED = "activeEnabled";
+
 
     private String mPrefix;
     private Flag mDefaultCompleted = Flag.ignored;

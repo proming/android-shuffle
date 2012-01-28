@@ -1,8 +1,7 @@
 package org.dodgybits.shuffle.android.list.config;
 
-import java.util.Arrays;
-import java.util.List;
-
+import android.content.ContextWrapper;
+import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Id;
@@ -11,10 +10,6 @@ import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelecto
 import org.dodgybits.shuffle.android.list.annotation.ContextTasks;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.model.ListPreferenceSettings;
-
-import android.content.ContextWrapper;
-
-import com.google.inject.Inject;
 
 public class ContextTasksListConfig extends AbstractTaskListConfig {
     private Id mContextId;
@@ -52,9 +47,8 @@ public class ContextTasksListConfig extends AbstractTaskListConfig {
     }
 
     private TaskSelector createTaskQuery() {
-        List<Id> ids = Arrays.asList(new Id[]{mContextId});
         TaskSelector query = TaskSelector.newBuilder()
-            .setContexts(ids)
+            .setContextId(mContextId)
             .setSortOrder(TaskProvider.Tasks.CREATED_DATE + " ASC")
             .build();
         return query;

@@ -1,7 +1,7 @@
 package org.dodgybits.shuffle.android.list.config;
 
-import java.util.HashMap;
-
+import android.content.Context;
+import android.content.Intent;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector.PredefinedQuery;
 import org.dodgybits.shuffle.android.list.activity.task.InboxActivity;
@@ -9,8 +9,7 @@ import org.dodgybits.shuffle.android.list.activity.task.TabbedDueActionsActivity
 import org.dodgybits.shuffle.android.list.activity.task.TicklerActivity;
 import org.dodgybits.shuffle.android.list.activity.task.TopTasksActivity;
 
-import android.content.Context;
-import android.content.Intent;
+import java.util.HashMap;
 
 public class StandardTaskQueries {
 
@@ -20,6 +19,8 @@ public class StandardTaskQueries {
     public static final String cDueNextMonth = "due_next_month";
     public static final String cNextTasks = "next_tasks";
     public static final String cTickler = "tickler";
+    public static final String cContext = "context";
+    public static final String cProject   = "project";
 
     public static final String cDueTasksFilterPrefs = "due_tasks";
     public static final String cProjectFilterPrefs = "project";
@@ -72,6 +73,7 @@ public class StandardTaskQueries {
         return cFilterPrefsMap.get(name);
     }
 
+    @Deprecated
     public static Intent getActivityIntent(Context context, String name) {
         if (cInbox.equals(name)) {
             return new Intent(context, InboxActivity.class);

@@ -16,8 +16,14 @@
 
 package org.dodgybits.shuffle.android.list.activity.expandable;
 
-import java.util.Arrays;
-
+import android.database.Cursor;
+import android.os.Bundle;
+import android.util.SparseIntArray;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ExpandableListAdapter;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Task;
@@ -31,16 +37,6 @@ import org.dodgybits.shuffle.android.list.view.ExpandableTaskView;
 import org.dodgybits.shuffle.android.list.view.TaskView;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-
-import android.database.Cursor;
-import android.os.Bundle;
-import android.util.SparseIntArray;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ExpandableContextsActivity extends AbstractExpandableActivity<Context,ContextSelector> {
     private int mChildIdColumnIndex; 
@@ -99,7 +95,7 @@ public class ExpandableContextsActivity extends AbstractExpandableActivity<Conte
     @Override
     protected Cursor createChildQuery(long groupId) {
         TaskSelector selector = getListConfig().getChildSelector().builderFrom()
-                .setContexts(Arrays.asList(new Id[]{Id.create(groupId)}))
+                .setContextId(Id.create(groupId))
                 .applyListPreferences(this, getListConfig().getListPreferenceSettings())
                 .build();
 

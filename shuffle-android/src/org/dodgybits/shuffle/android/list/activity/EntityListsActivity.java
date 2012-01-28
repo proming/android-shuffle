@@ -5,58 +5,89 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.list.activity.tasklist.TaskListContext;
 import org.dodgybits.shuffle.android.list.activity.tasklist.TaskListFragment;
-import org.dodgybits.shuffle.android.list.config.StandardTaskQueries;
+import org.dodgybits.shuffle.android.list.annotation.DueTasks;
+import org.dodgybits.shuffle.android.list.annotation.Inbox;
+import org.dodgybits.shuffle.android.list.annotation.Tickler;
+import org.dodgybits.shuffle.android.list.annotation.TopTasks;
 import roboguice.activity.RoboFragmentActivity;
 
+import java.util.List;
+
 public class EntityListsActivity extends RoboFragmentActivity {
+    private static final String cTag = "EntityListsActivity";
 
     MyAdapter mAdapter;
 
     ViewPager mPager;
+
+    @Inbox @Inject
+    TaskListContext mInboxContext;
+
+    @DueTasks @Inject
+    TaskListContext mDueTasksContext;
+
+    @TopTasks @Inject
+    TaskListContext mTopTasksContext;
+
+    @Tickler @Inject
+    TaskListContext mTicklerContext;
+
+    List<TaskListContext> mContexts;
+    ViewPager.OnPageChangeListener mPageChangeListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_pager);
 
-        mAdapter = new MyAdapter(getSupportFragmentManager());
+        initContexts();
 
+        mPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                TaskListContext context = mContexts.get(position);
+                setTitle(context.createTitle(EntityListsActivity.this));
+            }
+        };
+
+        mAdapter = new MyAdapter(getSupportFragmentManager());
         mPager = (ViewPager)findViewById(R.id.pager);
+        mPager.setOnPageChangeListener(mPageChangeListener);
         mPager.setAdapter(mAdapter);
 
+        // pager doesn't notify on initial page selection
+        mPageChangeListener.onPageSelected(mPager.getCurrentItem());
     }
 
-    public static class MyAdapter extends FragmentPagerAdapter {
+    private void initContexts() {
+        mContexts = Lists.newArrayList();
+
+        mContexts.add(mInboxContext);
+        mContexts.add(mDueTasksContext);
+        mContexts.add(mTopTasksContext);
+        mContexts.add(mTicklerContext);
+    }
+
+    public class MyAdapter extends FragmentPagerAdapter {
         public MyAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public int getCount() {
-            return 4;
+            return mContexts.size();
         }
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = null;
-            switch (position) {
-                case 0:
-                    fragment = TaskListFragment.newInstance(new TaskListContext(StandardTaskQueries.cInbox));
-                    break;
-                case 1:
-                    fragment = TaskListFragment.newInstance(new TaskListContext(StandardTaskQueries.cDueNextMonth));
-                    break;
-                case 2:
-                    fragment = TaskListFragment.newInstance(new TaskListContext(StandardTaskQueries.cNextTasks));
-                    break;
-                case 3:
-                    fragment = TaskListFragment.newInstance(new TaskListContext(StandardTaskQueries.cTickler));
-                    break;
-            }
-            return fragment;
+            Log.d(cTag, "Creating fragment item " + position);
+            return TaskListFragment.newInstance(mContexts.get(position));
         }
     }
 

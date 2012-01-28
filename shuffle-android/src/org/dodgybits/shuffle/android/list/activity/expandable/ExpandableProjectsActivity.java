@@ -16,8 +16,18 @@
 
 package org.dodgybits.shuffle.android.list.activity.expandable;
 
-import java.util.Arrays;
-
+import android.database.Cursor;
+import android.os.Bundle;
+import android.util.Log;
+import android.util.SparseIntArray;
+import android.view.ContextMenu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.Task;
@@ -32,20 +42,6 @@ import org.dodgybits.shuffle.android.list.view.ProjectView;
 import org.dodgybits.shuffle.android.list.view.TaskView;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-
-import android.database.Cursor;
-import android.os.Bundle;
-import android.util.Log;
-import android.util.SparseIntArray;
-import android.view.ContextMenu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ExpandableProjectsActivity extends AbstractExpandableActivity<Project,ProjectSelector> {
 	private static final String cTag = "ExpandableProjectsActivity";
@@ -106,7 +102,7 @@ public class ExpandableProjectsActivity extends AbstractExpandableActivity<Proje
 	@Override
 	protected Cursor createChildQuery(long groupId) {
         TaskSelector selector = getListConfig().getChildSelector().builderFrom()
-                .setProjects(Arrays.asList(new Id[]{Id.create(groupId)}))
+                .setProjectId(Id.create(groupId))
                 .applyListPreferences(this, getListConfig().getListPreferenceSettings())
                 .build();
 

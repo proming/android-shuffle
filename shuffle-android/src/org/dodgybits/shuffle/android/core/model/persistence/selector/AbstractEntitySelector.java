@@ -52,35 +52,19 @@ public abstract class AbstractEntitySelector<E extends EntitySelector<E>> implem
         }
     }
 
-    protected void addListExpression(List<String> expressions, String field, List<Id> ids) {
-        if (ids != null) {
-            expressions.add(idListSelection(ids, field));
+    protected void addIdCheckExpression(List<String> expressions, String field, Id id) {
+        if (id.isInitialised()) {
+            expressions.add(field + "=?");
         }
     }
-    
-    private String idListSelection(List<Id> ids, String idName) {
-        StringBuilder result = new StringBuilder();
-        if (ids.size() > 0) {
-            result.append(idName)
-                .append(" in (")
-                .append(StringUtils.repeat(ids.size(), "?", ","))
-                .append(')');
-        } else {
-            result.append(idName)
-                .append(" is null");
-        }
-        return result.toString();
-    }
-        
-    protected void addIdListArgs(List<String> args, List<Id> ids) {
-        if (ids != null && ids.size() > 0) {
-            for(Id id : ids) {
-                args.add(String.valueOf(id.getId()));
-            }
+
+    protected void addIdArg(List<String> args, Id id) {
+        if (id.isInitialised()) {
+            args.add(String.valueOf(id.getId()));
         }
     }
-    
-    
+
+
     public abstract static class AbstractBuilder<E extends AbstractEntitySelector<E>> implements EntitySelector.Builder<E> {
         protected E mResult;
         

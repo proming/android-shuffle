@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import java.util.Set;
 
 public class TaskListFragment extends RoboListFragment
         implements AdapterView.OnItemLongClickListener, TaskListAdaptor.Callback {
+    private static final String cTag = "TaskListFragment";
 
     /** Argument name(s) */
     private static final String ARG_LIST_CONTEXT = "listContext";
@@ -62,6 +64,7 @@ public class TaskListFragment extends RoboListFragment
      * @param listContext The list context to show tasks for
      */
     public static TaskListFragment newInstance(TaskListContext listContext) {
+        Log.d(cTag, "Creating fragment with context " + listContext);
         final TaskListFragment instance = new TaskListFragment();
         final Bundle args = new Bundle();
         args.putParcelable(ARG_LIST_CONTEXT, listContext);
@@ -88,6 +91,8 @@ public class TaskListFragment extends RoboListFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(cTag, "onCreate with context " + mListContext);
 
         mActivity = getActivity();
         setHasOptionsMenu(true);
@@ -116,12 +121,23 @@ public class TaskListFragment extends RoboListFragment
         startLoading();
 
         UiUtilities.installFragment(this);
+
+        Log.d(cTag, "onActivityCreated with context " + mListContext);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.d(cTag, "onResume with context " + mListContext);
     }
 
     @Override
     public void onPause() {
         mSavedListState = getListView().onSaveInstanceState();
         super.onPause();
+
+        Log.d(cTag, "onPause with context " + mListContext);
     }
 
     @Override

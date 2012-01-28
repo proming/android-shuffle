@@ -15,7 +15,9 @@ import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.Flag;
+import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
 import org.dodgybits.shuffle.android.core.view.MenuUtils;
+import org.dodgybits.shuffle.android.list.activity.tasklist.TaskListContext;
 import org.dodgybits.shuffle.android.list.annotation.ContextTasks;
 import org.dodgybits.shuffle.android.list.annotation.Contexts;
 import org.dodgybits.shuffle.android.list.annotation.DueTasks;
@@ -49,8 +51,12 @@ public class ShuffleModule extends AbstractModule {
         addCaches();
         addPersisters();
         addEncoders();
+
+        //next two will go
         addListPreferenceSettings();
         addListConfig();
+
+        addTaskListContexts();
 	}
 
     private void addCaches() {
@@ -108,6 +114,14 @@ public class ShuffleModule extends AbstractModule {
         bind(ProjectListConfig.class).annotatedWith(Projects.class).to(ProjectListConfig.class);
         bind(ContextListConfig.class).annotatedWith(Contexts.class).to(ContextListConfig.class);
     }
+
+    private void addTaskListContexts() {
+        bind(TaskListContext.class).annotatedWith(TopTasks.class).toInstance(TaskListContext.create(TaskSelector.PredefinedQuery.nextTasks));
+        bind(TaskListContext.class).annotatedWith(Inbox.class).toInstance(TaskListContext.create(TaskSelector.PredefinedQuery.inbox));
+        bind(TaskListContext.class).annotatedWith(Tickler.class).toInstance(TaskListContext.create(TaskSelector.PredefinedQuery.tickler));
+        bind(TaskListContext.class).annotatedWith(DueTasks.class).toInstance(TaskListContext.create(TaskSelector.PredefinedQuery.dueToday));
+    }
+
 
 
     @Provides @Inbox

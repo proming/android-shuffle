@@ -149,7 +149,7 @@ public class TaskListAdaptor extends CursorAdapter {
             super(context, TaskProvider.Tasks.CONTENT_URI,
                     TaskProvider.Tasks.FULL_PROJECTION, null, null,
                     null);
-            mSelector = listContext.getSelector();
+            mSelector = listContext.createSelectorWithPreferences(context);
             mContext = context; 
         }
 
@@ -157,6 +157,8 @@ public class TaskListAdaptor extends CursorAdapter {
         public Cursor loadInBackground() {
             // Build the where cause (which can't be done on the UI thread.)
             setSelection(mSelector.getSelection(mContext));
+            setSelectionArgs(mSelector.getSelectionArgs());
+            setSortOrder(mSelector.getSortOrder());
             // Then do a query to get the cursor
             return super.loadInBackground();
         }
