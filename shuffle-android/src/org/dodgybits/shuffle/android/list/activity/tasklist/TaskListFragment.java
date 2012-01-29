@@ -20,7 +20,6 @@ import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.UiUtilities;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.activity.PreferencesActivity;
-import org.dodgybits.shuffle.android.synchronisation.tracks.activity.SynchronizeActivity;
 import roboguice.fragment.RoboListFragment;
 
 import java.util.Set;
@@ -32,8 +31,11 @@ public class TaskListFragment extends RoboListFragment
     /** Argument name(s) */
     private static final String ARG_LIST_CONTEXT = "listContext";
     private static final String BUNDLE_LIST_STATE = "TaskListFragment.state.listState";
-    public static final String SELECTED_ITEM = "SELECTED_ITEM";
+    private static final String SELECTED_ITEM = "SELECTED_ITEM";
 
+    // result codes
+    private static final int FILTER_CONFIG = 600;
+    
     private static final int LOADER_ID_MESSAGES_LOADER = 1;
 
     private boolean mIsFirstLoad;
@@ -206,17 +208,36 @@ public class TaskListFragment extends RoboListFragment
                 startActivity(intent);
                 return true;
             case R.id.action_search:
-                Log.d(cTag, "starting search");
+                Log.d(cTag, "Bringing up search");
                 getActivity().onSearchRequested();
                 return true;
             case R.id.action_add_task:
                 Log.d(cTag, "adding task");
                 startActivity(new Intent(Intent.ACTION_INSERT, TaskProvider.Tasks.CONTENT_URI));
                 return true;
+            case R.id.action_view_settings:
+                Log.d(cTag, "Bringing up view settings");
+                startActivityForResult(
+                        getListContext().createListSettingsIntent(getActivity()), FILTER_CONFIG);
+                return true;
+                
         }
         return false;
     }
-    
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        Log.d(cTag, "Got resultCode " + resultCode + " with data " + data);
+        switch (requestCode) {
+            case FILTER_CONFIG:
+                restartLoading();
+                break;
+
+            default:
+                Log.e(cTag, "Unknown requestCode: " + requestCode);
+        }
+    }
     
     void restoreInstanceState(Bundle savedInstanceState) {
         mListAdapter.loadState(savedInstanceState);
@@ -224,9 +245,15 @@ public class TaskListFragment extends RoboListFragment
     }
 
     private void startLoading() {
-        // Start loading...
+        Log.d(cTag, "Creating list cursor");
         final LoaderManager lm = getLoaderManager();
         lm.initLoader(LOADER_ID_MESSAGES_LOADER, null, LOADER_CALLBACKS);
+    }
+
+    private void restartLoading() {
+        Log.d(cTag, "Refreshing list cursor");
+        final LoaderManager lm = getLoaderManager();
+        lm.restartLoader(LOADER_ID_MESSAGES_LOADER, null, LOADER_CALLBACKS);
     }
 
 

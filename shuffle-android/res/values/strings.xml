@@ -68,6 +68,7 @@
     <string name="menu_preferences">Settings</string>
     <string name="menu_sync">Synchronize</string>
     <string name="menu_search">Search</string>
+    <string name="menu_view_settings">View Settings</string>
     <string name="menu_help">Help</string>
 
     <!--  general purpose -->

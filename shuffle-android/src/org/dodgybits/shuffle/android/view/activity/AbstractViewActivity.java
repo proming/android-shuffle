@@ -57,7 +57,7 @@ public abstract class AbstractViewActivity<E extends Entity> extends
 		setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
 		setContentView(getContentViewResId());
 
-        Drawable icon = getResources().getDrawable(R.drawable.ic_menu_edit);
+        Drawable icon = getResources().getDrawable(R.drawable.ic_menu_compose_holo_light);
         icon.setBounds(0, 0, 36, 36);
         mEditButton.setCompoundDrawables(icon, null, null, null);
         mEditButton.setOnClickListener(this);

@@ -2,11 +2,13 @@ package org.dodgybits.shuffle.android.list.activity.tasklist;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.Flag;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
+import org.dodgybits.shuffle.android.list.activity.ListPreferenceActivity;
 import org.dodgybits.shuffle.android.list.config.StandardTaskQueries;
 import org.dodgybits.shuffle.android.preference.model.ListPreferenceSettings;
 
@@ -125,5 +127,11 @@ public class TaskListContext implements Parcelable {
     @Override
     public String toString() {
         return "[TaskListContext " + mSelector.getPredefinedQuery() + "]";
+    }
+
+    public Intent createListSettingsIntent(Context context) {
+        Intent intent = new Intent(context, ListPreferenceActivity.class);
+        mSettings.addToIntent(intent);
+        return intent;
     }
 }
