@@ -10,17 +10,17 @@ import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.activity.HelpActivity;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.UiUtilities;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
+import org.dodgybits.shuffle.android.preference.activity.PreferencesActivity;
+import org.dodgybits.shuffle.android.synchronisation.tracks.activity.SynchronizeActivity;
 import roboguice.fragment.RoboListFragment;
 
 import java.util.Set;
@@ -187,7 +187,37 @@ public class TaskListFragment extends RoboListFragment
         mListAdapter.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.task_list_menu, menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_preferences:
+                Log.d(cTag, "Bringing up preferences");
+                startActivity(new Intent(getActivity(), PreferencesActivity.class));
+                return true;
+            case R.id.action_help:
+                Log.d(cTag, "Bringing up help");
+                Intent intent = new Intent(getActivity(), HelpActivity.class);
+                intent.putExtra(HelpActivity.cHelpPage, 0);
+                startActivity(intent);
+                return true;
+            case R.id.action_search:
+                Log.d(cTag, "starting search");
+                getActivity().onSearchRequested();
+                return true;
+            case R.id.action_add_task:
+                Log.d(cTag, "adding task");
+                startActivity(new Intent(Intent.ACTION_INSERT, TaskProvider.Tasks.CONTENT_URI));
+                return true;
+        }
+        return false;
+    }
+    
+    
     void restoreInstanceState(Bundle savedInstanceState) {
         mListAdapter.loadState(savedInstanceState);
         mSavedListState = savedInstanceState.getParcelable(BUNDLE_LIST_STATE);
