@@ -1,5 +1,6 @@
 package org.dodgybits.shuffle.android.list.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +23,8 @@ import java.util.List;
 public class EntityListsActivity extends RoboFragmentActivity {
     private static final String cTag = "EntityListsActivity";
 
+    public static final String SELECTED_INDEX = "selectedIndex";
+    
     MyAdapter mAdapter;
 
     ViewPager mPager;
@@ -61,7 +64,15 @@ public class EntityListsActivity extends RoboFragmentActivity {
         mPager.setOnPageChangeListener(mPageChangeListener);
         mPager.setAdapter(mAdapter);
 
-        // pager doesn't notify on initial page selection
+        Intent intent = getIntent();
+        int position = intent.getExtras().getInt(SELECTED_INDEX, 0);
+
+        // TODO remove this once all list screens are present
+        position = Math.min(position, mContexts.size() - 1);
+
+        mPager.setCurrentItem(position);
+
+        // pager doesn't notify on initial page selection (if it's 0)
         mPageChangeListener.onPageSelected(mPager.getCurrentItem());
     }
 

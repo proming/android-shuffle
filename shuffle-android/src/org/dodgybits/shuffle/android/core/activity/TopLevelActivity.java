@@ -162,10 +162,18 @@ public class TopLevelActivity extends FlurryEnabledListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        if (position == 0) {
-            startActivity(new Intent(this, EntityListsActivity.class));
-        } else {
-            MenuUtils.checkCommonItemsSelected(position + MenuUtils.INBOX_ID, this, -1, false);
+        switch (position) {
+            case 0:
+            case 5:
+                Bundle bundle = new Bundle();
+                bundle.putInt(EntityListsActivity.SELECTED_INDEX, position);
+                Intent intent = new Intent(this, EntityListsActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            default:
+                MenuUtils.checkCommonItemsSelected(position + MenuUtils.INBOX_ID, this, -1, false);
+                break;
         }
     }
     
