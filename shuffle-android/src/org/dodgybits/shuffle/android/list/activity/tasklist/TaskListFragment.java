@@ -18,8 +18,10 @@ import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.HelpActivity;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.UiUtilities;
+import org.dodgybits.shuffle.android.list.activity.task.InboxActivity;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.activity.PreferencesActivity;
+import org.dodgybits.shuffle.android.view.activity.TaskPagerActivity;
 import roboguice.fragment.RoboListFragment;
 
 import java.util.Set;
@@ -36,7 +38,7 @@ public class TaskListFragment extends RoboListFragment
     // result codes
     private static final int FILTER_CONFIG = 600;
     
-    private static final int LOADER_ID_MESSAGES_LOADER = 1;
+    private static final int LOADER_ID_TASK_LIST_LOADER = 1;
 
     private boolean mIsFirstLoad;
 
@@ -169,12 +171,17 @@ public class TaskListFragment extends RoboListFragment
             // the user. They have clicked on one, so return it now.
             Bundle bundle = new Bundle();
             bundle.putString(SELECTED_ITEM, url.toString());
-            Intent mIntent = new Intent();
-            mIntent.putExtras(bundle);
-            getActivity().setResult(Activity.RESULT_OK, mIntent);
+            Intent intent = new Intent();
+            intent.putExtras(bundle);
+            getActivity().setResult(Activity.RESULT_OK, intent);
         } else {
             // Launch activity to view/edit the currently selected item
-            startActivity(new Intent(Intent.ACTION_VIEW, url));
+            Intent intent = new Intent(getActivity(), TaskPagerActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt(TaskPagerActivity.SELECTED_INDEX, position);
+            bundle.putParcelable(TaskPagerActivity.TASK_LIST_CONTEXT, mListContext);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 
@@ -247,13 +254,13 @@ public class TaskListFragment extends RoboListFragment
     private void startLoading() {
         Log.d(cTag, "Creating list cursor");
         final LoaderManager lm = getLoaderManager();
-        lm.initLoader(LOADER_ID_MESSAGES_LOADER, null, LOADER_CALLBACKS);
+        lm.initLoader(LOADER_ID_TASK_LIST_LOADER, null, LOADER_CALLBACKS);
     }
 
     private void restartLoading() {
         Log.d(cTag, "Refreshing list cursor");
         final LoaderManager lm = getLoaderManager();
-        lm.restartLoader(LOADER_ID_MESSAGES_LOADER, null, LOADER_CALLBACKS);
+        lm.restartLoader(LOADER_ID_TASK_LIST_LOADER, null, LOADER_CALLBACKS);
     }
 
 

@@ -33,11 +33,6 @@ import org.dodgybits.shuffle.android.core.view.MenuUtils;
 import roboguice.inject.InjectView;
 import roboguice.util.Ln;
 
-/**
- * A generic activity for editing an item in a database. This can be used either
- * to simply view an item (Intent.VIEW_ACTION), view and edit an item
- * (Intent.EDIT_ACTION), or create a new item (Intent.INSERT_ACTION).
- */
 public abstract class AbstractViewActivity<E extends Entity> extends
         FlurryEnabledActivity implements View.OnClickListener {
 
