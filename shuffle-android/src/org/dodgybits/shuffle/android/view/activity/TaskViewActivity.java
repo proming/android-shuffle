@@ -16,41 +16,43 @@
 
 package org.dodgybits.shuffle.android.view.activity;
 
-import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.model.Context;
-import org.dodgybits.shuffle.android.core.model.Id;
-import org.dodgybits.shuffle.android.core.model.Project;
-import org.dodgybits.shuffle.android.core.model.Task;
-import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
-import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
-import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
-import org.dodgybits.shuffle.android.core.util.CalendarUtils;
-import org.dodgybits.shuffle.android.core.view.ContextIcon;
-import org.dodgybits.shuffle.android.list.view.LabelView;
-import org.dodgybits.shuffle.android.list.view.StatusView;
-import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-
-import roboguice.inject.InjectView;
-import roboguice.util.Ln;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.inject.Inject;
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.model.Context;
+import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.core.model.Project;
+import org.dodgybits.shuffle.android.core.model.Task;
+import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
+import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
+import org.dodgybits.shuffle.android.core.util.CalendarUtils;
+import org.dodgybits.shuffle.android.core.view.ContextIcon;
+import org.dodgybits.shuffle.android.core.view.MenuUtils;
+import org.dodgybits.shuffle.android.list.view.LabelView;
+import org.dodgybits.shuffle.android.list.view.StatusView;
+import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
+import roboguice.activity.RoboFragmentActivity;
+import roboguice.inject.InjectView;
+import roboguice.util.Ln;
 
 /**
  * A generic activity for viewing a task.
  */
-public class TaskViewActivity extends AbstractViewActivity<Task> {
+public class TaskViewActivity extends RoboFragmentActivity implements View.OnClickListener {
 
     private @InjectView(R.id.complete_toggle_button) Button mCompleteButton;
 
@@ -66,9 +68,7 @@ public class TaskViewActivity extends AbstractViewActivity<Task> {
 
     private @InjectView(R.id.calendar_entry) View mCalendarEntry;
     private @InjectView(R.id.view_calendar_button) Button mViewCalendarButton;
-
-//    private @InjectView(R.id.reminder_entry) View mReminderEntry;
-//    private @InjectView(R.id.reminder) TextView mReminderView;
+    private @InjectView(R.id.edit_button) Button mEditButton;
 
     private @InjectView(R.id.status) StatusView mStatusView;
     private @InjectView(R.id.completed) TextView mCompletedView;
@@ -79,11 +79,25 @@ public class TaskViewActivity extends AbstractViewActivity<Task> {
     @Inject private EntityCache<Context> mContextCache;
     @Inject private TaskPersister mPersister;
 
+    protected Uri mUri;
+    protected Cursor mCursor;
+    protected Task mOriginalItem;
+
     @Override
     protected void onCreate(Bundle icicle) {
         Ln.d("onCreate+");
         super.onCreate(icicle);
-                
+
+        mUri = getIntent().getData();
+
+        setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
+        setContentView(R.layout.task_view);
+
+        Drawable editIcon = getResources().getDrawable(R.drawable.ic_menu_compose_holo_light);
+        editIcon.setBounds(0, 0, 36, 36);
+        mEditButton.setCompoundDrawables(editIcon, null, null, null);
+        mEditButton.setOnClickListener(this);
+
         loadCursors();
 
         mCursor.moveToFirst();
@@ -99,7 +113,30 @@ public class TaskViewActivity extends AbstractViewActivity<Task> {
     }
 
     @Override
-    protected void updateUIFromItem(Task task) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuUtils.addPrefsHelpMenuItems(this, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (MenuUtils.checkCommonItemsSelected(item, this, MenuUtils.INBOX_ID)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void doEditAction() {
+        Intent editIntent = new Intent(Intent.ACTION_EDIT, mUri);
+        startActivity(editIntent);
+        finish();
+    }
+
+    private void updateUIFromItem(Task task) {
         Context context = mContextCache.findById(task.getContextId());
         Project project = mProjectCache.findById(task.getProjectId());
 
@@ -114,21 +151,12 @@ public class TaskViewActivity extends AbstractViewActivity<Task> {
     }
 
     @Override
-    protected EntityPersister<Task> getPersister() {
-        return mPersister;
-    }
-
-    /**
-     * @return id of layout for this view
-     */
-    @Override
-    protected int getContentViewResId() {
-    	return R.layout.task_view;
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.edit_button:
+                doEditAction();
+                break;
+
             case R.id.complete_toggle_button: {
                 toggleComplete();
                 String text = getString(R.string.itemSavedToast, getString(R.string.task_name));
@@ -147,10 +175,6 @@ public class TaskViewActivity extends AbstractViewActivity<Task> {
 	        	startActivity(viewCalendarEntry);
 	        	break;
 	        }
-
-            default:
-            	super.onClick(v);
-            	break;
         }
     }
 
