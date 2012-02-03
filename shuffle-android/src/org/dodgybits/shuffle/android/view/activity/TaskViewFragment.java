@@ -29,7 +29,6 @@ import org.dodgybits.shuffle.android.list.view.LabelView;
 import org.dodgybits.shuffle.android.list.view.StatusView;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import roboguice.fragment.RoboFragment;
-import roboguice.inject.InjectView;
 
 public class TaskViewFragment extends RoboFragment implements View.OnClickListener {
     public static final String SELECTED_INDEX = "selectedIndex";
@@ -42,35 +41,29 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     private @Inject
     TaskEncoder mEncoder;
     
-    private @InjectView(R.id.edit_button) Button mEditButton;
+    private Button mEditButton;
     
-    private @InjectView(R.id.complete_toggle_button)
-    Button mCompleteButton;
+    private Button mCompleteButton;
 
-    private @InjectView(R.id.project)
-    TextView mProjectView;
-    private @InjectView(R.id.description) TextView mDescriptionView;
-    private @InjectView(R.id.context)
-    LabelView mContextView;
+    private TextView mProjectView;
+    private TextView mDescriptionView;
+    private LabelView mContextView;
 
-    private @InjectView(R.id.details_entry)
-    View mDetailsEntry;
-    private @InjectView(R.id.details) TextView mDetailsView;
+    private View mDetailsEntry;
+    private TextView mDetailsView;
 
-    private @InjectView(R.id.start) TextView mStartView;
-    private @InjectView(R.id.due) TextView mDueView;
+    private TextView mStartView;
+    private TextView mDueView;
 
-    private @InjectView(R.id.calendar_entry) View mCalendarEntry;
-    private @InjectView(R.id.view_calendar_button) Button mViewCalendarButton;
+    private View mCalendarEntry;
+    private Button mViewCalendarButton;
 
-    private @InjectView(R.id.status)
-    StatusView mStatusView;
-    private @InjectView(R.id.completed) TextView mCompletedView;
-    private @InjectView(R.id.created) TextView mCreatedView;
-    private @InjectView(R.id.modified) TextView mModifiedView;
+    private StatusView mStatusView;
+    private TextView mCompletedView;
+    private TextView mCreatedView;
+    private TextView mModifiedView;
 
-    @Inject
-    private EntityCache<Project> mProjectCache;
+    @Inject private EntityCache<Project> mProjectCache;
     @Inject private EntityCache<Context> mContextCache;
     @Inject private TaskPersister mPersister;
 
@@ -82,6 +75,9 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         TaskViewFragment fragment = new TaskViewFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public TaskViewFragment() {
     }
 
     @Override
@@ -96,7 +92,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the layout for this fragmentx
         return inflater.inflate(R.layout.task_view, container, false);
     }
 
@@ -104,6 +100,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        findViews();
         updateUIFromItem(mTask);
 
         Drawable viewCalendarIcon = getResources().getDrawable(R.drawable.ic_menu_view);
@@ -118,6 +115,25 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         mEditButton.setCompoundDrawables(icon, null, null, null);
         mEditButton.setOnClickListener(this);
     }
+
+    private void findViews() {
+        mEditButton = (Button) getView().findViewById(R.id.edit_button);
+        mCompleteButton = (Button) getView().findViewById(R.id.complete_toggle_button);
+        mProjectView = (TextView) getView().findViewById(R.id.project);
+        mDescriptionView = (TextView) getView().findViewById(R.id.description);
+        mContextView = (LabelView) getView().findViewById(R.id.context);
+        mDetailsEntry = getView().findViewById(R.id.details_entry);
+        mDetailsView = (TextView) getView().findViewById(R.id.details);
+        mStartView = (TextView) getView().findViewById(R.id.start);
+        mDueView = (TextView) getView().findViewById(R.id.due);
+        mCalendarEntry = getView().findViewById(R.id.calendar_entry);
+        mViewCalendarButton = (Button) getView().findViewById(R.id.view_calendar_button);
+        mStatusView = (StatusView) getView().findViewById(R.id.status);
+        mCompletedView = (TextView) getView().findViewById(R.id.completed);
+        mCreatedView = (TextView) getView().findViewById(R.id.created);
+        mModifiedView = (TextView) getView().findViewById(R.id.modified);
+    }
+
 
     private void updateUIFromItem(Task task) {
         Context context = mContextCache.findById(task.getContextId());
