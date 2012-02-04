@@ -69,6 +69,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     private Task mTask;
     private int mPosition;
     private int mTaskCount;
+    private boolean mVisible;
 
     public static TaskViewFragment newInstance(Bundle args) {
         TaskViewFragment fragment = new TaskViewFragment();
@@ -81,14 +82,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
-        
-        Bundle args = getArguments();
-        if (args != null) {
-            mTask = mEncoder.restore(args);
-            mTaskCount = args.getInt(COUNT, -1);
-            mPosition = args.getInt(INDEX, -1);
-            getActivity().invalidateOptionsMenu();
-        }
     }
 
     @Override
@@ -101,6 +94,13 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            mTask = mEncoder.restore(args);
+            mTaskCount = args.getInt(COUNT, -1);
+            mPosition = args.getInt(INDEX, -1);
+        }
 
         findViews();
         updateUIFromItem(mTask);
@@ -116,6 +116,14 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         icon.setBounds(0, 0, 36, 36);
         mEditButton.setCompoundDrawables(icon, null, null, null);
         mEditButton.setOnClickListener(this);
+
+        onViewChange();
+    }
+
+    public void onVisibilityChange(boolean visible) {
+        mVisible = visible;
+
+        onViewChange();
     }
 
     @Override
@@ -153,7 +161,15 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
                 return true;
         }
         return false;
-    }    
+    }
+
+    private void onViewChange() {
+        if (mTask != null && mVisible) {
+            updateTitle(mTask.getDescription());
+            getActivity().invalidateOptionsMenu();
+        }
+    }
+
     private void findViews() {
         mEditButton = (Button) getView().findViewById(R.id.edit_button);
         mCompleteButton = (Button) getView().findViewById(R.id.complete_toggle_button);
@@ -177,7 +193,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         Context context = mContextCache.findById(task.getContextId());
         Project project = mProjectCache.findById(task.getProjectId());
 
-        updateTitle(task.getDescription());
         updateCompleteButton(task.isComplete());
         updateProject(project);
         updateDescription(task.getDescription());

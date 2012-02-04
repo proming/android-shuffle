@@ -66,6 +66,7 @@ public class TaskViewActivity extends RoboFragmentActivity {
         Ln.d("Adding task view fragment to activity");
 
         TaskViewFragment viewFragment = TaskViewFragment.newInstance(args);
+        viewFragment.onVisibilityChange(true);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_container, viewFragment);
         ft.commit();
