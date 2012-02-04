@@ -77,16 +77,16 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         return fragment;
     }
 
-    public TaskViewFragment() {
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mTask = mEncoder.restore(getArguments());
-        mTaskCount = getArguments().getInt(COUNT);
-        mPosition = getArguments().getInt(INDEX);
+        Bundle args = getArguments();
+        if (args != null) {
+            mTask = mEncoder.restore(args);
+            mTaskCount = args.getInt(COUNT, -1);
+            mPosition = args.getInt(INDEX, -1);
+        }
     }
 
     @Override
