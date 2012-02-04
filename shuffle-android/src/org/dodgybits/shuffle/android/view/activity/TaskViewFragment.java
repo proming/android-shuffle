@@ -139,6 +139,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         Context context = mContextCache.findById(task.getContextId());
         Project project = mProjectCache.findById(task.getProjectId());
 
+        updateTitle(task.getDescription());
         updateCompleteButton(task.isComplete());
         updateProject(project);
         updateDescription(task.getDescription());
@@ -191,6 +192,10 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
                 .setComplete(!mTask.isComplete()).build();
         mPersister.update(updatedTask);
 
+    }
+    
+    private void updateTitle(String title) {
+        getActivity().setTitle(title);
     }
 
     private void updateCompleteButton(boolean isComplete) {

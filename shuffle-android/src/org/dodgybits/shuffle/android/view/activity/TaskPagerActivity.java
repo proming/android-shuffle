@@ -43,22 +43,12 @@ public class TaskPagerActivity extends RoboFragmentActivity {
 
     ViewPager mPager;
 
-    ViewPager.OnPageChangeListener mPageChangeListener;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_pager);
 
-        mPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                setTitle("Task " + position);
-            }
-        };
-
         mPager = (ViewPager)findViewById(R.id.pager);
-        mPager.setOnPageChangeListener(mPageChangeListener);
 
         startLoading(getIntent().getExtras());
     }
@@ -90,9 +80,6 @@ public class TaskPagerActivity extends RoboFragmentActivity {
                     mAdapter = new MyAdapter(getSupportFragmentManager(), c);
                     mPager.setAdapter(mAdapter);
                     mPager.setCurrentItem(initialPosition);
-
-                    // pager doesn't notify on initial page selection (if it's 0)
-                    mPageChangeListener.onPageSelected(mPager.getCurrentItem());
                 }
 
 
