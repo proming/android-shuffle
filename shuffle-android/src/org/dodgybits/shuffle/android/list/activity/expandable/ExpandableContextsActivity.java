@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Task;
@@ -37,6 +36,7 @@ import org.dodgybits.shuffle.android.list.view.ExpandableTaskView;
 import org.dodgybits.shuffle.android.list.view.TaskView;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
+import roboguice.inject.ContextScopedProvider;
 
 public class ExpandableContextsActivity extends AbstractExpandableActivity<Context,ContextSelector> {
     private int mChildIdColumnIndex; 
@@ -44,7 +44,8 @@ public class ExpandableContextsActivity extends AbstractExpandableActivity<Conte
 	private SparseIntArray mTaskCountArray;
 	
     @Inject ContextExpandableListConfig mListConfig;
-	@Inject Provider<ExpandableTaskView> mTaskViewProvider;
+	@Inject
+    ContextScopedProvider<ExpandableTaskView> mTaskViewProvider;
 
     @Override
     protected ExpandableListConfig<Context,ContextSelector> getListConfig() {
@@ -132,7 +133,7 @@ public class ExpandableContextsActivity extends AbstractExpandableActivity<Conte
 				if (convertView instanceof ExpandableTaskView) {
 					taskView = (ExpandableTaskView) convertView;
 				} else {
-					taskView = mTaskViewProvider.get(); 
+					taskView = mTaskViewProvider.get(ExpandableContextsActivity.this);
 				}
 				taskView.setShowContext(false);
 				taskView.setShowProject(true);
