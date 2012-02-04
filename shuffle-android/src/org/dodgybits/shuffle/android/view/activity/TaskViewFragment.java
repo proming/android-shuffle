@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +27,7 @@ import org.dodgybits.shuffle.android.list.view.LabelView;
 import org.dodgybits.shuffle.android.list.view.StatusView;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import roboguice.fragment.RoboFragment;
+import roboguice.util.Ln;
 
 public class TaskViewFragment extends RoboFragment implements View.OnClickListener {
     public static final String SELECTED_INDEX = "selectedIndex";
@@ -81,11 +80,14 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
+        
         Bundle args = getArguments();
         if (args != null) {
             mTask = mEncoder.restore(args);
             mTaskCount = args.getInt(COUNT, -1);
             mPosition = args.getInt(INDEX, -1);
+            getActivity().invalidateOptionsMenu();
         }
     }
 
@@ -116,6 +118,42 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         mEditButton.setOnClickListener(this);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.task_view_menu, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        if (mTask != null) {
+            final boolean isComplete = mTask.isComplete();
+            menu.findItem(R.id.action_mark_complete).setVisible(!isComplete);
+            menu.findItem(R.id.action_mark_incomplete).setVisible(isComplete);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_mark_complete:
+            case R.id.action_mark_incomplete:
+                Ln.d("Mark task as complete");
+                toggleComplete();
+                String text = getString(R.string.itemSavedToast, getString(R.string.task_name));
+                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+                getActivity().finish();
+                return true;
+            case R.id.action_edit:
+                Ln.d("Editing the action");
+                doEditAction();
+                return true;
+            case R.id.action_delete:
+                Ln.d("adding task");
+                startActivity(new Intent(Intent.ACTION_INSERT, TaskProvider.Tasks.CONTENT_URI));
+                return true;
+        }
+        return false;
+    }    
     private void findViews() {
         mEditButton = (Button) getView().findViewById(R.id.edit_button);
         mCompleteButton = (Button) getView().findViewById(R.id.complete_toggle_button);
@@ -153,14 +191,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.complete_toggle_button: {
-                toggleComplete();
-                String text = getString(R.string.itemSavedToast, getString(R.string.task_name));
-                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
-                getActivity().finish();
-                break;
-            }
-
             case R.id.view_calendar_button: {
                 Uri eventUri = ContentUris.appendId(
                         CalendarUtils.getEventContentUri().buildUpon(),
@@ -171,10 +201,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
                 startActivity(viewCalendarEntry);
                 break;
             }
-
-            case R.id.edit_button:
-                doEditAction();
-                break;
         }
     }
 
