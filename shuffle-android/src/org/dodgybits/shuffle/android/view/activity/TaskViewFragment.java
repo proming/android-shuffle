@@ -286,7 +286,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     private CharSequence formatDateTime(long millis) {
         CharSequence value;
         if (millis > 0L) {
-            value = DateUtils.getRelativeTimeSpanString(getActivity(), millis);
+            value = DateUtils.getRelativeTimeSpanString(getActivity(), millis, true);
         } else {
             value = "";
         }
@@ -297,7 +297,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     private void updateExtras(Task task, Context context, Project project) {
         mStatusView.updateStatus(task, context, project, !task.isComplete());
         mCompletedView.setText(task.isComplete() ? getString(R.string.completed) : "");
-        mCreatedView.setText(formatDateTime(task.getCreatedDate()));
-        mModifiedView.setText(formatDateTime(task.getModifiedDate()));
+        mCreatedView.setText(getString(R.string.created_title) + " " + formatDateTime(task.getCreatedDate()));
+        mModifiedView.setText(getString(R.string.modified_title) + " " + formatDateTime(task.getModifiedDate()));
     }    
 }

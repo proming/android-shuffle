@@ -13,11 +13,17 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+        >
 
 <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="1px"
+    android:layout_weight="1"
+    android:fillViewport="true"
     android:background="#eaeaff"
     android:fadingEdge="none"
     android:animateLayoutChanges="true"
@@ -98,7 +104,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@+id/completed"
                     android:paddingTop="2dip"
-                    android:lines="1"
+                    android:maxLines="2"
                     android:textStyle="bold"
                     android:textColor="#000065"
                     android:textSize="24sp"
@@ -130,7 +136,6 @@
                 android:layout_height="wrap_content"
                 android:autoLink="all"
                 android:paddingTop="8dip"
-                android:paddingBottom="8dip"
                 android:paddingLeft="8dip"
                 android:paddingRight="?android:attr/scrollbarSize"
                 android:textSize="14sp"
@@ -142,6 +147,7 @@
                 android:id="@+id/scheduling_entry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="8dip"
                 android:paddingRight="?android:attr/scrollbarSize"
                 android:minHeight="50dip"
                 >
@@ -164,7 +170,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/scheduling_label"
                     android:layout_alignParentLeft="true"
-                    android:paddingLeft="5dip"
+                    android:paddingLeft="8dip"
                     android:paddingTop="4dip"
                     android:text="@string/show_from_title"
                     style="?android:attr/textAppearanceMedium"
@@ -176,7 +182,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_below="@+id/show_from_label"
-                    android:paddingLeft="5dip"
+                    android:paddingLeft="8dip"
                     android:paddingTop="2dip"
                     android:paddingBottom="4dip"
                     android:text="@string/due_title"
@@ -241,66 +247,44 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-                android:id="@+id/extras_entry"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingRight="?android:attr/scrollbarSize"
-                android:minHeight="50dip"
-                >
-
-            <TextView
-                    android:id="@+id/created_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:paddingLeft="5dip"
-                    android:paddingTop="2dip"
-                    android:text="@string/created_title"
-                    android:textSize="14sp"
-                    style="?android:attr/textAppearanceMedium"
-                    />
-
-            <TextView
-                    android:id="@+id/modified_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/created_label"
-                    android:paddingLeft="5dip"
-                    android:paddingTop="2dip"
-                    android:paddingBottom="3dip"
-                    android:text="@string/modified_title"
-                    android:textSize="14sp"
-                    style="?android:attr/textAppearanceMedium"
-                    />
-
-            <TextView
-                    android:id="@+id/created"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="5dip"
-                    android:paddingTop="2dip"
-                    android:layout_alignTop="@+id/created_label"
-                    android:layout_alignParentRight="true"
-                    android:textSize="14sp"
-                    style="?android:attr/textAppearanceSmall"
-                    />
-
-            <TextView
-                    android:id="@+id/modified"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="5dip"
-                    android:paddingTop="2dip"
-                    android:layout_alignTop="@+id/modified_label"
-                    android:layout_alignParentRight="true"
-                    android:textSize="14sp"
-                    style="?android:attr/textAppearanceSmall"
-                    />
-
-        </RelativeLayout>
 
     </LinearLayout>
 
 </ScrollView>
+
+    <LinearLayout
+            android:id="@+id/extras_entry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="?android:attr/scrollbarSize"
+            android:orientation="vertical"
+            android:background="#eaeaff"
+            android:gravity="right"
+            >
+
+        <TextView
+                android:id="@+id/created"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dip"
+                android:paddingTop="2dip"
+                android:textColor="#8a8a8a"
+                style="?android:attr/textAppearanceSmall"
+                />
+
+        <TextView
+                android:id="@+id/modified"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/created"
+                android:paddingRight="5dip"
+                android:paddingTop="2dip"
+                android:paddingBottom="8dip"
+                android:textSize="14sp"
+                android:textColor="#8a8a8a"
+                style="?android:attr/textAppearanceSmall"
+                />
+
+    </LinearLayout>
+
+</LinearLayout>
