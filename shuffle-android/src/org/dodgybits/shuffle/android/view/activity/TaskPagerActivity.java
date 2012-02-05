@@ -1,7 +1,10 @@
 package org.dodgybits.shuffle.android.view.activity;
 
+import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,12 +14,14 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.MenuItem;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
+import org.dodgybits.shuffle.android.list.activity.EntityListsActivity;
 import org.dodgybits.shuffle.android.list.activity.tasklist.TaskListContext;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import roboguice.activity.RoboFragmentActivity;
@@ -52,6 +57,16 @@ public class TaskPagerActivity extends RoboFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_pager);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+        {
+            ActionBar bar = getActionBar();
+            if (bar != null) {
+                bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP |
+                        ActionBar.DISPLAY_SHOW_HOME |
+                        ActionBar.DISPLAY_SHOW_TITLE);
+            }
+        }
+
         mPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -67,6 +82,21 @@ public class TaskPagerActivity extends RoboFragmentActivity {
         mPager.setOnPageChangeListener(mPageChangeListener);
 
         startLoading(getIntent().getExtras());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; go home
+                Intent intent = new Intent(this, EntityListsActivity.class);
+                // TODO go to the correct page based on TaskListContext
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                return true;
+        }
+
+        return false;
     }
 
     private void startLoading(Bundle args) {

@@ -5,11 +5,11 @@
     <item android:id="@+id/action_mark_complete"
           android:icon="@drawable/ic_menu_mark"
           android:title="@string/complete"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="ifRoom|withText" />
     <item android:id="@+id/action_mark_incomplete"
           android:icon="@drawable/ic_menu_mark"
           android:title="@string/incomplete"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="ifRoom|withText" />
     <item android:id="@+id/action_edit"
           android:icon="@drawable/ic_menu_compose_holo_light"
           android:title="@string/edit_button_title"

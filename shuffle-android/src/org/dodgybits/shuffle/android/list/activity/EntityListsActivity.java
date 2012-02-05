@@ -1,15 +1,19 @@
 package org.dodgybits.shuffle.android.list.activity;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.MenuItem;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
 import org.dodgybits.shuffle.android.list.activity.tasklist.TaskListContext;
 import org.dodgybits.shuffle.android.list.activity.tasklist.TaskListFragment;
 import org.dodgybits.shuffle.android.list.annotation.DueTasks;
@@ -49,6 +53,16 @@ public class EntityListsActivity extends RoboFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_pager);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+        {
+            ActionBar bar = getActionBar();
+            if (bar != null) {
+                bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP |
+                        ActionBar.DISPLAY_SHOW_HOME |
+                        ActionBar.DISPLAY_SHOW_TITLE);
+            }
+        }
+
         initContexts();
 
         mPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
@@ -64,8 +78,12 @@ public class EntityListsActivity extends RoboFragmentActivity {
         mPager.setOnPageChangeListener(mPageChangeListener);
         mPager.setAdapter(mAdapter);
 
+        int position = 0;
         Intent intent = getIntent();
-        int position = intent.getExtras().getInt(SELECTED_INDEX, 0);
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            position = intent.getExtras().getInt(SELECTED_INDEX, 0);
+        }
 
         // TODO remove this once all list screens are present
         position = Math.min(position, mContexts.size() - 1);
@@ -74,6 +92,20 @@ public class EntityListsActivity extends RoboFragmentActivity {
 
         // pager doesn't notify on initial page selection (if it's 0)
         mPageChangeListener.onPageSelected(mPager.getCurrentItem());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; go home
+                Intent intent = new Intent(this, TopLevelActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                return true;
+        }
+
+        return false;
     }
 
     private void initContexts() {

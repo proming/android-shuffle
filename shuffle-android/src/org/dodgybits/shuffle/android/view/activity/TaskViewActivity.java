@@ -16,12 +16,17 @@
 
 package org.dodgybits.shuffle.android.view.activity;
 
+import android.app.ActionBar;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MenuItem;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
@@ -49,6 +54,16 @@ public class TaskViewActivity extends RoboFragmentActivity {
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
         setContentView(R.layout.task_view_activity);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+        {
+            ActionBar bar = getActionBar();
+            if (bar != null) {
+                bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP |
+                        ActionBar.DISPLAY_SHOW_HOME |
+                        ActionBar.DISPLAY_SHOW_TITLE);
+            }
+        }
+
         mUri = getIntent().getData();
         loadCursor();
     }
@@ -70,6 +85,20 @@ public class TaskViewActivity extends RoboFragmentActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_container, viewFragment);
         ft.commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; go home
+                Intent intent = new Intent(this, TopLevelActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                return true;
+        }
+
+        return false;
     }
 
     private void loadCursor() {

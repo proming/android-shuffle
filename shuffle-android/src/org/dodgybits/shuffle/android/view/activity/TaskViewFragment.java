@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -165,8 +166,11 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
 
     private void onViewChange() {
         if (mTask != null && mVisible) {
-            updateTitle(mTask.getDescription());
-            getActivity().invalidateOptionsMenu();
+            updateTitle();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            {
+                getActivity().invalidateOptionsMenu();
+            }
         }
     }
 
@@ -235,8 +239,8 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
 
     }
     
-    private void updateTitle(String title) {
-        getActivity().setTitle(title);
+    private void updateTitle() {
+        getActivity().setTitle(mTask.getDescription());
     }
 
     private void updateCompleteButton(boolean isComplete) {
