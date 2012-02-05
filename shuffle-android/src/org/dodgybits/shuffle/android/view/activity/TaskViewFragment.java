@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.view.*;
 import android.widget.Button;
@@ -40,19 +39,14 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
 
     private @Inject
     TaskEncoder mEncoder;
-    
-    private Button mEditButton;
-    
-    private Button mCompleteButton;
 
     private TextView mProjectView;
     private TextView mDescriptionView;
     private LabelView mContextView;
 
-    private View mDetailsEntry;
     private TextView mDetailsView;
 
-    private TextView mStartView;
+    private TextView mShowFromView;
     private TextView mDueView;
 
     private View mCalendarEntry;
@@ -111,13 +105,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         mViewCalendarButton.setCompoundDrawables(viewCalendarIcon, null, null, null);
         mViewCalendarButton.setOnClickListener(this);
 
-        mCompleteButton.setOnClickListener(this);
-
-        Drawable icon = getResources().getDrawable(R.drawable.ic_menu_compose_holo_light);
-        icon.setBounds(0, 0, 36, 36);
-        mEditButton.setCompoundDrawables(icon, null, null, null);
-        mEditButton.setOnClickListener(this);
-
         onViewChange();
     }
 
@@ -175,14 +162,11 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     }
 
     private void findViews() {
-        mEditButton = (Button) getView().findViewById(R.id.edit_button);
-        mCompleteButton = (Button) getView().findViewById(R.id.complete_toggle_button);
         mProjectView = (TextView) getView().findViewById(R.id.project);
         mDescriptionView = (TextView) getView().findViewById(R.id.description);
         mContextView = (LabelView) getView().findViewById(R.id.context);
-        mDetailsEntry = getView().findViewById(R.id.details_entry);
         mDetailsView = (TextView) getView().findViewById(R.id.details);
-        mStartView = (TextView) getView().findViewById(R.id.start);
+        mShowFromView = (TextView) getView().findViewById(R.id.show_from);
         mDueView = (TextView) getView().findViewById(R.id.due);
         mCalendarEntry = getView().findViewById(R.id.calendar_entry);
         mViewCalendarButton = (Button) getView().findViewById(R.id.view_calendar_button);
@@ -197,7 +181,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         Context context = mContextCache.findById(task.getContextId());
         Project project = mProjectCache.findById(task.getProjectId());
 
-        updateCompleteButton(task.isComplete());
         updateProject(project);
         updateDescription(task.getDescription());
         updateContext(context);
@@ -243,12 +226,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         getActivity().setTitle(mTask.getDescription());
     }
 
-    private void updateCompleteButton(boolean isComplete) {
-        String label = getString(R.string.complete_toggle_button,
-                isComplete ? getString(R.string.incomplete) : getString(R.string.complete));
-        mCompleteButton.setText(label);
-    }
-
     private void updateProject(Project project) {
         if (project == null) {
             mProjectView.setVisibility(View.GONE);
@@ -282,15 +259,15 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
 
     private void updateDetails(String details) {
         if (TextUtils.isEmpty(details)) {
-            mDetailsEntry.setVisibility(View.GONE);
+            mDetailsView.setVisibility(View.GONE);
         } else {
-            mDetailsEntry.setVisibility(View.VISIBLE);
+            mDetailsView.setVisibility(View.VISIBLE);
             mDetailsView.setText(details);
         }
     }
 
-    private void updateScheduling(long startMillis, long dueMillis) {
-        mStartView.setText(formatDateTime(startMillis));
+    private void updateScheduling(long showFromMillis, long dueMillis) {
+        mShowFromView.setText(formatDateTime(showFromMillis));
         mDueView.setText(formatDateTime(dueMillis));
     }
 
@@ -306,14 +283,10 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
             DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_MONTH |
             DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME;
 
-    private String formatDateTime(long millis) {
-        String value;
+    private CharSequence formatDateTime(long millis) {
+        CharSequence value;
         if (millis > 0L) {
-            int flags = cDateFormatFlags;
-            if (DateFormat.is24HourFormat(getActivity())) {
-                flags |= DateUtils.FORMAT_24HOUR;
-            }
-            value = DateUtils.formatDateTime(getActivity(), millis, flags);
+            value = DateUtils.getRelativeTimeSpanString(getActivity(), millis);
         } else {
             value = "";
         }
