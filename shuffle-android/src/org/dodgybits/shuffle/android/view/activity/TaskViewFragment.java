@@ -37,15 +37,13 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     public static final String INDEX = "TaskViewFragment.index";
     public static final String COUNT = "TaskViewFragment.count";
 
-    private @Inject
-    TaskEncoder mEncoder;
-
     private TextView mProjectView;
     private TextView mDescriptionView;
     private LabelView mContextView;
 
     private TextView mDetailsView;
 
+    private View mSchedulingEntry;
     private TextView mShowFromView;
     private TextView mDueView;
 
@@ -57,9 +55,14 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     private TextView mCreatedView;
     private TextView mModifiedView;
 
+    private View mPageDisplayEntry;
+    private TextView mPageDisplay;
+    
     @Inject private EntityCache<Project> mProjectCache;
     @Inject private EntityCache<Context> mContextCache;
     @Inject private TaskPersister mPersister;
+    @Inject private TaskEncoder mEncoder;
+
 
     private Task mTask;
     private int mPosition;
@@ -133,10 +136,8 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         switch (item.getItemId()) {
             case R.id.action_mark_complete:
             case R.id.action_mark_incomplete:
-                Ln.d("Mark task as complete");
+                Ln.d("Toggling complete");
                 toggleComplete();
-                String text = getString(R.string.itemSavedToast, getString(R.string.task_name));
-                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
                 getActivity().finish();
                 return true;
             case R.id.action_edit:
@@ -144,8 +145,9 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
                 doEditAction();
                 return true;
             case R.id.action_delete:
-                Ln.d("adding task");
-                startActivity(new Intent(Intent.ACTION_INSERT, TaskProvider.Tasks.CONTENT_URI));
+                Ln.d("Deleting task");
+                toggleDelete();
+                getActivity().finish();
                 return true;
         }
         return false;
@@ -166,6 +168,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         mDescriptionView = (TextView) getView().findViewById(R.id.description);
         mContextView = (LabelView) getView().findViewById(R.id.context);
         mDetailsView = (TextView) getView().findViewById(R.id.details);
+        mSchedulingEntry = getView().findViewById(R.id.scheduling_entry);
         mShowFromView = (TextView) getView().findViewById(R.id.show_from);
         mDueView = (TextView) getView().findViewById(R.id.due);
         mCalendarEntry = getView().findViewById(R.id.calendar_entry);
@@ -174,6 +177,8 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         mCompletedView = (TextView) getView().findViewById(R.id.completed);
         mCreatedView = (TextView) getView().findViewById(R.id.created);
         mModifiedView = (TextView) getView().findViewById(R.id.modified);
+        mPageDisplayEntry = getView().findViewById(R.id.page_display_entry);
+        mPageDisplay = (TextView) getView().findViewById(R.id.page_display);
     }
 
 
@@ -188,6 +193,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         updateScheduling(task.getStartDate(), task.getDueDate());
         updateCalendar(task.getCalendarEventId());
         updateExtras(task, context, project);
+        updatePageDisplay();
     }
 
     @Override
@@ -219,7 +225,18 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         Task updatedTask = Task.newBuilder().mergeFrom(mTask)
                 .setComplete(!mTask.isComplete()).build();
         mPersister.update(updatedTask);
-
+        String text = getString(R.string.itemSavedToast, getString(R.string.task_name));
+        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+    }
+    
+    private final void toggleDelete() {
+        mPersister.updateDeletedFlag(mTask.getLocalId(), !mTask.isDeleted()) ;
+        if (!mTask.isDeleted()) {
+            String text = getResources().getString(
+                    R.string.itemDeletedToast, getString(R.string.task_name));
+            Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+        }
+        
     }
     
     private void updateTitle() {
@@ -267,8 +284,13 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     }
 
     private void updateScheduling(long showFromMillis, long dueMillis) {
-        mShowFromView.setText(formatDateTime(showFromMillis));
-        mDueView.setText(formatDateTime(dueMillis));
+        if (showFromMillis == 0L && dueMillis == 0L) {
+            mSchedulingEntry.setVisibility(View.GONE);
+        } else {
+            mSchedulingEntry.setVisibility(View.VISIBLE);
+            mShowFromView.setText(formatDateTime(showFromMillis));
+            mDueView.setText(formatDateTime(dueMillis));
+        }
     }
 
     private void updateCalendar(Id calendarEntry) {
@@ -299,5 +321,14 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         mCompletedView.setText(task.isComplete() ? getString(R.string.completed) : "");
         mCreatedView.setText(getString(R.string.created_title) + " " + formatDateTime(task.getCreatedDate()));
         mModifiedView.setText(getString(R.string.modified_title) + " " + formatDateTime(task.getModifiedDate()));
-    }    
+    }
+
+    private void updatePageDisplay() {
+        if (mPosition == -1 || mTaskCount == -1) {
+            mPageDisplayEntry.setVisibility(View.GONE);
+        } else {
+            mPageDisplayEntry.setVisibility(View.VISIBLE);
+            mPageDisplay.setText(getString(R.string.pager_display, mPosition+1, mTaskCount));
+        }
+    }
 }

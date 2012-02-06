@@ -103,7 +103,7 @@
     <string name="yesterday">Yesterday</string>
     <string name="previous_button_title">Previous</string>
     <string name="next_button_title">Next</string>
-
+    <string name="pager_display">%1$d of %2$d</string>
     
     <!--  search -->
     <string name="search_label_action">Shuffle actions</string>

@@ -19,244 +19,243 @@
               android:orientation="vertical"
         >
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="1px"
-    android:layout_weight="1"
-    android:fillViewport="true"
-    android:background="#eaeaff"
-    android:fadingEdge="none"
-    android:animateLayoutChanges="true"
-        >
-
-    <LinearLayout
-            android:id="@+id/main"
-            android:orientation="vertical"
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical">
+            android:layout_height="1px"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:background="#eaeaff"
+            android:fadingEdge="none"
+            android:animateLayoutChanges="true"
+            >
 
-        <RelativeLayout
+        <LinearLayout
+                android:id="@+id/main"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dip"
-                android:paddingBottom="8dip"
-                android:paddingLeft="8dip"
-                android:paddingRight="?android:attr/scrollbarSize"
-                >
+                android:layout_height="match_parent"
+                android:scrollbars="vertical">
 
-            <org.dodgybits.shuffle.android.list.view.LabelView
-                    android:id="@+id/context"
-                    android:layout_width="wrap_content"
+            <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:drawablePadding="2dip"
-                    android:paddingLeft="3dip"
-                    android:paddingRight="3dip"
-                    android:layout_marginRight="5dip"
-                    android:layout_marginBottom="4dip"
-                    android:hint="@string/none_empty"
-                    style="@style/context"/>
+                    android:paddingTop="8dip"
+                    android:paddingBottom="8dip"
+                    android:paddingLeft="8dip"
+                    android:paddingRight="?android:attr/scrollbarSize"
+                    >
 
-        </RelativeLayout>
+                <org.dodgybits.shuffle.android.list.view.LabelView
+                        android:id="@+id/context"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:drawablePadding="2dip"
+                        android:paddingLeft="3dip"
+                        android:paddingRight="3dip"
+                        android:layout_marginRight="5dip"
+                        android:layout_marginBottom="4dip"
+                        android:hint="@string/none_empty"
+                        style="@style/context"/>
+
+            </RelativeLayout>
 
 
-        <RelativeLayout
-                android:id="@+id/title_entry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dip"
-                android:paddingBottom="8dip"
-                android:paddingRight="?android:attr/scrollbarSize"
-                android:minHeight="50dip"
-                android:background="#b4b4ff"
-                >
-
-            <org.dodgybits.shuffle.android.list.view.StatusView
-                    android:id="@+id/status"
-                    android:layout_width="wrap_content"
+            <RelativeLayout
+                    android:id="@+id/title_entry"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:paddingRight="5dip"
-                    android:paddingTop="4dip"
-                    android:singleLine="true"
-                    android:textSize="12sp"
-                    style="?android:attr/textAppearanceSmall"
-                    />
+                    android:paddingLeft="8dip"
+                    android:paddingBottom="8dip"
+                    android:paddingRight="?android:attr/scrollbarSize"
+                    android:minHeight="50dip"
+                    android:background="#b4b4ff"
+                    >
+
+                <org.dodgybits.shuffle.android.list.view.StatusView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:paddingRight="5dip"
+                        android:paddingTop="4dip"
+                        android:singleLine="true"
+                        android:textSize="12sp"
+                        style="?android:attr/textAppearanceSmall"
+                        />
+
+                <TextView
+                        android:id="@+id/completed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/status"
+                        android:layout_toLeftOf="@+id/status"
+                        android:paddingRight="5dip"
+                        android:paddingTop="4dip"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        style="?android:attr/textAppearanceSmall"
+                        />
+
+                <TextView
+                        android:id="@+id/project"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/completed"
+                        android:paddingTop="2dip"
+                        android:maxLines="2"
+                        android:textStyle="bold"
+                        android:textColor="#000065"
+                        android:textSize="24sp"
+                        style="?android:attr/textAppearanceLarge"
+                        />
+
+                <TextView
+                        android:id="@+id/description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/project"
+                        android:layout_alignParentLeft="true"
+                        android:autoLink="all"
+                        android:paddingLeft="5dip"
+                        android:paddingRight="5dip"
+                        android:paddingTop="2dip"
+                        android:paddingBottom="3dip"
+                        android:textStyle="bold"
+                        android:textColor="#000065"
+                        android:textSize="14sp"
+                        style="?android:attr/textAppearanceLarge"
+                        />
+
+            </RelativeLayout>
 
             <TextView
-                    android:id="@+id/completed"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/details"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/status"
-                    android:layout_toLeftOf="@+id/status"
-                    android:paddingRight="5dip"
-                    android:paddingTop="4dip"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
-                    style="?android:attr/textAppearanceSmall"
-                    />
-
-            <TextView
-                    android:id="@+id/project"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@+id/completed"
-                    android:paddingTop="2dip"
-                    android:maxLines="2"
-                    android:textStyle="bold"
-                    android:textColor="#000065"
-                    android:textSize="24sp"
-                    style="?android:attr/textAppearanceLarge"
-                    />
-
-            <TextView
-                    android:id="@+id/description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/project"
-                    android:layout_alignParentLeft="true"
                     android:autoLink="all"
-                    android:paddingLeft="5dip"
-                    android:paddingRight="5dip"
-                    android:paddingTop="2dip"
-                    android:paddingBottom="3dip"
-                    android:textStyle="bold"
-                    android:textColor="#000065"
+                    android:paddingTop="8dip"
+                    android:paddingLeft="8dip"
+                    android:paddingRight="?android:attr/scrollbarSize"
                     android:textSize="14sp"
-                    style="?android:attr/textAppearanceLarge"
+                    style="?android:attr/textAppearanceSmall"
                     />
 
-        </RelativeLayout>
 
-        <TextView
-                android:id="@+id/details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:paddingTop="8dip"
-                android:paddingLeft="8dip"
-                android:paddingRight="?android:attr/scrollbarSize"
-                android:textSize="14sp"
-                style="?android:attr/textAppearanceSmall"
+            <RelativeLayout
+                    android:id="@+id/scheduling_entry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dip"
+                    android:paddingRight="?android:attr/scrollbarSize"
+                    android:minHeight="50dip"
+                    >
+
+                <TextView android:id="@+id/scheduling_label"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:paddingLeft="8dip"
+                          android:paddingRight="8dip"
+                          android:layout_marginLeft="8dip"
+                          android:layout_marginRight="8dip"
+                          android:text="@string/scheduling_title"
+                          android:textAppearance="?android:attr/textAppearanceMedium"
+                          style="?android:attr/listSeparatorTextViewStyle"
+                        />
+
+                <TextView
+                        android:id="@+id/show_from_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/scheduling_label"
+                        android:layout_alignParentLeft="true"
+                        android:paddingLeft="8dip"
+                        android:paddingTop="4dip"
+                        android:text="@string/show_from_title"
+                        style="?android:attr/textAppearanceMedium"
+                        android:textSize="14sp"/>
+
+                <TextView
+                        android:id="@+id/due_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/show_from_label"
+                        android:paddingLeft="8dip"
+                        android:paddingTop="2dip"
+                        android:paddingBottom="4dip"
+                        android:text="@string/due_title"
+                        style="?android:attr/textAppearanceMedium"
+                        android:textSize="14sp"/>
                 />
 
+                <TextView
+                        android:id="@+id/show_from"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="5dip"
+                        android:paddingTop="4dip"
+                        android:layout_alignTop="@+id/show_from_label"
+                        android:layout_alignParentRight="true"
+                        android:hint="@string/none_empty"
+                        android:textSize="14sp"
+                        style="?android:attr/textAppearanceSmall"
+                        />
 
-        <RelativeLayout
-                android:id="@+id/scheduling_entry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dip"
-                android:paddingRight="?android:attr/scrollbarSize"
-                android:minHeight="50dip"
-                >
+                <TextView
+                        android:id="@+id/due"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="2dip"
+                        android:paddingRight="5dip"
+                        android:layout_alignTop="@+id/due_label"
+                        android:layout_alignParentRight="true"
+                        android:hint="@string/none_empty"
+                        android:textSize="14sp"
+                        style="?android:attr/textAppearanceSmall"
+                        />
 
-            <TextView android:id="@+id/scheduling_label"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:paddingLeft="8dip"
-                      android:paddingRight="8dip"
-                      android:layout_marginLeft="8dip"
-                      android:layout_marginRight="8dip"
-                      android:text="@string/scheduling_title"
-                      android:textAppearance="?android:attr/textAppearanceMedium"
-                      style="?android:attr/listSeparatorTextViewStyle"
-                    />
-
-            <TextView
-                    android:id="@+id/show_from_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/scheduling_label"
-                    android:layout_alignParentLeft="true"
-                    android:paddingLeft="8dip"
-                    android:paddingTop="4dip"
-                    android:text="@string/show_from_title"
-                    style="?android:attr/textAppearanceMedium"
-                    android:textSize="14sp"/>
-
-            <TextView
-                    android:id="@+id/due_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/show_from_label"
-                    android:paddingLeft="8dip"
-                    android:paddingTop="2dip"
-                    android:paddingBottom="4dip"
-                    android:text="@string/due_title"
-                    style="?android:attr/textAppearanceMedium"
-                    android:textSize="14sp"/>
-                    />
-
-            <TextView
-                    android:id="@+id/show_from"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="5dip"
-                    android:paddingTop="4dip"
-                    android:layout_alignTop="@+id/show_from_label"
-                    android:layout_alignParentRight="true"
-                    android:hint="@string/none_empty"
-                    android:textSize="14sp"
-                    style="?android:attr/textAppearanceSmall"
-                    />
-
-            <TextView
-                    android:id="@+id/due"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="2dip"
-                    android:paddingRight="5dip"
-                    android:layout_alignTop="@+id/due_label"
-                    android:layout_alignParentRight="true"
-                    android:hint="@string/none_empty"
-                    android:textSize="14sp"
-                    style="?android:attr/textAppearanceSmall"
-                    />
-
-        </RelativeLayout>
+            </RelativeLayout>
 
 
-        <RelativeLayout
-                android:id="@+id/calendar_entry"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingRight="?android:attr/scrollbarSize"
-                android:minHeight="50dip"
-                >
-
-            <View
-                    android:id="@+id/calendar_separator"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dip"
-                    android:layout_alignParentTop="true"
-                    android:background="@android:drawable/divider_horizontal_bright"
-                    />
-
-            <Button
-                    android:id="@+id/view_calendar_button"
+            <RelativeLayout
+                    android:id="@+id/calendar_entry"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="2dip"
-                    android:layout_marginBottom="2dip"
-                    android:text="@string/view_calendar_entry"
-                    />
+                    android:paddingRight="?android:attr/scrollbarSize"
+                    android:minHeight="50dip"
+                    >
 
-        </RelativeLayout>
+                <View
+                        android:id="@+id/calendar_separator"
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dip"
+                        android:layout_alignParentTop="true"
+                        android:background="@android:drawable/divider_horizontal_bright"
+                        />
+
+                <Button
+                        android:id="@+id/view_calendar_button"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="2dip"
+                        android:layout_marginBottom="2dip"
+                        android:text="@string/view_calendar_entry"
+                        />
+
+            </RelativeLayout>
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
 
     <LinearLayout
             android:id="@+id/extras_entry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingRight="?android:attr/scrollbarSize"
             android:orientation="vertical"
             android:background="#eaeaff"
             android:gravity="right"
@@ -266,7 +265,7 @@
                 android:id="@+id/created"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="5dip"
+                android:paddingRight="8dip"
                 android:paddingTop="2dip"
                 android:textColor="#8a8a8a"
                 style="?android:attr/textAppearanceSmall"
@@ -285,6 +284,21 @@
                 style="?android:attr/textAppearanceSmall"
                 />
 
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/page_display_entry"
+            android:layout_width="match_parent"
+            android:layout_height="20dip"
+            android:background="#555555"
+            android:gravity="center">
+        <TextView
+                android:id="@+id/page_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@drawable/white"
+                style="?android:attr/textAppearanceSmall"
+                />
     </LinearLayout>
 
 </LinearLayout>

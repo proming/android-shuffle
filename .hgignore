@@ -1,6 +1,7 @@
 /bin/
 /gen/
 /classes/
+out/
 target/
 \.DS_Store
 \.project
