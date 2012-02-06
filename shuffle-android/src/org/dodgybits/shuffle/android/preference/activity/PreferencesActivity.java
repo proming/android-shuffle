@@ -31,19 +31,6 @@ import android.util.Log;
 public class PreferencesActivity extends FlurryEnabledPreferenceActivity {
     private static final String cTag = "PreferencesActivity";
 
-    private static final String[] CALENDARS_PROJECTION = new String[] {
-        "_id", // Calendars._ID,
-        "displayName" //Calendars.DISPLAY_NAME
-    };
-    
-    // only show calendars that the user can modify and that are synced
-    private static final String CALENDARS_WHERE = 
-        "access_level>=500 AND sync_events=1";
-//        Calendars.ACCESS_LEVEL + ">=" +
-//        Calendars.CONTRIBUTOR_ACCESS + " AND " + Calendars.SYNC_EVENTS + "=1";
-    
-    private static final String CALENDARS_SORT = "displayName ASC";
-    
     private AsyncQueryHandler mQueryHandler;
     private ListPreference mPreference;
     
@@ -66,8 +53,7 @@ public class PreferencesActivity extends FlurryEnabledPreferenceActivity {
         // Start a query in the background to read the list of calendars
         
         mQueryHandler = new QueryHandler(getContentResolver());
-        mQueryHandler.startQuery(0, null, CalendarUtils.getCalendarContentUri(), CALENDARS_PROJECTION,
-                CALENDARS_WHERE, null /* selection args */, CALENDARS_SORT);
+        CalendarUtils.startQuery(mQueryHandler);
     }
     
     private class QueryHandler extends AsyncQueryHandler {

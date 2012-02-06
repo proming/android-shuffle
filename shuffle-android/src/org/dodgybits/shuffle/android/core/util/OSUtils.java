@@ -7,16 +7,28 @@ import android.os.Build;
 public class OSUtils {
 
     public static boolean osAtLeastFroyo() {
-        boolean isFroyoOrAbove = false;
+        return osAtLeast(Build.VERSION_CODES.FROYO);
+    }
+
+    public static boolean osAtLeastHoneycomb() {
+        return osAtLeast(Build.VERSION_CODES.HONEYCOMB);
+    }
+
+    public static boolean osAtLeastICS() {
+        return osAtLeast(Build.VERSION_CODES.ICE_CREAM_SANDWICH);
+    }
+
+    private static boolean osAtLeast(int requiredVersion) {
+        boolean isRequiredOrAbove = false;
         try {
             Field field = Build.VERSION.class.getDeclaredField("SDK_INT");
             int version = field.getInt(null);
-            isFroyoOrAbove = version >= Build.VERSION_CODES.FROYO;
+            isRequiredOrAbove = version >= requiredVersion;
         } catch (Exception e) {
             // ignore exception - field not available
         }
-        return isFroyoOrAbove;
+        return isRequiredOrAbove;
     }
-    
+
     
 }
