@@ -1,7 +1,6 @@
 package org.dodgybits.shuffle.android.core.util;
 
 import android.app.Activity;
-import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewParent;
@@ -74,7 +73,7 @@ public class UiUtilities {
     public static int getX(View view) {
         int x = 0;
         while (view != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            if (OSUtils.atLeastHoneycomb())
             {
                 x += (int) view.getX();
             } else {
@@ -92,7 +91,7 @@ public class UiUtilities {
     public static int getY(View view) {
         int y = 0;
         while (view != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            if (OSUtils.atLeastHoneycomb())
             {
                 y += (int) view.getY();
             }

@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +20,7 @@ import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
+import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.activity.EntityListsActivity;
 import org.dodgybits.shuffle.android.list.activity.tasklist.TaskListContext;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
@@ -57,7 +57,7 @@ public class TaskPagerActivity extends RoboFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_pager);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+        if (OSUtils.atLeastHoneycomb())
         {
             ActionBar bar = getActionBar();
             if (bar != null) {

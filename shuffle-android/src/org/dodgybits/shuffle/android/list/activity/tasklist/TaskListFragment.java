@@ -18,7 +18,6 @@ import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.HelpActivity;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.UiUtilities;
-import org.dodgybits.shuffle.android.list.activity.task.InboxActivity;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.activity.PreferencesActivity;
 import org.dodgybits.shuffle.android.view.activity.TaskPagerActivity;

@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.*;
 import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
@@ -20,6 +19,7 @@ import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
+import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.core.util.TextColours;
 
 /**
@@ -360,7 +360,7 @@ public class TaskListItem extends View {
     }
 
     private int getFontColor(int defaultColor) {
-        return  (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && isActivated()) ? ACTIVATED_TEXT_COLOR : defaultColor;
+        return  (OSUtils.atLeastHoneycomb() && isActivated()) ? ACTIVATED_TEXT_COLOR : defaultColor;
     }
 
     @Override
@@ -439,7 +439,7 @@ public class TaskListItem extends View {
             final Configuration config = res.getConfiguration();
             final float density = res.getDisplayMetrics().density;
             final float sizeAndDensity;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB &&
+            if (OSUtils.atLeastHoneycomb() &&
                     config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_XLARGE)) {
                 sizeAndDensity = density * 1.5f;
             } else {

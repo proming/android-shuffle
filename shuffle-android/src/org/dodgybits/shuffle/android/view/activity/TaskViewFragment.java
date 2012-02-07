@@ -3,7 +3,6 @@ package org.dodgybits.shuffle.android.view.activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -21,6 +20,7 @@ import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.CalendarUtils;
+import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.list.view.LabelView;
 import org.dodgybits.shuffle.android.list.view.StatusView;
@@ -152,7 +152,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     private void onViewChange() {
         if (mTask != null && mVisible) {
             updateTitle();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            if (OSUtils.atLeastHoneycomb())
             {
                 getActivity().invalidateOptionsMenu();
             }

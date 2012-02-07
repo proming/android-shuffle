@@ -20,7 +20,6 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
@@ -30,6 +29,7 @@ import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
+import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.util.Ln;
@@ -54,7 +54,7 @@ public class TaskViewActivity extends RoboFragmentActivity {
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
         setContentView(R.layout.task_view_activity);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+        if (OSUtils.atLeastHoneycomb())
         {
             ActionBar bar = getActionBar();
             if (bar != null) {
