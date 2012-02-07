@@ -2,7 +2,6 @@ package org.dodgybits.shuffle.android.view.activity;
 
 import android.content.ContentUris;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -103,9 +102,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         findViews();
         updateUIFromItem(mTask);
 
-        Drawable viewCalendarIcon = getResources().getDrawable(R.drawable.ic_menu_view);
-        viewCalendarIcon.setBounds(0, 0, 36, 36);
-        mViewCalendarButton.setCompoundDrawables(viewCalendarIcon, null, null, null);
         mViewCalendarButton.setOnClickListener(this);
 
         onViewChange();

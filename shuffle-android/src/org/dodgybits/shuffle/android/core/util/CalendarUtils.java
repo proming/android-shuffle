@@ -2,7 +2,6 @@ package org.dodgybits.shuffle.android.core.util;
 
 import android.content.AsyncQueryHandler;
 import android.net.Uri;
-import android.provider.CalendarContract;
 
 public class CalendarUtils {
 
@@ -46,7 +45,7 @@ public class CalendarUtils {
     
     private static Uri getCalendarContentUri() {
         Uri uri;
-        if(OSUtils.osAtLeastFroyo()) {
+        if(OSUtils.atLeastFroyo()) {
             uri = CALENDAR_CONTENT_URI_FROYO_PLUS;
         } else {
             uri = CALENDAR_CONTENT_URI;
@@ -56,7 +55,7 @@ public class CalendarUtils {
 
     private static String[] getCalendarProjection() {
         String[] projection;
-        if(OSUtils.osAtLeastICS()) {
+        if(OSUtils.atLeastICS()) {
             projection = CALENDARS_PROJECTION_ICS_PLUS;
         } else {
             projection = CALENDARS_PROJECTION;
@@ -66,17 +65,17 @@ public class CalendarUtils {
 
     private static String getCalendarWhereClause() {
         String where;
-        if(OSUtils.osAtLeastICS()) {
-            where = CALENDARS_WHERE;
-        } else {
+        if(OSUtils.atLeastICS()) {
             where = CALENDARS_WHERE_ICS_PLUS;
+        } else {
+            where = CALENDARS_WHERE;
         }
         return where;
     }
 
     public static Uri getEventContentUri() {
         Uri uri;
-        if(OSUtils.osAtLeastFroyo()) {
+        if(OSUtils.atLeastFroyo()) {
             uri = EVENT_CONTENT_URI_FROYO_PLUS;
         } else {
             uri = EVENT_CONTENT_URI;

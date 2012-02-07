@@ -1,33 +1,37 @@
 package org.dodgybits.shuffle.android.core.util;
 
-import java.lang.reflect.Field;
-
 import android.os.Build;
+
+import java.lang.reflect.Field;
 
 public class OSUtils {
 
-    public static boolean osAtLeastFroyo() {
+    public static boolean atLeastFroyo() {
         return osAtLeast(Build.VERSION_CODES.FROYO);
     }
 
-    public static boolean osAtLeastHoneycomb() {
+    public static boolean atLeastHoneycomb() {
         return osAtLeast(Build.VERSION_CODES.HONEYCOMB);
     }
 
-    public static boolean osAtLeastICS() {
+    public static boolean atLeastICS() {
         return osAtLeast(Build.VERSION_CODES.ICE_CREAM_SANDWICH);
     }
 
+    private static int sVersion = -1;
+
     private static boolean osAtLeast(int requiredVersion) {
-        boolean isRequiredOrAbove = false;
-        try {
-            Field field = Build.VERSION.class.getDeclaredField("SDK_INT");
-            int version = field.getInt(null);
-            isRequiredOrAbove = version >= requiredVersion;
-        } catch (Exception e) {
-            // ignore exception - field not available
+        if (sVersion == -1) {
+            try {
+                Field field = Build.VERSION.class.getDeclaredField("SDK_INT");
+                sVersion = field.getInt(null);
+            } catch (Exception e) {
+                // ignore exception - field not available
+                sVersion = 0;
+            }
         }
-        return isRequiredOrAbove;
+
+        return sVersion >= requiredVersion;
     }
 
     

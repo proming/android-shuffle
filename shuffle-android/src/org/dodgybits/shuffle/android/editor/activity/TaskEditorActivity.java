@@ -16,27 +16,6 @@
 
 package org.dodgybits.shuffle.android.editor.activity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.TimeZone;
-
-import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.model.Id;
-import org.dodgybits.shuffle.android.core.model.Task;
-import org.dodgybits.shuffle.android.core.model.Task.Builder;
-import org.dodgybits.shuffle.android.core.model.encoding.EntityEncoder;
-import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
-import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
-import org.dodgybits.shuffle.android.core.util.CalendarUtils;
-import org.dodgybits.shuffle.android.core.util.Constants;
-import org.dodgybits.shuffle.android.list.activity.State;
-import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
-import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
-import org.dodgybits.shuffle.android.persistence.provider.ReminderProvider;
-import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-import org.dodgybits.shuffle.android.preference.model.Preferences;
-
-import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -58,19 +37,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TimePicker;
-
+import android.widget.*;
 import com.google.inject.Inject;
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.core.model.Task;
+import org.dodgybits.shuffle.android.core.model.Task.Builder;
+import org.dodgybits.shuffle.android.core.model.encoding.EntityEncoder;
+import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
+import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
+import org.dodgybits.shuffle.android.core.util.CalendarUtils;
+import org.dodgybits.shuffle.android.core.util.Constants;
+import org.dodgybits.shuffle.android.core.util.OSUtils;
+import org.dodgybits.shuffle.android.list.activity.State;
+import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
+import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
+import org.dodgybits.shuffle.android.persistence.provider.ReminderProvider;
+import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
+import roboguice.inject.InjectView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.TimeZone;
 
 /**
  * A generic activity for editing a task in the database.  This can be used
@@ -489,8 +478,12 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
         }
         values.put("description", description);
         values.put("hasAlarm", 0);
-        values.put("transparency", 0);
-        values.put("visibility", 0);
+
+        if (!OSUtils.atLeastICS()) {
+            values.put("transparency", 0);
+            values.put("visibility", 0);
+        }
+
         if (contextId.isInitialised()) {
             String contextName = getContextName(contextId);
         	values.put("eventLocation", contextName);

@@ -219,72 +219,64 @@
             </RelativeLayout>
 
 
-            <RelativeLayout
+            <LinearLayout
                     android:id="@+id/calendar_entry"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="8dip"
+                    android:paddingBottom="8dip"
                     android:paddingRight="?android:attr/scrollbarSize"
-                    android:minHeight="50dip"
+                    android:gravity="center"
                     >
-
-                <View
-                        android:id="@+id/calendar_separator"
-                        android:layout_width="fill_parent"
-                        android:layout_height="1dip"
-                        android:layout_alignParentTop="true"
-                        android:background="@android:drawable/divider_horizontal_bright"
-                        />
 
                 <Button
                         android:id="@+id/view_calendar_button"
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="2dip"
-                        android:layout_marginBottom="2dip"
+                        android:drawableLeft="@drawable/ic_launcher_calendar"
                         android:text="@string/view_calendar_entry"
                         />
 
-            </RelativeLayout>
+            </LinearLayout>
 
+            <LinearLayout
+                    android:id="@+id/extras_entry"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="bottom|right"
+                    >
+
+                <TextView
+                        android:id="@+id/created"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="8dip"
+                        android:paddingTop="2dip"
+                        android:textColor="#8a8a8a"
+                        style="?android:attr/textAppearanceSmall"
+                        />
+
+                <TextView
+                        android:id="@+id/modified"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/created"
+                        android:paddingRight="5dip"
+                        android:paddingTop="2dip"
+                        android:paddingBottom="8dip"
+                        android:textSize="14sp"
+                        android:textColor="#8a8a8a"
+                        style="?android:attr/textAppearanceSmall"
+                        />
+
+            </LinearLayout>
 
         </LinearLayout>
 
+
     </ScrollView>
 
-    <LinearLayout
-            android:id="@+id/extras_entry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="#eaeaff"
-            android:gravity="right"
-            >
-
-        <TextView
-                android:id="@+id/created"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="8dip"
-                android:paddingTop="2dip"
-                android:textColor="#8a8a8a"
-                style="?android:attr/textAppearanceSmall"
-                />
-
-        <TextView
-                android:id="@+id/modified"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/created"
-                android:paddingRight="5dip"
-                android:paddingTop="2dip"
-                android:paddingBottom="8dip"
-                android:textSize="14sp"
-                android:textColor="#8a8a8a"
-                style="?android:attr/textAppearanceSmall"
-                />
-
-    </LinearLayout>
 
     <LinearLayout
             android:id="@+id/page_display_entry"
