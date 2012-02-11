@@ -1,4 +1,4 @@
-package org.dodgybits.shuffle.android.list.view.context;
+package org.dodgybits.shuffle.android.list.view.project;
 
 import android.app.Activity;
 import android.content.ContentUris;
@@ -22,16 +22,17 @@ import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
 import org.dodgybits.shuffle.android.core.util.UiUtilities;
-import org.dodgybits.shuffle.android.list.activity.ContextTaskListsActivity;
-import org.dodgybits.shuffle.android.list.content.ContextCursorLoader;
+import org.dodgybits.shuffle.android.list.activity.ProjectTaskListsActivity;
+import org.dodgybits.shuffle.android.list.content.ProjectCursorLoader;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
 import org.dodgybits.shuffle.android.list.view.Titled;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
+import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import roboguice.fragment.RoboListFragment;
 import roboguice.util.Ln;
 
-public class ContextListFragment extends RoboListFragment implements Titled {
+public class ProjectListFragment extends RoboListFragment implements Titled {
 
     /** Argument name(s) */
     private static final String BUNDLE_LIST_STATE = "ContextListFragment.state.listState";
@@ -44,7 +45,7 @@ public class ContextListFragment extends RoboListFragment implements Titled {
     private static final int LOADER_ID_TASK_COUNT_LOADER = 2;
 
     @Inject
-    private ContextListAdaptor mListAdapter;
+    private ProjectListAdaptor mListAdapter;
 
     @Inject
     private TaskPersister mPersister;
@@ -75,7 +76,7 @@ public class ContextListFragment extends RoboListFragment implements Titled {
         lv.setItemsCanFocus(false);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        setEmptyText(getString(R.string.no_contexts));
+        setEmptyText(getString(R.string.no_projects));
 
         if (savedInstanceState != null) {
             // Fragment doesn't have this method.  Call it manually.
@@ -115,13 +116,13 @@ public class ContextListFragment extends RoboListFragment implements Titled {
                 || Intent.ACTION_GET_CONTENT.equals(action)) {
             // The caller is waiting for us to return a task selected by
             // the user. They have clicked on one, so return it now.
-            Uri url = ContentUris.withAppendedId(ContextProvider.Contexts.CONTENT_URI, id);
+            Uri url = ContentUris.withAppendedId(ProjectProvider.Projects.CONTENT_URI, id);
             Intent intent = new Intent();
             intent.putExtra(SELECTED_ITEM, url.toString());
             getActivity().setResult(Activity.RESULT_OK, intent);
         } else {
-            Intent intent = new Intent(getActivity(), ContextTaskListsActivity.class);
-            intent.putExtra(ContextTaskListsActivity.INITIAL_POSITION, position);
+            Intent intent = new Intent(getActivity(), ProjectTaskListsActivity.class);
+            intent.putExtra(ProjectTaskListsActivity.INITIAL_POSITION, position);
             startActivity(intent);
         }
     }
@@ -164,7 +165,7 @@ public class ContextListFragment extends RoboListFragment implements Titled {
 
     @Override
     public String getTitle(ContextWrapper context) {
-        return context.getString(R.string.title_context);
+        return context.getString(R.string.title_project);
     }
 
     void restoreInstanceState(Bundle savedInstanceState) {
@@ -198,7 +199,7 @@ public class ContextListFragment extends RoboListFragment implements Titled {
 
                 @Override
                 public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                    return new ContextCursorLoader(getActivity());
+                    return new ProjectCursorLoader(getActivity());
                 }
 
                 @Override
@@ -257,11 +258,11 @@ public class ContextListFragment extends RoboListFragment implements Titled {
 
         public TaskCountCursorLoader(Context context) {
             // Initialize with no where clause.  We'll set it later.
-            super(context, ContextProvider.Contexts.CONTEXT_TASKS_CONTENT_URI,
-                    ContextProvider.Contexts.FULL_TASK_PROJECTION, null, null,
+            super(context, ProjectProvider.Projects.PROJECT_TASKS_CONTENT_URI,
+                    ProjectProvider.Projects.FULL_TASK_PROJECTION, null, null,
                     null);
             mSelector = TaskSelector.newBuilder().applyListPreferences(context,
-                    ListSettingsCache.findSettings(ListQuery.context)).build();
+                    ListSettingsCache.findSettings(ListQuery.project)).build();
             mContext = context;
         }
 

@@ -190,7 +190,7 @@ public class TaskListFragment extends RoboListFragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.task_list_menu, menu);
+        inflater.inflate(R.menu.list_menu, menu);
     }
 
     @Override

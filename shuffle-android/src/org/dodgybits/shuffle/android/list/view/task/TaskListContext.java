@@ -44,7 +44,7 @@ public class TaskListContext implements Parcelable {
     }
 
     public static final TaskListContext createForProject(Id projectId) {
-        TaskSelector selector = TaskSelector.newBuilder().setListQuery(ListQuery.context).
+        TaskSelector selector = TaskSelector.newBuilder().setListQuery(ListQuery.project).
                 setProjectId(projectId).build();
         return create(selector);
     }

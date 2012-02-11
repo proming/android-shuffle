@@ -62,7 +62,7 @@ public class ContextProvider extends AbstractCollectionProvider {
 		/**
 		 * The default sort order for this table
 		 */
-		public static final String DEFAULT_SORT_ORDER = "name DESC";
+		public static final String DEFAULT_SORT_ORDER = "name ASC";
 
 		public static final String NAME = "name";
 		public static final String COLOUR = "colour";

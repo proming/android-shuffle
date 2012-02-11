@@ -19,6 +19,7 @@ import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListTitles;
 import org.dodgybits.shuffle.android.list.view.Titled;
 import org.dodgybits.shuffle.android.list.view.context.ContextListFragment;
+import org.dodgybits.shuffle.android.list.view.project.ProjectListFragment;
 import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.list.view.task.TaskListFragment;
 import org.dodgybits.shuffle.android.preference.activity.PreferencesActivity;
@@ -46,7 +47,10 @@ public class EntityListsActivity extends RoboFragmentActivity {
 
     @Inject
     ContextScopedProvider<ContextListFragment> mContextListFragmentProvider;
-    
+
+    @Inject
+    ContextScopedProvider<ProjectListFragment> mProjectListFragmentProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,7 +130,7 @@ public class EntityListsActivity extends RoboFragmentActivity {
         addTaskList(ListQuery.nextTasks);
 
         addFragment(ListQuery.context, mContextListFragmentProvider.get(this));
-        // TODO add project fragment
+        addFragment(ListQuery.project, mProjectListFragmentProvider.get(this));
 
         addTaskList(ListQuery.custom);
         addTaskList(ListQuery.tickler);

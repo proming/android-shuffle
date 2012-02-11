@@ -53,11 +53,24 @@
               android:shadowRadius="1"
             />
 
+    <org.dodgybits.shuffle.android.list.old.view.StatusView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:singleLine="true"
+            android:paddingRight="10dip"
+            android:textSize="12sp"
+            style="?android:attr/textAppearanceSmall"
+            />
+
     <TextView android:id="@+id/count"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_alignParentRight="true"
               android:layout_centerVertical="true"
+              android:layout_below="@+id/status"
               style="?android:attr/textAppearanceLarge"
               android:textSize="18sp"
               android:textStyle="bold"
