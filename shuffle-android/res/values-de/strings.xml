@@ -299,8 +299,8 @@ allow that, you can turn it off under Settings.</string>
 
 	<string name="title_delete_completed_preference">Erledigte löschen</string>
 
-	<string name="title_delete_all_preference">Alles löschen!</string>
-	<string name="summary_delete_all_preference">Alle Handlungen, Projekte und selbsterstellten Kategorien werden entfernt.</string>
+    <string name="title_permanently_delete_preference">Alles dauerhaft entfernen!</string>
+    <string name="summary_permanently_delete_preference">Entferne alle Handlungen, Projekte und selbsterstellte Kategorien.</string>
 
     <string name="title_delete_all_preference">Alles Löschen</string>
 	<string name="summary_delete_all_preference">Entferne alle Handlungen, Projekte und selbsterstellte Kategorien.</string>
