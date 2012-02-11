@@ -72,37 +72,38 @@
                     android:background="@color/view_highlight_color"
                     >
 
-                <org.dodgybits.shuffle.android.list.old.view.StatusView
-                        android:id="@+id/status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:paddingRight="5dip"
-                        android:paddingTop="4dip"
-                        android:singleLine="true"
-                        android:textSize="12sp"
-                        style="?android:attr/textAppearanceSmall"
-                        />
-
                 <TextView
                         android:id="@+id/completed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignTop="@+id/status"
-                        android:layout_toLeftOf="@+id/status"
-                        android:paddingRight="5dip"
+                        android:layout_alignParentRight="true"
+                        android:paddingRight="8dip"
                         android:paddingTop="4dip"
                         android:textStyle="bold"
                         android:textSize="12sp"
                         style="?android:attr/textAppearanceSmall"
                         />
 
+                <org.dodgybits.shuffle.android.list.old.view.StatusView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/completed"
+                        android:paddingRight="8dip"
+                        android:paddingTop="4dip"
+                        android:singleLine="true"
+                        android:textSize="12sp"
+                        style="?android:attr/textAppearanceSmall"
+                        />
+
+
                 <TextView
                         android:id="@+id/project"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/completed"
+                        android:layout_toLeftOf="@+id/status"
                         android:paddingTop="2dip"
                         android:maxLines="2"
                         android:textStyle="bold"

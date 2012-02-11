@@ -50,7 +50,7 @@ public class StatusView extends TextView {
         int deletedColour = getResources().getColor(R.color.red);
         ParcelableSpan deletedColorSpan = new ForegroundColorSpan(deletedColour);
 
-        int inactiveColour = getResources().getColor(R.color.mid_gray);
+        int inactiveColour = getResources().getColor(R.color.view_minimal_text_color);
         ParcelableSpan inactiveColorSpan = new ForegroundColorSpan(inactiveColour);
 
         String deleted = getResources().getString(R.string.deleted);
