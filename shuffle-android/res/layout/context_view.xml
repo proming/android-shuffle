@@ -46,7 +46,11 @@
               style="?android:attr/textAppearanceLarge"
               android:textSize="18sp"
               android:textStyle="bold"
-              android:textColor="@color/snippet_text_color_incomplete"
+              android:textColor="@color/list_main_text_color"
+              android:shadowColor="@color/white"
+              android:shadowDx="1"
+              android:shadowDy="1"
+              android:shadowRadius="1"
             />
 
     <TextView android:id="@+id/count"

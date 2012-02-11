@@ -44,21 +44,24 @@
 	<color name="dark_gray">#313031</color>
 	<color name="black">#000000</color>
 
-    <color name="description_text_color_incomplete">#555555</color>
-    <color name="snippet_text_color_incomplete">#555555</color>
-    <color name="project_text_color_incomplete">#333333</color>
+    <color name="description_text_color_incomplete">@color/list_main_text_color</color>
+    <color name="snippet_text_color_incomplete">@color/list_main_text_color</color>
+    <color name="project_text_color_incomplete">@color/list_main_text_color</color>
     <color name="description_text_color_complete">#777777</color>
     <color name="snippet_text_color_complete">#777777</color>
     <color name="project_text_color_complete">#555555</color>
-    <color name="date_text_color_incomplete">@color/project_text_color_incomplete</color>
+    <color name="date_text_color_incomplete">@color/list_main_text_color</color>
     <color name="date_text_color_complete">@color/project_text_color_complete</color>
 
     <!-- new colours -->
 
-    <color name="list_background_color">#eaeaff</color>
+    <color name="list_main_text_color">#403c36</color>
+    <color name="list_background_color">#eff7f7</color>
     <color name="pager_background_color">#555555</color>
     <color name="view_highlight_color">#b4b4ff</color>
     <color name="view_project_color">#000065</color>
     <color name="view_description_color">#000065</color>
     <color name="view_minimal_text_color">#8a8a8a</color>
+
+    <drawable name="list_incomplete">@color/list_background_color</drawable>
 </resources>

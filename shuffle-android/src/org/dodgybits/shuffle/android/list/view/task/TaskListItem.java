@@ -122,6 +122,7 @@ public class TaskListItem extends View {
             sDatePaint.setAntiAlias(true);
             sBoldPaint.setTypeface(Typeface.DEFAULT_BOLD);
             sBoldPaint.setAntiAlias(true);
+            sBoldPaint.setShadowLayer(0f, 1.0f, 1.0f, R.color.white);
             sContextPaint.setTypeface(Typeface.DEFAULT);
             sContextPaint.setAntiAlias(true);
 
