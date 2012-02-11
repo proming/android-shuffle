@@ -22,7 +22,7 @@ import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.util.TextColours;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
-import org.dodgybits.shuffle.android.list.config.StandardTaskQueries;
+import org.dodgybits.shuffle.android.list.old.config.StandardTaskQueries;
 
 import roboguice.inject.ContextSingleton;
 import android.app.PendingIntent;

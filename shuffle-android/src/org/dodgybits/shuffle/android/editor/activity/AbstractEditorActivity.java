@@ -23,7 +23,7 @@ import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.encoding.EntityEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
 import org.dodgybits.shuffle.android.core.view.MenuUtils;
-import org.dodgybits.shuffle.android.list.activity.State;
+import org.dodgybits.shuffle.android.list.old.activity.State;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import android.content.ContentUris;

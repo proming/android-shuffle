@@ -2,7 +2,7 @@ package org.dodgybits.shuffle.android.core.model.persistence.selector;
 
 import android.content.Context;
 import android.net.Uri;
-import org.dodgybits.shuffle.android.preference.model.ListPreferenceSettings;
+import org.dodgybits.shuffle.android.preference.model.ListSettings;
 
 public interface EntitySelector<E extends EntitySelector<E>> {
 
@@ -33,7 +33,7 @@ public interface EntitySelector<E extends EntitySelector<E>> {
 
         Builder<E> mergeFrom(E selector);
 
-        Builder<E> applyListPreferences(android.content.Context context, ListPreferenceSettings settings);
+        Builder<E> applyListPreferences(android.content.Context context, ListSettings settings);
 
     }
 }

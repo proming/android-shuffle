@@ -25,8 +25,8 @@ import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
 import org.dodgybits.shuffle.android.core.util.TextColours;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
-import org.dodgybits.shuffle.android.list.activity.State;
-import org.dodgybits.shuffle.android.list.view.ContextView;
+import org.dodgybits.shuffle.android.list.old.activity.State;
+import org.dodgybits.shuffle.android.list.old.view.ContextView;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 
 import roboguice.inject.InjectView;

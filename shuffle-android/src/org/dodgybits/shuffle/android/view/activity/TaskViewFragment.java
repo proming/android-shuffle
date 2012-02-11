@@ -22,15 +22,15 @@ import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.CalendarUtils;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
-import org.dodgybits.shuffle.android.list.view.LabelView;
-import org.dodgybits.shuffle.android.list.view.StatusView;
+import org.dodgybits.shuffle.android.list.old.view.LabelView;
+import org.dodgybits.shuffle.android.list.old.view.StatusView;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import roboguice.fragment.RoboFragment;
 import roboguice.util.Ln;
 
 public class TaskViewFragment extends RoboFragment implements View.OnClickListener {
     public static final String SELECTED_INDEX = "selectedIndex";
-    public static final String TASK_LIST_CONTEXT = "taskListContext";
+    public static final String ARG_LIST_CONTEXT = "taskListContext";
 
 
     public static final String INDEX = "TaskViewFragment.index";

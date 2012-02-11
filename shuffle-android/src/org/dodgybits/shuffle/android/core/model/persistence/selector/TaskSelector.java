@@ -6,9 +6,10 @@ import android.os.Parcelable;
 import android.text.format.DateUtils;
 import android.util.Log;
 import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.core.util.StringUtils;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-import org.dodgybits.shuffle.android.preference.model.ListPreferenceSettings;
+import org.dodgybits.shuffle.android.preference.model.ListSettings;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,7 +21,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
     private static final String cTag = "TaskSelector";
     private static final String[] cUndefinedArgs = new String[] {};
 
-    private PredefinedQuery mPredefined; 
+    private ListQuery mListQuery;
     private Id mProjectId = Id.NONE;
     private Id mContextId = Id.NONE;
     private Flag mComplete = ignored;
@@ -32,8 +33,8 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
     private TaskSelector() {
     }
     
-    public final PredefinedQuery getPredefinedQuery() {
-        return mPredefined;
+    public final ListQuery getListQuery() {
+        return mListQuery;
     }
     
     public final Id getProjectId() {
@@ -71,7 +72,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
     protected List<String> getSelectionExpressions(android.content.Context context) {
         List<String> expressions = super.getSelectionExpressions(context);
         
-        if (mPredefined != null) {
+        if (mListQuery != null) {
             expressions.add(predefinedSelection(context));
         }
         
@@ -94,7 +95,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(getPredefinedQuery().name());
+        dest.writeString(getListQuery().name());
         dest.writeLong(getContextId().getId());
         dest.writeLong(getProjectId().getId());
     }
@@ -107,8 +108,8 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
             String queryName = source.readString();
             long contextId = source.readLong();
             long projectId = source.readLong();
-            TaskSelector.PredefinedQuery query = TaskSelector.PredefinedQuery.valueOf(queryName);
-            TaskSelector.Builder builder = TaskSelector.newBuilder().setPredefined(query);
+            ListQuery query = ListQuery.valueOf(queryName);
+            TaskSelector.Builder builder = TaskSelector.newBuilder().setListQuery(query);
             if (contextId != 0L) {
                 builder.setContextId(Id.create(contextId));
             }
@@ -178,7 +179,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
     private String predefinedSelection(android.content.Context context) {
         String result;
         long now = System.currentTimeMillis();
-        switch (mPredefined) {
+        switch (mListQuery) {
             case nextTasks:
                 result = "((complete = 0) AND " +
                     "   (start < " + now + ") AND " +
@@ -197,6 +198,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
                 
             case tickler:
             case all:
+            case custom:
             case context:
             case project:
                 // by default show all results (completely customizable)
@@ -215,7 +217,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
                 break;
 
             default:
-                throw new RuntimeException("Unknown predefined selection " + mPredefined);
+                throw new RuntimeException("Unknown predefined selection " + mListQuery);
         }
         
         return result;
@@ -228,7 +230,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        switch (mPredefined) {
+        switch (mListQuery) {
         case dueToday:
             cal.add(Calendar.DAY_OF_YEAR, 1);
             endMS = cal.getTimeInMillis();
@@ -269,9 +271,9 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
     @Override
     public final String toString() {
         return String.format(
-                "[TaskSelector predefined=%1$s project=%2$s context=%3$s " +
+                "[TaskSelector query=%1$s project=%2$s context=%3$s " +
                 "complete=%4$s sortOrder=%5$s active=%6$s deleted=%7$s pending=%8$s]",
-                mPredefined, mProjectId, mContextId, mComplete, 
+                mListQuery, mProjectId, mContextId, mComplete,
                 mSortOrder, mActive, mDeleted, mPending);
     }
     
@@ -291,12 +293,12 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
             return builder;
         }
         
-        public PredefinedQuery getPredefined() {
-            return mResult.mPredefined;
+        public ListQuery getListQuery() {
+            return mResult.mListQuery;
         }
         
-        public Builder setPredefined(PredefinedQuery value) {
-            mResult.mPredefined = value;
+        public Builder setListQuery(ListQuery value) {
+            mResult.mListQuery = value;
             return this;
         }
 
@@ -339,7 +341,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
         public Builder mergeFrom(TaskSelector query) {
             super.mergeFrom(query);
 
-            setPredefined(query.mPredefined);
+            setListQuery(query.mListQuery);
             setProjectId(query.mProjectId);
             setContextId(query.mContextId);
             setComplete(query.mComplete);
@@ -348,7 +350,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
             return this;
         }
 
-        public Builder applyListPreferences(android.content.Context context, ListPreferenceSettings settings) {
+        public Builder applyListPreferences(android.content.Context context, ListSettings settings) {
             super.applyListPreferences(context, settings);
 
             setComplete(settings.getCompleted(context));
@@ -357,10 +359,6 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
             return this;
         }
 
-    }
-
-    public enum PredefinedQuery {
-        all, inbox, nextTasks, dueToday, dueNextWeek, dueNextMonth, tickler, context, project
     }
 
 }

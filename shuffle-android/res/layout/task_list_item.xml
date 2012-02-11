@@ -4,7 +4,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/task_list_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/task_list_item_height"
+        android:layout_height="@dimen/list_item_height"
         android:orientation="horizontal">
     <RelativeLayout
             android:layout_width="wrap_content"
@@ -69,7 +69,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@+id/contexts"
-
                 android:layout_marginTop="8dip"
                 android:text="@string/long_string"
                 android:textSize="@dimen/project_font_size"

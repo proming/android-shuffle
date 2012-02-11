@@ -12,42 +12,41 @@ import android.view.MenuItem;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.activity.HelpActivity;
 import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
-import org.dodgybits.shuffle.android.list.activity.tasklist.TaskListContext;
-import org.dodgybits.shuffle.android.list.activity.tasklist.TaskListFragment;
-import org.dodgybits.shuffle.android.list.annotation.DueTasks;
-import org.dodgybits.shuffle.android.list.annotation.Inbox;
-import org.dodgybits.shuffle.android.list.annotation.Tickler;
-import org.dodgybits.shuffle.android.list.annotation.TopTasks;
+import org.dodgybits.shuffle.android.list.model.ListQuery;
+import org.dodgybits.shuffle.android.list.model.ListTitles;
+import org.dodgybits.shuffle.android.list.view.Titled;
+import org.dodgybits.shuffle.android.list.view.context.ContextListFragment;
+import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
+import org.dodgybits.shuffle.android.list.view.task.TaskListFragment;
+import org.dodgybits.shuffle.android.preference.activity.PreferencesActivity;
 import roboguice.activity.RoboFragmentActivity;
+import roboguice.inject.ContextScopedProvider;
 
 import java.util.List;
 
 public class EntityListsActivity extends RoboFragmentActivity {
-    private static final String cTag = "EntityListsActivity";
+    private static final String TAG = "EntityListsActivity";
 
-    public static final String SELECTED_INDEX = "selectedIndex";
+    public static final String QUERY_NAME = "queryName";
     
     MyAdapter mAdapter;
 
     ViewPager mPager;
-
-    @Inbox @Inject
-    TaskListContext mInboxContext;
-
-    @DueTasks @Inject
-    TaskListContext mDueTasksContext;
-
-    @TopTasks @Inject
-    TaskListContext mTopTasksContext;
-
-    @Tickler @Inject
-    TaskListContext mTicklerContext;
-
-    List<TaskListContext> mContexts;
+    
+    List<Fragment> mFragments;
+    List<ListQuery> mQueries;
+    
     ViewPager.OnPageChangeListener mPageChangeListener;
 
+    @Inject
+    ContextScopedProvider<TaskListFragment> mTaskListFragmentProvider;
+
+    @Inject
+    ContextScopedProvider<ContextListFragment> mContextListFragmentProvider;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,13 +62,18 @@ public class EntityListsActivity extends RoboFragmentActivity {
             }
         }
 
-        initContexts();
+        initFragments();
 
         mPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                TaskListContext context = mContexts.get(position);
-                setTitle(context.createTitle(EntityListsActivity.this));
+                Fragment fragment = mFragments.get(position);
+                if (fragment instanceof Titled) {
+                    setTitle(((Titled)fragment).getTitle(EntityListsActivity.this));
+                } else {
+                    ListQuery query = mQueries.get(position);
+                    setTitle(ListTitles.getTitleId(query));
+                }
             }
         };
 
@@ -78,16 +82,7 @@ public class EntityListsActivity extends RoboFragmentActivity {
         mPager.setOnPageChangeListener(mPageChangeListener);
         mPager.setAdapter(mAdapter);
 
-        int position = 0;
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            position = intent.getExtras().getInt(SELECTED_INDEX, 0);
-        }
-
-        // TODO remove this once all list screens are present
-        position = Math.min(position, mContexts.size() - 1);
-
+        int position = getRequestedPosition(getIntent());
         mPager.setCurrentItem(position);
 
         // pager doesn't notify on initial page selection (if it's 0)
@@ -103,18 +98,67 @@ public class EntityListsActivity extends RoboFragmentActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 return true;
+            case R.id.action_preferences:
+                Log.d(TAG, "Bringing up preferences");
+                startActivity(new Intent(this, PreferencesActivity.class));
+                return true;
+            case R.id.action_help:
+                Log.d(TAG, "Bringing up help");
+                Intent helpIntent = new Intent(this, HelpActivity.class);
+                helpIntent.putExtra(HelpActivity.cHelpPage, 0);
+                startActivity(helpIntent);
+                return true;
+            case R.id.action_search:
+                Log.d(TAG, "Bringing up search");
+                onSearchRequested();
+                return true;
         }
 
         return false;
     }
 
-    private void initContexts() {
-        mContexts = Lists.newArrayList();
+    private void initFragments() {
+        mFragments = Lists.newArrayList();
+        mQueries = Lists.newArrayList();
 
-        mContexts.add(mInboxContext);
-        mContexts.add(mDueTasksContext);
-        mContexts.add(mTopTasksContext);
-        mContexts.add(mTicklerContext);
+        addTaskList(ListQuery.inbox);
+        addTaskList(ListQuery.dueToday);
+        addTaskList(ListQuery.nextTasks);
+
+        addFragment(ListQuery.context, mContextListFragmentProvider.get(this));
+        // TODO add project fragment
+
+        addTaskList(ListQuery.custom);
+        addTaskList(ListQuery.tickler);
+    }
+
+    private void addTaskList(ListQuery query) {
+        TaskListContext listContext = TaskListContext.create(query);
+        TaskListFragment fragment = mTaskListFragmentProvider.get(this);
+        Bundle args = new Bundle();
+        args.putParcelable(TaskListFragment.ARG_LIST_CONTEXT, listContext);
+        fragment.setArguments(args);
+        addFragment(query, fragment);
+    }
+
+    private void addFragment(ListQuery query, Fragment fragment) {
+        mFragments.add(fragment);
+        mQueries.add(query);
+    }
+
+    private int getRequestedPosition(Intent intent) {
+        int position = 0;
+        String queryName = intent.getStringExtra(QUERY_NAME);
+        if (queryName != null) {
+            ListQuery query = ListQuery.valueOf(queryName);
+            position = mQueries.indexOf(query);
+            if (position == -1) {
+                Log.e(TAG, "Couldn't find page of list " + queryName);
+                position = 0;
+            }
+        }
+
+        return position;
     }
 
     public class MyAdapter extends FragmentPagerAdapter {
@@ -124,13 +168,12 @@ public class EntityListsActivity extends RoboFragmentActivity {
 
         @Override
         public int getCount() {
-            return mContexts.size();
+            return mFragments.size();
         }
 
         @Override
         public Fragment getItem(int position) {
-            Log.d(cTag, "Creating fragment item " + position);
-            return TaskListFragment.newInstance(mContexts.get(position));
+            return mFragments.get(position);
         }
     }
 

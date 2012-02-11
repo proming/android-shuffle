@@ -42,5 +42,5 @@ public class DrawableUtils {
 		colours[1] = Color.HSVToColor(hsv2);
     	return new GradientDrawable(orientation, colours);
     }
-    
+
 }

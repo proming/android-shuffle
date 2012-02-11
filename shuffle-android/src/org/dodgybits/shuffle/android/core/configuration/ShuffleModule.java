@@ -1,5 +1,9 @@
 package org.dodgybits.shuffle.android.core.configuration;
 
+import android.content.ContextWrapper;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.TypeLiteral;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Project;
@@ -8,41 +12,12 @@ import org.dodgybits.shuffle.android.core.model.encoding.ContextEncoder;
 import org.dodgybits.shuffle.android.core.model.encoding.EntityEncoder;
 import org.dodgybits.shuffle.android.core.model.encoding.ProjectEncoder;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
-import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
-import org.dodgybits.shuffle.android.core.model.persistence.DefaultEntityCache;
-import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
-import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
-import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
-import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
+import org.dodgybits.shuffle.android.core.model.persistence.*;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.Flag;
-import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
 import org.dodgybits.shuffle.android.core.view.MenuUtils;
-import org.dodgybits.shuffle.android.list.activity.tasklist.TaskListContext;
-import org.dodgybits.shuffle.android.list.annotation.ContextTasks;
-import org.dodgybits.shuffle.android.list.annotation.Contexts;
-import org.dodgybits.shuffle.android.list.annotation.DueTasks;
-import org.dodgybits.shuffle.android.list.annotation.ExpandableContexts;
-import org.dodgybits.shuffle.android.list.annotation.ExpandableProjects;
-import org.dodgybits.shuffle.android.list.annotation.Inbox;
-import org.dodgybits.shuffle.android.list.annotation.ProjectTasks;
-import org.dodgybits.shuffle.android.list.annotation.Projects;
-import org.dodgybits.shuffle.android.list.annotation.Tickler;
-import org.dodgybits.shuffle.android.list.annotation.TopTasks;
-import org.dodgybits.shuffle.android.list.config.AbstractTaskListConfig;
-import org.dodgybits.shuffle.android.list.config.ContextListConfig;
-import org.dodgybits.shuffle.android.list.config.ContextTasksListConfig;
-import org.dodgybits.shuffle.android.list.config.DueActionsListConfig;
-import org.dodgybits.shuffle.android.list.config.ProjectListConfig;
-import org.dodgybits.shuffle.android.list.config.ProjectTasksListConfig;
-import org.dodgybits.shuffle.android.list.config.StandardTaskQueries;
-import org.dodgybits.shuffle.android.list.config.TaskListConfig;
-import org.dodgybits.shuffle.android.preference.model.ListPreferenceSettings;
-
-import android.content.ContextWrapper;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.TypeLiteral;
+import org.dodgybits.shuffle.android.list.annotation.*;
+import org.dodgybits.shuffle.android.list.old.config.*;
+import org.dodgybits.shuffle.android.preference.model.ListSettings;
 
 public class ShuffleModule extends AbstractModule {
 
@@ -55,8 +30,6 @@ public class ShuffleModule extends AbstractModule {
         //next two will go
         addListPreferenceSettings();
         addListConfig();
-
-        addTaskListContexts();
 	}
 
     private void addCaches() {
@@ -77,31 +50,31 @@ public class ShuffleModule extends AbstractModule {
     }
 
     private void addListPreferenceSettings() {
-        bind(ListPreferenceSettings.class).annotatedWith(Inbox.class).toInstance(
-                new ListPreferenceSettings(StandardTaskQueries.cInbox));
+        bind(ListSettings.class).annotatedWith(Inbox.class).toInstance(
+                new ListSettings(StandardTaskQueries.cInbox));
 
-        bind(ListPreferenceSettings.class).annotatedWith(TopTasks.class).toInstance(
-                new ListPreferenceSettings(StandardTaskQueries.cNextTasks)
+        bind(ListSettings.class).annotatedWith(TopTasks.class).toInstance(
+                new ListSettings(StandardTaskQueries.cNextTasks)
                     .setDefaultCompleted(Flag.no)
                     .disableCompleted()
                     .disableDeleted()
                     .disableActive());
 
-        ListPreferenceSettings projectSettings = new ListPreferenceSettings(StandardTaskQueries.cProjectFilterPrefs);
-        bind(ListPreferenceSettings.class).annotatedWith(ProjectTasks.class).toInstance(projectSettings);
-        bind(ListPreferenceSettings.class).annotatedWith(Projects.class).toInstance(projectSettings);
-        bind(ListPreferenceSettings.class).annotatedWith(ExpandableProjects.class).toInstance(projectSettings);
+        ListSettings projectSettings = new ListSettings(StandardTaskQueries.cProjectFilterPrefs);
+        bind(ListSettings.class).annotatedWith(ProjectTasks.class).toInstance(projectSettings);
+        bind(ListSettings.class).annotatedWith(Projects.class).toInstance(projectSettings);
+        bind(ListSettings.class).annotatedWith(ExpandableProjects.class).toInstance(projectSettings);
 
-        ListPreferenceSettings contextSettings = new ListPreferenceSettings(StandardTaskQueries.cContextFilterPrefs);
-        bind(ListPreferenceSettings.class).annotatedWith(ContextTasks.class).toInstance(contextSettings);
-        bind(ListPreferenceSettings.class).annotatedWith(Contexts.class).toInstance(contextSettings);
-        bind(ListPreferenceSettings.class).annotatedWith(ExpandableContexts.class).toInstance(contextSettings);
+        ListSettings contextSettings = new ListSettings(StandardTaskQueries.cContextFilterPrefs);
+        bind(ListSettings.class).annotatedWith(ContextTasks.class).toInstance(contextSettings);
+        bind(ListSettings.class).annotatedWith(Contexts.class).toInstance(contextSettings);
+        bind(ListSettings.class).annotatedWith(ExpandableContexts.class).toInstance(contextSettings);
 
-        bind(ListPreferenceSettings.class).annotatedWith(DueTasks.class).toInstance(
-            new ListPreferenceSettings(StandardTaskQueries.cDueTasksFilterPrefs).setDefaultCompleted(Flag.no));
+        bind(ListSettings.class).annotatedWith(DueTasks.class).toInstance(
+            new ListSettings(StandardTaskQueries.cDueTasksFilterPrefs).setDefaultCompleted(Flag.no));
 
-        bind(ListPreferenceSettings.class).annotatedWith(Tickler.class).toInstance(
-            new ListPreferenceSettings(StandardTaskQueries.cTickler)
+        bind(ListSettings.class).annotatedWith(Tickler.class).toInstance(
+            new ListSettings(StandardTaskQueries.cTickler)
                     .setDefaultCompleted(Flag.no)
                     .setDefaultActive(Flag.no));
 
@@ -115,17 +88,8 @@ public class ShuffleModule extends AbstractModule {
         bind(ContextListConfig.class).annotatedWith(Contexts.class).to(ContextListConfig.class);
     }
 
-    private void addTaskListContexts() {
-        bind(TaskListContext.class).annotatedWith(TopTasks.class).toInstance(TaskListContext.create(TaskSelector.PredefinedQuery.nextTasks));
-        bind(TaskListContext.class).annotatedWith(Inbox.class).toInstance(TaskListContext.create(TaskSelector.PredefinedQuery.inbox));
-        bind(TaskListContext.class).annotatedWith(Tickler.class).toInstance(TaskListContext.create(TaskSelector.PredefinedQuery.tickler));
-        bind(TaskListContext.class).annotatedWith(DueTasks.class).toInstance(TaskListContext.create(TaskSelector.PredefinedQuery.dueToday));
-    }
-
-
-
     @Provides @Inbox
-    TaskListConfig providesInboxTaskListConfig(TaskPersister taskPersister, @Inbox ListPreferenceSettings settings) {
+    TaskListConfig providesInboxTaskListConfig(TaskPersister taskPersister, @Inbox ListSettings settings) {
 		return new AbstractTaskListConfig(
                 StandardTaskQueries.getQuery(StandardTaskQueries.cInbox),
                 taskPersister, settings) {
@@ -143,7 +107,7 @@ public class ShuffleModule extends AbstractModule {
     }
 
     @Provides @TopTasks
-    TaskListConfig providesTopTasksTaskListConfig(TaskPersister taskPersister, @TopTasks ListPreferenceSettings settings) {
+    TaskListConfig providesTopTasksTaskListConfig(TaskPersister taskPersister, @TopTasks ListSettings settings) {
         return new AbstractTaskListConfig(
                 StandardTaskQueries.getQuery(StandardTaskQueries.cNextTasks),
                 taskPersister, settings) {
@@ -161,7 +125,7 @@ public class ShuffleModule extends AbstractModule {
     }
 
     @Provides @Tickler
-    TaskListConfig providesTicklerTaskListConfig(TaskPersister taskPersister, @Tickler ListPreferenceSettings settings) {
+    TaskListConfig providesTicklerTaskListConfig(TaskPersister taskPersister, @Tickler ListSettings settings) {
         return new AbstractTaskListConfig(
                 StandardTaskQueries.getQuery(StandardTaskQueries.cTickler),
                 taskPersister, settings) {

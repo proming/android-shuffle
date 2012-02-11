@@ -77,6 +77,12 @@
                 android:uiOptions="splitActionBarWhenNarrow"
                 />
 
+        <activity
+                android:name="org.dodgybits.shuffle.android.list.activity.ContextTaskListsActivity"
+                android:label="@string/app_name"
+                android:uiOptions="splitActionBarWhenNarrow"
+                />
+
 		<activity android:name="org.dodgybits.shuffle.android.core.activity.HelpActivity"
 			android:label="@string/title_help">
 			<intent-filter>
@@ -233,7 +239,7 @@
 		<!--  list -->
 
 		<activity
-			android:name="org.dodgybits.shuffle.android.list.activity.ContextsActivity">
+			android:name="org.dodgybits.shuffle.android.list.old.activity.ContextsActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<action android:name="android.intent.action.EDIT" />
@@ -244,7 +250,7 @@
 		</activity>
 
 		<activity
-			android:name="org.dodgybits.shuffle.android.list.activity.ProjectsActivity">
+			android:name="org.dodgybits.shuffle.android.list.old.activity.ProjectsActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<action android:name="android.intent.action.EDIT" />
@@ -256,7 +262,7 @@
 		</activity>
 
 		<activity
-			android:name="org.dodgybits.shuffle.android.list.activity.expandable.ExpandableContextsActivity"
+			android:name="org.dodgybits.shuffle.android.list.old.activity.expandable.ExpandableContextsActivity"
 			android:label="@string/title_context">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
@@ -269,7 +275,7 @@
 
 
 		<activity
-			android:name="org.dodgybits.shuffle.android.list.activity.expandable.ExpandableProjectsActivity"
+			android:name="org.dodgybits.shuffle.android.list.old.activity.expandable.ExpandableProjectsActivity"
 			android:label="@string/title_project">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
@@ -281,7 +287,7 @@
 		</activity>
 
 		<activity
-			android:name="org.dodgybits.shuffle.android.list.activity.task.InboxActivity">
+			android:name="org.dodgybits.shuffle.android.list.old.activity.task.InboxActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<action android:name="android.intent.action.EDIT" />
@@ -292,14 +298,14 @@
 		</activity>
 		
         <activity
-            android:name="org.dodgybits.shuffle.android.list.activity.task.TicklerActivity">
+            android:name="org.dodgybits.shuffle.android.list.old.activity.task.TicklerActivity">
         </activity>
 
 		<activity
-			android:name="org.dodgybits.shuffle.android.list.activity.task.TabbedDueActionsActivity" />
+			android:name="org.dodgybits.shuffle.android.list.old.activity.task.TabbedDueActionsActivity" />
 
 		<activity
-			android:name="org.dodgybits.shuffle.android.list.activity.task.TopTasksActivity">
+			android:name="org.dodgybits.shuffle.android.list.old.activity.task.TopTasksActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<action android:name="android.intent.action.EDIT" />
@@ -310,7 +316,7 @@
 		</activity>
 
 		<activity
-			android:name="org.dodgybits.shuffle.android.list.activity.task.ProjectTasksActivity">
+			android:name="org.dodgybits.shuffle.android.list.old.activity.task.ProjectTasksActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<action android:name="android.intent.action.EDIT" />
@@ -328,7 +334,7 @@
 		</activity>
 
 		<activity
-			android:name="org.dodgybits.shuffle.android.list.activity.task.ContextTasksActivity">
+			android:name="org.dodgybits.shuffle.android.list.old.activity.task.ContextTasksActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<action android:name="android.intent.action.EDIT" />
@@ -432,7 +438,7 @@
 		<activity
 			android:name="org.dodgybits.shuffle.android.preference.activity.PreferencesTracksSynchronizationActivity" />
 
-        <activity android:name="org.dodgybits.shuffle.android.list.activity.ListPreferenceActivity"/>
+        <activity android:name="org.dodgybits.shuffle.android.list.activity.ListSettingsEditorActivity"/>
 
         <!--  App Engine synchronisation -->
         

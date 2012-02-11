@@ -52,7 +52,7 @@ public class TaskViewActivity extends RoboFragmentActivity {
         super.onCreate(icicle);
 
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
-        setContentView(R.layout.task_view_activity);
+        setContentView(R.layout.fragment_container);
 
         if (OSUtils.atLeastHoneycomb())
         {

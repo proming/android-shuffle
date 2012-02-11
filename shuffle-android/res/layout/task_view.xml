@@ -24,7 +24,7 @@
             android:layout_height="1px"
             android:layout_weight="1"
             android:fillViewport="true"
-            android:background="#eaeaff"
+            android:background="@color/list_background_color"
             android:fadingEdge="none"
             android:animateLayoutChanges="true"
             >
@@ -45,7 +45,7 @@
                     android:paddingRight="?android:attr/scrollbarSize"
                     >
 
-                <org.dodgybits.shuffle.android.list.view.LabelView
+                <org.dodgybits.shuffle.android.list.old.view.LabelView
                         android:id="@+id/context"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -69,10 +69,10 @@
                     android:paddingBottom="8dip"
                     android:paddingRight="?android:attr/scrollbarSize"
                     android:minHeight="50dip"
-                    android:background="#b4b4ff"
+                    android:background="@color/view_highlight_color"
                     >
 
-                <org.dodgybits.shuffle.android.list.view.StatusView
+                <org.dodgybits.shuffle.android.list.old.view.StatusView
                         android:id="@+id/status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -106,8 +106,9 @@
                         android:paddingTop="2dip"
                         android:maxLines="2"
                         android:textStyle="bold"
-                        android:textColor="#000065"
+                        android:textColor="@color/view_project_color"
                         android:textSize="24sp"
+                        android:ellipsize="end"
                         style="?android:attr/textAppearanceLarge"
                         />
 
@@ -123,7 +124,7 @@
                         android:paddingTop="2dip"
                         android:paddingBottom="3dip"
                         android:textStyle="bold"
-                        android:textColor="#000065"
+                        android:textColor="@color/view_description_color"
                         android:textSize="14sp"
                         style="?android:attr/textAppearanceLarge"
                         />
@@ -253,7 +254,7 @@
                         android:layout_height="wrap_content"
                         android:paddingRight="8dip"
                         android:paddingTop="2dip"
-                        android:textColor="#8a8a8a"
+                        android:textColor="@color/view_minimal_text_color"
                         style="?android:attr/textAppearanceSmall"
                         />
 
@@ -266,7 +267,7 @@
                         android:paddingTop="2dip"
                         android:paddingBottom="8dip"
                         android:textSize="14sp"
-                        android:textColor="#8a8a8a"
+                        android:textColor="@color/view_minimal_text_color"
                         style="?android:attr/textAppearanceSmall"
                         />
 
@@ -282,13 +283,13 @@
             android:id="@+id/page_display_entry"
             android:layout_width="match_parent"
             android:layout_height="20dip"
-            android:background="#555555"
+            android:background="@color/pager_background_color"
             android:gravity="center">
         <TextView
                 android:id="@+id/page_display"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@drawable/white"
+                android:textColor="@color/white"
                 style="?android:attr/textAppearanceSmall"
                 />
     </LinearLayout>

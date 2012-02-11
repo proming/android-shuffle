@@ -16,11 +16,11 @@ import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
-import org.dodgybits.shuffle.android.list.config.StandardTaskQueries;
+import org.dodgybits.shuffle.android.list.old.config.StandardTaskQueries;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-import org.dodgybits.shuffle.android.preference.model.ListPreferenceSettings;
+import org.dodgybits.shuffle.android.preference.model.ListSettings;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import roboguice.util.Ln;
@@ -54,7 +54,7 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
         if (TaskProvider.UPDATE_INTENT.equals(action) ||
                 ProjectProvider.UPDATE_INTENT.equals(action) ||
                 ContextProvider.UPDATE_INTENT.equals(action) ||
-                ListPreferenceSettings.LIST_PREFERENCES_UPDATED.equals(action)) {
+                ListSettings.LIST_PREFERENCES_UPDATED.equals(action)) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             // Retrieve the identifiers for each instance of your chosen widget.
             ComponentName thisWidget = new ComponentName(context, getClass());
@@ -163,7 +163,7 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
         if (query == null) return null;
 
         String key = StandardTaskQueries.getFilterPrefsKey(queryName);
-        ListPreferenceSettings settings = new ListPreferenceSettings(key);
+        ListSettings settings = new ListSettings(key);
         query = query.builderFrom().applyListPreferences(androidContext, settings).build();
 
         return androidContext.getContentResolver().query(

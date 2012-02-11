@@ -22,18 +22,18 @@ import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.activity.EntityListsActivity;
-import org.dodgybits.shuffle.android.list.activity.tasklist.TaskListContext;
+import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import roboguice.activity.RoboFragmentActivity;
 
 /**
- * View a task  in the context of a given task list.
+ * View a task in the context of a given task list.
  * Each task is a separate page on a PageViewer.
  */
 public class TaskPagerActivity extends RoboFragmentActivity {
-    private static final String cTag = "EntityListsActivity";
+    private static final String TAG = "EntityListsActivity";
 
-    public static final String SELECTED_INDEX = "selectedIndex";
+    public static final String INITIAL_POSITION = "selectedIndex";
     public static final String TASK_LIST_CONTEXT = "taskListContext";
 
     private static final int LOADER_ID_TASK_LIST_LOADER = 1;
@@ -49,6 +49,8 @@ public class TaskPagerActivity extends RoboFragmentActivity {
     ViewPager mPager;
 
     ViewPager.OnPageChangeListener mPageChangeListener;
+
+    TaskListContext mListContext;
 
     TaskViewFragment mCurrentView = null;
 
@@ -81,7 +83,9 @@ public class TaskPagerActivity extends RoboFragmentActivity {
         mPager = (ViewPager)findViewById(R.id.pager);
         mPager.setOnPageChangeListener(mPageChangeListener);
 
-        startLoading(getIntent().getExtras());
+        mListContext = getIntent().getParcelableExtra(TASK_LIST_CONTEXT);
+
+        startLoading();
     }
 
     @Override
@@ -90,8 +94,8 @@ public class TaskPagerActivity extends RoboFragmentActivity {
             case android.R.id.home:
                 // app icon in action bar clicked; go home
                 Intent intent = new Intent(this, EntityListsActivity.class);
-                // TODO go to the correct page based on TaskListContext
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(EntityListsActivity.QUERY_NAME, mListContext.getListQuery());
                 startActivity(intent);
                 return true;
         }
@@ -99,10 +103,10 @@ public class TaskPagerActivity extends RoboFragmentActivity {
         return false;
     }
 
-    private void startLoading(Bundle args) {
-        Log.d(cTag, "Creating list cursor");
+    private void startLoading() {
+        Log.d(TAG, "Creating list cursor");
         final LoaderManager lm = getSupportLoaderManager();
-        lm.initLoader(LOADER_ID_TASK_LIST_LOADER, args, LOADER_CALLBACKS);
+        lm.initLoader(LOADER_ID_TASK_LIST_LOADER, getIntent().getExtras(), LOADER_CALLBACKS);
     }
 
 
@@ -112,20 +116,19 @@ public class TaskPagerActivity extends RoboFragmentActivity {
     private final LoaderManager.LoaderCallbacks<Cursor> LOADER_CALLBACKS =
             new LoaderManager.LoaderCallbacks<Cursor>() {
 
-                int initialPosition;
+                int mInitialPosition;
                 
                 @Override
                 public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                    initialPosition = args.getInt(SELECTED_INDEX, 0);
-                    TaskListContext listContext = args.getParcelable(TASK_LIST_CONTEXT);
-                    return new TaskCursorLoader(TaskPagerActivity.this, listContext);
+                    mInitialPosition = args.getInt(INITIAL_POSITION, 0);
+                    return new TaskCursorLoader(TaskPagerActivity.this, mListContext);
                 }
 
                 @Override
                 public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
                     mAdapter = new MyAdapter(getSupportFragmentManager(), c);
                     mPager.setAdapter(mAdapter);
-                    mPager.setCurrentItem(initialPosition);
+                    mPager.setCurrentItem(mInitialPosition);
 
                     // pager doesn't notify on initial page selection (if it's 0)
                     mPageChangeListener.onPageSelected(mPager.getCurrentItem());
@@ -182,7 +185,7 @@ public class TaskPagerActivity extends RoboFragmentActivity {
         public Fragment getItem(int position) {
             TaskViewFragment fragment = mFragments[position];
             if (fragment == null) {
-                Log.d(cTag, "Creating fragment item " + position);
+                Log.d(TAG, "Creating fragment item " + position);
                 mCursor.moveToPosition(position);
                 Task task = mPersister.read(mCursor);
                 Bundle args = new Bundle();

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.view.IconArrayAdapter;
-import org.dodgybits.shuffle.android.list.config.StandardTaskQueries;
+import org.dodgybits.shuffle.android.list.old.config.StandardTaskQueries;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import roboguice.activity.RoboListActivity;

@@ -20,7 +20,7 @@
         android:layout_width="fill_parent" 
         android:layout_height="fill_parent">
 
-    <org.dodgybits.shuffle.android.list.view.ButtonBar
+    <org.dodgybits.shuffle.android.list.old.view.ButtonBar
             android:id="@+id/button_bar"
             android:layout_width="fill_parent"
             android:layout_height="40dip"

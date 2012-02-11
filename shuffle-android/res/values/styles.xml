@@ -24,8 +24,8 @@
 
     <style name="list" parent="activity">
     	<item name="android:divider">@android:drawable/divider_horizontal_bright</item>
-    	<item name="android:background">@drawable/list_background</item>
-    	<item name="android:cacheColorHint">@drawable/list_background</item>
+    	<item name="android:background">@color/list_background</item>
+    	<item name="android:cacheColorHint">@color/list_background</item>
     	<item name="android:listSelector">@drawable/list_selector_background</item>
     	<item name="android:drawSelectorOnTop">true</item>
 	</style>
@@ -35,7 +35,7 @@
 	</style>
 
     <style name="text" parent="ShuffleTheme">
-        <item name="android:textColor">@drawable/black</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textScaleX">0.9</item>
     	<item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
 	</style>
@@ -61,7 +61,7 @@
     </style>
 
     <style name="preferences_label" parent="label">
-        <item name="android:textColor">@drawable/white</item>
+        <item name="android:textColor">@color/white</item>
     </style>
     
     <style name="preferences_checkbox" parent="ShuffleTheme">
@@ -74,12 +74,12 @@
     
     
     <style name="white_text" parent="text">
-        <item name="android:textColor">@drawable/white</item>
+        <item name="android:textColor">@color/white</item>
     </style>
     
     <style name="text_autocomplete" parent="text_editable">
     	<item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-    	<item name="android:popupBackground">@drawable/white</item>
+    	<item name="android:popupBackground">@color/white</item>
     	
     </style>
 
@@ -89,14 +89,14 @@
 
 
     <style name="list_text" parent="ShuffleTheme">
-        <item name="android:textColor">@drawable/description</item>
+        <item name="android:textColor">@color/description</item>
         <item name="android:typeface">sans</item>
         <item name="android:textScaleX">0.9</item>
     	<item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
 	</style>
 
 	<style name="list_sub_text_1" parent="list_text">
-        <item name="android:textColor">@drawable/project</item>
+        <item name="android:textColor">@color/project</item>
         <item name="android:typeface">sans</item>
     	<item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textStyle">bold</item>
@@ -106,7 +106,7 @@
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:typeface">normal</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@drawable/white</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="widget_context">
@@ -119,7 +119,7 @@
     </style>
 
     <style name="widget_project" parent="list_text">
-        <item name="android:textColor">@drawable/project</item>
+        <item name="android:textColor">@color/project</item>
         <item name="android:typeface">sans</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
@@ -131,13 +131,13 @@
     </style>
 
     <style name="dark_widget_project" parent="widget_project">
-        <item name="android:textColor">@drawable/project_widget</item>
+        <item name="android:textColor">@color/project_widget</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">normal</item>
     </style>
 
 	<style name="widget_description" parent="list_text">
-        <item name="android:textColor">@drawable/description</item>
+        <item name="android:textColor">@color/description</item>
         <item name="android:typeface">sans</item>
         <item name="android:textSize">13sp</item>
         <item name="android:paddingLeft">2dip</item>
@@ -148,13 +148,13 @@
 	</style>
 
     <style name="dark_widget_description" parent="widget_description">
-        <item name="android:textColor">@drawable/description_widget</item>
+        <item name="android:textColor">@color/description_widget</item>
         <item name="android:textSize">18sp</item>
         <item name="android:paddingLeft">5dip</item>
     </style>
 
 	<style name="list_sub_text_2" parent="list_text">
-        <item name="android:textColor">@drawable/details</item>
+        <item name="android:textColor">@color/details</item>
         <item name="android:typeface">sans</item>
     	<item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
 	</style>
@@ -188,7 +188,7 @@
     
     <style name="ButtonBar">
 		<item name="android:paddingTop">5px</item>
-        <item name="android:background">@drawable/light_gray</item>
+        <item name="android:background">@color/light_gray</item>
 	</style>
 	
     <style name="MinusButton">

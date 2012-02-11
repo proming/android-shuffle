@@ -207,7 +207,7 @@
             />
 
 
-        <org.dodgybits.shuffle.android.list.view.ContextView
+        <org.dodgybits.shuffle.android.list.old.view.ContextView
             android:id="@+id/context_preview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

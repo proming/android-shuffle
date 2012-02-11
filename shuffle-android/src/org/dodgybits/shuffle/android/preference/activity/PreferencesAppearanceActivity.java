@@ -30,7 +30,7 @@ import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.InitialDataGenerator;
-import org.dodgybits.shuffle.android.list.view.TaskView;
+import org.dodgybits.shuffle.android.list.old.view.TaskView;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import roboguice.inject.InjectView;

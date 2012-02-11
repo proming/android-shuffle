@@ -15,35 +15,34 @@
 -->
 
 <resources>
-	<drawable name="even_stripe">#e5edfa</drawable>
-	<drawable name="odd_stripe">#ffffffff</drawable>
+	<color name="even_stripe">#e5edfa</color>
+	<color name="odd_stripe">#ffffffff</color>
 
-    <drawable name="list_background">#dce3ef</drawable>
+    <color name="list_background">#dce3ef</color>
 
-    <drawable name="project">#0063be</drawable>
-    <drawable name="description">#000000</drawable>
-    <drawable name="details">#002663</drawable>
-    <drawable name="project_widget">#aaaaaa</drawable>
-    <drawable name="description_widget">#fafafa</drawable>
+    <color name="project">#0063be</color>
+    <color name="description">#000000</color>
+    <color name="details">#002663</color>
+    <color name="project_widget">#aaaaaa</color>
+    <color name="description_widget">#fafafa</color>
     
-	<drawable name="pale_yellow">#f8f7df</drawable>
-	<drawable name="pale_weak_cyan">#e5dff8</drawable>
-	<drawable name="light_blue">#80d0ff</drawable>
-	<drawable name="pale_blue">#6f84b3</drawable>	
-	<drawable name="dark_blue">#0033cc</drawable>
-	<drawable name="light_yellow">#ffffe0</drawable>
-	<drawable name="green">#39939b</drawable>
-	<drawable name="transparent_blue">#8080d0ff</drawable>
+	<color name="pale_yellow">#f8f7df</color>
+	<color name="pale_weak_cyan">#e5dff8</color>
+	<color name="light_blue">#80d0ff</color>
+	<color name="pale_blue">#6f84b3</color>	
+	<color name="dark_blue">#0033cc</color>
+	<color name="light_yellow">#ffffe0</color>
+	<color name="green">#39939b</color>
+	<color name="transparent_blue">#8080d0ff</color>
 
-	<drawable name="white">#ffffff</drawable>
-    <drawable name="red">#ff0000</drawable>
-	<drawable name="light_gray">#e7e3e7</drawable>
-	<drawable name="dark_brown">#312f28</drawable>
-	<drawable name="light_brown">#dadabe</drawable>
-    <drawable name="mid_gray">#424242</drawable>
-	<drawable name="dark_gray">#313031</drawable>
-	<drawable name="black">#000000</drawable>
-
+	<color name="white">#ffffff</color>
+    <color name="red">#ff0000</color>
+	<color name="light_gray">#e7e3e7</color>
+	<color name="dark_brown">#312f28</color>
+	<color name="light_brown">#dadabe</color>
+    <color name="mid_gray">#424242</color>
+	<color name="dark_gray">#313031</color>
+	<color name="black">#000000</color>
 
     <color name="description_text_color_incomplete">#555555</color>
     <color name="snippet_text_color_incomplete">#555555</color>
@@ -54,4 +53,12 @@
     <color name="date_text_color_incomplete">@color/project_text_color_incomplete</color>
     <color name="date_text_color_complete">@color/project_text_color_complete</color>
 
+    <!-- new colours -->
+
+    <color name="list_background_color">#eaeaff</color>
+    <color name="pager_background_color">#555555</color>
+    <color name="view_highlight_color">#b4b4ff</color>
+    <color name="view_project_color">#000065</color>
+    <color name="view_description_color">#000065</color>
+    <color name="view_minimal_text_color">#8a8a8a</color>
 </resources>

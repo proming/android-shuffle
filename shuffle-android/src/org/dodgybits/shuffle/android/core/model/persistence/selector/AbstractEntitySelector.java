@@ -3,7 +3,7 @@ package org.dodgybits.shuffle.android.core.model.persistence.selector;
 import android.util.Log;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.util.StringUtils;
-import org.dodgybits.shuffle.android.preference.model.ListPreferenceSettings;
+import org.dodgybits.shuffle.android.preference.model.ListSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +124,7 @@ public abstract class AbstractEntitySelector<E extends EntitySelector<E>> implem
         }
 
         @Override
-        public AbstractBuilder<E> applyListPreferences(android.content.Context context, ListPreferenceSettings settings) {
+        public AbstractBuilder<E> applyListPreferences(android.content.Context context, ListSettings settings) {
             setActive(settings.getActive(context));
             setDeleted(settings.getDeleted(context));
 

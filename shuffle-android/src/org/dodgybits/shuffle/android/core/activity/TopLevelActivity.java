@@ -50,7 +50,8 @@ import org.dodgybits.shuffle.android.core.view.IconArrayAdapter;
 import org.dodgybits.shuffle.android.core.view.MenuUtils;
 import org.dodgybits.shuffle.android.list.activity.EntityListsActivity;
 import org.dodgybits.shuffle.android.list.annotation.*;
-import org.dodgybits.shuffle.android.list.config.*;
+import org.dodgybits.shuffle.android.list.model.ListQuery;
+import org.dodgybits.shuffle.android.list.old.config.*;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 import roboguice.inject.ContextSingleton;
 
@@ -162,18 +163,22 @@ public class TopLevelActivity extends FlurryEnabledListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
+        ListQuery query = null;
         switch (position) {
-            case 0:
-            case 5:
-                Bundle bundle = new Bundle();
-                bundle.putInt(EntityListsActivity.SELECTED_INDEX, position);
-                Intent intent = new Intent(this, EntityListsActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
+            case INBOX:
+                query = ListQuery.inbox;
                 break;
-            default:
-                MenuUtils.checkCommonItemsSelected(position + MenuUtils.INBOX_ID, this, -1, false);
+            case TICKLER:
+                query = ListQuery.tickler;
                 break;
+        }
+        
+        if (query != null) {
+            Intent intent = new Intent(this, EntityListsActivity.class);
+            intent.putExtra(EntityListsActivity.QUERY_NAME, query.name());
+            startActivity(intent);
+        } else {
+            MenuUtils.checkCommonItemsSelected(position + MenuUtils.INBOX_ID, this, -1, false);
         }
     }
     
@@ -221,7 +226,7 @@ public class TopLevelActivity extends FlurryEnabledListActivity {
 
         public Void doInBackground(CursorGenerator... params) {
             String[] perspectives = getResources().getStringArray(R.array.perspectives);
-            int colour = getResources().getColor(R.drawable.pale_blue);
+            int colour = getResources().getColor(R.color.pale_blue);
             ForegroundColorSpan span = new ForegroundColorSpan(colour);
             CharSequence[] labels = new CharSequence[perspectives.length];
             int length = perspectives.length;

@@ -1,5 +1,5 @@
 <resources>
-    <dimen name="task_list_item_height">70sp</dimen>
+    <dimen name="list_item_height">70sp</dimen>
 
     <!-- Message list items -->
     <dimen name="activestate_margin_left">0dip</dimen>
