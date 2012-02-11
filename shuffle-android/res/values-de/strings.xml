@@ -27,6 +27,7 @@
     <string name="title_due_next_month">Nächsten Monat fällig</string>
     <string name="title_tickler">Erinnerung</string>
     <string name="title_trash">Müll</string>
+    <string name="title_all">Alle</string>
 	<string name="title_new_task">Neu</string>
     <string name="title_edit_task">Bearbeiten</string>
     <string name="title_view_task">Ansehen</string>
@@ -67,6 +68,7 @@
     <string name="menu_preferences">Einstellungen</string>
     <string name="menu_sync">Synchronisierung</string>
     <string name="menu_search">Suche</string>
+    <string name="menu_view_settings">Ansichtseinstellungen</string>
     <string name="menu_help">Hilfe</string>
 
     <!--  general purpose -->
@@ -101,6 +103,7 @@
     <string name="yesterday">Gestern</string>
     <string name="previous_button_title">Zurück</string>
     <string name="next_button_title">Weiter</string>
+    <string name="pager_display">%1$d / %2$d</string>   
     
     <!--  search -->
     <string name="search_label">Shuffle</string>
@@ -196,6 +199,7 @@ allow that, you can turn it off under Settings.</string>
     <string name="scheduling_collapsed">Optionen anzeigen</string>
     <string name="scheduling_expanded">Optionen verstecken</string>
     <string name="start_title">Beginn</string>
+    <string name="show_from_title">Zeige ab</string>
     <string name="due_title">Frist</string>
     <string name="all_day_title">Ganztägig</string>
     <string name="reminders_title">Erinnerung</string>
@@ -204,8 +208,9 @@ allow that, you can turn it off under Settings.</string>
     <string name="add_to_gcal_detail">Neuer Eintrag wird nach dem Speichern geladen</string>
     <string name="update_gcal_title">Kalender aktualisieren</string>
     <string name="update_gcal_detail">Aktualisierter Eintrag wird nach dem Speichern geladen</string>
-    <string name="active_title">Aktiv</string>
     <string name="completed_title">Erledigt</string>
+    <string name="active_title">Aktiv</string>
+    <string name="deleted_title">Gelöscht</string>
     <string name="clear_title">Beginn und Frist löschen</string>
 
 	<!--  project & context edit screens -->
@@ -236,7 +241,7 @@ allow that, you can turn it off under Settings.</string>
     <string name="due_date_title">Frist</string>
 
 
-    <string name="general_preferences">Allgemeine Einstellungen</string>
+    <string name="general_preferences">Google-Einstellungen</string>
 
     <string name="title_calendar_preference">Kalender auswählen</string>
     <string name="summary_calendar_preference">für neue Kalendereinträge</string>
@@ -244,7 +249,7 @@ allow that, you can turn it off under Settings.</string>
     <string name="title_send_analytics_preference">Nutzungsdaten senden</string>
     <string name="summary_send_analytics_preference">Anonymisierte Nutzungsdaten werden für die Fehlersuche und das Priorisieren neuer Features erhoben.</string>
 
-	<string name="layout_preferences">Layout</string>
+	<string name="layout_preferences">Layout-Einstellungen</string>
 
 	<string name="title_project_view_preference">Projektansicht</string>
 	<string name="summary_project_view_preference">Handlungen auf eigenem Bildschirm</string>
@@ -297,9 +302,11 @@ allow that, you can turn it off under Settings.</string>
 	<string name="title_delete_all_preference">Alles löschen!</string>
 	<string name="summary_delete_all_preference">Alle Handlungen, Projekte und selbsterstellten Kategorien werden entfernt.</string>
 
+    <string name="title_delete_all_preference">Alles Löschen</string>
+	<string name="summary_delete_all_preference">Entferne alle Handlungen, Projekte und selbsterstellte Kategorien.</string>
+
     <string name="delete_completed_button_title">Löschen</string>
     <string name="clean_slate_button_title">Löschen</string>
-
 
     <string name="permanently_delete_button_title">Dauerhaft löschen</string>
 
@@ -401,6 +408,14 @@ allow that, you can turn it off under Settings.</string>
     <string name="completed_items_title">Abgeschlossene Handlungen</string>
     
 
+    <!-- new task list -->
+
+
+
+    
+
+
+
     <!--  messages -->
     <string name="no_due_date">Keine Frist</string>
     <string name="no_icon">Kein Icon</string>
@@ -438,22 +453,20 @@ Ein einfacher Arbeitsablauf ermutigt Sie dazu, ihre Handlungen in Projekten zusa
 Durch dieses Vorgehen können schwierige Projekte in kleine, machbare Aufgaben geteilt werden.\n
 Wenn das Projekt fortschreitet, können erledigte Handlungen entfernt werden, anfallende Handlungen neu erzeugt werden und Ihre verbleibenden Handlungen nach Ihren Prioritäten angeordnet werden.
     </string>
-
-
     <string name="help1">
 Hier ist der beste Platz, um neue Handlungen zu erstellen.
 Der <b>Eingang</b> sammelt alle Handlungen, bevor sie weiterverarbeitet werden.
-Sie sollten Ihren Eingang regelmäßig durchgehen, jede Handlung überprüfen, und diese dann verwerfen bzw. löschen, erledigen oder einem Projekt zuweisen.\n
+Sie sollten Ihren Eingang regelmäßig durchgehen, jede Handlung überprüfen, und diese dann löschen, erledigen, delegieren, einem Projekt oder einer Kategorie zuweisen.\n
     </string>
    
     <string name="help2">
 Die <b>Projektansicht</b> listet alle Ihre Projekte auf und erlaubt Ihnen, die Handlungen eines jeden Projekts anzusehen. Zusätzlich zu den Standardfunktionen \"Hinzufügen\", \"Bearbeiten\" und \"Löschen\" können Sie hier die Handlungen neu anordnen, um diese in der von Ihnen gewünschten Reihenfolge abzuarbeiten.
 \n
+Für einige Projekte macht es Sinn, die Handlungen nacheinander auszuführen; bei anderen können Sie in beliebiger ausgeführt werden. Dies können Sie auch in Shuffle einstellen.
 Projekte können genau wie Kategorien mit verschiedenen Ansichten betrachtet werden.
 Bei Einzelansicht öffnet der Klick auf ein Projekt einen neuen Bildschirm, auf dem die Handlungen zu sehen sind.
 In der Erweiterungsansicht werden die Handlungen nach einem Klick auf dem selben Bildschirm gezeigt.
-    </string>
-    
+    </string>    
 
 
 
