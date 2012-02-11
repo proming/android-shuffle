@@ -204,7 +204,6 @@ allow that, you can turn it off under Settings.</string>
     <string name="add_to_gcal_detail">Neuer Eintrag wird nach dem Speichern geladen</string>
     <string name="update_gcal_title">Kalender aktualisieren</string>
     <string name="update_gcal_detail">Aktualisierter Eintrag wird nach dem Speichern geladen</string>
-    <string name="completed_title">Abgeschlossen</string>
     <string name="active_title">Aktiv</string>
     <string name="completed_title">Erledigt</string>
     <string name="clear_title">Beginn und Frist löschen</string>
@@ -268,21 +267,21 @@ allow that, you can turn it off under Settings.</string>
 	<string name="summary_create_backup_preference">Alle Handlungen, Projekte und Kategorien speichern</string>
 
     <string name="filename_title">Backupdatei</string>
-	<string name="backup_progress">Schreibe <xliff:g id="type">%s</xliff:g> <xliff:g id="name">%s</xliff:g>.</string>
-	<string name="toast_backup_saved">Backup erfolgreich in <xliff:g id="filename">%s</xliff:g> gespeichert.</string>
+	<string name="backup_progress">Schreibe %1$s %2$s.</string>
+	<string name="toast_backup_saved">Backup erfolgreich in %1$S gespeichert.</string>
 
 	<string name="title_restore_backup_preference">Wiederherstellung</string>
 	<string name="summary_restore_backup_preference">Daten aus Backup wiederherstellen</string>
-	<string name="toast_backup_restored">Die Daten wurden erfolgreich aus <xliff:g id="filename">%s</xliff:g> wiederhergestellt.</string>
-	<string name="restore_progress">Lese <xliff:g id="type">%s</xliff:g> <xliff:g id="name">%s</xliff:g>.</string>
+	<string name="toast_backup_restored">Die Daten wurden erfolgreich aus %1$s wiederhergestellt.</string>
+	<string name="restore_progress">Lese %1$s %2$s.</string>
 	<string name="restore_button_title">Wiederherstellen</string>
 
     <string name="warning_filename_empty">Es muss ein Datename angegeben werden.</string>
-	<string name="warning_filename_exists"><xliff:g id="filename">%s</xliff:g> existiert bereits.</string>
-	<string name="warning_media_not_mounted">SD-Karte ist nicht eingebunden: <xliff:g id="error">%s</xliff:g></string>
-	<string name="warning_backup_failed">Backup fehlgeschlagen: <xliff:g id="error">%s</xliff:g></string>
+	<string name="warning_filename_exists">%1$s existiert bereits.</string>
+	<string name="warning_media_not_mounted">SD-Karte ist nicht eingebunden: %1$s</string>
+	<string name="warning_backup_failed">Backup fehlgeschlagen: %1$s</string>
     <string name="warning_no_files">Keine Dateien vorhanden.</string>
-	<string name="warning_restore_failed">Wiederherstellung fehlgeschlagen: <xliff:g id="error">%s</xliff:g></string>
+	<string name="warning_restore_failed">Wiederherstellung fehlgeschlagen: %1$s</string>
     <string name="status_checking_media">Überprüfe den Status der SD-Karte.</string>
     <string name="status_creating_backup">Erzeuge Backup-Datei.</string>
     <string name="status_backup_complete">Backup wurde erstellt.</string>
@@ -301,22 +300,20 @@ allow that, you can turn it off under Settings.</string>
     <string name="delete_completed_button_title">Löschen</string>
     <string name="clean_slate_button_title">Löschen</string>
 
-    <string name="delete_completed_button_title">Löschen</string>
-    <string name="clean_slate_button_title">Löschen</string>
 
     <string name="permanently_delete_button_title">Dauerhaft löschen</string>
 
     <!-- Toast displayed when an item is created -->
-    <string name="itemCreatedToast"><xliff:g id="itemName">%s</xliff:g> wurde erstellt.</string>
+    <string name="itemCreatedToast">%1$s wurde erstellt.</string>
 
     <string name="warning_empty_trash">Alle gelöschten Einträge dauerhaft löschen?</string>
     <string name="toast_empty_trash">%1$s Handlung(en), %2$s Kategorie(n) und %3$s Projekt(e) dauerhaft gelöscht.</string>
     
     <!-- Toast displayed when an item is saved -->
-    <string name="itemSavedToast"><xliff:g id="itemName">%s</xliff:g> wurde gespeichert.</string>
+    <string name="itemSavedToast">%1$s wurde gespeichert.</string>
 
     <!-- Toast displayed when an item is saved -->
-    <string name="itemDeletedToast"><xliff:g id="itemName">%s</xliff:g> wurde gelöscht.</string>
+    <string name="itemDeletedToast">%1$s wurde gelöscht.</string>
 
     
     <!-- Tracks synchronization-->
@@ -519,7 +516,7 @@ Um Feedback oder einen Bugreport einzureichen, besuchen Sie bitte http://code.go
         <item quantity="one">Eine Minute</item>
         <!-- This is the label for 2 or more minutes. The actual number of
              minutes is a parameter. -->
-        <item quantity="other"><xliff:g id="count">%d</xliff:g> Minuten</item>
+        <item quantity="other">%1$d Minuten</item>
     </plurals>
     <!-- We use the abbreviation "mins" instead of "minutes" to keep the string short.
          This is the number of minutes displayed for a calendar reminder.  For example,
@@ -530,7 +527,7 @@ Um Feedback oder einen Bugreport einzureichen, besuchen Sie bitte http://code.go
         <item quantity="one">1 Min</item>
         <!-- This is the label for 2 or more minutes. The actual number of
              minutes is a parameter. -->
-        <item quantity="other"><xliff:g id="count">%d</xliff:g> Min</item>
+        <item quantity="other">%1$d Min</item>
     </plurals>
     <!-- This is the number of hours displayed for a calendar reminder.  For example,
          a reminder of 1 hour would be displayed as '1 hour'.  The translation
@@ -540,7 +537,7 @@ Um Feedback oder einen Bugreport einzureichen, besuchen Sie bitte http://code.go
         <item quantity="one">1 Stunde</item>
         <!-- This is the label for a reminder of 2 or more hours. The actual number of
              hours is a parameter. -->
-        <item quantity="other"><xliff:g id="count">%d</xliff:g> Stunden</item>
+        <item quantity="other">%1$d Stunden</item>
     </plurals>
     <!-- This is the number of days displayed for a calendar reminder.  For example,
          a reminder of 2 days would be displayed as '2 days'.  The translation
@@ -550,7 +547,7 @@ Um Feedback oder einen Bugreport einzureichen, besuchen Sie bitte http://code.go
         <item quantity="one">1 Tag</item>
         <!-- This is the label for a reminder of 2 or more days. The actual number of
              days is a parameter. -->
-        <item quantity="other"><xliff:g id="count">%d</xliff:g> Tage</item>
+        <item quantity="other">%1$d Tage</item>
     </plurals>
     
 
