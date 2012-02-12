@@ -30,6 +30,8 @@ import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
+import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
+import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.util.Ln;
@@ -41,6 +43,12 @@ public class TaskViewActivity extends RoboFragmentActivity {
 
     @Inject private TaskPersister mPersister;
     @Inject private TaskEncoder mEncoder;
+
+    @Inject
+    private NavigationListener mNavigationListener;
+
+    @Inject
+    private EntityUpdateListener mEntityUpdateListener;
 
     private Uri mUri;
     private Cursor mCursor;

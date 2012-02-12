@@ -13,21 +13,18 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
-import org.dodgybits.shuffle.android.core.util.UiUtilities;
 import org.dodgybits.shuffle.android.list.activity.ContextTaskListsActivity;
 import org.dodgybits.shuffle.android.list.content.ContextCursorLoader;
-import org.dodgybits.shuffle.android.list.event.EditListSettingsEvent;
-import org.dodgybits.shuffle.android.list.event.NewContextEvent;
-import org.dodgybits.shuffle.android.list.event.ViewHelpEvent;
+import org.dodgybits.shuffle.android.list.event.*;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
 import org.dodgybits.shuffle.android.list.view.Titled;
@@ -52,7 +49,10 @@ public class ContextListFragment extends RoboListFragment implements Titled {
     private ContextListAdaptor mListAdapter;
 
     @Inject
-    private TaskPersister mPersister;
+    private TaskPersister mTaskPersister;
+    
+    @Inject
+    private ContextPersister mContextPersister;
 
     @Inject
     private EventManager mEventManager;
@@ -82,6 +82,7 @@ public class ContextListFragment extends RoboListFragment implements Titled {
         final ListView lv = getListView();
         lv.setItemsCanFocus(false);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        registerForContextMenu(lv);
 
         setEmptyText(getString(R.string.no_contexts));
 
@@ -91,8 +92,6 @@ public class ContextListFragment extends RoboListFragment implements Titled {
         }
 
         startLoading();
-
-        UiUtilities.installFragment(this);
 
         Log.d(TAG, "-onActivityCreated");
     }
@@ -173,6 +172,39 @@ public class ContextListFragment extends RoboListFragment implements Titled {
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.context_list_context_menu, menu);
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
+        org.dodgybits.shuffle.android.core.model.Context context = mContextPersister.read(cursor);
+        menu.findItem(R.id.action_delete).setVisible(!context.isDeleted());
+        menu.findItem(R.id.action_undelete).setVisible(context.isDeleted());
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                mEventManager.fire(new EditContextEvent(Id.create(info.id)));
+                return true;
+            case R.id.action_delete:
+                mEventManager.fire(new UpdateContextDeletedEvent(Id.create(info.id), true));
+                restartLoading();
+                return true;
+            case R.id.action_undelete:
+                mEventManager.fire(new UpdateContextDeletedEvent(Id.create(info.id), false));
+                restartLoading();
+                return true;
+        }
+
+        return super.onContextItemSelected(item);
+    }
+    
+    @Override
     public String getTitle(ContextWrapper context) {
         return context.getString(R.string.title_context);
     }
@@ -245,7 +277,7 @@ public class ContextListFragment extends RoboListFragment implements Titled {
 
                 @Override
                 public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-                    mListAdapter.setTaskCountArray(mPersister.readCountArray(cursor));
+                    mListAdapter.setTaskCountArray(mTaskPersister.readCountArray(cursor));
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

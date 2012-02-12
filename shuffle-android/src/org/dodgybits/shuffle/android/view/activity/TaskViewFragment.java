@@ -9,7 +9,6 @@ import android.text.format.DateUtils;
 import android.view.*;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
@@ -22,10 +21,12 @@ import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.CalendarUtils;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
+import org.dodgybits.shuffle.android.list.event.EditTaskEvent;
+import org.dodgybits.shuffle.android.list.event.UpdateTaskCompletedEvent;
+import org.dodgybits.shuffle.android.list.event.UpdateTaskDeletedEvent;
 import org.dodgybits.shuffle.android.list.old.view.LabelView;
 import org.dodgybits.shuffle.android.list.view.StatusView;
-import org.dodgybits.shuffle.android.list.view.StatusView;
-import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
+import roboguice.event.EventManager;
 import roboguice.fragment.RoboFragment;
 import roboguice.util.Ln;
 
@@ -63,6 +64,8 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     @Inject private TaskPersister mPersister;
     @Inject private TaskEncoder mEncoder;
 
+    @Inject
+    private EventManager mEventManager;
 
     private Task mTask;
     private int mPosition;
@@ -133,17 +136,17 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         switch (item.getItemId()) {
             case R.id.action_mark_complete:
             case R.id.action_mark_incomplete:
-                Ln.d("Toggling complete");
-                toggleComplete();
+                mEventManager.fire(new UpdateTaskCompletedEvent(mTask.getLocalId(), !mTask.isComplete()));
                 getActivity().finish();
                 return true;
             case R.id.action_edit:
                 Ln.d("Editing the action");
-                doEditAction();
+                mEventManager.fire(new EditTaskEvent(mTask.getLocalId()));
+                getActivity().finish();
                 return true;
             case R.id.action_delete:
                 Ln.d("Deleting task");
-                toggleDelete();
+                mEventManager.fire(new UpdateTaskDeletedEvent(mTask.getLocalId(), !mTask.isDeleted()));
                 getActivity().finish();
                 return true;
         }
@@ -209,33 +212,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         }
     }
 
-    protected void doEditAction() {
-        Uri uri = ContentUris.appendId(
-                TaskProvider.Tasks.CONTENT_URI.buildUpon(), mTask.getLocalId().getId()).build();
-        Intent editIntent = new Intent(Intent.ACTION_EDIT, uri);
-        startActivity(editIntent);
-        getActivity().finish();
-    }
-    
-
-    protected final void toggleComplete() {
-        Task updatedTask = Task.newBuilder().mergeFrom(mTask)
-                .setComplete(!mTask.isComplete()).build();
-        mPersister.update(updatedTask);
-        String text = getString(R.string.itemSavedToast, getString(R.string.task_name));
-        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
-    }
-    
-    private final void toggleDelete() {
-        mPersister.updateDeletedFlag(mTask.getLocalId(), !mTask.isDeleted()) ;
-        if (!mTask.isDeleted()) {
-            String text = getResources().getString(
-                    R.string.itemDeletedToast, getString(R.string.task_name));
-            Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
-        }
-        
-    }
-    
     private void updateTitle() {
         getActivity().setTitle(mTask.getDescription());
     }

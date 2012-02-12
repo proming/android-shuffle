@@ -22,6 +22,8 @@ import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.activity.EntityListsActivity;
+import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
+import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import roboguice.activity.RoboFragmentActivity;
@@ -43,6 +45,12 @@ public class TaskPagerActivity extends RoboFragmentActivity {
 
     @Inject
     TaskEncoder mEncoder;
+
+    @Inject
+    private NavigationListener mNavigationListener;
+
+    @Inject
+    private EntityUpdateListener mEntityUpdateListener;
 
     MyAdapter mAdapter;
 

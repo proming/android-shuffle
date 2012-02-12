@@ -15,6 +15,7 @@ import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.event.ViewPreferencesEvent;
+import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
 import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListTitles;
@@ -57,7 +58,10 @@ public class EntityListsActivity extends RoboFragmentActivity {
 
     @Inject
     private NavigationListener mNavigationListener;
-    
+
+    @Inject
+    private EntityUpdateListener mEntityUpdateListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

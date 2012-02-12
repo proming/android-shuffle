@@ -1,7 +1,6 @@
 package org.dodgybits.shuffle.android.core.util;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewParent;
 
@@ -103,30 +102,6 @@ public class UiUtilities {
             view = parent != null ? (View) parent : null;
         }
         return y;
-    }
-
-    /**
-     * Used by an {@link android.app.Fragment} to install itself to the host activity.
-     *
-     * @see FragmentInstallable
-     */
-    public static void installFragment(Fragment fragment) {
-        final Activity a = fragment.getActivity();
-        if (a instanceof FragmentInstallable) {
-            ((FragmentInstallable) a).onInstallFragment(fragment);
-        }
-    }
-
-    /**
-     * Used by an {@link Fragment} to uninstall itself from the host activity.
-     *
-     * @see FragmentInstallable
-     */
-    public static void uninstallFragment(Fragment fragment) {
-        final Activity a = fragment.getActivity();
-        if (a instanceof FragmentInstallable) {
-            ((FragmentInstallable) a).onUninstallFragment(fragment);
-        }
     }
 
 }

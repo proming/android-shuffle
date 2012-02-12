@@ -1,7 +1,9 @@
 package org.dodgybits.shuffle.android.list.listener;
 
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Intent;
+import android.net.Uri;
 import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.core.activity.HelpActivity;
 import org.dodgybits.shuffle.android.list.event.*;
@@ -34,11 +36,6 @@ public class NavigationListener {
         mActivity.startActivity(intent);
     }
 
-    public void onEditListSettings(@Observes EditListSettingsEvent event) {
-        Intent intent = ListSettingsCache.createListSettingsEditorIntent(mActivity, event.getListQuery());
-        mActivity.startActivityForResult(intent, event.getRequestCode());
-    }
-
     public void onNewTask(@Observes NewTaskEvent event) {
         Intent intent = new Intent(Intent.ACTION_INSERT, TaskProvider.Tasks.CONTENT_URI);
         if (event.getContextId().isInitialised()) {
@@ -59,4 +56,31 @@ public class NavigationListener {
         Intent intent = new Intent(Intent.ACTION_INSERT, ContextProvider.Contexts.CONTENT_URI);
         mActivity.startActivity(intent);
     }
+
+    public void onEditTask(@Observes EditTaskEvent event) {
+        Uri uri = ContentUris.appendId(
+                TaskProvider.Tasks.CONTENT_URI.buildUpon(), event.getTaskId().getId()).build();
+        Intent intent = new Intent(Intent.ACTION_EDIT, uri);
+        mActivity.startActivity(intent);
+    }
+
+    public void onEditProject(@Observes EditProjectEvent event) {
+        Uri uri = ContentUris.appendId(
+                ProjectProvider.Projects.CONTENT_URI.buildUpon(), event.getProjectId().getId()).build();
+        Intent intent = new Intent(Intent.ACTION_EDIT, uri);
+        mActivity.startActivity(intent);
+    }
+
+    public void onEditContext(@Observes EditContextEvent event) {
+        Uri uri = ContentUris.appendId(
+                ContextProvider.Contexts.CONTENT_URI.buildUpon(), event.getContextId().getId()).build();
+        Intent intent = new Intent(Intent.ACTION_EDIT, uri);
+        mActivity.startActivity(intent);
+    }
+
+    public void onEditListSettings(@Observes EditListSettingsEvent event) {
+        Intent intent = ListSettingsCache.createListSettingsEditorIntent(mActivity, event.getListQuery());
+        mActivity.startActivityForResult(intent, event.getRequestCode());
+    }
+
 }

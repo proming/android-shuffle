@@ -19,7 +19,6 @@ import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
-import org.dodgybits.shuffle.android.core.util.UiUtilities;
 import org.dodgybits.shuffle.android.list.event.EditListSettingsEvent;
 import org.dodgybits.shuffle.android.list.event.ViewHelpEvent;
 import org.dodgybits.shuffle.android.list.view.Titled;
@@ -121,8 +120,6 @@ public class TaskListFragment extends RoboListFragment
         }
 
         startLoading();
-
-        UiUtilities.installFragment(this);
 
         Log.d(TAG, "onActivityCreated with context " + mListContext);
     }
