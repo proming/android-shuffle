@@ -16,24 +16,21 @@
 
 package org.dodgybits.shuffle.android.core.activity;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.*;
+import android.widget.AdapterView.OnItemSelectedListener;
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
+import org.dodgybits.shuffle.android.list.model.ListQuery;
+import roboguice.inject.InjectView;
+
 import static org.dodgybits.shuffle.android.core.util.Constants.cPackage;
 import static org.dodgybits.shuffle.android.core.util.Constants.cStringType;
 
-import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
-
-import roboguice.inject.InjectView;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
-
 public class HelpActivity extends FlurryEnabledActivity {
     public static final String cHelpPage = "helpPage";
+    public static final String LIST_QUERY = "listQuery";
     
 	@InjectView(R.id.help_screen) Spinner mHelpSpinner;
 	@InjectView(R.id.help_text) TextView mHelpContent;
@@ -80,13 +77,37 @@ public class HelpActivity extends FlurryEnabledActivity {
             }
         });        
         
-        setSelectionFromBundle(getIntent().getExtras());
+        setSelectionFromBundle();
 	}
 	
-	private void setSelectionFromBundle(Bundle bundle) {
-        int position = 0;
-        if (bundle != null) {
-        	position = bundle.getInt(cHelpPage, 0);
+	private void setSelectionFromBundle() {
+        String queryName = getIntent().getStringExtra(LIST_QUERY);
+        int position = -1;
+        if (queryName != null) {
+            ListQuery query = ListQuery.valueOf(queryName);
+            // TODO use global list query lookup (used by help, top level and Entity list activities)
+            switch (query) {
+                case inbox:
+                   position = 1;
+                    break;
+                case project:
+                    position = 2;
+                    break;
+                case context:
+                    position = 3;
+                    break;
+                case nextTasks:
+                    position = 4;
+                    break;
+                case dueNextMonth:
+                case dueNextWeek:
+                case dueToday:
+                    position = 5;
+                    break;
+            }
+        }
+        if (position == -1) {
+            position = getIntent().getIntExtra(cHelpPage, 0);
         }
         mHelpSpinner.setSelection(position);
 	}

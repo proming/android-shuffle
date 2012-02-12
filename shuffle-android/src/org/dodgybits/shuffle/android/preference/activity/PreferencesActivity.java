@@ -29,7 +29,7 @@ import android.preference.ListPreference;
 import android.util.Log;
 
 public class PreferencesActivity extends FlurryEnabledPreferenceActivity {
-    private static final String cTag = "PreferencesActivity";
+    private static final String TAG = "PreferencesActivity";
 
     private AsyncQueryHandler mQueryHandler;
     private ListPreference mPreference;
@@ -89,7 +89,7 @@ public class PreferencesActivity extends FlurryEnabledPreferenceActivity {
                 }
                 mPreference.setEnabled(true);                
             } else {
-                Log.e(cTag, "Failed to fetch calendars - setting disabled.");
+                Log.e(TAG, "Failed to fetch calendars - setting disabled.");
             }
         }
     }

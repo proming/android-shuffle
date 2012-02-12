@@ -12,6 +12,7 @@ import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,16 +25,19 @@ import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelecto
 import org.dodgybits.shuffle.android.core.util.UiUtilities;
 import org.dodgybits.shuffle.android.list.activity.ProjectTaskListsActivity;
 import org.dodgybits.shuffle.android.list.content.ProjectCursorLoader;
+import org.dodgybits.shuffle.android.list.event.EditListSettingsEvent;
+import org.dodgybits.shuffle.android.list.event.NewProjectEvent;
+import org.dodgybits.shuffle.android.list.event.ViewHelpEvent;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
 import org.dodgybits.shuffle.android.list.view.Titled;
-import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
+import roboguice.event.EventManager;
 import roboguice.fragment.RoboListFragment;
-import roboguice.util.Ln;
 
 public class ProjectListFragment extends RoboListFragment implements Titled {
-
+    private static final String TAG = "ProjectListFragment";
+    
     /** Argument name(s) */
     private static final String BUNDLE_LIST_STATE = "ContextListFragment.state.listState";
     private static final String SELECTED_ITEM = "SELECTED_ITEM";
@@ -49,6 +53,9 @@ public class ProjectListFragment extends RoboListFragment implements Titled {
 
     @Inject
     private TaskPersister mPersister;
+
+    @Inject
+    private EventManager mEventManager;
 
     /**
      * {@link android.view.ActionMode} shown when 1 or more message is selected.
@@ -87,7 +94,7 @@ public class ProjectListFragment extends RoboListFragment implements Titled {
 
         UiUtilities.installFragment(this);
 
-        Ln.d("-onActivityCreated");
+        Log.d(TAG, "-onActivityCreated");
     }
 
     @Override
@@ -95,7 +102,7 @@ public class ProjectListFragment extends RoboListFragment implements Titled {
         mSavedListState = getListView().onSaveInstanceState();
         super.onPause();
 
-        Ln.d("-onPause");
+        Log.d(TAG, "-onPause");
     }
 
     @Override
@@ -136,14 +143,16 @@ public class ProjectListFragment extends RoboListFragment implements Titled {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                Ln.d("adding context");
-                startActivity(new Intent(Intent.ACTION_INSERT, ContextProvider.Contexts.CONTENT_URI));
+                Log.d(TAG, "adding task");
+                mEventManager.fire(new NewProjectEvent());
+                return true;
+            case R.id.action_help:
+                Log.d(TAG, "Bringing up help");
+                mEventManager.fire(new ViewHelpEvent(ListQuery.project));
                 return true;
             case R.id.action_view_settings:
-                Ln.d("Bringing up view settings");
-                startActivityForResult(
-                        ListSettingsCache.createListSettingsEditorIntent(getActivity(), ListQuery.context),
-                        FILTER_CONFIG);
+                Log.d(TAG, "Bringing up view settings");
+                mEventManager.fire(new EditListSettingsEvent(ListQuery.project, FILTER_CONFIG));
                 return true;
         }
         return false;
@@ -152,14 +161,14 @@ public class ProjectListFragment extends RoboListFragment implements Titled {
     @Override
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent data) {
-        Ln.d("Got resultCode " + resultCode + " with data " + data);
+        Log.d(TAG, "Got resultCode " + resultCode + " with data " + data);
         switch (requestCode) {
             case FILTER_CONFIG:
                 restartLoading();
                 break;
 
             default:
-                Ln.e("Unknown requestCode: " + requestCode);
+                Log.e(TAG, "Unknown requestCode: " + requestCode);
         }
     }
 
@@ -173,19 +182,19 @@ public class ProjectListFragment extends RoboListFragment implements Titled {
     }
 
     private void startLoading() {
-        Ln.d("Creating list cursor");
+        Log.d(TAG, "Creating list cursor");
         final LoaderManager lm = getLoaderManager();
         lm.initLoader(LOADER_ID_TASK_LIST_LOADER, null, LOADER_CALLBACKS);
     }
 
     private void restartLoading() {
-        Ln.d("Refreshing list cursor");
+        Log.d(TAG, "Refreshing list cursor");
         final LoaderManager lm = getLoaderManager();
         lm.restartLoader(LOADER_ID_TASK_LIST_LOADER, null, LOADER_CALLBACKS);
     }
 
     private void refreshChildCount() {
-        Ln.d("Refreshing list cursor");
+        Log.d(TAG, "Refreshing list cursor");
         final LoaderManager lm = getLoaderManager();
         lm.restartLoader(LOADER_ID_TASK_COUNT_LOADER, null, LOADER_COUNT_CALLBACKS);
     }

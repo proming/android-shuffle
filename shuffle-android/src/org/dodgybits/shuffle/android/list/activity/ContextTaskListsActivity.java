@@ -18,10 +18,13 @@ import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.content.ContextCursorLoader;
+import org.dodgybits.shuffle.android.list.event.ViewPreferencesEvent;
+import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.list.view.task.TaskListFragment;
 import roboguice.activity.RoboFragmentActivity;
+import roboguice.event.EventManager;
 import roboguice.inject.ContextScopedProvider;
 
 public class ContextTaskListsActivity extends RoboFragmentActivity {
@@ -41,7 +44,13 @@ public class ContextTaskListsActivity extends RoboFragmentActivity {
 
     @Inject
     ContextScopedProvider<TaskListFragment> mTaskListFragmentProvider;
-    
+
+    @Inject
+    private EventManager mEventManager;
+
+    @Inject
+    private NavigationListener mNavigationListener;
+
     @Override
     protected void onCreate(Bundle icicle) {
         Log.d(TAG, "onCreate+");
@@ -80,6 +89,14 @@ public class ContextTaskListsActivity extends RoboFragmentActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(EntityListsActivity.QUERY_NAME, ListQuery.context.name());
                 startActivity(intent);
+                return true;
+            case R.id.action_preferences:
+                Log.d(TAG, "Bringing up preferences");
+                mEventManager.fire(new ViewPreferencesEvent());
+                return true;
+            case R.id.action_search:
+                Log.d(TAG, "Bringing up search");
+                onSearchRequested();
                 return true;
         }
 

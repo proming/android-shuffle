@@ -62,14 +62,14 @@ import java.util.Arrays;
 import java.util.TimeZone;
 
 /**
- * A generic activity for editing a task in the database.  This can be used
- * either to simply view a task (Intent.VIEW_ACTION), view and edit a task
- * (Intent.EDIT_ACTION), or create a new task (Intent.INSERT_ACTION).  
+ * A generic activity for editing a task in the database.
+ * This can be used either to edit a task (Intent.EDIT_ACTION),
+ * or create a new task (Intent.INSERT_ACTION).
  */
 public class TaskEditorActivity extends AbstractEditorActivity<Task>
 	implements CompoundButton.OnCheckedChangeListener {
 	
-    private static final String cTag = "TaskEditorActivity";
+    private static final String TAG = "TaskEditorActivity";
 
     private static final String[] cContextProjection = new String[] {
     	ContextProvider.Contexts._ID,
@@ -143,7 +143,7 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
     
     @Override
     protected void onCreate(Bundle icicle) {
-        Log.d(cTag, "onCreate+");
+        Log.d(TAG, "onCreate+");
         super.onCreate(icicle);
                 
         mStartTime = new Time();
@@ -174,7 +174,7 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
     @Override
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent data) {
-    	Log.d(cTag, "Got resultCode " + resultCode + " with data " + data);		
+    	Log.d(TAG, "Got resultCode " + resultCode + " with data " + data);
     	switch (requestCode) {
     	case cNewContextCode:
         	if (resultCode == Activity.RESULT_OK) {
@@ -195,7 +195,7 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
     		}
     		break;
     		default:
-    			Log.e(cTag, "Unknown requestCode: " + requestCode);
+    			Log.e(TAG, "Unknown requestCode: " + requestCode);
     	}
 	}
     
@@ -433,7 +433,7 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
     			mNextIntent.putExtra("beginTime", startMillis);
     			mNextIntent.putExtra("endTime", dueMillis);
     		}
-    		Log.i(cTag, "Updated calendar event " + eventId);
+    		Log.i(TAG, "Updated calendar event " + eventId);
     	}
 		builder.setCalendarEventId(eventId);
 		
@@ -493,7 +493,7 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
         try {
             eventUri = addCalendarEntry(values, calEventId, CalendarUtils.getEventContentUri());
         } catch (Exception e) {
-            Log.e(cTag, "Attempt failed to create calendar entry", e);
+            Log.e(TAG, "Attempt failed to create calendar entry", e);
             mAnalytics.onError(Constants.cFlurryCalendarUpdateError, e.getMessage(), getClass().getName());
         }
 
@@ -1026,7 +1026,7 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
         int index = values.indexOf(minutes);
         if (index == -1) {
             // This should never happen.
-            Log.e(cTag, "Cannot find minutes (" + minutes + ") in list");
+            Log.e(TAG, "Cannot find minutes (" + minutes + ") in list");
             return 0;
         }
         return index;

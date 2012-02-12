@@ -2,13 +2,13 @@ package org.dodgybits.shuffle.android.list.view.task;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
+import org.dodgybits.shuffle.android.list.event.NewTaskEvent;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
 import org.dodgybits.shuffle.android.list.model.ListTitles;
@@ -98,13 +98,13 @@ public class TaskListContext implements Parcelable {
         return title;
     }
 
+    public NewTaskEvent createNewTaskEvent() {
+        return new NewTaskEvent(mSelector.getContextId(), mSelector.getProjectId());
+    }
+    
     @Override
     public String toString() {
         return "[TaskListContext " + mSelector.getListQuery() + "]";
-    }
-
-    public Intent createListSettingsEditorIntent(Context context) {
-        return ListSettingsCache.createListSettingsEditorIntent(context, mSelector.getListQuery());
     }
 
 }

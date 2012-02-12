@@ -20,9 +20,12 @@ import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.UiUtilities;
+import org.dodgybits.shuffle.android.list.event.EditListSettingsEvent;
+import org.dodgybits.shuffle.android.list.event.ViewHelpEvent;
 import org.dodgybits.shuffle.android.list.view.Titled;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.view.activity.TaskPagerActivity;
+import roboguice.event.EventManager;
 import roboguice.fragment.RoboListFragment;
 
 import java.util.Set;
@@ -46,6 +49,9 @@ public class TaskListFragment extends RoboListFragment
 
     @Inject
     private TaskListAdaptor mListAdapter;
+
+    @Inject
+    private EventManager mEventManager;
 
     /**
      * {@link ActionMode} shown when 1 or more message is selected.
@@ -198,14 +204,16 @@ public class TaskListFragment extends RoboListFragment
         switch (item.getItemId()) {
             case R.id.action_add:
                 Log.d(TAG, "adding task");
-                startActivity(new Intent(Intent.ACTION_INSERT, TaskProvider.Tasks.CONTENT_URI));
+                mEventManager.fire(mListContext.createNewTaskEvent());
+                return true;
+            case R.id.action_help:
+                Log.d(TAG, "Bringing up help");
+                mEventManager.fire(new ViewHelpEvent(mListContext.getListQuery()));
                 return true;
             case R.id.action_view_settings:
                 Log.d(TAG, "Bringing up view settings");
-                startActivityForResult(
-                        getListContext().createListSettingsEditorIntent(getActivity()), FILTER_CONFIG);
+                mEventManager.fire(new EditListSettingsEvent(mListContext.getListQuery(), FILTER_CONFIG));
                 return true;
-                
         }
         return false;
     }

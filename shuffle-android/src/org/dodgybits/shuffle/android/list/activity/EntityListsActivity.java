@@ -12,9 +12,10 @@ import android.view.MenuItem;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.activity.HelpActivity;
 import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
+import org.dodgybits.shuffle.android.list.event.ViewPreferencesEvent;
+import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListTitles;
 import org.dodgybits.shuffle.android.list.view.Titled;
@@ -22,8 +23,8 @@ import org.dodgybits.shuffle.android.list.view.context.ContextListFragment;
 import org.dodgybits.shuffle.android.list.view.project.ProjectListFragment;
 import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.list.view.task.TaskListFragment;
-import org.dodgybits.shuffle.android.preference.activity.PreferencesActivity;
 import roboguice.activity.RoboFragmentActivity;
+import roboguice.event.EventManager;
 import roboguice.inject.ContextScopedProvider;
 
 import java.util.List;
@@ -32,25 +33,31 @@ public class EntityListsActivity extends RoboFragmentActivity {
     private static final String TAG = "EntityListsActivity";
 
     public static final String QUERY_NAME = "queryName";
-    
-    MyAdapter mAdapter;
 
-    ViewPager mPager;
-    
-    List<Fragment> mFragments;
-    List<ListQuery> mQueries;
-    
-    ViewPager.OnPageChangeListener mPageChangeListener;
+    private MyAdapter mAdapter;
 
-    @Inject
-    ContextScopedProvider<TaskListFragment> mTaskListFragmentProvider;
+    private ViewPager mPager;
+
+    private List<Fragment> mFragments;
+    private List<ListQuery> mQueries;
+
+    private ViewPager.OnPageChangeListener mPageChangeListener;
 
     @Inject
-    ContextScopedProvider<ContextListFragment> mContextListFragmentProvider;
+    private ContextScopedProvider<TaskListFragment> mTaskListFragmentProvider;
 
     @Inject
-    ContextScopedProvider<ProjectListFragment> mProjectListFragmentProvider;
+    private ContextScopedProvider<ContextListFragment> mContextListFragmentProvider;
 
+    @Inject
+    private ContextScopedProvider<ProjectListFragment> mProjectListFragmentProvider;
+
+    @Inject 
+    private EventManager mEventManager;
+
+    @Inject
+    private NavigationListener mNavigationListener;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,13 +111,7 @@ public class EntityListsActivity extends RoboFragmentActivity {
                 return true;
             case R.id.action_preferences:
                 Log.d(TAG, "Bringing up preferences");
-                startActivity(new Intent(this, PreferencesActivity.class));
-                return true;
-            case R.id.action_help:
-                Log.d(TAG, "Bringing up help");
-                Intent helpIntent = new Intent(this, HelpActivity.class);
-                helpIntent.putExtra(HelpActivity.cHelpPage, 0);
-                startActivity(helpIntent);
+                mEventManager.fire(new ViewPreferencesEvent());
                 return true;
             case R.id.action_search:
                 Log.d(TAG, "Bringing up search");
@@ -129,8 +130,9 @@ public class EntityListsActivity extends RoboFragmentActivity {
         addTaskList(ListQuery.dueToday);
         addTaskList(ListQuery.nextTasks);
 
-        addFragment(ListQuery.context, mContextListFragmentProvider.get(this));
         addFragment(ListQuery.project, mProjectListFragmentProvider.get(this));
+
+        addFragment(ListQuery.context, mContextListFragmentProvider.get(this));
 
         addTaskList(ListQuery.custom);
         addTaskList(ListQuery.tickler);
