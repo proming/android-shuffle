@@ -13,7 +13,8 @@ import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.util.TextColours;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
-import org.dodgybits.shuffle.android.list.old.view.StatusView;
+import org.dodgybits.shuffle.android.list.view.StatusView;
+import org.dodgybits.shuffle.android.list.view.StatusView;
 
 public class ContextListItem extends LinearLayout {
     protected TextColours mTextColours;

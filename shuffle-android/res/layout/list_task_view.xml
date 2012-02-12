@@ -69,7 +69,7 @@
         android:paddingRight="3dip"
         style="@style/context" />
 
-    <org.dodgybits.shuffle.android.list.old.view.StatusView
+    <org.dodgybits.shuffle.android.list.view.StatusView
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

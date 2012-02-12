@@ -1,4 +1,4 @@
-package org.dodgybits.shuffle.android.list.old.view;
+package org.dodgybits.shuffle.android.list.view;
 
 import android.content.Context;
 import android.text.ParcelableSpan;
@@ -7,6 +7,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.TextView;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Project;
@@ -155,6 +156,11 @@ public class StatusView extends TextView {
         }
 
         setText(builder);
+        if (showSomething || builder.length() > 1) {
+            setVisibility(View.VISIBLE);
+        } else {
+            setVisibility(View.GONE);
+        }
     }
 
 

@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import org.dodgybits.shuffle.android.list.view.StatusView;
 
 public class ContextView extends ItemView<Context> {
 	protected TextColours mTextColours;

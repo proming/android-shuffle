@@ -27,6 +27,7 @@ import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
+import org.dodgybits.shuffle.android.list.view.StatusView;
 
 public class ProjectView extends ItemView<Project> {
 	private TextView mName;

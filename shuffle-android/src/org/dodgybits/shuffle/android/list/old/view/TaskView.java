@@ -34,6 +34,7 @@ import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.util.DateUtils;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
+import org.dodgybits.shuffle.android.list.view.StatusView;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 public class TaskView extends ItemView<Task> {
