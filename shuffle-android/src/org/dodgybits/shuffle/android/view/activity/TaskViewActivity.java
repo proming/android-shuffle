@@ -25,6 +25,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarActivity;
 import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
@@ -33,13 +34,12 @@ import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
 import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.util.Ln;
 
 /**
  * A generic activity for viewing a task.
  */
-public class TaskViewActivity extends RoboFragmentActivity {
+public class TaskViewActivity extends ActionBarActivity {
 
     @Inject private TaskPersister mPersister;
     @Inject private TaskEncoder mEncoder;
@@ -93,6 +93,8 @@ public class TaskViewActivity extends RoboFragmentActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_container, viewFragment);
         ft.commit();
+
+        invalidateOptionsMenu();
     }
 
     @Override

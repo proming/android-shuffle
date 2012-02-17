@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarActivity;
 import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.event.ViewPreferencesEvent;
@@ -24,13 +25,12 @@ import org.dodgybits.shuffle.android.list.view.context.ContextListFragment;
 import org.dodgybits.shuffle.android.list.view.project.ProjectListFragment;
 import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.list.view.task.TaskListFragment;
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.event.EventManager;
 import roboguice.inject.ContextScopedProvider;
 
 import java.util.List;
 
-public class EntityListsActivity extends RoboFragmentActivity {
+public class EntityListsActivity extends ActionBarActivity {
     private static final String TAG = "EntityListsActivity";
 
     public static final String QUERY_NAME = "queryName";
@@ -89,6 +89,7 @@ public class EntityListsActivity extends RoboFragmentActivity {
                     ListQuery query = mQueries.get(position);
                     setTitle(ListTitles.getTitleId(query));
                 }
+                invalidateOptionsMenu();
             }
         };
 

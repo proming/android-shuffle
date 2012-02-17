@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarActivity;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
@@ -26,13 +27,12 @@ import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
 import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-import roboguice.activity.RoboFragmentActivity;
 
 /**
  * View a task in the context of a given task list.
  * Each task is a separate page on a PageViewer.
  */
-public class TaskPagerActivity extends RoboFragmentActivity {
+public class TaskPagerActivity extends ActionBarActivity {
     private static final String TAG = "EntityListsActivity";
 
     public static final String INITIAL_POSITION = "selectedIndex";
@@ -85,6 +85,7 @@ public class TaskPagerActivity extends RoboFragmentActivity {
                 }
                 mCurrentView = (TaskViewFragment)mAdapter.getItem(position);
                 mCurrentView.onVisibilityChange(true);
+                invalidateOptionsMenu();
             }
         };
 

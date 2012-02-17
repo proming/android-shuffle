@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarActivity;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
@@ -23,11 +24,10 @@ import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.list.view.task.TaskListFragment;
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.event.EventManager;
 import roboguice.inject.ContextScopedProvider;
 
-public class ContextTaskListsActivity extends RoboFragmentActivity {
+public class ContextTaskListsActivity extends ActionBarActivity {
     public static final String TAG = "ContextTaskListsActivity";
     public static final String INITIAL_POSITION = "initialPosition";
 
@@ -72,6 +72,7 @@ public class ContextTaskListsActivity extends RoboFragmentActivity {
             public void onPageSelected(int position) {
                 TaskListFragment fragment = (TaskListFragment)mAdapter.getItem(position);
                 setTitle(fragment.getTitle(ContextTaskListsActivity.this));
+                invalidateOptionsMenu();
             }
         };
 

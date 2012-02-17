@@ -1,7 +1,12 @@
 <resources>
+
+    <dimen name="actionbar_compat_height">48dp</dimen>
+    <dimen name="actionbar_compat_button_width">48dp</dimen>
+    <dimen name="actionbar_compat_button_home_width">56dp</dimen>
+
     <dimen name="list_item_height">70sp</dimen>
 
-    <!-- Message list items -->
+    <!-- Task list items -->
     <dimen name="activestate_margin_left">0dip</dimen>
     <dimen name="activestate_margin_top">10sp</dimen>
     <dimen name="checkmark_margin_top">3sp</dimen>
