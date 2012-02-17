@@ -86,7 +86,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
         for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.getItem(i);
             if (mViewMap.containsKey(item.getItemId())) {
-                mViewMap.put(item.getItemId(), addActionItemCompatFromMenuItem(item));
+                mViewMap.put(item.getItemId(), addActionItemCompatFromMenuItem(item, true));
             }
         }
     }
@@ -95,7 +95,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
      * Sets up the compatibility action bar with the given title.
      */
     private void setupActionBar() {
-        final ViewGroup actionBarCompat = getActionBarCompat();
+        final ViewGroup actionBarCompat = getActionBarCompatTitleGroup();
         if (actionBarCompat == null) {
             return;
         }
@@ -109,7 +109,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
         SimpleMenuItem homeItem = new SimpleMenuItem(
                 tempMenu, android.R.id.home, 0, mActivity.getString(R.string.app_name));
         homeItem.setIcon(R.drawable.shuffle_icon);
-        addActionItemCompatFromMenuItem(homeItem);
+        addActionItemCompatFromMenuItem(homeItem, false);
 
         // Add title text
         TextView titleText = new TextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
@@ -173,9 +173,18 @@ public class ActionBarHelperBase extends ActionBarHelper {
      * Returns the {@link android.view.ViewGroup} for the action bar on phones (compatibility action
      * bar). Can return null, and will return null on Honeycomb.
      */
-    private ViewGroup getActionBarCompat() {
+    private ViewGroup getActionBarCompatTitleGroup() {
         return (ViewGroup) mActivity.findViewById(R.id.actionbar_compat);
     }
+
+    private ViewGroup getActionBarCompatMenuGroup() {
+        ViewGroup group = (ViewGroup)mActivity.findViewById(R.id.actionbar_split_compat);
+        if (group == null) {
+            group = getActionBarCompatTitleGroup();
+        }
+        return group;
+    }
+
 
     /**
      * Adds an action button to the compatibility action bar, using menu information from a {@link
@@ -183,12 +192,12 @@ public class ActionBarHelperBase extends ActionBarHelper {
      * state can be changed to show a loading spinner using
      * {@link ActionBarHelperBase#setRefreshActionItemState(boolean)}.
      */
-   private View addActionItemCompatFromMenuItem(final MenuItem item) {
+   private View addActionItemCompatFromMenuItem(final MenuItem item, boolean isMenu) {
        if (! item.isVisible()) return null;
 
         final int itemId = item.getItemId();
 
-        final ViewGroup actionBar = getActionBarCompat();
+        final ViewGroup actionBar = isMenu ? getActionBarCompatMenuGroup() : getActionBarCompatTitleGroup();
         if (actionBar == null) {
             return null;
         }
@@ -247,7 +256,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
     }
 
     private void removeActionItems() {
-        final ViewGroup actionBar = getActionBarCompat();
+        final ViewGroup actionBar = getActionBarCompatMenuGroup();
         if (actionBar == null) {
             return;
         }
