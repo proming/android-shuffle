@@ -22,8 +22,8 @@ import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.CalendarUtils;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.list.event.EditTaskEvent;
-import org.dodgybits.shuffle.android.list.event.UpdateTaskCompletedEvent;
-import org.dodgybits.shuffle.android.list.event.UpdateTaskDeletedEvent;
+import org.dodgybits.shuffle.android.list.event.UpdateTasksCompletedEvent;
+import org.dodgybits.shuffle.android.list.event.UpdateTasksDeletedEvent;
 import org.dodgybits.shuffle.android.list.old.view.LabelView;
 import org.dodgybits.shuffle.android.list.view.StatusView;
 import roboguice.event.EventManager;
@@ -134,7 +134,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         switch (item.getItemId()) {
             case R.id.action_mark_complete:
             case R.id.action_mark_incomplete:
-                mEventManager.fire(new UpdateTaskCompletedEvent(mTask.getLocalId(), !mTask.isComplete()));
+                mEventManager.fire(new UpdateTasksCompletedEvent(mTask.getLocalId().getId(), !mTask.isComplete()));
                 getActivity().finish();
                 return true;
             case R.id.action_edit:
@@ -144,7 +144,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
                 return true;
             case R.id.action_delete:
                 Ln.d("Deleting task");
-                mEventManager.fire(new UpdateTaskDeletedEvent(mTask.getLocalId(), !mTask.isDeleted()));
+                mEventManager.fire(new UpdateTasksDeletedEvent(mTask.getLocalId().getId(), !mTask.isDeleted()));
                 getActivity().finish();
                 return true;
         }

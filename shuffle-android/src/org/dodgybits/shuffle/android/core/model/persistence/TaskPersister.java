@@ -1,46 +1,5 @@
 package org.dodgybits.shuffle.android.core.model.persistence;
 
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryCompleteTaskEvent;
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryCountParam;
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryDeleteEntityEvent;
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryReorderTasksEvent;
-import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.ACTIVE;
-import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.DELETED;
-import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.MODIFIED_DATE;
-import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.TRACKS_ID;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.ALL_DAY;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.CAL_EVENT_ID;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.COMPLETE;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.CONTEXT_ID;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.CREATED_DATE;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.DESCRIPTION;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.DETAILS;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.DISPLAY_ORDER;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.DUE_DATE;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.HAS_ALARM;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.PROJECT_ID;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.START_DATE;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.TIMEZONE;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
-
-import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
-import org.dodgybits.shuffle.android.core.model.Id;
-import org.dodgybits.shuffle.android.core.model.Task;
-import org.dodgybits.shuffle.android.core.model.Task.Builder;
-import org.dodgybits.shuffle.android.core.model.persistence.selector.Flag;
-import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
-import org.dodgybits.shuffle.android.core.util.StringUtils;
-import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-
-import roboguice.inject.ContentResolverProvider;
-import roboguice.inject.ContextSingleton;
-import roboguice.util.Ln;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -50,8 +9,27 @@ import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
 import android.util.SparseIntArray;
-
 import com.google.inject.Inject;
+import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
+import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.core.model.Task;
+import org.dodgybits.shuffle.android.core.model.Task.Builder;
+import org.dodgybits.shuffle.android.core.model.persistence.selector.Flag;
+import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
+import org.dodgybits.shuffle.android.core.util.StringUtils;
+import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
+import roboguice.inject.ContentResolverProvider;
+import roboguice.inject.ContextSingleton;
+import roboguice.util.Ln;
+
+import java.util.*;
+
+import static org.dodgybits.shuffle.android.core.util.Constants.*;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.ACTIVE;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.DELETED;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.MODIFIED_DATE;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.TRACKS_ID;
+import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.*;
 
 @ContextSingleton
 public class TaskPersister extends AbstractEntityPersister<Task> {
@@ -106,7 +84,20 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
 
         return builder.build();
     }
-    
+
+    public Id readLocalId(Cursor cursor) {
+        return readId(cursor, ID_INDEX);
+    }
+
+    public boolean readDeleted(Cursor cursor) {
+        return readBoolean(cursor, DELETED_INDEX);
+    }
+
+    public boolean readComplete(Cursor cursor) {
+        return readBoolean(cursor, COMPLETE_INDEX);
+    }
+
+
     @Override
     protected void writeContentValues(ContentValues values, Task task) {
         // never write id since it's auto generated

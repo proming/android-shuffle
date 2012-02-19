@@ -99,4 +99,7 @@ public abstract class ActionBarHelper {
     public MenuInflater getMenuInflater(MenuInflater superMenuInflater) {
         return superMenuInflater;
     }
+
+    public abstract void startSupportedActionMode(ActionMode.Callback callback);
+
 }

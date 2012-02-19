@@ -16,11 +16,11 @@ import android.widget.ListView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionMode;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
-import org.dodgybits.shuffle.android.list.event.EditListSettingsEvent;
-import org.dodgybits.shuffle.android.list.event.ViewHelpEvent;
+import org.dodgybits.shuffle.android.list.event.*;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.view.activity.TaskPagerActivity;
 import roboguice.event.EventManager;
@@ -43,6 +43,8 @@ public class TaskListFragment extends RoboListFragment
     
     private static final int LOADER_ID_TASK_LIST_LOADER = 1;
 
+    private boolean mShowMoveActions = false;
+
     private boolean mIsFirstLoad;
 
     @Inject
@@ -54,8 +56,8 @@ public class TaskListFragment extends RoboListFragment
     /**
      * {@link ActionMode} shown when 1 or more message is selected.
      */
-//    private ActionMode mSelectionMode;
-//    private SelectionModeCallback mLastSelectionModeCallback;
+    private ActionMode mSelectionMode;
+    private SelectionModeCallback mLastSelectionModeCallback;
 
     private Parcelable mSavedListState;
 
@@ -85,6 +87,9 @@ public class TaskListFragment extends RoboListFragment
         mListContext = getArguments().getParcelable(ARG_LIST_CONTEXT);
     }
 
+    private ActionBarFragmentActivity getActionBarFragmentActivity() {
+        return (ActionBarFragmentActivity)getActivity();
+    }
     /**
      * When creating, retrieve this instance's number from its arguments.
      */
@@ -100,6 +105,14 @@ public class TaskListFragment extends RoboListFragment
         mListAdapter.setCallback(this);
         mIsFirstLoad = true;
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = super.onCreateView(inflater, container, savedInstanceState);
+
+        mIsViewCreated = true;
+        return root;
     }
 
     @Override
@@ -126,6 +139,13 @@ public class TaskListFragment extends RoboListFragment
         super.onResume();
 
         onVisibilityChange();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        mIsViewCreated = false;
     }
 
     @Override
@@ -268,6 +288,55 @@ public class TaskListFragment extends RoboListFragment
         return mListContext;
     }
 
+    private boolean doesSelectionContainIncompleteMessage() {
+        Set<Long> selectedSet = mListAdapter.getSelectedSet();
+        return testMultiple(selectedSet, false, new EntryMatcher() {
+            @Override
+            public boolean matches(Cursor c) {
+                return mPersister.readComplete(c);
+            }
+        });
+    }
+
+    private boolean doesSelectionContainUndeletedMessage() {
+        Set<Long> selectedSet = mListAdapter.getSelectedSet();
+        return testMultiple(selectedSet, false, new EntryMatcher() {
+            @Override
+            public boolean matches(Cursor c) {
+                return mPersister.readDeleted(c);
+            }
+        });
+    }
+
+    interface EntryMatcher {
+        boolean matches(Cursor c);
+    }
+    
+    /**
+     * Test selected messages for showing appropriate labels
+     * @param selectedSet
+     * @param matcher
+     * @param defaultFlag
+     * @return true when the specified flagged message is selected
+     */
+    private boolean testMultiple(Set<Long> selectedSet, boolean defaultFlag, EntryMatcher matcher) {
+        final Cursor c = mListAdapter.getCursor();
+        if (c == null || c.isClosed()) {
+            return false;
+        }
+        c.moveToPosition(-1);
+        while (c.moveToNext()) {
+            long id = mPersister.readLocalId(c).getId();
+            if (selectedSet.contains(Long.valueOf(id))) {
+                if (matcher.matches(c) == defaultFlag) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     /**
      * Loader callbacks for message list.
      */
@@ -343,8 +412,8 @@ public class TaskListFragment extends RoboListFragment
         if (isInSelectionMode()) {
             updateSelectionModeView();
         } else {
-//            mLastSelectionModeCallback = new SelectionModeCallback();
-//            getActivity().startActionMode(mLastSelectionModeCallback);
+            mLastSelectionModeCallback = new SelectionModeCallback();
+            getActionBarFragmentActivity().startSupportedActionMode(mLastSelectionModeCallback);
         }
     }
 
@@ -357,14 +426,14 @@ public class TaskListFragment extends RoboListFragment
      */
     private void finishSelectionMode() {
         if (isInSelectionMode()) {
-//            mLastSelectionModeCallback.mClosedByUser = false;
-//            mSelectionMode.finish();
+            mLastSelectionModeCallback.mClosedByUser = false;
+            mSelectionMode.finish();
         }
     }
 
     /** Update the "selection" action mode bar */
     private void updateSelectionModeView() {
-//        mSelectionMode.invalidate();
+        mSelectionMode.invalidate();
     }
 
     /**
@@ -378,30 +447,31 @@ public class TaskListFragment extends RoboListFragment
      * @return true if the list is in the "selection" mode.
      */
     public boolean isInSelectionMode() {
-//        return mSelectionMode != null;
-        return false;
+        return mSelectionMode != null;
     }
 
     private class SelectionModeCallback implements ActionMode.Callback {
-        private MenuItem mMarkRead;
-        private MenuItem mMarkUnread;
-        private MenuItem mAddStar;
-        private MenuItem mRemoveStar;
-        private MenuItem mMove;
+        private MenuItem mMarkComplete;
+        private MenuItem mMarkIncomplete;
+        private MenuItem mMarkDelete;
+        private MenuItem mMarkUndelete;
+        private MenuItem mMoveUp;
+        private MenuItem mMoveDown;
 
         /* package */ boolean mClosedByUser = true;
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-//            mSelectionMode = mode;
+            mSelectionMode = mode;
 
-//            MenuInflater inflater = getActivity().getMenuInflater();
-//            inflater.inflate(R.menu.message_list_fragment_cab_options, menu);
-//            mMarkRead = menu.findItem(R.id.mark_read);
-//            mMarkUnread = menu.findItem(R.id.mark_unread);
-//            mAddStar = menu.findItem(R.id.add_star);
-//            mRemoveStar = menu.findItem(R.id.remove_star);
-//            mMove = menu.findItem(R.id.move);
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.task_cab_menu, menu);
+            mMoveUp = menu.findItem(R.id.action_move_up);
+            mMoveDown = menu.findItem(R.id.action_move_down);
+            mMarkComplete = menu.findItem(R.id.action_mark_complete);
+            mMarkIncomplete = menu.findItem(R.id.action_mark_incomplete);
+            mMarkDelete = menu.findItem(R.id.action_delete);
+            mMarkUndelete = menu.findItem(R.id.action_undelete);
             return true;
         }
 
@@ -409,46 +479,44 @@ public class TaskListFragment extends RoboListFragment
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
             int num = getSelectedCount();
             // Set title -- "# selected"
-//            mSelectionMode.setTitle(getActivity().getResources().getQuantityString(
-//                    R.plurals.message_view_selected_message_count, num, num));
-//
-//            // Show appropriate menu items.
-//            boolean nonStarExists = doesSelectionContainNonStarredMessage();
-//            boolean readExists = doesSelectionContainReadMessage();
-//            mMarkRead.setVisible(!readExists);
-//            mMarkUnread.setVisible(readExists);
-//            mAddStar.setVisible(nonStarExists);
-//            mRemoveStar.setVisible(!nonStarExists);
-//            mMove.setVisible(mShowMoveCommand);
+            mSelectionMode.setTitle(getActivity().getResources().getQuantityString(
+                    R.plurals.task_view_selected_message_count, num, num));
+
+            // Show appropriate menu items.
+            boolean incompleteExists = doesSelectionContainIncompleteMessage();
+            boolean undeletedExists = doesSelectionContainUndeletedMessage();
+            mMoveUp.setVisible(mShowMoveActions);
+            mMoveDown.setVisible(mShowMoveActions);
+            mMarkComplete.setVisible(incompleteExists);
+            mMarkIncomplete.setVisible(!incompleteExists);
+            mMarkDelete.setVisible(undeletedExists);
+            mMarkUndelete.setVisible(!undeletedExists);
             return true;
         }
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            Set<Long> selectedConversations = mListAdapter.getSelectedSet();
-            if (selectedConversations.isEmpty()) return true;
+            Set<Long> selectedTasks = mListAdapter.getSelectedSet();
+            if (selectedTasks.isEmpty()) return true;
             switch (item.getItemId()) {
-//                case R.id.mark_read:
-//                    // Note - marking as read does not trigger auto-advance.
-//                    toggleRead(selectedConversations);
-//                    break;
-//                case R.id.mark_unread:
-//                    mCallback.onAdvancingOpAccepted(selectedConversations);
-//                    toggleRead(selectedConversations);
-//                    break;
-//                case R.id.add_star:
-//                case R.id.remove_star:
-//                    // TODO: removing a star can be a destructive command and cause auto-advance
-//                    // if the current mailbox shown is favorites.
-//                    toggleFavorite(selectedConversations);
-//                    break;
-//                case R.id.delete:
-//                    mCallback.onAdvancingOpAccepted(selectedConversations);
-//                    deleteMessages(selectedConversations);
-//                    break;
-//                case R.id.move:
-//                    showMoveMessagesDialog(selectedConversations);
-//                    break;
+                case R.id.action_move_up:
+                    mEventManager.fire(new MoveTasksEvent(selectedTasks, true));
+                    break;
+                case R.id.action_move_down:
+                    mEventManager.fire(new MoveTasksEvent(selectedTasks, false));
+                    break;
+                case R.id.action_mark_complete:
+                    mEventManager.fire(new UpdateTasksCompletedEvent(selectedTasks, true));
+                    break;
+                case R.id.action_mark_incomplete:
+                    mEventManager.fire(new UpdateTasksCompletedEvent(selectedTasks, false));
+                    break;
+                case R.id.action_delete:
+                    mEventManager.fire(new UpdateTasksDeletedEvent(selectedTasks, true));
+                    break;
+                case R.id.action_undelete:
+                    mEventManager.fire(new UpdateTasksDeletedEvent(selectedTasks, false));
+                    break;
             }
             return true;
         }
@@ -457,7 +525,7 @@ public class TaskListFragment extends RoboListFragment
         public void onDestroyActionMode(ActionMode mode) {
             // Clear this before onDeselectAll() to prevent onDeselectAll() from trying to close the
             // contextual mode again.
-//            mSelectionMode = null;
+            mSelectionMode = null;
             if (mClosedByUser) {
                 // Clear selection, only when the contextual mode is explicitly closed by the user.
                 //

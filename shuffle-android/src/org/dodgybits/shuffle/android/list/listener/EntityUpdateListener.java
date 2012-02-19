@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.widget.Toast;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
-import org.dodgybits.shuffle.android.list.event.UpdateContextDeletedEvent;
-import org.dodgybits.shuffle.android.list.event.UpdateProjectDeletedEvent;
-import org.dodgybits.shuffle.android.list.event.UpdateTaskCompletedEvent;
-import org.dodgybits.shuffle.android.list.event.UpdateTaskDeletedEvent;
+import org.dodgybits.shuffle.android.list.event.*;
 import roboguice.event.Observes;
+
+import java.util.Set;
 
 public class EntityUpdateListener {
 
@@ -49,8 +49,17 @@ public class EntityUpdateListener {
         }
     }
 
-    public void onToggleTaskDeleted(@Observes UpdateTaskDeletedEvent event) {
-        mTaskPersister.updateDeletedFlag(event.getTaskId(), event.isDeleted());
+    public void onMoveTasks(@Observes MoveTasksEvent event) {
+        // TODO
+    }
+
+    public void onToggleTasksDeleted(@Observes UpdateTasksDeletedEvent event) {
+        Set<Long> taskIds = event.getTaskIds();
+        for (Long taskId : taskIds) {
+            Id id = Id.create(taskId);
+            mTaskPersister.updateDeletedFlag(id, event.isDeleted());
+        }
+
         String entityName = mActivity.getString(R.string.task_name);
         if (event.isDeleted()) {
             showDeletedToast(entityName);
@@ -59,8 +68,13 @@ public class EntityUpdateListener {
         }
     }
 
-    public void onToggleTaskCompleted(@Observes UpdateTaskCompletedEvent event) {
-        mTaskPersister.updateCompleteFlag(event.getTaskId(), event.isCompleted());
+    public void onToggleTaskCompleted(@Observes UpdateTasksCompletedEvent event) {
+        Set<Long> taskIds = event.getTaskIds();
+        for (Long taskId : taskIds) {
+            Id id = Id.create(taskId);
+            mTaskPersister.updateCompleteFlag(id, event.isCompleted());
+        }
+
         String entityName = mActivity.getString(R.string.task_name);
         showSavedToast(entityName);
     }

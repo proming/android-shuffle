@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 	<!--  Activity titles -->
     <string name="app_name">Shuffle</string>
     <string name="title_inbox">Inbox</string>
@@ -416,6 +416,11 @@ allow that, you can turn it off under Settings.</string>
     <string name="long_string" translatable="false">looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong</string>
 
     <string name="task_list_contents_snippet_divider"> - </string>
+
+    <plurals name="task_view_selected_message_count">
+        <item quantity="one"  ><xliff:g id="message_count" example="1">%d</xliff:g> selected</item>
+        <item quantity="other"><xliff:g id="message_count" example="9">%d</xliff:g> selected</item>
+    </plurals>
 
 	<!--  messages -->
     <string name="no_due_date">No due date</string>

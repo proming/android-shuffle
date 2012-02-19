@@ -59,6 +59,10 @@ public abstract class ActionBarFragmentActivity extends RoboFragmentActivity {
         mActionBarHelper.supportResetOptionsMenu();
     }
 
+    public void startSupportedActionMode(ActionMode.Callback callback) {
+        mActionBarHelper.startSupportedActionMode(callback);
+    }
+    
     /**
      * Base action bar-aware implementation for
      * {@link android.app.Activity#onCreateOptionsMenu(android.view.Menu)}.
