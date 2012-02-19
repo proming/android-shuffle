@@ -38,6 +38,7 @@ public class SimpleMenuItem implements MenuItem {
     private int mIconResId = 0;
     private boolean mEnabled = true;
     private boolean mVisible = true;
+    private View mActionBarButton = null;
 
     public SimpleMenuItem(SimpleMenu menu, int id, int order, CharSequence title) {
         mMenu = menu;
@@ -102,6 +103,7 @@ public class SimpleMenuItem implements MenuItem {
 
     public MenuItem setEnabled(boolean enabled) {
         mEnabled = enabled;
+        updateActionBarButton();
         return this;
     }
 
@@ -109,6 +111,33 @@ public class SimpleMenuItem implements MenuItem {
         return mEnabled;
     }
 
+    public MenuItem setVisible(boolean b) {
+        mVisible = b;
+        updateActionBarButton();
+        return this;
+    }
+
+    public boolean isVisible() {
+        return mVisible;
+    }
+
+    public View getActionBarButton() {
+        return mActionBarButton;
+    }
+
+    public MenuItem setActionBarButton(View actionBarButton) {
+        mActionBarButton = actionBarButton;
+        updateActionBarButton();
+        return this;
+    }
+
+    private void updateActionBarButton() {
+        if (mActionBarButton != null) {
+            mActionBarButton.setEnabled(mEnabled);
+            mActionBarButton.setVisibility(isVisible() ? View.VISIBLE : View.GONE);
+        }
+    }
+    
     // No-op operations. We use no-ops to allow inflation from menu XML.
 
     public int getGroupId() {
@@ -205,16 +234,6 @@ public class SimpleMenuItem implements MenuItem {
     public boolean isChecked() {
         // Noop
         return false;
-    }
-
-
-    public MenuItem setVisible(boolean b) {
-        mVisible = b;
-        return this;
-    }
-
-    public boolean isVisible() {
-        return mVisible;
     }
 
     public boolean hasSubMenu() {

@@ -91,7 +91,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
         mActivity.onCreatePanelMenu(Window.FEATURE_OPTIONS_PANEL, menu);
         mActivity.onPreparePanel(Window.FEATURE_OPTIONS_PANEL, null, menu);
         for (int i = 0; i < menu.size(); i++) {
-            MenuItem item = menu.getItem(i);
+            SimpleMenuItem item = (SimpleMenuItem)menu.getItem(i);
             if (mViewIds.contains(item.getItemId())) {
                 addActionItemCompatFromMenuItem(item, true);
             }
@@ -209,9 +209,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
      * state can be changed to show a loading spinner using
      * {@link ActionBarHelperBase#setRefreshActionItemState(boolean)}.
      */
-    private View addActionItemCompatFromMenuItem(final MenuItem item, boolean isMenu) {
-        if (!item.isVisible()) return null;
-
+    private View addActionItemCompatFromMenuItem(final SimpleMenuItem item, boolean isMenu) {
         final int itemId = item.getItemId();
 
         final LinearLayout actionBar = isMenu ? getActionBarCompatMenuGroup() : getActionBarCompatTitleGroup();
@@ -246,6 +244,8 @@ public class ActionBarHelperBase extends ActionBarHelper {
                 mActivity.onMenuItemSelected(Window.FEATURE_OPTIONS_PANEL, item);
             }
         });
+
+        item.setActionBarButton(actionButton);
 
         actionBar.addView(actionButton);
 
@@ -342,8 +342,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
                             showAsAction = parser.getAttributeIntValue(MENU_RES_NAMESPACE,
                                     MENU_ATTR_SHOW_AS_ACTION, -1);
-                            if (showAsAction == MenuItem.SHOW_AS_ACTION_ALWAYS ||
-                                    showAsAction == MenuItem.SHOW_AS_ACTION_IF_ROOM) {
+                            if ((showAsAction & (MenuItem.SHOW_AS_ACTION_ALWAYS + MenuItem.SHOW_AS_ACTION_IF_ROOM)) > 0) {
                                 mViewIds.add(itemId);
                             }
                             break;
