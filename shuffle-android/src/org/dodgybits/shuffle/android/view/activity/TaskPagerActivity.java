@@ -85,7 +85,7 @@ public class TaskPagerActivity extends ActionBarFragmentActivity {
                 // app icon in action bar clicked; go home
                 Intent intent = new Intent(this, EntityListsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(EntityListsActivity.QUERY_NAME, getListContext().getListQuery());
+                intent.putExtra(EntityListsActivity.QUERY_NAME, getListContext().getListQuery().name());
                 startActivity(intent);
                 return true;
         }
