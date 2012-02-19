@@ -20,6 +20,7 @@ import org.dodgybits.shuffle.android.actionbarcompat.ActionMode;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
+import org.dodgybits.shuffle.android.core.util.UiUtilities;
 import org.dodgybits.shuffle.android.list.event.*;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.view.activity.TaskPagerActivity;
@@ -35,7 +36,10 @@ public class TaskListFragment extends RoboListFragment
     /** Argument name(s) */
     public static final String ARG_LIST_CONTEXT = "listContext";
 
-    private static final String BUNDLE_LIST_STATE = "TaskListFragment.state.listState";
+    private static final String BUNDLE_LIST_STATE = "taskListFragment.state.listState";
+    private static final String BUNDLE_KEY_SELECTED_TASK_ID
+            = "taskListFragment.state.listState.selected_task_id";
+
     private static final String SELECTED_ITEM = "SELECTED_ITEM";
 
     // result codes
@@ -46,6 +50,9 @@ public class TaskListFragment extends RoboListFragment
     private boolean mShowMoveActions = false;
 
     private boolean mIsFirstLoad;
+
+    /** ID of the message to hightlight. */
+    private long mSelectedTaskId = -1;
 
     @Inject
     private TaskListAdaptor mListAdapter;
@@ -62,8 +69,10 @@ public class TaskListFragment extends RoboListFragment
     private Parcelable mSavedListState;
 
     // UI Support
-    private Activity mActivity;
     private boolean mIsViewCreated;
+
+    /** true between {@link #onResume} and {@link #onPause}. */
+    private boolean mResumed;
 
     @Inject
     TaskPersister mPersister;
@@ -99,7 +108,6 @@ public class TaskListFragment extends RoboListFragment
 
         Log.d(TAG, "onCreate with context " + getListContext());
 
-        mActivity = getActivity();
         setHasOptionsMenu(true);
 
         mListAdapter.setCallback(this);
@@ -138,6 +146,7 @@ public class TaskListFragment extends RoboListFragment
     public void onResume() {
         super.onResume();
 
+        mResumed = true;
         onVisibilityChange();
     }
 
@@ -158,9 +167,10 @@ public class TaskListFragment extends RoboListFragment
     @Override
     public void onPause() {
         mSavedListState = getListView().onSaveInstanceState();
-        super.onPause();
+        mResumed = false;
 
-        Log.d(TAG, "onPause with context " + mListContext);
+        Log.d(TAG, "onPause with context " + getListContext());
+        super.onPause();
     }
 
     @Override
@@ -210,9 +220,24 @@ public class TaskListFragment extends RoboListFragment
     }
 
     @Override
+    public void onAdaptorSelectedRemoved() {
+        updateSelectionMode();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mListAdapter.onSaveInstanceState(outState);
+        if (isViewCreated()) {
+            outState.putParcelable(BUNDLE_LIST_STATE, getListView().onSaveInstanceState());
+        }
+        outState.putLong(BUNDLE_KEY_SELECTED_TASK_ID, mSelectedTaskId);
+    }
+
+    void restoreInstanceState(Bundle savedInstanceState) {
+        mListAdapter.loadState(savedInstanceState);
+        mSavedListState = savedInstanceState.getParcelable(BUNDLE_LIST_STATE);
+        mSelectedTaskId = savedInstanceState.getLong(BUNDLE_KEY_SELECTED_TASK_ID);
     }
 
     @Override
@@ -256,18 +281,13 @@ public class TaskListFragment extends RoboListFragment
     private void onVisibilityChange() {
         if (getUserVisibleHint()) {
             updateTitle();
-            ((ActionBarFragmentActivity)getActivity()).supportResetOptionsMenu();
+            getActionBarFragmentActivity().supportResetOptionsMenu();
         }
+        updateSelectionMode();
     }
-
 
     private void updateTitle() {
         getActivity().setTitle(getListContext().createTitle(getActivity(), mContextCache, mProjectCache));
-    }
-
-    void restoreInstanceState(Bundle savedInstanceState) {
-        mListAdapter.loadState(savedInstanceState);
-        mSavedListState = savedInstanceState.getParcelable(BUNDLE_LIST_STATE);
     }
 
     private void startLoading() {
@@ -354,8 +374,14 @@ public class TaskListFragment extends RoboListFragment
                 @Override
                 public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
                     // Update the list
-                    mListAdapter.changeCursor(c);
+                    mListAdapter.swapCursor(c);
                     setListAdapter(mListAdapter);
+
+                    updateSelectionMode();
+
+                    // We want to make visible the selection only for the first load.
+                    // Re-load caused by content changed events shouldn't scroll the list.
+                    highlightSelectedMessage(mIsFirstLoad);
 
                     // Restore the state -- this step has to be the last, because Some of the
                     // "post processing" seems to reset the scroll position.
@@ -405,7 +431,7 @@ public class TaskListFragment extends RoboListFragment
      */
     public void updateSelectionMode() {
         final int numSelected = getSelectedCount();
-        if ((numSelected == 0) || !isViewCreated()) {
+        if ((numSelected == 0) || !isViewCreated() || !getUserVisibleHint()) {
             finishSelectionMode();
             return;
         }
@@ -533,6 +559,34 @@ public class TaskListFragment extends RoboListFragment
                 // (i.e. mIsVisible == false) too, in which case we want to keep the selection.
                 onDeselectAll();
             }
+        }
+    }
+
+    /**
+     * Highlight the selected message.
+     */
+    private void highlightSelectedMessage(boolean ensureSelectionVisible) {
+        if (!isViewCreated()) {
+            return;
+        }
+
+        final ListView lv = getListView();
+        if (mSelectedTaskId == -1) {
+            // No message selected
+            lv.clearChoices();
+            return;
+        }
+
+        final int count = lv.getCount();
+        for (int i = 0; i < count; i++) {
+            if (lv.getItemIdAtPosition(i) != mSelectedTaskId) {
+                continue;
+            }
+            lv.setItemChecked(i, true);
+            if (ensureSelectionVisible) {
+                UiUtilities.listViewSmoothScrollToPosition(getActivity(), lv, i);
+            }
+            break;
         }
     }
 

@@ -1,8 +1,10 @@
 package org.dodgybits.shuffle.android.core.util;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewParent;
+import android.widget.ListView;
 
 public class UiUtilities {
     private UiUtilities() {
@@ -103,5 +105,24 @@ public class UiUtilities {
         }
         return y;
     }
+
+    /**
+     * Workaround for the {@link android.widget.ListView#smoothScrollToPosition} randomly scroll the view bug
+     * if it's called right after {@link android.widget.ListView#setAdapter}.
+     */
+    public static void listViewSmoothScrollToPosition(final Activity activity,
+                                                      final ListView listView, final int position) {
+        // Workarond: delay-call smoothScrollToPosition()
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (activity.isFinishing()) {
+                    return; // Activity being destroyed
+                }
+                listView.smoothScrollToPosition(position);
+            }
+        });
+    }
+
 
 }

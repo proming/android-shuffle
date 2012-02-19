@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
@@ -20,6 +22,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TaskListAdaptor extends CursorAdapter {
+    private static final String TAG = "TaskListAdaptor";
+    
     private static final String STATE_CHECKED_ITEMS =
             "org.dodgybits.shuffle.android.list.view.task.TaskListAdaptor.checkedItems";
 
@@ -39,6 +43,9 @@ public class TaskListAdaptor extends CursorAdapter {
         /** Called when the user selects/unselects a task */
         void onAdapterSelectedChanged(TaskListItem itemView, boolean newSelected,
                                       int mSelectedCount);
+        
+        /** Called when previously selected tasks are no longer in the list */
+        void onAdaptorSelectedRemoved();
     }
 
     private Callback mCallback;
@@ -59,13 +66,21 @@ public class TaskListAdaptor extends CursorAdapter {
         outState.putLongArray(STATE_CHECKED_ITEMS, CollectionUtils.toPrimitiveLongArray(getSelectedSet()));
     }
 
+    @Override
+    public Cursor swapCursor(Cursor newCursor) {
+        Cursor oldCursor = super.swapCursor(newCursor);
+        checkSelection();
+        return oldCursor;
+    }
+
     public void loadState(Bundle savedInstanceState) {
-        Set<Long> checkedset = getSelectedSet();
-        checkedset.clear();
+        Set<Long> checkedSet = getSelectedSet();
+        checkedSet.clear();
         for (long l: savedInstanceState.getLongArray(STATE_CHECKED_ITEMS)) {
-            checkedset.add(l);
+            checkedSet.add(l);
         }
         notifyDataSetChanged();
+        checkSelection();
     }
 
     public Set<Long> getSelectedSet() {
@@ -77,15 +92,38 @@ public class TaskListAdaptor extends CursorAdapter {
      * {@link #getSelectedSet()}, because it also notifies observers.
      */
     public void clearSelection() {
-        Set<Long> checkedset = getSelectedSet();
-        if (checkedset.size() > 0) {
-            checkedset.clear();
+        Set<Long> checkedSet = getSelectedSet();
+        if (checkedSet.size() > 0) {
+            checkedSet.clear();
             notifyDataSetChanged();
         }
     }
 
     public boolean isSelected(TaskListItem itemView) {
         return getSelectedSet().contains(itemView.mTaskId);
+    }
+
+    /**
+     * After the cursor has changed, make sure all selected items are still present.
+     */
+    private void checkSelection() {
+        boolean selectedUpdated = false;
+        Set<Long> ids = Sets.newHashSet(getSelectedSet());
+        Cursor c = getCursor();
+        if (!ids.isEmpty() && c != null && !c.isClosed()) {
+            c.moveToPosition(-1);
+            while (c.moveToNext()) {
+                long id = c.getLong(mRowIDColumn);
+                ids.remove(Long.valueOf(id));
+            }
+            selectedUpdated = !ids.isEmpty();
+            if (Log.isLoggable(TAG, Log.INFO)) {
+                Log.i(TAG, "Removed following task ids from selection " + ids);
+            }
+        }
+        if (selectedUpdated && mCallback != null) {
+            mCallback.onAdaptorSelectedRemoved();
+        }
     }
     
     @Override
