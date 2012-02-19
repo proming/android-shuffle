@@ -41,7 +41,7 @@ public class ContextListFragment extends RoboListFragment {
     // result codes
     private static final int FILTER_CONFIG = 600;
 
-    private static final int LOADER_ID_TASK_LIST_LOADER = 1;
+    private static final int LOADER_ID_CONTEXT_LIST_LOADER = 1;
     private static final int LOADER_ID_TASK_COUNT_LOADER = 2;
 
     @Inject
@@ -231,13 +231,13 @@ public class ContextListFragment extends RoboListFragment {
     private void startLoading() {
         Log.d(TAG, "Creating list cursor");
         final LoaderManager lm = getLoaderManager();
-        lm.initLoader(LOADER_ID_TASK_LIST_LOADER, null, LOADER_CALLBACKS);
+        lm.initLoader(LOADER_ID_CONTEXT_LIST_LOADER, null, LOADER_CALLBACKS);
     }
 
     private void restartLoading() {
         Log.d(TAG, "Refreshing list cursor");
         final LoaderManager lm = getLoaderManager();
-        lm.restartLoader(LOADER_ID_TASK_LIST_LOADER, null, LOADER_CALLBACKS);
+        lm.restartLoader(LOADER_ID_CONTEXT_LIST_LOADER, null, LOADER_CALLBACKS);
     }
 
     private void refreshChildCount() {

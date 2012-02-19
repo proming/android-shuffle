@@ -24,11 +24,6 @@ import roboguice.activity.RoboFragmentActivity;
 /**
  * A base activity that defers common functionality across app activities to an {@link
  * ActionBarHelper}.
- *
- * NOTE: dynamically marking menu items as invisible/visible is not currently supported.
- *
- * NOTE: this may used with the Android Compatibility Package by extending
- * android.support.v4.app.FragmentActivity instead of {@link android.app.Activity}.
  */
 public abstract class ActionBarFragmentActivity extends RoboFragmentActivity {
     final ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);

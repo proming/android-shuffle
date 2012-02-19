@@ -14,7 +14,6 @@ import org.dodgybits.shuffle.android.core.util.TextColours;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
 import org.dodgybits.shuffle.android.list.view.StatusView;
-import org.dodgybits.shuffle.android.list.view.StatusView;
 
 public class ContextListItem extends LinearLayout {
     protected TextColours mTextColours;
@@ -37,7 +36,7 @@ public class ContextListItem extends LinearLayout {
 
         mName = (TextView) findViewById(R.id.name);
         mCount = (TextView) findViewById(R.id.count);
-        mStatus = (StatusView)findViewById(R.id.status);
+        mStatus = (StatusView)findViewById(R.id.status_view);
         mIcon = (ImageView) findViewById(R.id.icon);
         mTextColours = TextColours.getInstance(androidContext);
     }

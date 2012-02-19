@@ -34,11 +34,24 @@
                android:padding="8dip"
             />
 
+    <TextView android:id="@+id/count"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:layout_centerVertical="true"
+              style="?android:attr/textAppearanceLarge"
+              android:textSize="18sp"
+              android:textStyle="bold"
+              android:textColor="@color/view_minimal_text_color"
+            />
+
+
     <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/icon"
+            android:layout_toLeftOf="@+id/count"
             android:layout_marginLeft="16dip"
             android:paddingRight="8dip"
             android:orientation="vertical"
@@ -46,7 +59,7 @@
         <TextView android:id="@+id/name"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:singleLine="true"
+                  android:maxLines="2"
                   android:ellipsize="end"
                   style="?android:attr/textAppearanceLarge"
                   android:textSize="18sp"
@@ -59,7 +72,7 @@
                 />
 
         <org.dodgybits.shuffle.android.list.view.StatusView
-                android:id="@+id/status"
+                android:id="@+id/status_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
@@ -67,17 +80,6 @@
                 android:textSize="12sp"
                 />
     </LinearLayout>
-
-    <TextView android:id="@+id/count"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_alignParentRight="true"
-              android:layout_centerVertical="true"
-              style="?android:attr/textAppearanceLarge"
-              android:textSize="18sp"
-              android:textStyle="bold"
-              android:textColor="@color/view_minimal_text_color"
-            />
 
 
 </RelativeLayout>
