@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
@@ -19,7 +20,6 @@ import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.CalendarUtils;
-import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.list.event.EditTaskEvent;
 import org.dodgybits.shuffle.android.list.event.UpdateTaskCompletedEvent;
@@ -70,7 +70,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     private Task mTask;
     private int mPosition;
     private int mTaskCount;
-    private boolean mVisible;
 
     public static TaskViewFragment newInstance(Bundle args) {
         TaskViewFragment fragment = new TaskViewFragment();
@@ -96,25 +95,24 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Bundle args = getArguments();
-        if (args != null) {
-            mTask = mEncoder.restore(args);
-            mTaskCount = args.getInt(COUNT, -1);
-            mPosition = args.getInt(INDEX, -1);
-        }
-
         findViews();
-        updateUIFromItem(mTask);
+        updateUIFromItem(getTask());
 
         mViewCalendarButton.setOnClickListener(this);
-
-        onViewChange();
     }
 
-    public void onVisibilityChange(boolean visible) {
-        mVisible = visible;
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        onViewChange();
+        onVisibilityChange();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        onVisibilityChange();
     }
 
     @Override
@@ -125,7 +123,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         if (mTask != null) {
-            final boolean isComplete = mTask.isComplete();
+            final boolean isComplete = getTask().isComplete();
             menu.findItem(R.id.action_mark_complete).setVisible(!isComplete);
             menu.findItem(R.id.action_mark_incomplete).setVisible(isComplete);
         }
@@ -153,14 +151,26 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         return false;
     }
 
-    private void onViewChange() {
-        if (mTask != null && mVisible) {
+    private void onVisibilityChange() {
+        if (mEncoder != null && getUserVisibleHint()) {
             updateTitle();
-            if (OSUtils.atLeastHoneycomb())
-            {
-                getActivity().invalidateOptionsMenu();
-            }
+            ((ActionBarFragmentActivity)getActivity()).supportResetOptionsMenu();
         }
+    }
+
+    private void initializeArgCache() {
+        if (mTask != null) return;
+        Bundle args = getArguments();
+        mTask = mEncoder.restore(args);
+        mTaskCount = args.getInt(COUNT, -1);
+        mPosition = args.getInt(INDEX, -1);
+    }
+
+    private Task getTask() {
+        if (mTask == null) {
+            initializeArgCache();
+        }
+        return mTask;
     }
 
     private void findViews() {
@@ -202,7 +212,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
             case R.id.view_calendar_button: {
                 Uri eventUri = ContentUris.appendId(
                         CalendarUtils.getEventContentUri().buildUpon(),
-                        mTask.getCalendarEventId().getId()).build();
+                        getTask().getCalendarEventId().getId()).build();
                 Intent viewCalendarEntry = new Intent(Intent.ACTION_VIEW, eventUri);
                 viewCalendarEntry.putExtra(CalendarUtils.EVENT_BEGIN_TIME, mTask.getStartDate());
                 viewCalendarEntry.putExtra(CalendarUtils.EVENT_END_TIME, mTask.getDueDate());
@@ -213,7 +223,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     }
 
     private void updateTitle() {
-        getActivity().setTitle(mTask.getDescription());
+        getActivity().setTitle(getTask().getDescription());
     }
 
     private void updateProject(Project project) {
@@ -273,10 +283,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
             mCalendarEntry.setVisibility(View.GONE);
         }
     }
-
-    private final int cDateFormatFlags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR |
-            DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_MONTH |
-            DateUtils.FORMAT_ABBREV_WEEKDAY | DateUtils.FORMAT_SHOW_TIME;
 
     private CharSequence formatDateTime(long millis) {
         CharSequence value;

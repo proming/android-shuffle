@@ -76,7 +76,7 @@ public abstract class ActionBarHelper {
         return true;
     }
 
-    public void invalidateOptionsMenu() {
+    public void supportResetOptionsMenu() {
     }
 
     /**

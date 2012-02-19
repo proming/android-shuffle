@@ -16,7 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarActivity;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
@@ -32,7 +32,7 @@ import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
  * View a task in the context of a given task list.
  * Each task is a separate page on a PageViewer.
  */
-public class TaskPagerActivity extends ActionBarActivity {
+public class TaskPagerActivity extends ActionBarFragmentActivity {
     private static final String TAG = "EntityListsActivity";
 
     public static final String INITIAL_POSITION = "selectedIndex";
@@ -56,11 +56,7 @@ public class TaskPagerActivity extends ActionBarActivity {
 
     ViewPager mPager;
 
-    ViewPager.OnPageChangeListener mPageChangeListener;
-
     TaskListContext mListContext;
-
-    TaskViewFragment mCurrentView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,22 +73,7 @@ public class TaskPagerActivity extends ActionBarActivity {
             }
         }
 
-        mPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                if (mCurrentView != null) {
-                    mCurrentView.onVisibilityChange(false);
-                }
-                mCurrentView = (TaskViewFragment)mAdapter.getItem(position);
-                mCurrentView.onVisibilityChange(true);
-                invalidateOptionsMenu();
-            }
-        };
-
         mPager = (ViewPager)findViewById(R.id.pager);
-        mPager.setOnPageChangeListener(mPageChangeListener);
-
-        mListContext = getIntent().getParcelableExtra(TASK_LIST_CONTEXT);
 
         startLoading();
     }
@@ -104,7 +85,7 @@ public class TaskPagerActivity extends ActionBarActivity {
                 // app icon in action bar clicked; go home
                 Intent intent = new Intent(this, EntityListsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(EntityListsActivity.QUERY_NAME, mListContext.getListQuery());
+                intent.putExtra(EntityListsActivity.QUERY_NAME, getListContext().getListQuery());
                 startActivity(intent);
                 return true;
         }
@@ -116,6 +97,13 @@ public class TaskPagerActivity extends ActionBarActivity {
         Log.d(TAG, "Creating list cursor");
         final LoaderManager lm = getSupportLoaderManager();
         lm.initLoader(LOADER_ID_TASK_LIST_LOADER, getIntent().getExtras(), LOADER_CALLBACKS);
+    }
+
+    private TaskListContext getListContext() {
+        if (mListContext == null) {
+            mListContext = getIntent().getParcelableExtra(TASK_LIST_CONTEXT);
+        }
+        return mListContext;
     }
 
 
@@ -130,7 +118,7 @@ public class TaskPagerActivity extends ActionBarActivity {
                 @Override
                 public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                     mInitialPosition = args.getInt(INITIAL_POSITION, 0);
-                    return new TaskCursorLoader(TaskPagerActivity.this, mListContext);
+                    return new TaskCursorLoader(TaskPagerActivity.this, getListContext());
                 }
 
                 @Override
@@ -138,9 +126,6 @@ public class TaskPagerActivity extends ActionBarActivity {
                     mAdapter = new MyAdapter(getSupportFragmentManager(), c);
                     mPager.setAdapter(mAdapter);
                     mPager.setCurrentItem(mInitialPosition);
-
-                    // pager doesn't notify on initial page selection (if it's 0)
-                    mPageChangeListener.onPageSelected(mPager.getCurrentItem());
                 }
 
 

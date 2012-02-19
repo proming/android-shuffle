@@ -12,15 +12,13 @@ import android.view.MenuItem;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarActivity;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.event.ViewPreferencesEvent;
 import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
 import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
-import org.dodgybits.shuffle.android.list.model.ListTitles;
-import org.dodgybits.shuffle.android.list.view.Titled;
 import org.dodgybits.shuffle.android.list.view.context.ContextListFragment;
 import org.dodgybits.shuffle.android.list.view.project.ProjectListFragment;
 import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
@@ -30,7 +28,7 @@ import roboguice.inject.ContextScopedProvider;
 
 import java.util.List;
 
-public class EntityListsActivity extends ActionBarActivity {
+public class EntityListsActivity extends ActionBarFragmentActivity {
     private static final String TAG = "EntityListsActivity";
 
     public static final String QUERY_NAME = "queryName";
@@ -41,8 +39,6 @@ public class EntityListsActivity extends ActionBarActivity {
 
     private List<Fragment> mFragments;
     private List<ListQuery> mQueries;
-
-    private ViewPager.OnPageChangeListener mPageChangeListener;
 
     @Inject
     private ContextScopedProvider<TaskListFragment> mTaskListFragmentProvider;
@@ -79,30 +75,12 @@ public class EntityListsActivity extends ActionBarActivity {
 
         initFragments();
 
-        mPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                Fragment fragment = mFragments.get(position);
-                if (fragment instanceof Titled) {
-                    setTitle(((Titled)fragment).getTitle(EntityListsActivity.this));
-                } else {
-                    ListQuery query = mQueries.get(position);
-                    setTitle(ListTitles.getTitleId(query));
-                }
-                invalidateOptionsMenu();
-            }
-        };
-
         mAdapter = new MyAdapter(getSupportFragmentManager());
         mPager = (ViewPager)findViewById(R.id.pager);
-        mPager.setOnPageChangeListener(mPageChangeListener);
         mPager.setAdapter(mAdapter);
 
         int position = getRequestedPosition(getIntent());
         mPager.setCurrentItem(position);
-
-        // pager doesn't notify on initial page selection (if it's 0)
-        mPageChangeListener.onPageSelected(mPager.getCurrentItem());
     }
 
     @Override

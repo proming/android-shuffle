@@ -2,7 +2,6 @@ package org.dodgybits.shuffle.android.list.view.task;
 
 import android.app.Activity;
 import android.content.ContentUris;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,12 +15,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.list.event.EditListSettingsEvent;
 import org.dodgybits.shuffle.android.list.event.ViewHelpEvent;
-import org.dodgybits.shuffle.android.list.view.Titled;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.view.activity.TaskPagerActivity;
 import roboguice.event.EventManager;
@@ -30,7 +29,7 @@ import roboguice.fragment.RoboListFragment;
 import java.util.Set;
 
 public class TaskListFragment extends RoboListFragment
-        implements AdapterView.OnItemLongClickListener, TaskListAdaptor.Callback, Titled {
+        implements AdapterView.OnItemLongClickListener, TaskListAdaptor.Callback {
     private static final String TAG = "TaskListFragment"; 
     
     /** Argument name(s) */
@@ -93,7 +92,7 @@ public class TaskListFragment extends RoboListFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(TAG, "onCreate with context " + mListContext);
+        Log.d(TAG, "onCreate with context " + getListContext());
 
         mActivity = getActivity();
         setHasOptionsMenu(true);
@@ -120,15 +119,20 @@ public class TaskListFragment extends RoboListFragment
         }
 
         startLoading();
-
-        Log.d(TAG, "onActivityCreated with context " + mListContext);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        Log.d(TAG, "onResume with context " + mListContext);
+        onVisibilityChange();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        onVisibilityChange();
     }
 
     @Override
@@ -229,9 +233,16 @@ public class TaskListFragment extends RoboListFragment
         }
     }
 
-    @Override
-    public String getTitle(ContextWrapper context) {
-        return getListContext().createTitle(context, mContextCache, mProjectCache);
+    private void onVisibilityChange() {
+        if (getUserVisibleHint()) {
+            updateTitle();
+            ((ActionBarFragmentActivity)getActivity()).supportResetOptionsMenu();
+        }
+    }
+
+
+    private void updateTitle() {
+        getActivity().setTitle(getListContext().createTitle(getActivity(), mContextCache, mProjectCache));
     }
 
     void restoreInstanceState(Bundle savedInstanceState) {

@@ -30,7 +30,7 @@ import roboguice.activity.RoboFragmentActivity;
  * NOTE: this may used with the Android Compatibility Package by extending
  * android.support.v4.app.FragmentActivity instead of {@link android.app.Activity}.
  */
-public abstract class ActionBarActivity extends RoboFragmentActivity {
+public abstract class ActionBarFragmentActivity extends RoboFragmentActivity {
     final ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
 
     /**
@@ -60,8 +60,8 @@ public abstract class ActionBarActivity extends RoboFragmentActivity {
         mActionBarHelper.onPostCreate(savedInstanceState);
     }
 
-    public void invalidateOptionsMenu() {
-        mActionBarHelper.invalidateOptionsMenu();
+    public void supportResetOptionsMenu() {
+        mActionBarHelper.supportResetOptionsMenu();
     }
 
     /**

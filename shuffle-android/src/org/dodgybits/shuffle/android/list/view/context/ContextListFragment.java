@@ -3,7 +3,6 @@ package org.dodgybits.shuffle.android.list.view.context;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
@@ -27,12 +27,11 @@ import org.dodgybits.shuffle.android.list.content.ContextCursorLoader;
 import org.dodgybits.shuffle.android.list.event.*;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
-import org.dodgybits.shuffle.android.list.view.Titled;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import roboguice.event.EventManager;
 import roboguice.fragment.RoboListFragment;
 
-public class ContextListFragment extends RoboListFragment implements Titled {
+public class ContextListFragment extends RoboListFragment {
     private static final String TAG = "ContextListFragment";
     
     /** Argument name(s) */
@@ -108,7 +107,15 @@ public class ContextListFragment extends RoboListFragment implements Titled {
     public void onResume() {
         super.onResume();
 
+        onVisibilityChange();
         refreshChildCount();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        onVisibilityChange();
     }
 
     /**
@@ -203,10 +210,18 @@ public class ContextListFragment extends RoboListFragment implements Titled {
 
         return super.onContextItemSelected(item);
     }
-    
-    @Override
-    public String getTitle(ContextWrapper context) {
-        return context.getString(R.string.title_context);
+
+
+    private void onVisibilityChange() {
+        if (getUserVisibleHint()) {
+            updateTitle();
+            ((ActionBarFragmentActivity)getActivity()).supportResetOptionsMenu();
+        }
+    }
+
+
+    private void updateTitle() {
+        getActivity().setTitle(R.string.title_context);
     }
 
     void restoreInstanceState(Bundle savedInstanceState) {

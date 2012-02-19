@@ -14,7 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarActivity;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
@@ -27,7 +27,7 @@ import org.dodgybits.shuffle.android.list.view.task.TaskListFragment;
 import roboguice.event.EventManager;
 import roboguice.inject.ContextScopedProvider;
 
-public class ProjectTaskListsActivity extends ActionBarActivity {
+public class ProjectTaskListsActivity extends ActionBarFragmentActivity {
     public static final String TAG = "ProjectTaskListsActivity";
     public static final String INITIAL_POSITION = "initialPosition";
 
@@ -36,8 +36,6 @@ public class ProjectTaskListsActivity extends ActionBarActivity {
     private MyAdapter mAdapter;
 
     private ViewPager mPager;
-
-    private ViewPager.OnPageChangeListener mPageChangeListener;
 
     @Inject
     private ProjectPersister mPersister;
@@ -67,17 +65,7 @@ public class ProjectTaskListsActivity extends ActionBarActivity {
             }
         }
 
-        mPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                TaskListFragment fragment = (TaskListFragment)mAdapter.getItem(position);
-                setTitle(fragment.getTitle(ProjectTaskListsActivity.this));
-                invalidateOptionsMenu();
-            }
-        };
-
         mPager = (ViewPager)findViewById(R.id.pager);
-        mPager.setOnPageChangeListener(mPageChangeListener);
 
         startLoading();
     }
@@ -110,7 +98,6 @@ public class ProjectTaskListsActivity extends ActionBarActivity {
         lm.initLoader(LOADER_ID_CONTEXT_LIST_LOADER, getIntent().getExtras(), LOADER_CALLBACKS);
     }
 
-
     /**
      * Loader callbacks for message list.
      */
@@ -130,11 +117,7 @@ public class ProjectTaskListsActivity extends ActionBarActivity {
                     mAdapter = new MyAdapter(getSupportFragmentManager(), c);
                     mPager.setAdapter(mAdapter);
                     mPager.setCurrentItem(mInitialPosition);
-
-                    // pager doesn't notify on initial page selection (if it's 0)
-                    mPageChangeListener.onPageSelected(mPager.getCurrentItem());
                 }
-
 
                 @Override
                 public void onLoaderReset(Loader<Cursor> loader) {

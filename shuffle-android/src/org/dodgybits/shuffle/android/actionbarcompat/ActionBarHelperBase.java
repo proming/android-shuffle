@@ -43,8 +43,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A class that implements the action bar pattern for pre-Honeycomb devices.
@@ -55,38 +55,45 @@ public class ActionBarHelperBase extends ActionBarHelper {
     private static final String MENU_ATTR_ID = "id";
     private static final String MENU_ATTR_SHOW_AS_ACTION = "showAsAction";
 
-    protected Map<Integer,View> mViewMap = new HashMap<Integer,View>();
+    private View mHomeButton = null;
+
+    private boolean mSplitBar = false;
+
+    protected Set<Integer> mViewIds = new HashSet<Integer>();
 
     protected ActionBarHelperBase(Activity activity) {
         super(activity);
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mActivity.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         mActivity.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
                 R.layout.actionbar_compat);
         setupActionBar();
-
-        invalidateOptionsMenu();
+        supportResetOptionsMenu();
     }
 
     @Override
-    public void invalidateOptionsMenu() {
+    public void supportResetOptionsMenu() {
         SimpleMenu menu = new SimpleMenu(mActivity);
         removeActionItems();
         mActivity.onCreatePanelMenu(Window.FEATURE_OPTIONS_PANEL, menu);
         mActivity.onPreparePanel(Window.FEATURE_OPTIONS_PANEL, null, menu);
         for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.getItem(i);
-            if (mViewMap.containsKey(item.getItemId())) {
-                mViewMap.put(item.getItemId(), addActionItemCompatFromMenuItem(item, true));
+            if (mViewIds.contains(item.getItemId())) {
+                addActionItemCompatFromMenuItem(item, true);
             }
         }
     }
@@ -109,16 +116,24 @@ public class ActionBarHelperBase extends ActionBarHelper {
         SimpleMenuItem homeItem = new SimpleMenuItem(
                 tempMenu, android.R.id.home, 0, mActivity.getString(R.string.app_name));
         homeItem.setIcon(R.drawable.shuffle_icon);
-        addActionItemCompatFromMenuItem(homeItem, false);
+        mHomeButton = addActionItemCompatFromMenuItem(homeItem, false);
 
         // Add title text
         TextView titleText = new TextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
         titleText.setLayoutParams(springLayoutParams);
         titleText.setText(mActivity.getTitle());
         actionBarCompat.addView(titleText);
+
+        final ViewGroup actionBarCompatMenu = getActionBarCompatMenuGroup();
+        mSplitBar = actionBarCompatMenu != actionBarCompat;
+        if (mSplitBar) {
+            actionBarCompatMenu.setVisibility(View.VISIBLE);
+        }
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setRefreshActionItemState(boolean refreshing) {
         View refreshButton = mActivity.findViewById(R.id.actionbar_compat_item_refresh);
@@ -135,13 +150,13 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
     /**
      * Action bar helper code to be run in {@link Activity#onCreateOptionsMenu(android.view.Menu)}.
-     *
+     * <p/>
      * NOTE: This code will mark on-screen menu items as invisible.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Hides on-screen action items from the options menu.
-        for (Integer id : mViewMap.keySet()) {
+        for (Integer id : mViewIds) {
             MenuItem item = menu.findItem(id);
             if (item != null) {
                 item.setVisible(false);
@@ -152,7 +167,9 @@ public class ActionBarHelperBase extends ActionBarHelper {
         return true;
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onTitleChanged(CharSequence title, int color) {
         TextView titleView = (TextView) mActivity.findViewById(R.id.actionbar_compat_title);
@@ -173,12 +190,12 @@ public class ActionBarHelperBase extends ActionBarHelper {
      * Returns the {@link android.view.ViewGroup} for the action bar on phones (compatibility action
      * bar). Can return null, and will return null on Honeycomb.
      */
-    private ViewGroup getActionBarCompatTitleGroup() {
-        return (ViewGroup) mActivity.findViewById(R.id.actionbar_compat);
+    private LinearLayout getActionBarCompatTitleGroup() {
+        return (LinearLayout) mActivity.findViewById(R.id.actionbar_compat);
     }
 
-    private ViewGroup getActionBarCompatMenuGroup() {
-        ViewGroup group = (ViewGroup)mActivity.findViewById(R.id.actionbar_split_compat);
+    private LinearLayout getActionBarCompatMenuGroup() {
+        LinearLayout group = (LinearLayout) mActivity.findViewById(R.id.actionbar_split_compat);
         if (group == null) {
             group = getActionBarCompatTitleGroup();
         }
@@ -192,12 +209,12 @@ public class ActionBarHelperBase extends ActionBarHelper {
      * state can be changed to show a loading spinner using
      * {@link ActionBarHelperBase#setRefreshActionItemState(boolean)}.
      */
-   private View addActionItemCompatFromMenuItem(final MenuItem item, boolean isMenu) {
-       if (! item.isVisible()) return null;
+    private View addActionItemCompatFromMenuItem(final MenuItem item, boolean isMenu) {
+        if (!item.isVisible()) return null;
 
         final int itemId = item.getItemId();
 
-        final ViewGroup actionBar = isMenu ? getActionBarCompatMenuGroup() : getActionBarCompatTitleGroup();
+        final LinearLayout actionBar = isMenu ? getActionBarCompatMenuGroup() : getActionBarCompatTitleGroup();
         if (actionBar == null) {
             return null;
         }
@@ -207,12 +224,17 @@ public class ActionBarHelperBase extends ActionBarHelper {
                 itemId == android.R.id.home
                         ? R.attr.actionbarCompatItemHomeStyle
                         : R.attr.actionbarCompatItemStyle);
-        actionButton.setLayoutParams(new ViewGroup.LayoutParams(
-                (int) mActivity.getResources().getDimension(
-                        itemId == android.R.id.home
-                                ? R.dimen.actionbar_compat_button_home_width
-                                : R.dimen.actionbar_compat_button_width),
-                ViewGroup.LayoutParams.FILL_PARENT));
+        if (itemId == android.R.id.home) {
+            actionButton.setLayoutParams(new LinearLayout.LayoutParams(
+                    (int) mActivity.getResources().getDimension(R.dimen.actionbar_compat_button_home_width),
+                    ViewGroup.LayoutParams.FILL_PARENT));
+        } else {
+            actionButton.setLayoutParams(new LinearLayout.LayoutParams(
+                    (int) mActivity.getResources().getDimension(R.dimen.actionbar_compat_button_width),
+                    ViewGroup.LayoutParams.FILL_PARENT,
+                    mSplitBar ? 1f : 0f // have icons fill panel when using split bar
+            ));
+        }
         if (itemId == R.id.menu_refresh) {
             actionButton.setId(R.id.actionbar_compat_item_refresh);
         }
@@ -261,14 +283,15 @@ public class ActionBarHelperBase extends ActionBarHelper {
             return;
         }
 
-        for (Integer actionItemId : mViewMap.keySet()) {
-
-            View view = mViewMap.get(actionItemId);
-            if (view != null) {
+        int count = actionBar.getChildCount();
+        for (int i = count - 1; i >= 0; i--) {
+            View view = actionBar.getChildAt(i);
+            if (view instanceof ImageButton && view != mHomeButton) {
                 actionBar.removeView(view);
             }
         }
-        mViewMap.clear();
+
+        mViewIds.clear();
     }
 
     /**
@@ -291,6 +314,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
         /**
          * Loads action bar metadata from a menu resource, storing a list of menu item IDs that
          * should be shown on-screen (i.e. those with showAsAction set to always or ifRoom).
+         *
          * @param menuResId
          */
         private void loadActionBarMetadata(int menuResId) {
@@ -320,7 +344,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
                                     MENU_ATTR_SHOW_AS_ACTION, -1);
                             if (showAsAction == MenuItem.SHOW_AS_ACTION_ALWAYS ||
                                     showAsAction == MenuItem.SHOW_AS_ACTION_IF_ROOM) {
-                                mViewMap.put(itemId, null);
+                                mViewIds.add(itemId);
                             }
                             break;
 

@@ -25,7 +25,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarActivity;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
@@ -39,7 +39,7 @@ import roboguice.util.Ln;
 /**
  * A generic activity for viewing a task.
  */
-public class TaskViewActivity extends ActionBarActivity {
+public class TaskViewActivity extends ActionBarFragmentActivity {
 
     @Inject private TaskPersister mPersister;
     @Inject private TaskEncoder mEncoder;
@@ -89,12 +89,9 @@ public class TaskViewActivity extends ActionBarActivity {
         Ln.d("Adding task view fragment to activity");
 
         TaskViewFragment viewFragment = TaskViewFragment.newInstance(args);
-        viewFragment.onVisibilityChange(true);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_container, viewFragment);
         ft.commit();
-
-        invalidateOptionsMenu();
     }
 
     @Override
