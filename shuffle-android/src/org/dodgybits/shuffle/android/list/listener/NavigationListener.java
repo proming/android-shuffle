@@ -80,7 +80,7 @@ public class NavigationListener {
 
     public void onEditListSettings(@Observes EditListSettingsEvent event) {
         Intent intent = ListSettingsCache.createListSettingsEditorIntent(mActivity, event.getListQuery());
-        mActivity.startActivityForResult(intent, event.getRequestCode());
+        event.getFragment().startActivityForResult(intent, event.getRequestCode());
     }
 
 }

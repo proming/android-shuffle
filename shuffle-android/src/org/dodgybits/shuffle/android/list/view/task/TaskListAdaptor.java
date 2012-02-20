@@ -43,9 +43,9 @@ public class TaskListAdaptor extends CursorAdapter {
         /** Called when the user selects/unselects a task */
         void onAdapterSelectedChanged(TaskListItem itemView, boolean newSelected,
                                       int mSelectedCount);
-        
+
         /** Called when previously selected tasks are no longer in the list */
-        void onAdaptorSelectedRemoved();
+        void onAdaptorSelectedRemoved(Set<Long> removedIds);
     }
 
     private Callback mCallback;
@@ -69,8 +69,13 @@ public class TaskListAdaptor extends CursorAdapter {
     @Override
     public Cursor swapCursor(Cursor newCursor) {
         Cursor oldCursor = super.swapCursor(newCursor);
-        checkSelection();
         return oldCursor;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        checkSelection();
     }
 
     public void loadState(Bundle savedInstanceState) {
@@ -80,7 +85,6 @@ public class TaskListAdaptor extends CursorAdapter {
             checkedSet.add(l);
         }
         notifyDataSetChanged();
-        checkSelection();
     }
 
     public Set<Long> getSelectedSet() {
@@ -104,25 +108,25 @@ public class TaskListAdaptor extends CursorAdapter {
     }
 
     /**
-     * After the cursor has changed, make sure all selected items are still present.
+     * After the data has changed, make sure all selected items are still present.
      */
     private void checkSelection() {
         boolean selectedUpdated = false;
-        Set<Long> ids = Sets.newHashSet(getSelectedSet());
+        Set<Long> removedIds = Sets.newHashSet(getSelectedSet());
         Cursor c = getCursor();
-        if (!ids.isEmpty() && c != null && !c.isClosed()) {
+        if (!removedIds.isEmpty() && c != null && !c.isClosed()) {
             c.moveToPosition(-1);
             while (c.moveToNext()) {
                 long id = c.getLong(mRowIDColumn);
-                ids.remove(Long.valueOf(id));
+                removedIds.remove(Long.valueOf(id));
             }
-            selectedUpdated = !ids.isEmpty();
+            selectedUpdated = !removedIds.isEmpty();
             if (Log.isLoggable(TAG, Log.INFO)) {
-                Log.i(TAG, "Removed following task ids from selection " + ids);
+                Log.i(TAG, "Removed following task ids from selection " + removedIds);
             }
         }
         if (selectedUpdated && mCallback != null) {
-            mCallback.onAdaptorSelectedRemoved();
+            mCallback.onAdaptorSelectedRemoved(removedIds);
         }
     }
     

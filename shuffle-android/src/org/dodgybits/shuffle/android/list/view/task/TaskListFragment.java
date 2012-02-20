@@ -220,7 +220,7 @@ public class TaskListFragment extends RoboListFragment
     }
 
     @Override
-    public void onAdaptorSelectedRemoved() {
+    public void onAdaptorSelectedRemoved(Set<Long> removedIds) {
         updateSelectionMode();
     }
 
@@ -258,7 +258,7 @@ public class TaskListFragment extends RoboListFragment
                 return true;
             case R.id.action_view_settings:
                 Log.d(TAG, "Bringing up view settings");
-                mEventManager.fire(new EditListSettingsEvent(mListContext.getListQuery(), FILTER_CONFIG));
+                mEventManager.fire(new EditListSettingsEvent(mListContext.getListQuery(), this, FILTER_CONFIG));
                 return true;
         }
         return false;

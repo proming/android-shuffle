@@ -158,7 +158,7 @@ public class ContextListFragment extends RoboListFragment {
                 return true;
             case R.id.action_view_settings:
                 Log.d(TAG, "Bringing up view settings");
-                mEventManager.fire(new EditListSettingsEvent(ListQuery.context, FILTER_CONFIG));
+                mEventManager.fire(new EditListSettingsEvent(ListQuery.context, this, FILTER_CONFIG));
                 return true;
         }
         return false;

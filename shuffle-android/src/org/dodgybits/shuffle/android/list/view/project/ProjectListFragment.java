@@ -159,7 +159,7 @@ public class ProjectListFragment extends RoboListFragment {
                 return true;
             case R.id.action_view_settings:
                 Log.d(TAG, "Bringing up view settings");
-                mEventManager.fire(new EditListSettingsEvent(ListQuery.project, FILTER_CONFIG));
+                mEventManager.fire(new EditListSettingsEvent(ListQuery.project, this, FILTER_CONFIG));
                 return true;
         }
         return false;
