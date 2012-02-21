@@ -121,11 +121,12 @@ public class TaskListAdaptor extends CursorAdapter {
                 removedIds.remove(Long.valueOf(id));
             }
             selectedUpdated = !removedIds.isEmpty();
-            if (Log.isLoggable(TAG, Log.INFO)) {
+            if (selectedUpdated && Log.isLoggable(TAG, Log.INFO)) {
                 Log.i(TAG, "Removed following task ids from selection " + removedIds);
             }
         }
         if (selectedUpdated && mCallback != null) {
+            getSelectedSet().removeAll(removedIds);
             mCallback.onAdaptorSelectedRemoved(removedIds);
         }
     }
