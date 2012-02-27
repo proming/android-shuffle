@@ -30,7 +30,19 @@
     </style>
 
     <style name="ActionBarCompat">
-        <item name="android:background">#eee</item>
+        <item name="android:background">@drawable/ab_stacked_transparent_light_holo</item>
+    </style>
+
+    <style name="ActionBarCompatCab">
+        <item name="android:background">@drawable/cab_background_top_holo_light</item>
+    </style>
+
+    <style name="ActionBarSplitCompat">
+        <item name="android:background">@drawable/ab_bottom_transparent_light_holo</item>
+    </style>
+
+    <style name="ActionBarSplitCompatCab">
+        <item name="android:background">@drawable/cab_background_bottom_holo_light</item>
     </style>
 
     <style name="ActionBarCompatItemBase">

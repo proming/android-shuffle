@@ -490,7 +490,7 @@ public class TaskListFragment extends RoboListFragment
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             mSelectionMode = mode;
 
-            MenuInflater inflater = getActivity().getMenuInflater();
+            MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.task_cab_menu, menu);
             mMoveUp = menu.findItem(R.id.action_move_up);
             mMoveDown = menu.findItem(R.id.action_move_down);

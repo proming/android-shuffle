@@ -51,14 +51,20 @@ import java.util.Set;
  */
 public class ActionBarHelperBase extends ActionBarHelper {
     private static final String TAG = "ActionBarHelperBase";
+    
     private static final String MENU_RES_NAMESPACE = "http://schemas.android.com/apk/res/android";
     private static final String MENU_ATTR_ID = "id";
     private static final String MENU_ATTR_SHOW_AS_ACTION = "showAsAction";
 
-    private View mHomeButton = null;
+    private ImageButton mHomeButton = null;
+    private TextView mTitleView;
 
-    private boolean mSplitBar = false;
+    private boolean mInitialized = false;
 
+    private boolean mHasSplitBar = false;
+
+    private SupportActionMode mActionMode;
+    
     protected Set<Integer> mViewIds = new HashSet<Integer>();
 
     protected ActionBarHelperBase(Activity activity) {
@@ -70,6 +76,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         mActivity.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
     }
 
@@ -78,18 +85,36 @@ public class ActionBarHelperBase extends ActionBarHelper {
      */
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
-        mActivity.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-                R.layout.actionbar_compat);
-        setupActionBar();
-        supportResetOptionsMenu();
+        Log.d(TAG, "onPostCreate");
+        init();
     }
 
     @Override
     public void supportResetOptionsMenu() {
-        SimpleMenu menu = new SimpleMenu(mActivity);
-        removeActionItems();
-        mActivity.onCreatePanelMenu(Window.FEATURE_OPTIONS_PANEL, menu);
-        mActivity.onPreparePanel(Window.FEATURE_OPTIONS_PANEL, null, menu);
+        Log.d(TAG, "supportResetOptionsMenu");
+        if (mActionMode == null) {
+            SimpleMenu menu = new SimpleMenu(mActivity);
+            removeActionItems();
+            mViewIds.clear();
+            mActivity.onCreatePanelMenu(Window.FEATURE_OPTIONS_PANEL, menu);
+            mActivity.onPreparePanel(Window.FEATURE_OPTIONS_PANEL, null, menu);
+            addMenuItems(menu);
+        } else {
+            mActionMode.invalidate();
+        }
+    }
+
+    private void init() {
+        if (!mInitialized) {
+            mActivity.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+                    R.layout.actionbar_compat);
+            setupActionBar();
+            supportResetOptionsMenu();
+            mInitialized = true;
+        }
+    }
+
+    private void addMenuItems(Menu menu) {
         for (int i = 0; i < menu.size(); i++) {
             SimpleMenuItem item = (SimpleMenuItem)menu.getItem(i);
             if (mViewIds.contains(item.getItemId())) {
@@ -102,6 +127,8 @@ public class ActionBarHelperBase extends ActionBarHelper {
      * Sets up the compatibility action bar with the given title.
      */
     private void setupActionBar() {
+        Log.d(TAG, "Setting up action bar");
+
         final ViewGroup actionBarCompat = getActionBarCompatTitleGroup();
         if (actionBarCompat == null) {
             return;
@@ -116,17 +143,17 @@ public class ActionBarHelperBase extends ActionBarHelper {
         SimpleMenuItem homeItem = new SimpleMenuItem(
                 tempMenu, android.R.id.home, 0, mActivity.getString(R.string.app_name));
         homeItem.setIcon(R.drawable.shuffle_icon);
-        mHomeButton = addActionItemCompatFromMenuItem(homeItem, false);
+        mHomeButton = (ImageButton) addActionItemCompatFromMenuItem(homeItem, false);
 
         // Add title text
-        TextView titleText = new TextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
-        titleText.setLayoutParams(springLayoutParams);
-        titleText.setText(mActivity.getTitle());
-        actionBarCompat.addView(titleText);
+        mTitleView = new TextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
+        mTitleView.setLayoutParams(springLayoutParams);
+        mTitleView.setText(mActivity.getTitle());
+        actionBarCompat.addView(mTitleView);
 
         final ViewGroup actionBarCompatMenu = getActionBarCompatMenuGroup();
-        mSplitBar = actionBarCompatMenu != actionBarCompat;
-        if (mSplitBar) {
+        mHasSplitBar = actionBarCompatMenu != actionBarCompat;
+        if (mHasSplitBar) {
             actionBarCompatMenu.setVisibility(View.VISIBLE);
         }
     }
@@ -189,6 +216,28 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
     @Override
     public void startSupportedActionMode(ActionMode.Callback callback) {
+        // need to call init here as action mode can be setup prior to postCreate
+        init();
+        mActionMode = new SupportActionMode(callback);
+        onModeChange(true);
+    }
+    
+    private void onModeChange(boolean actionMode) {
+        if (actionMode) {
+            getActionBarCompatTitleGroup().setBackgroundResource(R.drawable.cab_background_top_holo_light);
+            if (mHasSplitBar) {
+                getActionBarCompatMenuGroup().setBackgroundResource(R.drawable.cab_background_bottom_holo_light);
+            }
+            mHomeButton.setImageResource(R.drawable.ic_cab_done_holo_light);
+        } else {
+            getActionBarCompatTitleGroup().setBackgroundResource(R.drawable.ab_stacked_transparent_light_holo);
+            if (mHasSplitBar) {
+                getActionBarCompatMenuGroup().setBackgroundResource(R.drawable.ab_bottom_transparent_light_holo);
+            }
+            mHomeButton.setImageResource(R.drawable.shuffle_icon);
+            mActionMode = null;
+        }
+        supportResetOptionsMenu();
     }
 
     /**
@@ -199,12 +248,18 @@ public class ActionBarHelperBase extends ActionBarHelper {
         return (LinearLayout) mActivity.findViewById(R.id.actionbar_compat);
     }
 
+    private LinearLayout mActionBarCompatMenuGroup;
+
     private LinearLayout getActionBarCompatMenuGroup() {
-        LinearLayout group = (LinearLayout) mActivity.findViewById(R.id.actionbar_split_compat);
-        if (group == null) {
-            group = getActionBarCompatTitleGroup();
+        if (mActionBarCompatMenuGroup == null) {
+            ViewStub stub = (ViewStub) mActivity.findViewById(R.id.actionbar_split_compat_stub);
+            if (stub == null) {
+                mActionBarCompatMenuGroup = getActionBarCompatTitleGroup();
+            } else {
+                mActionBarCompatMenuGroup = (LinearLayout)stub.inflate();
+            }
         }
-        return group;
+        return mActionBarCompatMenuGroup;
     }
 
 
@@ -235,7 +290,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
             actionButton.setLayoutParams(new LinearLayout.LayoutParams(
                     (int) mActivity.getResources().getDimension(R.dimen.actionbar_compat_button_width),
                     ViewGroup.LayoutParams.FILL_PARENT,
-                    mSplitBar ? 1f : 0f // have icons fill panel when using split bar
+                    mHasSplitBar ? 1f : 0f // have icons fill panel when using split bar
             ));
         }
         if (itemId == R.id.menu_refresh) {
@@ -246,7 +301,11 @@ public class ActionBarHelperBase extends ActionBarHelper {
         actionButton.setContentDescription(item.getTitle());
         actionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                mActivity.onMenuItemSelected(Window.FEATURE_OPTIONS_PANEL, item);
+                if (mActionMode != null) {
+                   mActionMode.onMenuClick(item);
+                } else {
+                    mActivity.onMenuItemSelected(Window.FEATURE_OPTIONS_PANEL, item);
+                }
             }
         });
 
@@ -295,8 +354,6 @@ public class ActionBarHelperBase extends ActionBarHelper {
                 actionBar.removeView(view);
             }
         }
-
-        mViewIds.clear();
     }
 
     /**
@@ -347,7 +404,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
                             showAsAction = parser.getAttributeIntValue(MENU_RES_NAMESPACE,
                                     MENU_ATTR_SHOW_AS_ACTION, -1);
-                            if ((showAsAction & (MenuItem.SHOW_AS_ACTION_ALWAYS + MenuItem.SHOW_AS_ACTION_IF_ROOM)) > 0) {
+                            if (includeMenuItem(showAsAction)) {
                                 mViewIds.add(itemId);
                             }
                             break;
@@ -370,5 +427,95 @@ public class ActionBarHelperBase extends ActionBarHelper {
             }
         }
 
+        private boolean includeMenuItem(int itemFlags) {
+            return mActionMode != null ||
+                    (itemFlags & (MenuItem.SHOW_AS_ACTION_ALWAYS + MenuItem.SHOW_AS_ACTION_IF_ROOM)) > 0;
+        }
+
     }
-}
+    
+    private class SupportActionMode extends ActionMode {
+        Callback mCallback;
+        Menu mMenu;
+        CharSequence mOldTitle;
+
+        private SupportActionMode(Callback callback) {
+            mCallback = callback;
+            mMenu = new SimpleMenu(mActivity);
+            mOldTitle = mTitleView.getText();
+            callback.onCreateActionMode(this, mMenu);
+        }
+
+        private void onMenuClick(MenuItem item) {
+            if (item.getItemId() == android.R.id.home) {
+                finish();
+            } else {
+                mCallback.onActionItemClicked(this, item);
+            }
+        }
+
+        @Override
+        public void setTitle(CharSequence title) {
+            mTitleView.setText(title);
+        }
+
+        @Override
+        public void setTitle(int resId) {
+            mTitleView.setText(mActivity.getString(resId));
+        }
+
+        @Override
+        public void setSubtitle(CharSequence subtitle) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void setSubtitle(int resId) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void setCustomView(View view) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void invalidate() {
+            mCallback.onPrepareActionMode(this, mMenu);
+            removeActionItems();
+            addMenuItems(mMenu);
+        }
+
+        @Override
+        public void finish() {
+            mCallback.onDestroyActionMode(this);
+            mTitleView.setText(mOldTitle);
+            onModeChange(false);
+        }
+
+        @Override
+        public Menu getMenu() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public CharSequence getTitle() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public CharSequence getSubtitle() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public View getCustomView() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public MenuInflater getMenuInflater() {
+            return new WrappedMenuInflater(mActivity, mActivity.getMenuInflater());
+        }
+    }
+ }

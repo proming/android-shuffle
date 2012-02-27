@@ -71,9 +71,17 @@ public abstract class ActionBarFragmentActivity extends RoboFragmentActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        boolean retValue = false;
-        retValue |= mActionBarHelper.onCreateOptionsMenu(menu);
-        retValue |= super.onCreateOptionsMenu(menu);
+        boolean retValue = true;
+        retValue &= mActionBarHelper.onCreateOptionsMenu(menu);
+        retValue &= super.onCreateOptionsMenu(menu);
+        return retValue;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean retValue = true;
+        retValue &= mActionBarHelper.onPrepareOptionsMenu(menu);
+        retValue &= super.onPrepareOptionsMenu(menu);
         return retValue;
     }
 

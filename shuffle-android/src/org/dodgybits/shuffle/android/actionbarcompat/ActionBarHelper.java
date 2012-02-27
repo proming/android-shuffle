@@ -76,6 +76,10 @@ public abstract class ActionBarHelper {
         return true;
     }
 
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return true;
+    }
+
     public void supportResetOptionsMenu() {
     }
 
