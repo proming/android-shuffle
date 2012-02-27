@@ -57,7 +57,6 @@ public class ContextListItem extends LinearLayout {
         int iconResource = icon.largeIconId;
         if (iconResource > 0) {
             mIcon.setImageResource(iconResource);
-            mIcon.setVisibility(View.VISIBLE);
 
             int bgColour = mTextColours.getBackgroundColour(context.getColourIndex());
             GradientDrawable drawable = DrawableUtils.createGradient(bgColour, GradientDrawable.Orientation.TOP_BOTTOM);

@@ -2,12 +2,13 @@ package org.dodgybits.shuffle.android.core.view;
 
 import android.content.res.Resources;
 import android.text.TextUtils;
+import org.dodgybits.android.shuffle.R;
 
 public class ContextIcon {
     private static final String cPackage = "org.dodgybits.android.shuffle"; 
     private static final String cType = "drawable";
     
-    public static final ContextIcon NONE = new ContextIcon(null, 0, 0);
+    public static final ContextIcon NONE = new ContextIcon(null, R.drawable.blank, R.drawable.blank_small);
     
     public final String iconName;
     public final int largeIconId;
