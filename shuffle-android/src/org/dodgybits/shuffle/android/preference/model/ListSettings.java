@@ -5,11 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.Flag;
-import roboguice.util.Ln;
 
 public class ListSettings {
-
+    private static final String TAG = "ListSettings";
+    
     public static final String LIST_PREFERENCES_UPDATED = "org.dodgybits.shuffle.android.LIST_PREFERENCES_UPDATE";
 
     public static final String LIST_FILTER_ACTIVE = ".list_active";
@@ -175,9 +176,15 @@ public class ListSettings {
         try {
             value = Flag.valueOf(valueStr);
         } catch (IllegalArgumentException e) {
-            Ln.e("Unrecognized flag setting %s for settings %s using default %s", valueStr, setting, defaultValue);
+            String message = String.format("Unrecognized flag setting %s for settings %s using default %s", 
+                    valueStr, setting, defaultValue);
+            Log.e(TAG, message);
         }
-        Ln.d("Got value %s for settings %s%s with default %s", value, mPrefix, setting, defaultValue);
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            String message = String.format("Got value %s for settings %s%s with default %s",
+                    value, mPrefix, setting, defaultValue);
+            Log.d(TAG, message);
+        }
         return value;
     }
 

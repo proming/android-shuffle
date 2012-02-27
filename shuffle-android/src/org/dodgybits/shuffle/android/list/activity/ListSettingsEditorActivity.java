@@ -6,12 +6,14 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.util.Constants;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
-import roboguice.util.Ln;
 
 public class ListSettingsEditorActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
+    private static final String TAG = "ListSettingsEditor";
+    
     private ListSettings mSettings;
     private boolean mPrefsChanged;
 
@@ -89,7 +91,8 @@ public class ListSettingsEditorActivity extends PreferenceActivity implements Pr
         return getResources().getIdentifier(id, Constants.cStringType, Constants.cPackage);
     }
 
-    private ListPreference createList(int entries, int title, String value, String keySuffix, Object defaultValue, boolean enabled) {
+    private ListPreference createList(
+            int entries, int title, String value, String keySuffix, Object defaultValue, boolean enabled) {
         ListPreference listPreference = new ListPreference(this);
         listPreference.setEntryValues(R.array.list_preferences_flag_values);
         listPreference.setEntries(entries);
@@ -106,7 +109,11 @@ public class ListSettingsEditorActivity extends PreferenceActivity implements Pr
             listPreference.setSummary(entryStrings[index]);
         }
 
-        Ln.d("Creating list preference key=%s value=%s default=%s title=%s", key, value, defaultValue, title);
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            String message = String.format("Creating list preference key=%s value=%s default=%s title=%s",
+                    key, value, defaultValue, title);
+            Log.d(TAG, message);
+        }
 
         return listPreference;
     }

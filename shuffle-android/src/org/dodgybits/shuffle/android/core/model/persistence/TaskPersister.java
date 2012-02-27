@@ -20,7 +20,6 @@ import org.dodgybits.shuffle.android.core.util.StringUtils;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import roboguice.inject.ContentResolverProvider;
 import roboguice.inject.ContextSingleton;
-import roboguice.util.Ln;
 
 import java.util.*;
 
@@ -33,7 +32,7 @@ import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Ta
 
 @ContextSingleton
 public class TaskPersister extends AbstractEntityPersister<Task> {
-    private static final String cTag = "TaskPersister";
+    private static final String TAG = "TaskPersister";
 
     private static final int ID_INDEX = 0;
     private static final int DESCRIPTION_INDEX = ID_INDEX + 1;
@@ -164,7 +163,9 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
 
         int rowsDeleted = 0;
         if (ids.size() > 0) {
-            Ln.i("About to delete tasks %s", ids);
+            if (Log.isLoggable(TAG, Log.DEBUG)) {
+                Log.d(TAG, "About to delete tasks " + ids);
+            }
             String queryString = "_id IN (" + StringUtils.join(ids, ",") + ")";
             rowsDeleted = mResolver.delete(getContentUri(), queryString, null);
             Map<String, String> params = new HashMap<String, String>(mFlurryParams);
@@ -177,7 +178,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
 
     public int deleteCompletedTasks() {
         int deletedRows = updateDeletedFlag(TaskProvider.Tasks.COMPLETE + " = 1", null, true);
-        Log.d(cTag, "Deleting " + deletedRows + " completed tasks.");
+        Log.d(TAG, "Deleting " + deletedRows + " completed tasks.");
         
         Map<String, String> params = new HashMap<String,String>(mFlurryParams);
         params.put(cFlurryCountParam, String.valueOf(deletedRows));
@@ -226,7 +227,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
     				TaskProvider.Tasks.DISPLAY_ORDER + " desc");
     		if (cursor.moveToFirst()) {
                 if (dueMillis > 0L) {
-                    Ln.d("Due date defined - finding best place to insert in project task list");
+                    Log.d(TAG, "Due date defined - finding best place to insert in project task list");
                     Map<Long,Integer> updateValues = new HashMap<Long,Integer>();
                     do {
                         long previousId = cursor.getLong(0);
@@ -234,7 +235,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
                         long previousDueDate = cursor.getLong(2);
                         if (previousDueDate > 0L && previousDueDate < dueMillis) {
                             order = previousOrder + 1;
-                            Ln.d("Placing after task %d with earlier due date", previousId);
+                            Log.d(TAG, "Placing after task with earlier due date " + previousId);
                             break;
                         }
                         updateValues.put(previousId, previousOrder + 1);

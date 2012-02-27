@@ -1,12 +1,17 @@
 package org.dodgybits.shuffle.android.widget;
 
-import static org.dodgybits.shuffle.android.core.util.Constants.cIdType;
-import static org.dodgybits.shuffle.android.core.util.Constants.cPackage;
-import static org.dodgybits.shuffle.android.core.util.Constants.cStringType;
-
-import java.util.Arrays;
-import java.util.HashMap;
-
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.ContentUris;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
+import android.util.Log;
+import android.view.View;
+import android.widget.RemoteViews;
+import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Project;
@@ -23,21 +28,14 @@ import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
-import roboguice.util.Ln;
-import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
-import android.content.ContentUris;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
-import android.view.View;
-import android.widget.RemoteViews;
+import java.util.Arrays;
+import java.util.HashMap;
 
-import com.google.inject.Inject;
+import static org.dodgybits.shuffle.android.core.util.Constants.*;
 
 public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
+    private static final String TAG = "AbstractWidgetProvider";
+    
     private static final HashMap<String,Integer> sIdCache = new HashMap<String,Integer>();
 
     @Inject TaskPersister mTaskPersister;
@@ -67,7 +65,7 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
 
     @Override
     public void onUpdate(android.content.Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Ln.d("onUpdate");
+        Log.d(TAG, "onUpdate");
         ComponentName thisWidget = new ComponentName(context, getClass());
         int[] localAppWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
         Arrays.sort(localAppWidgetIds);
@@ -78,17 +76,24 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
             if (Arrays.binarySearch(localAppWidgetIds, appWidgetId) >= 0) {
                 String prefKey = Preferences.getWidgetQueryKey(appWidgetId);
                 String queryName = Preferences.getWidgetQuery(context, prefKey);
-                Ln.d("App widget %s found query %s for key %s", appWidgetId, queryName, prefKey);
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    String message = String.format("App widget %s found query %s for key %s", 
+                            appWidgetId, queryName, prefKey);
+                    Log.d(TAG, message);
+                }
                 updateAppWidget(context, appWidgetManager, appWidgetId, queryName);
             } else {
-                Ln.d("App widget %s not handled by this provider %s", appWidgetId, getClass());
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    String message = String.format("App widget %s not handled by this provider %s", appWidgetId, getClass());
+                    Log.d(TAG, message);
+                }
             }
         }
     }
 
     @Override
     public void onDeleted(android.content.Context context, int[] appWidgetIds) {
-        Ln.d("onDeleted");
+        Log.d(TAG, "onDeleted");
         // When the user deletes the widget, delete the preference associated with it.
         final int N = appWidgetIds.length;
         SharedPreferences.Editor editor = Preferences.getEditor(context);
@@ -109,7 +114,11 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
 
     private void updateAppWidget(final android.content.Context androidContext, AppWidgetManager appWidgetManager,
             int appWidgetId, String queryName) {
-        Ln.d("updateAppWidget appWidgetId=%s queryName=%s provider=%s", appWidgetId, queryName, getClass());
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            String message = String.format("updateAppWidget appWidgetId=%s queryName=%s provider=%s", 
+                    appWidgetId, queryName, getClass());
+            Log.d(TAG, message);
+        }
 
         RemoteViews views = new RemoteViews(androidContext.getPackageName(), getWidgetLayoutId());
 
@@ -141,7 +150,9 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
                 ContentUris.appendId(builder, task.getLocalId().getId());
                 Uri taskUri = builder.build();
                 Intent intent = new Intent(Intent.ACTION_VIEW, taskUri);
-                Ln.d("Adding pending event for viewing uri %s", taskUri);
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    Log.d(TAG, "Adding pending event for viewing uri " + taskUri);
+                }
                 int entryId = getIdIdentifier(androidContext, "entry_" + taskCount);
                 PendingIntent pendingIntent = PendingIntent.getActivity(androidContext, 0, intent, 0);
                 views.setOnClickPendingIntent(entryId, pendingIntent);
@@ -216,14 +227,18 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
             if (id == 0) return id;
             sIdCache.put(name, id);
         }
-        Ln.d("Got id " + id + " for resource " + name);
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            Log.d(TAG, "Got id " + id + " for resource " + name);
+        }
         return id;
     }
 
     static int getIdentifier(android.content.Context context, String name, String type) {
         int id = context.getResources().getIdentifier(
                     name, type, cPackage);
-        Ln.d("Got id " + id + " for resource " + name);
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            Log.d(TAG, "Got id " + id + " for resource " + name);
+        }
         return id;
     }
 

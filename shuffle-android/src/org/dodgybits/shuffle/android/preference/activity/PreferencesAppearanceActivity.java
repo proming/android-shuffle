@@ -16,12 +16,16 @@
 
 package org.dodgybits.shuffle.android.preference.activity;
 
-import static org.dodgybits.shuffle.android.preference.model.Preferences.DISPLAY_CONTEXT_ICON_KEY;
-import static org.dodgybits.shuffle.android.preference.model.Preferences.DISPLAY_CONTEXT_NAME_KEY;
-import static org.dodgybits.shuffle.android.preference.model.Preferences.DISPLAY_DETAILS_KEY;
-import static org.dodgybits.shuffle.android.preference.model.Preferences.DISPLAY_DUE_DATE_KEY;
-import static org.dodgybits.shuffle.android.preference.model.Preferences.DISPLAY_PROJECT_KEY;
-
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.text.format.DateUtils;
+import android.util.Log;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout;
+import android.widget.TableRow.LayoutParams;
+import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
 import org.dodgybits.shuffle.android.core.model.Context;
@@ -32,21 +36,13 @@ import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.InitialDataGenerator;
 import org.dodgybits.shuffle.android.list.old.view.TaskView;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
-
 import roboguice.inject.InjectView;
-import roboguice.util.Ln;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.text.format.DateUtils;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout;
-import android.widget.TableRow.LayoutParams;
 
-import com.google.inject.Inject;
+import static org.dodgybits.shuffle.android.preference.model.Preferences.*;
 
 public class PreferencesAppearanceActivity extends FlurryEnabledActivity  {
+    private static final String TAG = "PreferencesAppearance";
+
     private TaskView mTaskView;
     private Task mSampleTask;
     private Project mSampleProject;
@@ -142,7 +138,7 @@ public class PreferencesAppearanceActivity extends FlurryEnabledActivity  {
     }
     
 	private void readPrefs() {
-		Ln.d("Settings prefs controls");
+		Log.d(TAG, "Settings prefs controls");
 		mDisplayIcon = Preferences.displayContextIcon(this);
 		mDisplayContext = Preferences.displayContextName(this);
 		mDisplayDueDate = Preferences.displayDueDate(this);
@@ -157,7 +153,7 @@ public class PreferencesAppearanceActivity extends FlurryEnabledActivity  {
 	}
 	
 	private void revertPrefs() {
-		Ln.d("Reverting prefs");
+		Log.d(TAG, "Reverting prefs");
 		SharedPreferences.Editor ed = Preferences.getEditor(this);
 		ed.putBoolean(DISPLAY_CONTEXT_ICON_KEY, mDisplayIcon);
 		ed.putBoolean(DISPLAY_CONTEXT_NAME_KEY, mDisplayContext);
@@ -168,7 +164,7 @@ public class PreferencesAppearanceActivity extends FlurryEnabledActivity  {
 	}
 	
 	private void savePrefs() {
-		Ln.d("Saving prefs");
+		Log.d(TAG, "Saving prefs");
 		SharedPreferences.Editor ed = Preferences.getEditor(this);
 		ed.putBoolean(DISPLAY_CONTEXT_ICON_KEY, mDisplayIconCheckbox.isChecked());
 		ed.putBoolean(DISPLAY_CONTEXT_NAME_KEY, mDisplayContextCheckbox.isChecked());

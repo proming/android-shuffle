@@ -16,19 +16,18 @@
 
 package org.dodgybits.shuffle.android.preference.activity;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 
-import roboguice.util.Ln;
-import android.os.Bundle;
-import android.widget.Toast;
-
-import com.google.inject.Inject;
-
 public class PreferencesPermanentlyDeleteActivity extends PreferencesDeleteActivity {
-
+    private static final String TAG = "PrefsPermDelete";
+    
     @Inject private TaskPersister mTaskPersister;
     @Inject private ProjectPersister mProjectPersister;
     @Inject private ContextPersister mContextPersister;
@@ -49,7 +48,11 @@ public class PreferencesPermanentlyDeleteActivity extends PreferencesDeleteActiv
         int projectCount = mProjectPersister.emptyTrash();
         int contextCount = mContextPersister.emptyTrash();
 
-        Ln.i("Permanently deleted %s tasks, %s contexts and %s projects", taskCount, contextCount, projectCount);
+        if (Log.isLoggable(TAG, Log.INFO)) {
+            String message = String.format("Permanently deleted %s tasks, %s contexts and %s projects",
+                    taskCount, contextCount, projectCount);
+            Log.i(TAG, message);
+        }
         CharSequence message = getString(R.string.toast_empty_trash, new Object[] {taskCount, contextCount, projectCount});
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     	finish();

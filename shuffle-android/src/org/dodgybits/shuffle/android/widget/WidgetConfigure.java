@@ -1,26 +1,27 @@
 package org.dodgybits.shuffle.android.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.appwidget.AppWidgetManager;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.view.IconArrayAdapter;
 import org.dodgybits.shuffle.android.list.old.config.StandardTaskQueries;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
-
 import roboguice.activity.RoboListActivity;
-import roboguice.util.Ln;
-import android.appwidget.AppWidgetManager;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The configuration screen for the DarkWidgetProvider widget.
  */
 public class WidgetConfigure extends RoboListActivity {
+    private static final String TAG = "WidgetConfigure";
+    
     private static final int NEXT_TASKS = 0;
     private static final int DUE_TODAY = 1;
     private static final int DUE_NEXT_WEEK = 2;
@@ -89,7 +90,10 @@ public class WidgetConfigure extends RoboListActivity {
         String queryName = queryValue(position);
         Preferences.getEditor(this).putString(key, queryName).commit();
 
-        Ln.d("Saving query %s under key %s", queryName, key);
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            String message = String.format("Saving query %s under key %s", queryName, key);
+            Log.d(TAG, message);
+        }
 
         // let widget update itself (suggested approach of calling updateAppWidget did nothing)
         Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);

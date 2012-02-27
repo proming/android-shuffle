@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,12 +29,12 @@ import org.dodgybits.shuffle.android.list.old.view.LabelView;
 import org.dodgybits.shuffle.android.list.view.StatusView;
 import roboguice.event.EventManager;
 import roboguice.fragment.RoboFragment;
-import roboguice.util.Ln;
 
 public class TaskViewFragment extends RoboFragment implements View.OnClickListener {
+    private static final String TAG = "TaskViewFragment";
+
     public static final String SELECTED_INDEX = "selectedIndex";
     public static final String ARG_LIST_CONTEXT = "taskListContext";
-
 
     public static final String INDEX = "TaskViewFragment.index";
     public static final String COUNT = "TaskViewFragment.count";
@@ -138,12 +139,12 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
                 getActivity().finish();
                 return true;
             case R.id.action_edit:
-                Ln.d("Editing the action");
+                Log.d(TAG, "Editing the action");
                 mEventManager.fire(new EditTaskEvent(mTask.getLocalId()));
                 getActivity().finish();
                 return true;
             case R.id.action_delete:
-                Ln.d("Deleting task");
+                Log.d(TAG, "Deleting task");
                 mEventManager.fire(new UpdateTasksDeletedEvent(mTask.getLocalId().getId(), !mTask.isDeleted()));
                 getActivity().finish();
                 return true;

@@ -1,18 +1,19 @@
 package org.dodgybits.shuffle.android.persistence.migrations;
 
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.DISPLAY_ORDER;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import roboguice.util.Ln;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
+import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.DISPLAY_ORDER;
 
 public class V16Migration implements Migration {
+    private static final String TAG = "V16Migration";
 
 	@Override
 	public void migrate(SQLiteDatabase db) {
@@ -47,9 +48,14 @@ public class V16Migration implements Migration {
             }
 
             if (newOrder != displayOrder) {
-                Ln.d("Updating task %1$d displayOrder from %2$d to %3$d", id, displayOrder, newOrder);
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    String message = String.format("Updating task %1$d displayOrder from %2$d to %3$d",
+                            id, displayOrder, newOrder);
+                    Log.d(TAG, message);
+                }
                 updatedValues.put(String.valueOf(id), newOrder);
             }
+
         }
         c.close();
 

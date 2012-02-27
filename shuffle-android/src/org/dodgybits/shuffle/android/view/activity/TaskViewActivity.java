@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.MenuItem;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
@@ -34,12 +35,12 @@ import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
 import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-import roboguice.util.Ln;
 
 /**
  * A generic activity for viewing a task.
  */
 public class TaskViewActivity extends ActionBarFragmentActivity {
+    private static final String TAG = "TaskViewActivity";
 
     @Inject private TaskPersister mPersister;
     @Inject private TaskEncoder mEncoder;
@@ -56,7 +57,7 @@ public class TaskViewActivity extends ActionBarFragmentActivity {
 
     @Override
     protected void onCreate(Bundle icicle) {
-        Ln.d("onCreate+");
+        Log.d(TAG, "onCreate+");
         super.onCreate(icicle);
 
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
@@ -86,7 +87,7 @@ public class TaskViewActivity extends ActionBarFragmentActivity {
         Bundle args = new Bundle();
         mEncoder.save(args, mTask);
 
-        Ln.d("Adding task view fragment to activity");
+        Log.d(TAG, "Adding task view fragment to activity");
 
         TaskViewFragment viewFragment = TaskViewFragment.newInstance(args);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
