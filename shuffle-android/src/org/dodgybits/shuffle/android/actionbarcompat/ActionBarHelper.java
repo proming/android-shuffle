@@ -21,8 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
-import org.dodgybits.android.shuffle.R;
 
 /**
  * An abstract class that handles some common action bar-related functionality in the app. This
@@ -34,6 +32,56 @@ import org.dodgybits.android.shuffle.R;
  * in Android 3.0 and later.
  */
 public abstract class ActionBarHelper {
+    /**
+     * Standard navigation mode. Consists of either a logo or icon
+     * and title text with an optional subtitle. Clicking any of these elements
+     * will dispatch onOptionsItemSelected to the host Activity with
+     * a MenuItem with item ID android.R.id.home.
+     */
+    public static final int NAVIGATION_MODE_STANDARD = 0;
+
+    /**
+     * List navigation mode. Instead of static title text this mode
+     * presents a list menu for navigation within the activity.
+     * e.g. this might be presented to the user as a dropdown list.
+     */
+    public static final int NAVIGATION_MODE_LIST = 1;
+
+    /**
+     * Use logo instead of icon if available. This flag will cause appropriate
+     * navigation modes to use a wider logo in place of the standard icon.
+     *
+     * @see #setDisplayOptions(int)
+     */
+    public static final int DISPLAY_USE_LOGO = 0x1;
+
+    /**
+     * Show 'home' elements in this action bar, leaving more space for other
+     * navigation elements. This includes logo and icon.
+     *
+     * @see #setDisplayOptions(int)
+     */
+    public static final int DISPLAY_SHOW_HOME = 0x2;
+
+    /**
+     * Display the 'home' element such that it appears as an 'up' affordance.
+     * e.g. show an arrow to the left indicating the action that will be taken.
+     *
+     * Set this flag if selecting the 'home' button in the action bar to return
+     * up by a single level in your UI rather than back to the top level or front page.
+     *
+     * @see #setDisplayOptions(int)
+     */
+    public static final int DISPLAY_HOME_AS_UP = 0x4;
+
+    /**
+     * Show the activity title and subtitle, if present.
+     *
+     * @see #setDisplayOptions(int)
+     */
+    public static final int DISPLAY_SHOW_TITLE = 0x8;
+
+
     protected Activity mActivity;
 
     /**
@@ -83,6 +131,9 @@ public abstract class ActionBarHelper {
     public void supportResetOptionsMenu() {
     }
 
+    public void setDisplayOptions(int options) {
+    }
+
     /**
      * Action bar helper code to be run in {@link android.app.Activity#onTitleChanged(CharSequence, int)}.
      */
@@ -90,7 +141,7 @@ public abstract class ActionBarHelper {
     }
 
     /**
-     * Sets the indeterminate loading state of the item with ID {@link R.id.menu_refresh}.
+     * Sets the indeterminate loading state of the item with ID R.id.menu_refresh.
      * (where the item ID was menu_refresh).
      */
     public abstract void setRefreshActionItemState(boolean refreshing);

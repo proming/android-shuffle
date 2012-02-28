@@ -1,6 +1,5 @@
 package org.dodgybits.shuffle.android.list.activity;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,8 +12,8 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarHelper;
 import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
-import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.event.ViewPreferencesEvent;
 import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
 import org.dodgybits.shuffle.android.list.listener.NavigationListener;
@@ -63,15 +62,9 @@ public class EntityListsActivity extends ActionBarFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_pager);
 
-        if (OSUtils.atLeastHoneycomb())
-        {
-            ActionBar bar = getActionBar();
-            if (bar != null) {
-                bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP |
-                        ActionBar.DISPLAY_SHOW_HOME |
-                        ActionBar.DISPLAY_SHOW_TITLE);
-            }
-        }
+        getActionBarHelper().setDisplayOptions(ActionBarHelper.DISPLAY_HOME_AS_UP |
+                ActionBarHelper.DISPLAY_SHOW_HOME |
+                ActionBarHelper.DISPLAY_SHOW_TITLE);
 
         initFragments();
 

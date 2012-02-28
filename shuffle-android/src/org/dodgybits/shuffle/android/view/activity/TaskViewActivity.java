@@ -16,7 +16,6 @@
 
 package org.dodgybits.shuffle.android.view.activity;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -27,11 +26,11 @@ import android.view.MenuItem;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarHelper;
 import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
-import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
 import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
@@ -63,15 +62,9 @@ public class TaskViewActivity extends ActionBarFragmentActivity {
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
         setContentView(R.layout.fragment_container);
 
-        if (OSUtils.atLeastHoneycomb())
-        {
-            ActionBar bar = getActionBar();
-            if (bar != null) {
-                bar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP |
-                        ActionBar.DISPLAY_SHOW_HOME |
-                        ActionBar.DISPLAY_SHOW_TITLE);
-            }
-        }
+        getActionBarHelper().setDisplayOptions(ActionBarHelper.DISPLAY_HOME_AS_UP |
+                ActionBarHelper.DISPLAY_SHOW_HOME |
+                ActionBarHelper.DISPLAY_SHOW_TITLE);
 
         mUri = getIntent().getData();
         loadCursor();

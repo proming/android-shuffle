@@ -16,6 +16,7 @@
 
 package org.dodgybits.shuffle.android.actionbarcompat;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.view.*;
@@ -68,6 +69,14 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
     @Override
     public void startSupportedActionMode(final ActionMode.Callback callback) {
         mActivity.startActionMode(new CallbackWrapper(callback));
+    }
+
+    @Override
+    public void setDisplayOptions(int options) {
+        ActionBar bar = mActivity.getActionBar();
+        if (bar != null) {
+            bar.setDisplayOptions(options);
+        }
     }
 
     class CallbackWrapper implements android.view.ActionMode.Callback {
