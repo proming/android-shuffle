@@ -58,7 +58,8 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
     private ImageButton mHomeButton = null;
     private TextView mTitleView;
-
+    private Spinner mSpinner;
+    
     private boolean mInitialized = false;
 
     private boolean mHasSplitBar = false;
@@ -68,6 +69,10 @@ public class ActionBarHelperBase extends ActionBarHelper {
     protected Set<Integer> mViewIds = new HashSet<Integer>();
 
     private int mNavigationMode = ActionBarHelper.NAVIGATION_MODE_STANDARD;
+    
+    private int mDisplayOptions = 0;
+    
+    private OnNavigationListener mNavigationListener;
     
     protected ActionBarHelperBase(Activity activity) {
         super(activity);
@@ -169,12 +174,12 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
     @Override
     public int getDisplayOptions() {
-        return 0;
+        return mDisplayOptions;
     }
 
     @Override
     public void setDisplayOptions(int options) {
-        super.setDisplayOptions(options);
+        mDisplayOptions = options;
     }
 
     @Override
@@ -185,25 +190,38 @@ public class ActionBarHelperBase extends ActionBarHelper {
     @Override
     public void setNavigationMode(int mode) {
         mNavigationMode = mode;
+        updateTitleVisibility();
     }
 
+
     @Override
-    public void setListNavigationCallbacks(SpinnerAdapter adapter, OnNavigationListener callback) {
-        // TODO - replace title with adaptor
+    public void setListNavigationCallbacks(SpinnerAdapter adapter, final OnNavigationListener callback) {
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                callback.onNavigationItemSelected(position, id);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     @Override
     public void setSelectedNavigationItem(int position) {
+        mSpinner.setSelection(position, false);
     }
 
     @Override
     public int getSelectedNavigationIndex() {
-        return 0;
+        return mSpinner.getSelectedItemPosition();
     }
 
     @Override
     public int getNavigationItemCount() {
-        return 0;
+        return mSpinner.getCount();
     }
 
     private void init() {
@@ -253,6 +271,9 @@ public class ActionBarHelperBase extends ActionBarHelper {
         mTitleView.setText(mActivity.getTitle());
         actionBarCompat.addView(mTitleView);
 
+        mSpinner = new Spinner(mActivity);
+        mSpinner.setLayoutParams(springLayoutParams);
+
         final ViewGroup actionBarCompatMenu = getActionBarCompatMenuGroup();
         mHasSplitBar = actionBarCompatMenu != actionBarCompat;
         if (mHasSplitBar) {
@@ -276,7 +297,18 @@ public class ActionBarHelperBase extends ActionBarHelper {
             mHomeButton.setImageResource(R.drawable.shuffle_icon);
             mActionMode = null;
         }
+        updateTitleVisibility();
         supportResetOptionsMenu();
+    }
+
+    private void updateTitleVisibility() {
+        final ViewGroup actionBarCompat = getActionBarCompatTitleGroup();
+        actionBarCompat.removeViewAt(1);
+        if (mActionMode != null || mNavigationMode == ActionBarHelper.NAVIGATION_MODE_STANDARD) {
+            actionBarCompat.addView(mTitleView, 1);
+        } else {
+            actionBarCompat.addView(mSpinner, 1);
+        }
     }
 
     /**

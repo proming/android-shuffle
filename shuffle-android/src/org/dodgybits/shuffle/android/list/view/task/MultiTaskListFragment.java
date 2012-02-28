@@ -7,6 +7,7 @@ import android.widget.SpinnerAdapter;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.dodgybits.shuffle.android.actionbarcompat.ActionBarHelper;
+import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListTitles;
 
@@ -33,7 +34,8 @@ public class MultiTaskListFragment extends TaskListFragment {
                 return getString(ListTitles.getTitleId(input));
             }
         });
-        mAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, names);
+        int spinnerResId = OSUtils.atLeastHoneycomb() ? android.R.layout.simple_spinner_dropdown_item : android.R.layout.simple_list_item_1;
+        mAdapter = new ArrayAdapter(getActivity(), spinnerResId, names);
         mListener = new ActionBarHelper.OnNavigationListener() {
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
