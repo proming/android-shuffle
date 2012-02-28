@@ -273,8 +273,8 @@ public class TaskListFragment extends RoboListFragment
         if (getUserVisibleHint()) {
             updateTitle();
             getActionBarFragmentActivity().supportResetOptionsMenu();
-            updateSelectionMode();
         }
+        updateSelectionMode();
     }
 
     private void updateTitle() {
