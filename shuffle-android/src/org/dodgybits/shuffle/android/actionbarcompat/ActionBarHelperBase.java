@@ -175,20 +175,17 @@ public class ActionBarHelperBase extends ActionBarHelper {
         }
     }
 
-    /**
-     * Action bar helper code to be run in {@link Activity#onCreateOptionsMenu(android.view.Menu)}.
-     * <p/>
-     * NOTE: This code will mark on-screen menu items as invisible.
-     */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(Menu menu) {
         // Hides on-screen action items from the options menu.
-        for (Integer id : mViewIds) {
-            MenuItem item = menu.findItem(id);
-            if (item != null) {
-                item.setVisible(false);
-            } else {
-                Log.e(TAG, "Couldn't find menu id " + id + " in menu " + menu);
+        if (!(menu instanceof SimpleMenu)) {
+            for (Integer id : mViewIds) {
+                MenuItem item = menu.findItem(id);
+                if (item != null) {
+                    item.setVisible(false);
+                } else {
+                    Log.e(TAG, "Couldn't find menu id " + id + " in menu " + menu);
+                }
             }
         }
         return true;
