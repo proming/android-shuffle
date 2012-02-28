@@ -19,8 +19,8 @@ public class TaskListContext implements Parcelable {
     public static final String CONTEXT_IDS = "contextIds";
     public static final String PROJECT_IDS = "projectIds";
 
-    private final TaskSelector mSelector;
-    private final int mTitleId;
+    protected TaskSelector mSelector;
+    protected int mTitleId;
 
     public static final Parcelable.Creator<TaskListContext> CREATOR
             = new Parcelable.Creator<TaskListContext>() {
@@ -59,7 +59,7 @@ public class TaskListContext implements Parcelable {
         return new TaskListContext(selector, ListTitles.getTitleId(query));
     }
 
-    private TaskListContext(TaskSelector selector, int titleId) {
+    protected TaskListContext(TaskSelector selector, int titleId) {
         mSelector = selector;
         mTitleId = titleId;
     }

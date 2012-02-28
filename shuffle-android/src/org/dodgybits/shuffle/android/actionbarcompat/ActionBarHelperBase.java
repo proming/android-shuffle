@@ -67,6 +67,8 @@ public class ActionBarHelperBase extends ActionBarHelper {
     
     protected Set<Integer> mViewIds = new HashSet<Integer>();
 
+    private int mNavigationMode = ActionBarHelper.NAVIGATION_MODE_STANDARD;
+    
     protected ActionBarHelperBase(Activity activity) {
         super(activity);
     }
@@ -101,60 +103,6 @@ public class ActionBarHelperBase extends ActionBarHelper {
             addMenuItems(menu);
         } else {
             mActionMode.invalidate();
-        }
-    }
-
-    private void init() {
-        if (!mInitialized) {
-            mActivity.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-                    R.layout.actionbar_compat);
-            setupActionBar();
-            supportResetOptionsMenu();
-            mInitialized = true;
-        }
-    }
-
-    private void addMenuItems(Menu menu) {
-        for (int i = 0; i < menu.size(); i++) {
-            SimpleMenuItem item = (SimpleMenuItem)menu.getItem(i);
-            if (mViewIds.contains(item.getItemId())) {
-                addActionItemCompatFromMenuItem(item, true);
-            }
-        }
-    }
-
-    /**
-     * Sets up the compatibility action bar with the given title.
-     */
-    private void setupActionBar() {
-        Log.d(TAG, "Setting up action bar");
-
-        final ViewGroup actionBarCompat = getActionBarCompatTitleGroup();
-        if (actionBarCompat == null) {
-            return;
-        }
-
-        LinearLayout.LayoutParams springLayoutParams = new LinearLayout.LayoutParams(
-                0, ViewGroup.LayoutParams.FILL_PARENT);
-        springLayoutParams.weight = 1;
-
-        // Add Home button
-        SimpleMenu tempMenu = new SimpleMenu(mActivity);
-        SimpleMenuItem homeItem = new SimpleMenuItem(
-                tempMenu, android.R.id.home, 0, mActivity.getString(R.string.app_name));
-        homeItem.setIcon(R.drawable.shuffle_icon);
-        mHomeButton = (ImageButton) addActionItemCompatFromMenuItem(homeItem, false);
-
-        // Add title text
-        mTitleView = new TextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
-        mTitleView.setLayoutParams(springLayoutParams);
-        mTitleView.setText(mActivity.getTitle());
-        actionBarCompat.addView(mTitleView);
-
-        final ViewGroup actionBarCompatMenu = getActionBarCompatMenuGroup();
-        mHasSplitBar = actionBarCompatMenu != actionBarCompat;
-        if (mHasSplitBar) {
-            actionBarCompatMenu.setVisibility(View.VISIBLE);
         }
     }
 
@@ -218,6 +166,100 @@ public class ActionBarHelperBase extends ActionBarHelper {
         mActionMode = new SupportActionMode(callback);
         onModeChange(true);
     }
+
+    @Override
+    public int getDisplayOptions() {
+        return 0;
+    }
+
+    @Override
+    public void setDisplayOptions(int options) {
+        super.setDisplayOptions(options);
+    }
+
+    @Override
+    public int getNavigationMode() {
+        return mNavigationMode;
+    }
+
+    @Override
+    public void setNavigationMode(int mode) {
+        mNavigationMode = mode;
+    }
+
+    @Override
+    public void setListNavigationCallbacks(SpinnerAdapter adapter, OnNavigationListener callback) {
+        // TODO - replace title with adaptor
+    }
+
+    @Override
+    public void setSelectedNavigationItem(int position) {
+    }
+
+    @Override
+    public int getSelectedNavigationIndex() {
+        return 0;
+    }
+
+    @Override
+    public int getNavigationItemCount() {
+        return 0;
+    }
+
+    private void init() {
+        if (!mInitialized) {
+            mActivity.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+                    R.layout.actionbar_compat);
+            setupActionBar();
+            supportResetOptionsMenu();
+            mInitialized = true;
+        }
+    }
+
+    private void addMenuItems(Menu menu) {
+        for (int i = 0; i < menu.size(); i++) {
+            SimpleMenuItem item = (SimpleMenuItem)menu.getItem(i);
+            if (mViewIds.contains(item.getItemId())) {
+                addActionItemCompatFromMenuItem(item, true);
+            }
+        }
+    }
+
+    /**
+     * Sets up the compatibility action bar with the given title.
+     */
+    private void setupActionBar() {
+        Log.d(TAG, "Setting up action bar");
+
+        final ViewGroup actionBarCompat = getActionBarCompatTitleGroup();
+        if (actionBarCompat == null) {
+            return;
+        }
+
+        LinearLayout.LayoutParams springLayoutParams = new LinearLayout.LayoutParams(
+                0, ViewGroup.LayoutParams.FILL_PARENT);
+        springLayoutParams.weight = 1;
+
+        // Add Home button
+        SimpleMenu tempMenu = new SimpleMenu(mActivity);
+        SimpleMenuItem homeItem = new SimpleMenuItem(
+                tempMenu, android.R.id.home, 0, mActivity.getString(R.string.app_name));
+        homeItem.setIcon(R.drawable.shuffle_icon);
+        mHomeButton = (ImageButton) addActionItemCompatFromMenuItem(homeItem, false);
+
+        // Add title text
+        mTitleView = new TextView(mActivity, null, R.attr.actionbarCompatTitleStyle);
+        mTitleView.setLayoutParams(springLayoutParams);
+        mTitleView.setText(mActivity.getTitle());
+        actionBarCompat.addView(mTitleView);
+
+        final ViewGroup actionBarCompatMenu = getActionBarCompatMenuGroup();
+        mHasSplitBar = actionBarCompatMenu != actionBarCompat;
+        if (mHasSplitBar) {
+            actionBarCompatMenu.setVisibility(View.VISIBLE);
+        }
+    }
+    
     
     private void onModeChange(boolean actionMode) {
         if (actionMode) {

@@ -31,7 +31,7 @@ public abstract class ActionBarFragmentActivity extends RoboFragmentActivity {
     /**
      * Returns the {@link ActionBarHelper} for this activity.
      */
-    protected ActionBarHelper getActionBarHelper() {
+    public ActionBarHelper getActionBarHelper() {
         return mActionBarHelper;
     }
 

@@ -51,7 +51,7 @@ public class TaskListFragment extends RoboListFragment
 
     private boolean mIsFirstLoad;
 
-    /** ID of the message to hightlight. */
+    /** ID of the message to highlight. */
     private long mSelectedTaskId = -1;
 
     @Inject
@@ -83,12 +83,6 @@ public class TaskListFragment extends RoboListFragment
     @Inject
     EntityCache<Project> mProjectCache;
 
-    /**
-     * The context describing the contents to be shown in the list.
-     * Do not use directly; instead, use the getters.
-     * <p><em>NOTE:</em> Although we cannot force these to be immutable using Java language
-     * constructs, this <em>must</em> be considered immutable.
-     */
     private TaskListContext mListContext;
 
     private void initializeArgCache() {
@@ -96,12 +90,10 @@ public class TaskListFragment extends RoboListFragment
         mListContext = getArguments().getParcelable(ARG_LIST_CONTEXT);
     }
 
-    private ActionBarFragmentActivity getActionBarFragmentActivity() {
+    protected ActionBarFragmentActivity getActionBarFragmentActivity() {
         return (ActionBarFragmentActivity)getActivity();
     }
-    /**
-     * When creating, retrieve this instance's number from its arguments.
-     */
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +104,6 @@ public class TaskListFragment extends RoboListFragment
 
         mListAdapter.setCallback(this);
         mIsFirstLoad = true;
-
     }
 
     @Override
@@ -278,12 +269,12 @@ public class TaskListFragment extends RoboListFragment
         }
     }
 
-    private void onVisibilityChange() {
+    protected void onVisibilityChange() {
         if (getUserVisibleHint()) {
             updateTitle();
             getActionBarFragmentActivity().supportResetOptionsMenu();
+            updateSelectionMode();
         }
-        updateSelectionMode();
     }
 
     private void updateTitle() {
@@ -296,7 +287,7 @@ public class TaskListFragment extends RoboListFragment
         lm.initLoader(LOADER_ID_TASK_LIST_LOADER, null, LOADER_CALLBACKS);
     }
 
-    private void restartLoading() {
+    protected void restartLoading() {
         Log.d(TAG, "Refreshing list cursor");
         final LoaderManager lm = getLoaderManager();
         lm.restartLoader(LOADER_ID_TASK_LIST_LOADER, null, LOADER_CALLBACKS);

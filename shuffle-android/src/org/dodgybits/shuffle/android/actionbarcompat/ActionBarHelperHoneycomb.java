@@ -20,6 +20,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.view.*;
+import android.widget.SpinnerAdapter;
 import org.dodgybits.android.shuffle.R;
 
 /**
@@ -68,23 +69,56 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
     @Override
     public void startSupportedActionMode(final ActionMode.Callback callback) {
-        mActivity.startActionMode(new CallbackWrapper(callback));
+        mActivity.startActionMode(new ActionModeCallbackWrapper(callback));
+    }
+
+    @Override
+    public int getDisplayOptions() {
+        return mActivity.getActionBar().getDisplayOptions();
     }
 
     @Override
     public void setDisplayOptions(int options) {
         ActionBar bar = mActivity.getActionBar();
-        if (bar != null) {
-            bar.setDisplayOptions(options);
-        }
+        bar.setDisplayOptions(options);
     }
 
-    class CallbackWrapper implements android.view.ActionMode.Callback {
+    @Override
+    public int getNavigationMode() {
+        return mActivity.getActionBar().getNavigationMode();
+    }
+
+    @Override
+    public void setNavigationMode(int mode) {
+        mActivity.getActionBar().setNavigationMode(mode);
+    }
+
+    @Override
+    public void setListNavigationCallbacks(SpinnerAdapter adapter, OnNavigationListener callback) {
+        mActivity.getActionBar().setListNavigationCallbacks(adapter, new NavigationCallbackWrapper(callback));
+    }
+
+    @Override
+    public void setSelectedNavigationItem(int position) {
+        mActivity.getActionBar().setSelectedNavigationItem(position);
+    }
+
+    @Override
+    public int getSelectedNavigationIndex() {
+        return mActivity.getActionBar().getSelectedNavigationIndex();
+    }
+
+    @Override
+    public int getNavigationItemCount() {
+        return mActivity.getActionBar().getNavigationItemCount();
+    }
+
+    class ActionModeCallbackWrapper implements android.view.ActionMode.Callback {
 
         private ActionMode.Callback mCallback;
         private ActionModeWrapper mActionModeWrapper;
 
-        CallbackWrapper(ActionMode.Callback callback) {
+        ActionModeCallbackWrapper(ActionMode.Callback callback) {
             mCallback = callback;
             mActionModeWrapper = new ActionModeWrapper();
         }
@@ -202,7 +236,20 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
             return true;
         }
     }
+    
+    private class NavigationCallbackWrapper implements ActionBar.OnNavigationListener {
+        private OnNavigationListener mWrapped;
 
+        private NavigationCallbackWrapper(OnNavigationListener wrapped) {
+            mWrapped = wrapped;
+        }
+
+        @Override
+        public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+            return mWrapped.onNavigationItemSelected(itemPosition, itemId);
+        }
+    }
+    
     /**
      * Returns a {@link android.content.Context} suitable for inflating layouts for the action bar. The
      * implementation for this method in {@link ActionBarHelperICS} asks the action bar for a

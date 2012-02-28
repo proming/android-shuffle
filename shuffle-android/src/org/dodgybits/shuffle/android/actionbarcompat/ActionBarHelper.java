@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.SpinnerAdapter;
 
 /**
  * An abstract class that handles some common action bar-related functionality in the app. This
@@ -47,13 +48,6 @@ public abstract class ActionBarHelper {
      */
     public static final int NAVIGATION_MODE_LIST = 1;
 
-    /**
-     * Use logo instead of icon if available. This flag will cause appropriate
-     * navigation modes to use a wider logo in place of the standard icon.
-     *
-     * @see #setDisplayOptions(int)
-     */
-    public static final int DISPLAY_USE_LOGO = 0x1;
 
     /**
      * Show 'home' elements in this action bar, leaving more space for other
@@ -131,6 +125,11 @@ public abstract class ActionBarHelper {
     public void supportResetOptionsMenu() {
     }
 
+    /**
+     * @return The current set of display options.
+     */
+    public abstract int getDisplayOptions();
+
     public void setDisplayOptions(int options) {
     }
 
@@ -156,5 +155,80 @@ public abstract class ActionBarHelper {
     }
 
     public abstract void startSupportedActionMode(ActionMode.Callback callback);
+
+    /**
+     * Returns the current navigation mode. The result will be one of:
+     * <ul>
+     * <li>{@link #NAVIGATION_MODE_STANDARD}</li>
+     * <li>{@link #NAVIGATION_MODE_LIST}</li>
+     * </ul>
+     *
+     * @return The current navigation mode.
+     */
+    public abstract int getNavigationMode();
+
+    /**
+     * Set the current navigation mode.
+     *
+     * @param mode The new mode to set.
+     * @see #NAVIGATION_MODE_STANDARD
+     * @see #NAVIGATION_MODE_LIST
+     */
+    public abstract void setNavigationMode(int mode);
+
+    /**
+     * Set the adapter and navigation callback for list navigation mode.
+     *
+     * The supplied adapter will provide views for the expanded list as well as
+     * the currently selected item. (These may be displayed differently.)
+     *
+     * The supplied OnNavigationListener will alert the application when the user
+     * changes the current list selection.
+     *
+     * @param adapter An adapter that will provide views both to display
+     *                the current navigation selection and populate views
+     *                within the dropdown navigation menu.
+     * @param callback An OnNavigationListener that will receive events when the user
+     *                 selects a navigation item.
+     */
+    public abstract void setListNavigationCallbacks(SpinnerAdapter adapter,
+                                                    OnNavigationListener callback);
+
+    /**
+     * Set the selected navigation item in list or tabbed navigation modes.
+     *
+     * @param position Position of the item to select.
+     */
+    public abstract void setSelectedNavigationItem(int position);
+
+    /**
+     * Get the position of the selected navigation item in list or tabbed navigation modes.
+     *
+     * @return Position of the selected item.
+     */
+    public abstract int getSelectedNavigationIndex();
+
+    /**
+     * Get the number of navigation items present in the current navigation mode.
+     *
+     * @return Number of navigation items.
+     */
+    public abstract int getNavigationItemCount();
+
+    /**
+     * Listener interface for ActionBar navigation events.
+     */
+    public interface OnNavigationListener {
+        /**
+         * This method is called whenever a navigation item in your action bar
+         * is selected.
+         *
+         * @param itemPosition Position of the item clicked.
+         * @param itemId ID of the item clicked.
+         * @return True if the event was handled, false otherwise.
+         */
+        public boolean onNavigationItemSelected(int itemPosition, long itemId);
+    }
+
 
 }

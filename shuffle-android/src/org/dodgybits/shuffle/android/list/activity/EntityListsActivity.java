@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MenuItem;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
@@ -20,12 +21,15 @@ import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.view.context.ContextListFragment;
 import org.dodgybits.shuffle.android.list.view.project.ProjectListFragment;
+import org.dodgybits.shuffle.android.list.view.task.MultiTaskListContext;
+import org.dodgybits.shuffle.android.list.view.task.MultiTaskListFragment;
 import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.list.view.task.TaskListFragment;
 import roboguice.event.EventManager;
 import roboguice.inject.ContextScopedProvider;
 
 import java.util.List;
+import java.util.Map;
 
 public class EntityListsActivity extends ActionBarFragmentActivity {
     private static final String TAG = "EntityListsActivity";
@@ -37,10 +41,13 @@ public class EntityListsActivity extends ActionBarFragmentActivity {
     private ViewPager mPager;
 
     private List<Fragment> mFragments;
-    private List<ListQuery> mQueries;
+    private Map<ListQuery,Integer> mQueryIndex;
 
     @Inject
     private ContextScopedProvider<TaskListFragment> mTaskListFragmentProvider;
+
+    @Inject
+    private ContextScopedProvider<MultiTaskListFragment> mMultiTaskListFragmentProvider;
 
     @Inject
     private ContextScopedProvider<ContextListFragment> mContextListFragmentProvider;
@@ -100,10 +107,10 @@ public class EntityListsActivity extends ActionBarFragmentActivity {
 
     private void initFragments() {
         mFragments = Lists.newArrayList();
-        mQueries = Lists.newArrayList();
+        mQueryIndex = Maps.newHashMap();
 
         addTaskList(ListQuery.inbox);
-        addTaskList(ListQuery.dueToday);
+        addMultiTaskList(Lists.newArrayList(ListQuery.dueToday, ListQuery.dueNextWeek, ListQuery.dueNextMonth));
         addTaskList(ListQuery.nextTasks);
 
         addFragment(ListQuery.project, mProjectListFragmentProvider.get(this));
@@ -114,18 +121,42 @@ public class EntityListsActivity extends ActionBarFragmentActivity {
         addTaskList(ListQuery.tickler);
     }
 
+    private void addMultiTaskList(List<ListQuery> queries) {
+        MultiTaskListContext listContext = MultiTaskListContext.create(queries);
+        addFragment(queries, createMultiTaskFragment(listContext));
+    }
+
+    private MultiTaskListFragment createMultiTaskFragment(MultiTaskListContext listContext) {
+        MultiTaskListFragment fragment = mMultiTaskListFragmentProvider.get(this);
+        Bundle args = new Bundle();
+        args.putParcelable(TaskListFragment.ARG_LIST_CONTEXT, listContext);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     private void addTaskList(ListQuery query) {
         TaskListContext listContext = TaskListContext.create(query);
+        addFragment(query, createTaskFragment(listContext));
+    }
+
+    private TaskListFragment createTaskFragment(TaskListContext listContext) {
         TaskListFragment fragment = mTaskListFragmentProvider.get(this);
         Bundle args = new Bundle();
         args.putParcelable(TaskListFragment.ARG_LIST_CONTEXT, listContext);
         fragment.setArguments(args);
-        addFragment(query, fragment);
+        return fragment;       
+    }
+    
+    private void addFragment(ListQuery query, Fragment fragment) {
+        addFragment(Lists.newArrayList(query), fragment);
     }
 
-    private void addFragment(ListQuery query, Fragment fragment) {
+    private void addFragment(List<ListQuery> queries, Fragment fragment) {
         mFragments.add(fragment);
-        mQueries.add(query);
+        int index = mFragments.size() - 1;
+        for (ListQuery query : queries) {
+            mQueryIndex.put(query, index);
+        }
     }
 
     private int getRequestedPosition(Intent intent) {
@@ -133,7 +164,7 @@ public class EntityListsActivity extends ActionBarFragmentActivity {
         String queryName = intent.getStringExtra(QUERY_NAME);
         if (queryName != null) {
             ListQuery query = ListQuery.valueOf(queryName);
-            position = mQueries.indexOf(query);
+            position = mQueryIndex.get(query);
             if (position == -1) {
                 Log.e(TAG, "Couldn't find page of list " + queryName);
                 position = 0;
