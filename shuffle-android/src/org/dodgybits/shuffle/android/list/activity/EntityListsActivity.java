@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.actionbarcompat.ActionBarHelper;
-import org.dodgybits.shuffle.android.core.activity.TopLevelActivity;
+import org.dodgybits.shuffle.android.core.activity.HomeActivity;
 import org.dodgybits.shuffle.android.list.event.ViewPreferencesEvent;
 import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
 import org.dodgybits.shuffle.android.list.listener.NavigationListener;
@@ -88,7 +88,7 @@ public class EntityListsActivity extends ActionBarFragmentActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 // app icon in action bar clicked; go home
-                Intent intent = new Intent(this, TopLevelActivity.class);
+                Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 return true;

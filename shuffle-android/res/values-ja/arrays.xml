@@ -22,24 +22,13 @@
 -->
 
 <resources>
-    <array name="clean">
-        <item>なし</item>
-        <item>毎時</item>
-        <item>毎日</item>
-        <item>毎週</item>
-    </array>
-    <array name="clean_keys">
-        <item>なし</item>
-        <item>毎時</item>
-        <item>毎日</item>
-        <item>毎週</item>
-    </array>
     <array name="perspectives">
         <item>新着アクション</item>
         <item>期限ありアクション</item>
         <item>次のアクション</item>
         <item>プロジェクト</item>
         <item>コンテキスト</item>
+        <item>カスタム</item>
         <item>保留アクション</item>
     </array>
     <array name="view_types">
@@ -63,64 +52,6 @@
         <item>初期設定に戻す</item>
     </array>
 
-    <array name="text_colours">
-    	<item>c5b6985</item>
-    	<item>c2c6cfc</item>
-    	<item>c1800c9</item>
-    	<item>c5528a1</item>
-    	<item>c854f61</item>
-    	<item>cca000f</item>
-
-    	<item>cdee5f2</item>
-    	<item>ce1ecfe</item>
-    	<item>ce0e2fe</item>
-    	<item>ce1d5f8</item>
-    	<item>cfde9f4</item>
-    	<item>cffe3e3</item>
-
-    	<item>cea7015</item>
-    	<item>cb16d12</item>
-    	<item>ca98b13</item>
-    	<item>c626332</item>
-    	<item>c639930</item>
-    	<item>c006634</item>
-
-    	<item>cfef0e2</item>
-    	<item>cf9dcb4</item>
-    	<item>cf2e7b4</item>
-    	<item>cfeffd5</item>
-    	<item>cf9ffef</item>
-    	<item>cf1f5ec</item>
-    </array>
-    <array name="background_colours">
-    	<item>cdee5f2</item>
-    	<item>ce1ecfe</item>
-    	<item>ce0e2fe</item>
-    	<item>ce1d5f8</item>
-    	<item>cfde9f4</item>
-    	<item>cffe3e3</item>
-
-    	<item>c5b6985</item>
-    	<item>c2c6cfc</item>
-    	<item>c1800c9</item>
-    	<item>c5528a1</item>
-    	<item>c854f61</item>
-    	<item>cca000f</item>
-
-    	<item>cfef0e2</item>
-    	<item>cf9dcb4</item>
-    	<item>cf2e7b4</item>
-		<item>cfeffd5</item>
-    	<item>cf9ffef</item>
-    	<item>cf1f5ec</item>
-
-    	<item>cea7015</item>
-    	<item>cb16d12</item>
-    	<item>ca98b13</item>
-    	<item>c626332</item>
-    	<item>c639930</item>
-    	<item>c006634</item>
-    </array>
 
     <!-- Choices for the "Reminder minutes" spinner.
          These must be kept in sync with the reminder_minutes_values array.
@@ -142,22 +73,6 @@
         <item>1 週間</item>
     </string-array>
 
-    <string-array name="reminder_minutes_values" translatable="false">
-        <item>"5"</item>
-        <item>"10"</item>
-        <item>"15"</item>
-        <item>"20"</item>
-        <item>"25"</item>
-        <item>"30"</item>
-        <item>"45"</item>
-        <item>"60"</item>
-        <item>"120"</item>
-        <item>"180"</item>
-        <item>"720"</item>
-        <item>"1440"</item>
-        <item>"2880"</item>
-        <item>"10080"</item>
-    </string-array>
 
     <string-array name="preferences_default_reminder_labels">
         <item>なし</item>
@@ -177,43 +92,26 @@
         <item>1 週間</item>
     </string-array>
 
-    <string-array name="preferences_default_reminder_values" translatable="false">
-        <item>"0"</item>
-        <item>"5"</item>
-        <item>"10"</item>
-        <item>"15"</item>
-        <item>"20"</item>
-        <item>"25"</item>
-        <item>"30"</item>
-        <item>"45"</item>
-        <item>"60"</item>
-        <item>"120"</item>
-        <item>"180"</item>
-        <item>"720"</item>
-        <item>"1440"</item>
-        <item>"2880"</item>
-        <item>"10080"</item>
-    </string-array>
 
-    <string-array name="list_preferences_active_labels" translatable="false">
+    <string-array name="list_preferences_active_labels">
         <item>全て表示</item>
         <item>アクティブな物だけ表示</item>
         <item>保留の物だけ表示</item>
     </string-array>
 
-    <string-array name="list_preferences_deleted_labels" translatable="false">
+    <string-array name="list_preferences_deleted_labels">
         <item>全て表示</item>
         <item>削除した物だけ表示</item>
         <item>削除した物を隠す</item>
     </string-array>
 
-    <string-array name="list_preferences_pending_labels" translatable="false">
+    <string-array name="list_preferences_pending_labels">
         <item>全て表示</item>
         <item>期限前の物を表示</item>
         <item>期限切れの物を表示</item>
     </string-array>
 
-    <string-array name="list_preferences_completed_labels" translatable="false">
+    <string-array name="list_preferences_completed_labels">
         <item>全て表示</item>
         <item>完了した物だけ表示</item>
         <item>完了した物を隠す</item>

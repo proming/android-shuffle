@@ -15,26 +15,17 @@
 -->
 
 <resources>
-    <array name="clean">
-        <item>Never</item>
-        <item>Hourly</item>
-        <item>Daily</item>
-        <item>Weekly</item>
-    </array>
-    <array name="clean_keys">
-        <item>never</item>
-        <item>hourly</item>
-        <item>daily</item>
-        <item>weekly</item>
-    </array>
     <array name="perspectives">
         <item>Inbox</item>
         <item>Due actions</item>
         <item>Next actions</item>
         <item>Projects</item>
         <item>Contexts</item>
+        <item>Custom</item>
         <item>Tickler</item>
     </array>
+
+
     <array name="view_types">
         <item>Expandable list</item>
         <item>Drill-down list</item>

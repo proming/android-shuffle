@@ -39,7 +39,7 @@ public class BootstrapActivity extends FlurryEnabledActivity {
 			Log.i(cTag, "First time using Shuffle. Show intro screen");
 			activityClass = WelcomeActivity.class;
 		} else {
-        	activityClass = TopLevelActivity.class;
+        	activityClass = HomeActivity.class;
 		}
         
         startService(new Intent(this, SynchronizationService.class));

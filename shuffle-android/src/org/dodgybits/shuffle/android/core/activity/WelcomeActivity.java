@@ -79,7 +79,7 @@ public class WelcomeActivity extends FlurryEnabledActivity {
                 getWindow().setFeatureInt(Window.FEATURE_INDETERMINATE_PROGRESS,
                         Window.PROGRESS_VISIBILITY_OFF);
                 
-                startActivity(new Intent(WelcomeActivity.this, TopLevelActivity.class));
+                startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
             	finish();
             }
         };

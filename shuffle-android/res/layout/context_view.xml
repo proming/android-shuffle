@@ -43,6 +43,10 @@
               android:textSize="18sp"
               android:textStyle="bold"
               android:textColor="@color/view_minimal_text_color"
+              android:shadowColor="@color/white"
+              android:shadowDx="1"
+              android:shadowDy="1"
+              android:shadowRadius="1"
             />
 
 

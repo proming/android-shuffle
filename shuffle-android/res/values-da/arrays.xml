@@ -15,24 +15,13 @@
 -->
 
 <resources>
-    <array name="clean">
-        <item>Aldrig</item>
-        <item>Timebasis</item>
-        <item>Daglig</item>
-        <item>Ugentlig</item>
-    </array>
-    <array name="clean_keys">
-        <item>aldrig</item>
-        <item>timebasis</item>
-        <item>daglig</item>
-        <item>ugentlig</item>
-    </array>
     <array name="perspectives">
         <item>Indbakke</item>
         <item>Forfaldne opgaver</item>
         <item>Næste opgaver</item>
         <item>Projekter</item>
         <item>Kontekster</item>
+        <item>Brugerdefineret</item>
         <item>Huskeliste</item>
     </array>
     <array name="view_types">
@@ -56,65 +45,7 @@
         <item>Oprydning</item>
     </array>
 	    
-    <array name="text_colours">
-    	<item>c5b6985</item>
-    	<item>c2c6cfc</item>
-    	<item>c1800c9</item>
-    	<item>c5528a1</item>
-    	<item>c854f61</item>
-    	<item>cca000f</item>
 
-    	<item>cdee5f2</item>
-    	<item>ce1ecfe</item>
-    	<item>ce0e2fe</item>
-    	<item>ce1d5f8</item>
-    	<item>cfde9f4</item>
-    	<item>cffe3e3</item>
-
-    	<item>cea7015</item>
-    	<item>cb16d12</item>
-    	<item>ca98b13</item>
-    	<item>c626332</item>
-    	<item>c639930</item>
-    	<item>c006634</item>
-    	
-    	<item>cfef0e2</item>
-    	<item>cf9dcb4</item>
-    	<item>cf2e7b4</item>
-    	<item>cfeffd5</item>
-    	<item>cf9ffef</item>
-    	<item>cf1f5ec</item>
-    </array>
-    <array name="background_colours">
-    	<item>cdee5f2</item>
-    	<item>ce1ecfe</item>
-    	<item>ce0e2fe</item>
-    	<item>ce1d5f8</item>
-    	<item>cfde9f4</item>
-    	<item>cffe3e3</item>
-
-    	<item>c5b6985</item>
-    	<item>c2c6cfc</item>
-    	<item>c1800c9</item>
-    	<item>c5528a1</item>
-    	<item>c854f61</item>
-    	<item>cca000f</item>
-
-    	<item>cfef0e2</item>
-    	<item>cf9dcb4</item>
-    	<item>cf2e7b4</item>
-		<item>cfeffd5</item>
-    	<item>cf9ffef</item>
-    	<item>cf1f5ec</item>
-
-    	<item>cea7015</item>
-    	<item>cb16d12</item>
-    	<item>ca98b13</item>
-    	<item>c626332</item>
-    	<item>c639930</item>
-    	<item>c006634</item>
-    </array>
-    
     <!-- Choices for the "Reminder minutes" spinner.
          These must be kept in sync with the reminder_minutes_values array.
     -->
@@ -135,23 +66,6 @@
         <item>1 uge</item>
     </string-array>
     
-    <string-array name="reminder_minutes_values" translatable="false">
-        <item>"5"</item>
-        <item>"10"</item>
-        <item>"15"</item>
-        <item>"20"</item>
-        <item>"25"</item>
-        <item>"30"</item>
-        <item>"45"</item>
-        <item>"60"</item>
-        <item>"120"</item>
-        <item>"180"</item>
-        <item>"720"</item>
-        <item>"1440"</item>
-        <item>"2880"</item>
-        <item>"10080"</item>
-    </string-array>
-    
     <string-array name="preferences_default_reminder_labels">
         <item>None</item>
         <item>5 minutter</item>
@@ -168,31 +82,6 @@
         <item>24 timer</item>
         <item>2 dage</item>
         <item>1 uge</item>
-    </string-array>
-    
-    <string-array name="preferences_default_reminder_values" translatable="false">
-        <item>"0"</item>
-        <item>"5"</item>
-        <item>"10"</item>
-        <item>"15"</item>
-        <item>"20"</item>
-        <item>"25"</item>
-        <item>"30"</item>
-        <item>"45"</item>
-        <item>"60"</item>
-        <item>"120"</item>
-        <item>"180"</item>
-        <item>"720"</item>
-        <item>"1440"</item>
-        <item>"2880"</item>
-        <item>"10080"</item>
-    </string-array>
-
-    <!-- don't translate these key values -->
-    <string-array name="list_preferences_flag_values" translatable="false">
-        <item>ignored</item>
-        <item>yes</item>
-        <item>no</item>
     </string-array>
 
     <string-array name="list_preferences_active_labels">
