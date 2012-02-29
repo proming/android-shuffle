@@ -193,6 +193,8 @@ public class ContextListFragment extends RoboListFragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        if (!getUserVisibleHint()) return super.onContextItemSelected(item);
+
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.action_edit:
