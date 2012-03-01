@@ -12,6 +12,10 @@ public class ListSettingsCache {
 
     private static final String DUE_TASKS_SETTINGS_KEY = "due_tasks";
 
+    private static ListSettings projectSettings =
+            new ListSettings(ListQuery.project.name()).setDefaultQuickAdd(true).disableProject();
+    private static ListSettings contextSettings =
+            new ListSettings(ListQuery.context.name()).setDefaultQuickAdd(true).disableContext();
     private static ListSettings inboxSettings =
             new ListSettings(ListQuery.inbox.name()).setDefaultQuickAdd(true);
     private static ListSettings dueTaskSettings =
@@ -33,10 +37,12 @@ public class ListSettingsCache {
     static {
         SPARSE_SETTINGS_MAP.put(ListQuery.inbox, inboxSettings);
         SPARSE_SETTINGS_MAP.put(ListQuery.nextTasks, nextTasksSettings);
-        SPARSE_SETTINGS_MAP.put(ListQuery.tickler, ticklerSettings);
         SPARSE_SETTINGS_MAP.put(ListQuery.dueToday, dueTaskSettings);
         SPARSE_SETTINGS_MAP.put(ListQuery.dueNextWeek, dueTaskSettings);
         SPARSE_SETTINGS_MAP.put(ListQuery.dueNextMonth, dueTaskSettings);
+        SPARSE_SETTINGS_MAP.put(ListQuery.context, contextSettings);
+        SPARSE_SETTINGS_MAP.put(ListQuery.project, projectSettings);
+        SPARSE_SETTINGS_MAP.put(ListQuery.tickler, ticklerSettings);
     }
 
     public static final ListSettings findSettings(ListQuery query) {

@@ -269,7 +269,7 @@ public class ListSettings {
     }
     
     private Id getId(Context context, String setting) {
-        long value = getSharedPreferences(context).getLong(mPrefix + setting, 0L);
+        long value = Long.valueOf(getSharedPreferences(context).getString(mPrefix + setting, "0"));
         if (Log.isLoggable(TAG, Log.DEBUG)) {
             String message = String.format("Got value %s for settings %s%s",
                     value, mPrefix, setting);

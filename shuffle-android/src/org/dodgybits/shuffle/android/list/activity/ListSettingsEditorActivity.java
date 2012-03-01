@@ -1,17 +1,30 @@
 package org.dodgybits.shuffle.android.list.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.*;
 import android.util.Log;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.util.Constants;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
+import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
+import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
 
 public class ListSettingsEditorActivity extends PreferenceActivity {
     private static final String TAG = "ListSettingsEditor";
-    
+
+    private static final String[] CONTEXT_PROJECTION = new String[] {
+            ContextProvider.Contexts._ID,
+            ContextProvider.Contexts.NAME
+    };
+
+    private static final String[] PROJECT_PROJECTION = new String[] {
+            ProjectProvider.Projects._ID,
+            ProjectProvider.Projects.NAME
+    };
+
     private ListSettings mSettings;
     private boolean mPrefsChanged;
     private ListListener mListListener;
@@ -84,6 +97,9 @@ public class ListSettingsEditorActivity extends PreferenceActivity {
                 mSettings.isDeletedEnabled()
         ));
 
+        screen.addPreference(createContextList());
+        screen.addPreference(createProjectList());
+
         screen.addPreference(createQuickAdd());
 
         setPreferenceScreen(screen);
@@ -138,6 +154,72 @@ public class ListSettingsEditorActivity extends PreferenceActivity {
         return quickAddPref;       
     }
     
+    private Preference createContextList() {
+        Cursor contextCursor = getContentResolver().query(
+                ContextProvider.Contexts.CONTENT_URI, CONTEXT_PROJECTION,
+                null, null, null);
+        int arraySize = contextCursor.getCount() + 1;
+        String[] values = new String[arraySize];
+        values[0] = String.valueOf(0);
+        String[] names = new String[arraySize];
+        names[0] = getText(R.string.show_all).toString();
+        for (int i = 1; i < arraySize; i++) {
+            contextCursor.moveToNext();
+            values[i] = contextCursor.getString(0);
+            names[i] = contextCursor.getString(1);
+        }
+        ListPreference listPreference = new ListPreference(this);
+        listPreference.setEntryValues(values);
+        listPreference.setEntries(names);
+        listPreference.setTitle(R.string.context_title);
+        String key = mSettings.getPrefix() + ListSettings.LIST_FILTER_CONTEXT;
+        listPreference.setKey(key);
+        listPreference.setDefaultValue(String.valueOf(0));
+        listPreference.setOnPreferenceChangeListener(mListListener);
+        listPreference.setEnabled(mSettings.isContextEnabled());
+
+        CharSequence[] entryStrings = listPreference.getEntries();
+        int index = listPreference.findIndexOfValue(String.valueOf(mSettings.getContextId(this).getId()));
+        if (index > -1) {
+            listPreference.setSummary(entryStrings[index]);
+        }
+
+        return listPreference;
+    }
+
+    private Preference createProjectList() {
+        Cursor projectCursor = getContentResolver().query(
+                ProjectProvider.Projects.CONTENT_URI, PROJECT_PROJECTION,
+                null, null, null);
+        int arraySize = projectCursor.getCount() + 1;
+        String[] values = new String[arraySize];
+        values[0] = String.valueOf(0);
+        String[] names = new String[arraySize];
+        names[0] = getText(R.string.show_all).toString();
+        for (int i = 1; i < arraySize; i++) {
+            projectCursor.moveToNext();
+            values[i] = projectCursor.getString(0);
+            names[i] = projectCursor.getString(1);
+        }
+        ListPreference listPreference = new ListPreference(this);
+        listPreference.setEntryValues(values);
+        listPreference.setEntries(names);
+        listPreference.setTitle(R.string.project_title);
+        String key = mSettings.getPrefix() + ListSettings.LIST_FILTER_PROJECT;
+        listPreference.setKey(key);
+        listPreference.setDefaultValue(String.valueOf(0));
+        listPreference.setOnPreferenceChangeListener(mListListener);
+        listPreference.setEnabled(mSettings.isProjectEnabled());
+
+        CharSequence[] entryStrings = listPreference.getEntries();
+        int index = listPreference.findIndexOfValue(String.valueOf(mSettings.getProjectId(this).getId()));
+        if (index > -1) {
+            listPreference.setSummary(entryStrings[index]);
+        }
+
+        return listPreference;
+    }
+
     private class ListListener implements Preference.OnPreferenceChangeListener {
 
         @Override

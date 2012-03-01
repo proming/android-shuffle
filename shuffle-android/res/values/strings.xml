@@ -242,7 +242,7 @@ allow that, you can turn it off under Settings.</string>
     <string name="due_date_title">Due Date</string>
 
     <string name="quick_add_title">Quick Add Bar</string>
-
+    <string name="show_all">Show All</string>
     <string name="general_preferences">Google settings</string>
     
     <string name="title_calendar_preference">Calendar selection</string>
