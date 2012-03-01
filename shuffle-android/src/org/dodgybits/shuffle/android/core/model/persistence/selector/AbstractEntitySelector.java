@@ -28,7 +28,7 @@ public abstract class AbstractEntitySelector<E extends EntitySelector<E>> implem
     }
     
     @Override
-    public final String getSortOrder() {
+    public String getSortOrder() {
         return mSortOrder;
     }
 

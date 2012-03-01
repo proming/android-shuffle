@@ -1,10 +1,15 @@
 package org.dodgybits.shuffle.android.list.listener;
 
 import android.app.Activity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.core.model.Project;
+import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
@@ -14,6 +19,7 @@ import roboguice.event.Observes;
 import java.util.Set;
 
 public class EntityUpdateListener {
+    private static final String TAG = "EntityUpdateListener";
 
     private Activity mActivity;
     private ProjectPersister mProjectPersister;
@@ -76,6 +82,54 @@ public class EntityUpdateListener {
         }
 
         String entityName = mActivity.getString(R.string.task_name);
+        showSavedToast(entityName);
+    }
+    
+    public void onNewTask(@Observes NewTaskEvent event) {
+        if (TextUtils.isEmpty(event.getDescription())) {
+            Log.d(TAG, "Ignoring new task event with no description");
+            return;
+        }
+
+        Task.Builder builder = Task.newBuilder();
+        builder.setDescription(event.getDescription()).
+                setContextId(event.getContextId()).
+                setProjectId(event.getProjectId()).
+                setCreatedDate(System.currentTimeMillis()).
+                setModifiedDate(System.currentTimeMillis());
+
+        mTaskPersister.insert(builder.build());
+        String entityName = mActivity.getString(R.string.task_name);
+        showSavedToast(entityName);
+    }
+
+    public void onNewProject(@Observes NewProjectEvent event) {
+        if (TextUtils.isEmpty(event.getName())) {
+            Log.d(TAG, "Ignoring new project event with no name");
+            return;
+        }
+
+        Project.Builder builder = Project.newBuilder();
+        builder.setName(event.getName()).
+                setModifiedDate(System.currentTimeMillis());
+
+        mProjectPersister.insert(builder.build());
+        String entityName = mActivity.getString(R.string.project_name);
+        showSavedToast(entityName);
+    }
+
+    public void onNewContext(@Observes NewContextEvent event) {
+        if (TextUtils.isEmpty(event.getName())) {
+            Log.d(TAG, "Ignoring new context event with no name");
+            return;
+        }
+
+        Context.Builder builder = Context.newBuilder();
+        builder.setName(event.getName()).
+                setModifiedDate(System.currentTimeMillis());
+
+        mContextPersister.insert(builder.build());
+        String entityName = mActivity.getString(R.string.context_name);
         showSavedToast(entityName);
     }
 

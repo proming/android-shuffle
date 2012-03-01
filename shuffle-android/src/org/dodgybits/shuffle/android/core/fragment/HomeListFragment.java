@@ -84,7 +84,7 @@ public class HomeListFragment extends RoboListFragment {
     private void addInitialCounts() {
         int[] cachedCounts = Preferences.getTopLevelCounts(getActivity());
         int viewCount = sHomeItems.length;
-        if (cachedCounts.length == viewCount) {
+        if (cachedCounts != null && cachedCounts.length == viewCount) {
             for (int i = 0; i < viewCount; i++) {
                 sHomeItems[i].setCount(String.valueOf(cachedCounts[i]));
             }

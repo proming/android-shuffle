@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.Flag;
 
 public class ListSettings {
@@ -17,6 +18,9 @@ public class ListSettings {
     public static final String LIST_FILTER_COMPLETED = ".list_completed";
     public static final String LIST_FILTER_DELETED = ".list_deleted";
     public static final String LIST_FILTER_PENDING = ".list_pending";
+    public static final String LIST_FILTER_PROJECT = ".list_project";
+    public static final String LIST_FILTER_CONTEXT = ".list_context";
+    public static final String LIST_FILTER_QUICK_ADD = ".list_quick_add";
 
     private static final String PREFIX = "mPrefix";
     private static final String BUNDLE = "list-preference-settings";
@@ -24,11 +28,15 @@ public class ListSettings {
     private static final String DEFAULT_PENDING = "defaultPending";
     private static final String DEFAULT_DELETED = "defaultDeleted";
     private static final String DEFAULT_ACTIVE = "defaultActive";
+    private static final String DEFAULT_QUICK_ADD = "defaultQuickAdd";
 
     private static final String COMPLETED_ENABLED = "completedEnabled";
     private static final String PENDING_ENABLED = "pendingEnabled";
     private static final String DELETED_ENABLED = "deletedEnabled";
     private static final String ACTIVE_ENABLED = "activeEnabled";
+    private static final String PROJECT_ENABLED = "projectEnabled";
+    private static final String CONTEXT_ENABLED = "contextEnabled";
+    private static final String QUICK_ADD_ENABLED = "quickAddEnabled";
 
 
     private String mPrefix;
@@ -36,11 +44,15 @@ public class ListSettings {
     private Flag mDefaultPending = Flag.ignored;
     private Flag mDefaultDeleted = Flag.no;
     private Flag mDefaultActive = Flag.yes;
+    private Boolean mDefaultQuickAdd = false;
 
     private boolean mCompletedEnabled = true;
     private boolean mPendingEnabled = true;
     private boolean mDeletedEnabled = true;
     private boolean mActiveEnabled = true;
+    private boolean mProjectEnabled = true;
+    private boolean mContextEnabled = true;
+    private boolean mQuickAddEnabled = true;
 
     public ListSettings(String prefix) {
         this.mPrefix = prefix;
@@ -53,10 +65,14 @@ public class ListSettings {
         bundle.putString(DEFAULT_PENDING, mDefaultPending.name());
         bundle.putString(DEFAULT_DELETED, mDefaultDeleted.name());
         bundle.putString(DEFAULT_ACTIVE, mDefaultActive.name());
+        bundle.putBoolean(DEFAULT_QUICK_ADD, mDefaultQuickAdd);
         bundle.putBoolean(COMPLETED_ENABLED, mCompletedEnabled);
         bundle.putBoolean(PENDING_ENABLED, mPendingEnabled);
         bundle.putBoolean(DELETED_ENABLED, mDeletedEnabled);
         bundle.putBoolean(ACTIVE_ENABLED, mActiveEnabled);
+        bundle.putBoolean(PROJECT_ENABLED, mProjectEnabled);
+        bundle.putBoolean(CONTEXT_ENABLED, mContextEnabled);
+        bundle.putBoolean(QUICK_ADD_ENABLED, mQuickAddEnabled);
         intent.putExtra(BUNDLE, bundle);
     }
 
@@ -67,10 +83,14 @@ public class ListSettings {
         settings.mDefaultPending = Flag.valueOf(bundle.getString(DEFAULT_PENDING));
         settings.mDefaultDeleted = Flag.valueOf(bundle.getString(DEFAULT_DELETED));
         settings.mDefaultActive = Flag.valueOf(bundle.getString(DEFAULT_ACTIVE));
+        settings.mDefaultQuickAdd = bundle.getBoolean(DEFAULT_QUICK_ADD, false);
         settings.mCompletedEnabled = bundle.getBoolean(COMPLETED_ENABLED, true);
         settings.mPendingEnabled = bundle.getBoolean(PENDING_ENABLED, true);
         settings.mDeletedEnabled = bundle.getBoolean(DELETED_ENABLED, true);
         settings.mActiveEnabled = bundle.getBoolean(ACTIVE_ENABLED, true);
+        settings.mProjectEnabled = bundle.getBoolean(PROJECT_ENABLED, true);
+        settings.mContextEnabled = bundle.getBoolean(CONTEXT_ENABLED, true);
+        settings.mQuickAddEnabled = bundle.getBoolean(QUICK_ADD_ENABLED, true);
         return settings;
     }
 
@@ -98,6 +118,10 @@ public class ListSettings {
         return mDefaultActive;
     }
 
+    public Boolean getDefaultQuickAdd() {
+        return mDefaultQuickAdd;
+    }
+
     public ListSettings setDefaultCompleted(Flag value) {
         mDefaultCompleted = value;
         return this;
@@ -115,6 +139,11 @@ public class ListSettings {
 
     public ListSettings setDefaultActive(Flag value) {
         mDefaultActive = value;
+        return this;
+    }
+
+    public ListSettings setDefaultQuickAdd(Boolean defaultQuickAdd) {
+        mDefaultQuickAdd = defaultQuickAdd;
         return this;
     }
 
@@ -154,23 +183,64 @@ public class ListSettings {
         return this;
     }
 
+    public boolean isProjectEnabled() {
+        return mProjectEnabled;
+    }
+
+    public ListSettings disableProject() {
+        mProjectEnabled = false;
+        return this;
+    }
+
+    public boolean isContextEnabled() {
+        return mContextEnabled;
+    }
+
+    public ListSettings disableContext() {
+        mContextEnabled = false;
+        return this;
+    }
+
+
+    public boolean isQuickAddEnabled() {
+        return mQuickAddEnabled;
+    }
+
+    public ListSettings disableQuickAdd() {
+        mQuickAddEnabled = false;
+        return this;
+    }
+
+
     public Flag getActive(Context context) {
-        return getValue(context, LIST_FILTER_ACTIVE, mDefaultActive);
+        return getFlag(context, LIST_FILTER_ACTIVE, mDefaultActive);
     }
 
     public Flag getCompleted(Context context) {
-        return getValue(context, LIST_FILTER_COMPLETED, mDefaultCompleted);
+        return getFlag(context, LIST_FILTER_COMPLETED, mDefaultCompleted);
     }
 
     public Flag getDeleted(Context context) {
-        return getValue(context, LIST_FILTER_DELETED, mDefaultDeleted);
+        return getFlag(context, LIST_FILTER_DELETED, mDefaultDeleted);
     }
 
     public Flag getPending(Context context) {
-        return getValue(context, LIST_FILTER_PENDING, mDefaultPending);
+        return getFlag(context, LIST_FILTER_PENDING, mDefaultPending);
     }
 
-    private Flag getValue(Context context, String setting, Flag defaultValue) {
+    public Id getProjectId(Context context) {
+        return getId(context, LIST_FILTER_PROJECT);
+    }
+
+    public Id getContextId(Context context) {
+        return getId(context, LIST_FILTER_CONTEXT);
+    }
+
+    public boolean getQuickAdd(Context context) {
+        return getBoolean(context, LIST_FILTER_QUICK_ADD, mDefaultQuickAdd);
+    }
+
+    private Flag getFlag(Context context, String setting, Flag defaultValue) {
         String valueStr = getSharedPreferences(context).getString(mPrefix + setting, defaultValue.name());
         Flag value = defaultValue;
         try {
@@ -187,5 +257,26 @@ public class ListSettings {
         }
         return value;
     }
+
+    private boolean getBoolean(Context context, String setting, boolean defaultValue) {
+        boolean value = getSharedPreferences(context).getBoolean(mPrefix + setting, defaultValue);
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            String message = String.format("Got value %s for settings %s%s with default %s",
+                    value, mPrefix, setting, defaultValue);
+            Log.d(TAG, message);
+        }
+        return value;
+    }
+    
+    private Id getId(Context context, String setting) {
+        long value = getSharedPreferences(context).getLong(mPrefix + setting, 0L);
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            String message = String.format("Got value %s for settings %s%s",
+                    value, mPrefix, setting);
+            Log.d(TAG, message);
+        }
+        return value == 0L ? Id.NONE : Id.create(value);
+    }
+
 
 }

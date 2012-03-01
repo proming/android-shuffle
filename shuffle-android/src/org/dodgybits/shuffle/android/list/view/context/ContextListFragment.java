@@ -27,8 +27,10 @@ import org.dodgybits.shuffle.android.list.content.ContextCursorLoader;
 import org.dodgybits.shuffle.android.list.event.*;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
+import org.dodgybits.shuffle.android.list.view.QuickAddController;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import roboguice.event.EventManager;
+import roboguice.event.Observes;
 import roboguice.fragment.RoboListFragment;
 
 public class ContextListFragment extends RoboListFragment {
@@ -55,14 +57,13 @@ public class ContextListFragment extends RoboListFragment {
 
     @Inject
     private EventManager mEventManager;
-    
-    /**
-     * {@link android.view.ActionMode} shown when 1 or more message is selected.
-     */
-//    private ActionMode mSelectionMode;
-//    private SelectionModeCallback mLastSelectionModeCallback;
+
+    @Inject
+    private QuickAddController mQuickAddController;
 
     private Parcelable mSavedListState;
+
+    private boolean mResumed = false;
 
     /**
      * When creating, retrieve this instance's number from its arguments.
@@ -100,6 +101,7 @@ public class ContextListFragment extends RoboListFragment {
         mSavedListState = getListView().onSaveInstanceState();
         super.onPause();
 
+        mResumed = false;
         Log.d(TAG, "-onPause");
     }
 
@@ -107,6 +109,7 @@ public class ContextListFragment extends RoboListFragment {
     public void onResume() {
         super.onResume();
 
+        mResumed = true;
         onVisibilityChange();
         refreshChildCount();
     }
@@ -150,7 +153,7 @@ public class ContextListFragment extends RoboListFragment {
         switch (item.getItemId()) {
             case R.id.action_add:
                 Log.d(TAG, "adding task");
-                mEventManager.fire(new NewContextEvent());
+                mEventManager.fire(new EditNewContextEvent());
                 return true;
             case R.id.action_help:
                 Log.d(TAG, "Bringing up help");
@@ -217,6 +220,7 @@ public class ContextListFragment extends RoboListFragment {
     private void onVisibilityChange() {
         if (getUserVisibleHint()) {
             updateTitle();
+            updateQuickAdd();
             ((ActionBarFragmentActivity)getActivity()).supportResetOptionsMenu();
         }
     }
@@ -224,6 +228,18 @@ public class ContextListFragment extends RoboListFragment {
 
     private void updateTitle() {
         getActivity().setTitle(R.string.title_context);
+    }
+
+    public void onQuickAddEvent(@Observes QuickAddEvent event) {
+        if (getUserVisibleHint() && mResumed) {
+            mEventManager.fire(new NewContextEvent(event.getValue()));
+        }
+    }
+
+    private void updateQuickAdd() {
+        mQuickAddController.init(getActivity());
+        mQuickAddController.setEnabled(ListSettingsCache.findSettings(ListQuery.context).getQuickAdd(getActivity()));
+        mQuickAddController.setEntityName(getString(R.string.context_name));
     }
 
     void restoreInstanceState(Bundle savedInstanceState) {

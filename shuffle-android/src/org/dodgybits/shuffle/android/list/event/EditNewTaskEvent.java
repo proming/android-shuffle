@@ -2,16 +2,20 @@ package org.dodgybits.shuffle.android.list.event;
 
 import org.dodgybits.shuffle.android.core.model.Id;
 
-public class NewTaskEvent {
-
-    private Id mContextId = Id.NONE;
-    private Id mProjectId = Id.NONE;
+public class EditNewTaskEvent {
+    
+    private Id mContextId;
+    private Id mProjectId;
     private String mDescription;
 
-    public NewTaskEvent(String description, Id contextId, Id projectId) {
+    public EditNewTaskEvent(Id contextId, Id projectId, String description) {
+        this(contextId, projectId);
+        mDescription = description;
+    }
+
+    public EditNewTaskEvent(Id contextId, Id projectId) {
         mContextId = contextId;
         mProjectId = projectId;
-        mDescription = description;
     }
 
     public Id getContextId() {

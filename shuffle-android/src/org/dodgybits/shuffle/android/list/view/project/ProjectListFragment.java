@@ -28,8 +28,10 @@ import org.dodgybits.shuffle.android.list.content.ProjectCursorLoader;
 import org.dodgybits.shuffle.android.list.event.*;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
+import org.dodgybits.shuffle.android.list.view.QuickAddController;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import roboguice.event.EventManager;
+import roboguice.event.Observes;
 import roboguice.fragment.RoboListFragment;
 
 public class ProjectListFragment extends RoboListFragment {
@@ -57,13 +59,12 @@ public class ProjectListFragment extends RoboListFragment {
     @Inject
     private EventManager mEventManager;
 
-    /**
-     * {@link android.view.ActionMode} shown when 1 or more message is selected.
-     */
-//    private ActionMode mSelectionMode;
-//    private SelectionModeCallback mLastSelectionModeCallback;
+    @Inject
+    private QuickAddController mQuickAddController;
 
     private Parcelable mSavedListState;
+
+    private boolean mResumed = false;
 
     /**
      * When creating, retrieve this instance's number from its arguments.
@@ -101,6 +102,7 @@ public class ProjectListFragment extends RoboListFragment {
         mSavedListState = getListView().onSaveInstanceState();
         super.onPause();
 
+        mResumed = false;
         Log.d(TAG, "-onPause");
     }
 
@@ -108,6 +110,7 @@ public class ProjectListFragment extends RoboListFragment {
     public void onResume() {
         super.onResume();
 
+        mResumed = true;
         onVisibilityChange();
         refreshChildCount();
     }
@@ -151,7 +154,7 @@ public class ProjectListFragment extends RoboListFragment {
         switch (item.getItemId()) {
             case R.id.action_add:
                 Log.d(TAG, "adding task");
-                mEventManager.fire(new NewProjectEvent());
+                mEventManager.fire(new EditNewProjectEvent());
                 return true;
             case R.id.action_help:
                 Log.d(TAG, "Bringing up help");
@@ -217,13 +220,25 @@ public class ProjectListFragment extends RoboListFragment {
     private void onVisibilityChange() {
         if (getUserVisibleHint()) {
             updateTitle();
+            updateQuickAdd();
             ((ActionBarFragmentActivity)getActivity()).supportResetOptionsMenu();
         }
     }
 
-
     private void updateTitle() {
         getActivity().setTitle(R.string.title_project);
+    }
+
+    public void onQuickAddEvent(@Observes QuickAddEvent event) {
+        if (getUserVisibleHint() && mResumed) {
+            mEventManager.fire(new NewProjectEvent(event.getValue()));
+        }
+    }
+
+    private void updateQuickAdd() {
+        mQuickAddController.init(getActivity());
+        mQuickAddController.setEnabled(ListSettingsCache.findSettings(ListQuery.project).getQuickAdd(getActivity()));
+        mQuickAddController.setEntityName(getString(R.string.project_name));
     }
 
     void restoreInstanceState(Bundle savedInstanceState) {

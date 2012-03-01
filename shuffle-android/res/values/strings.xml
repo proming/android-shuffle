@@ -241,6 +241,7 @@ allow that, you can turn it off under Settings.</string>
     <string name="context_name_title">Context Name</string>
     <string name="due_date_title">Due Date</string>
 
+    <string name="quick_add_title">Quick Add Bar</string>
 
     <string name="general_preferences">Google settings</string>
     
@@ -422,6 +423,8 @@ allow that, you can turn it off under Settings.</string>
         <item quantity="other"><xliff:g id="message_count" example="9">%d</xliff:g> selected</item>
     </plurals>
 
+    <string name="quick_add_hint">Quick Add %1$s</string>
+    
 	<!--  messages -->
     <string name="no_due_date">No due date</string>
     <string name="no_icon">No icon</string>

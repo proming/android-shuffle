@@ -36,7 +36,7 @@ public class NavigationListener {
         mActivity.startActivity(intent);
     }
 
-    public void onNewTask(@Observes NewTaskEvent event) {
+    public void onNewTask(@Observes EditNewTaskEvent event) {
         Intent intent = new Intent(Intent.ACTION_INSERT, TaskProvider.Tasks.CONTENT_URI);
         if (event.getContextId().isInitialised()) {
             intent.putExtra(TaskProvider.Tasks.CONTEXT_ID, event.getContextId().getId());
@@ -44,15 +44,18 @@ public class NavigationListener {
         if (event.getProjectId().isInitialised()) {
             intent.putExtra(TaskProvider.Tasks.PROJECT_ID, event.getProjectId().getId());
         }
+        if (event.getDescription() != null) {
+            intent.putExtra(TaskProvider.Tasks.DESCRIPTION, event.getDescription());
+        }
         mActivity.startActivity(intent);
     }
 
-    public void onNewProject(@Observes NewProjectEvent event) {
+    public void onNewProject(@Observes EditNewProjectEvent event) {
         Intent intent = new Intent(Intent.ACTION_INSERT, ProjectProvider.Projects.CONTENT_URI);
         mActivity.startActivity(intent);
     }
 
-    public void onNewContext(@Observes NewContextEvent event) {
+    public void onNewContext(@Observes EditNewContextEvent event) {
         Intent intent = new Intent(Intent.ACTION_INSERT, ContextProvider.Contexts.CONTENT_URI);
         mActivity.startActivity(intent);
     }

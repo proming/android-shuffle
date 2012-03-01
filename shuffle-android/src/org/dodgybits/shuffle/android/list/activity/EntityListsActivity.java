@@ -67,7 +67,7 @@ public class EntityListsActivity extends ActionBarFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_pager);
+        setContentView(R.layout.fragment_list_pager);
 
         getActionBarHelper().setDisplayOptions(ActionBarHelper.DISPLAY_HOME_AS_UP |
                 ActionBarHelper.DISPLAY_SHOW_HOME |

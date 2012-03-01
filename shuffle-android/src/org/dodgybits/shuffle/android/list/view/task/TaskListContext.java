@@ -8,6 +8,7 @@ import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
+import org.dodgybits.shuffle.android.list.event.EditNewTaskEvent;
 import org.dodgybits.shuffle.android.list.event.NewTaskEvent;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
@@ -98,8 +99,17 @@ public class TaskListContext implements Parcelable {
         return title;
     }
 
-    public NewTaskEvent createNewTaskEvent() {
-        return new NewTaskEvent(mSelector.getContextId(), mSelector.getProjectId());
+    public EditNewTaskEvent createEditNewTaskEvent() {
+        return new EditNewTaskEvent(mSelector.getContextId(), mSelector.getProjectId());
+    }
+
+    public NewTaskEvent createNewTaskEventWithDescription(String description) {
+        return new NewTaskEvent(description, mSelector.getContextId(), mSelector.getProjectId());
+    }
+
+    public boolean isQuickAddEnabled(Context context) {
+        ListSettings settings = ListSettingsCache.findSettings(mSelector.getListQuery());
+        return settings.getQuickAdd(context);
     }
     
     @Override

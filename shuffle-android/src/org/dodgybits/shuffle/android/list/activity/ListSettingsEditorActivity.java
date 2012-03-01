@@ -2,27 +2,26 @@ package org.dodgybits.shuffle.android.list.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceScreen;
+import android.preference.*;
 import android.util.Log;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.util.Constants;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
 
-public class ListSettingsEditorActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
+public class ListSettingsEditorActivity extends PreferenceActivity {
     private static final String TAG = "ListSettingsEditor";
     
     private ListSettings mSettings;
     private boolean mPrefsChanged;
-
+    private ListListener mListListener;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mSettings = ListSettings.fromIntent(getIntent());
-
+        mListListener = new ListListener();
+        
         setupScreen();
     }
 
@@ -84,6 +83,8 @@ public class ListSettingsEditorActivity extends PreferenceActivity implements Pr
                 mSettings.isDeletedEnabled()
         ));
 
+        screen.addPreference(createQuickAdd());
+
         setPreferenceScreen(screen);
     }
 
@@ -100,7 +101,7 @@ public class ListSettingsEditorActivity extends PreferenceActivity implements Pr
         String key = mSettings.getPrefix() + keySuffix;
         listPreference.setKey(key);
         listPreference.setDefaultValue(defaultValue);
-        listPreference.setOnPreferenceChangeListener(this);
+        listPreference.setOnPreferenceChangeListener(mListListener);
         listPreference.setEnabled(enabled);
 
         CharSequence[] entryStrings = listPreference.getEntries();
@@ -118,13 +119,35 @@ public class ListSettingsEditorActivity extends PreferenceActivity implements Pr
         return listPreference;
     }
 
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object o) {
-        ListPreference listPreference = (ListPreference)preference;
-        int index = listPreference.findIndexOfValue((String)o);
-        preference.setSummary(listPreference.getEntries()[index]);
-        mPrefsChanged = true;
-        return true;
-    }
+    private SwitchPreference createQuickAdd() {
+        SwitchPreference quickAddPref = new SwitchPreference(this);
+        quickAddPref.setTitle(R.string.quick_add_title);
+        quickAddPref.setDefaultValue(mSettings.getDefaultQuickAdd());
+        quickAddPref.setKey(mSettings.getPrefix() + ListSettings.LIST_FILTER_QUICK_ADD);
+        quickAddPref.setEnabled(mSettings.isQuickAddEnabled());
+        quickAddPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                mPrefsChanged = true;
+                return true;
+            }
+
+        });
+        return quickAddPref;       
+    }
+    
+    private class ListListener implements Preference.OnPreferenceChangeListener {
+
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object o) {
+            ListPreference listPreference = (ListPreference)preference;
+            int index = listPreference.findIndexOfValue((String)o);
+            preference.setSummary(listPreference.getEntries()[index]);
+            mPrefsChanged = true;
+            return true;
+        }
+
+    }
+    
 }

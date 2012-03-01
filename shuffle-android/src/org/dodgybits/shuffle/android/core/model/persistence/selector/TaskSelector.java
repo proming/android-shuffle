@@ -355,7 +355,17 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
 
             setComplete(settings.getCompleted(context));
             setPending(settings.getPending(context));
-
+            
+            Id contextId = settings.getContextId(context);
+            if (contextId.isInitialised()) {
+                setContextId(contextId);
+            }
+            
+            Id projectId = settings.getProjectId(context);
+            if (projectId.isInitialised()) {
+                setProjectId(projectId);
+            }
+            
             return this;
         }
 

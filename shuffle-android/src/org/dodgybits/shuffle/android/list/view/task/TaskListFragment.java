@@ -22,9 +22,11 @@ import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.UiUtilities;
 import org.dodgybits.shuffle.android.list.event.*;
+import org.dodgybits.shuffle.android.list.view.QuickAddController;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.view.activity.TaskPagerActivity;
 import roboguice.event.EventManager;
+import roboguice.event.Observes;
 import roboguice.fragment.RoboListFragment;
 
 import java.util.Set;
@@ -82,6 +84,9 @@ public class TaskListFragment extends RoboListFragment
 
     @Inject
     EntityCache<Project> mProjectCache;
+
+    @Inject
+    private QuickAddController mQuickAddController;
 
     private TaskListContext mListContext;
 
@@ -241,7 +246,7 @@ public class TaskListFragment extends RoboListFragment
         switch (item.getItemId()) {
             case R.id.action_add:
                 Log.d(TAG, "adding task");
-                mEventManager.fire(mListContext.createNewTaskEvent());
+                mEventManager.fire(mListContext.createEditNewTaskEvent());
                 return true;
             case R.id.action_help:
                 Log.d(TAG, "Bringing up help");
@@ -272,6 +277,7 @@ public class TaskListFragment extends RoboListFragment
     protected void onVisibilityChange() {
         if (getUserVisibleHint()) {
             updateTitle();
+            updateQuickAdd();
             getActionBarFragmentActivity().supportResetOptionsMenu();
         }
         updateSelectionMode();
@@ -279,6 +285,18 @@ public class TaskListFragment extends RoboListFragment
 
     private void updateTitle() {
         getActivity().setTitle(getListContext().createTitle(getActivity(), mContextCache, mProjectCache));
+    }
+
+    public void onQuickAddEvent(@Observes QuickAddEvent event) {
+        if (getUserVisibleHint() && mResumed) {
+            mEventManager.fire(getListContext().createNewTaskEventWithDescription(event.getValue()));
+        }
+    }
+
+    private void updateQuickAdd() {
+        mQuickAddController.init(getActivity());
+        mQuickAddController.setEnabled(getListContext().isQuickAddEnabled(getActivity()));
+        mQuickAddController.setEntityName(getString(R.string.task_name));
     }
 
     private void startLoading() {

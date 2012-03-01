@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.Flag;
 import org.dodgybits.shuffle.android.list.activity.ListSettingsEditorActivity;
-import org.dodgybits.shuffle.android.list.old.config.StandardTaskQueries;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
 
 import java.util.HashMap;
@@ -13,14 +12,16 @@ public class ListSettingsCache {
 
     private static final String DUE_TASKS_SETTINGS_KEY = "due_tasks";
 
+    private static ListSettings inboxSettings =
+            new ListSettings(ListQuery.inbox.name()).setDefaultQuickAdd(true);
     private static ListSettings dueTaskSettings =
             new ListSettings(DUE_TASKS_SETTINGS_KEY).setDefaultCompleted(Flag.no);
     private static ListSettings ticklerSettings =
-            new ListSettings(StandardTaskQueries.cTickler)
+            new ListSettings(ListQuery.tickler.name())
                     .setDefaultCompleted(Flag.no)
                     .setDefaultActive(Flag.no);
     private static ListSettings nextTasksSettings =
-            new ListSettings(StandardTaskQueries.cNextTasks)
+            new ListSettings(ListQuery.nextTasks.name())
                     .setDefaultCompleted(Flag.no)
                     .disableCompleted()
                     .disableDeleted()
@@ -30,6 +31,7 @@ public class ListSettingsCache {
             new HashMap<ListQuery,ListSettings>();
 
     static {
+        SPARSE_SETTINGS_MAP.put(ListQuery.inbox, inboxSettings);
         SPARSE_SETTINGS_MAP.put(ListQuery.nextTasks, nextTasksSettings);
         SPARSE_SETTINGS_MAP.put(ListQuery.tickler, ticklerSettings);
         SPARSE_SETTINGS_MAP.put(ListQuery.dueToday, dueTaskSettings);
