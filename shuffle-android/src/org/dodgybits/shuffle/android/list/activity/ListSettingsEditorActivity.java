@@ -6,6 +6,7 @@ import android.preference.*;
 import android.util.Log;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.util.Constants;
+import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
 
 public class ListSettingsEditorActivity extends PreferenceActivity {
@@ -119,8 +120,8 @@ public class ListSettingsEditorActivity extends PreferenceActivity {
         return listPreference;
     }
 
-    private SwitchPreference createQuickAdd() {
-        SwitchPreference quickAddPref = new SwitchPreference(this);
+    private Preference createQuickAdd() {
+        Preference quickAddPref = OSUtils.atLeastICS() ? new SwitchPreference(this) : new CheckBoxPreference(this);
         quickAddPref.setTitle(R.string.quick_add_title);
         quickAddPref.setDefaultValue(mSettings.getDefaultQuickAdd());
         quickAddPref.setKey(mSettings.getPrefix() + ListSettings.LIST_FILTER_QUICK_ADD);
