@@ -39,7 +39,7 @@ public class HomeActivity extends ActionBarFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
 
-        getActionBarHelper().setDisplayOptions(ActionBarHelper.DISPLAY_HOME_AS_UP |
+        getActionBarHelper().setDisplayOptions(
                 ActionBarHelper.DISPLAY_SHOW_HOME |
                 ActionBarHelper.DISPLAY_SHOW_TITLE);
 
