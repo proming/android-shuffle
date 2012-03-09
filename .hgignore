@@ -1,8 +1,10 @@
+syntax: regexp
 /bin/
 /gen/
 /classes/
-out/
-target/
+/out/
+/target/
+^target/
 \.DS_Store
 \.project
 \.classpath
