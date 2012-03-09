@@ -56,7 +56,7 @@ public class EntityUpdateListener {
     }
 
     public void onMoveTasks(@Observes MoveTasksEvent event) {
-        // TODO
+        mTaskPersister.moveTasksWithinProject(event.getTaskIds(), event.getCursor(), event.isMoveUp());
     }
 
     public void onToggleTasksDeleted(@Observes UpdateTasksDeletedEvent event) {
@@ -93,6 +93,7 @@ public class EntityUpdateListener {
 
         Task.Builder builder = Task.newBuilder();
         builder.setDescription(event.getDescription()).
+                setOrder(mTaskPersister.calculateTaskOrder(null, event.getProjectId(), 0L)).
                 setContextId(event.getContextId()).
                 setProjectId(event.getProjectId()).
                 setCreatedDate(System.currentTimeMillis()).

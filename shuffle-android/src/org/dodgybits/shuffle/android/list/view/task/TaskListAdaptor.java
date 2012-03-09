@@ -90,6 +90,30 @@ public class TaskListAdaptor extends CursorAdapter {
     public Set<Long> getSelectedSet() {
         return mSelectedSet;
     }
+    
+    public boolean isFirstTaskSelected() {
+        boolean selected = false;
+        Cursor c = getCursor();
+        if (!getSelectedSet().isEmpty() && c != null && !c.isClosed() && c.moveToFirst()) {
+            long id = c.getLong(mRowIDColumn);
+            if (getSelectedSet().contains(id)) {
+                selected = true;
+            }
+        }
+        return selected;
+    }
+    
+    public boolean isLastTaskSelected() {
+        boolean selected = false;
+        Cursor c = getCursor();
+        if (!getSelectedSet().isEmpty() && c != null && !c.isClosed() && c.moveToLast()) {
+            long id = c.getLong(mRowIDColumn);
+            if (getSelectedSet().contains(id)) {
+                selected = true;
+            }
+        }
+        return selected;
+    }
 
     /**
      * Clear the selection.  It's preferable to calling {@link Set#clear()} on

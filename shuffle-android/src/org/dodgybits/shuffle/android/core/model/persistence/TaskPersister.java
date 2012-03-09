@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
 import android.util.SparseIntArray;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
 import org.dodgybits.shuffle.android.core.model.Id;
@@ -271,6 +272,78 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         }
     }
 
+    public void moveTasksWithinProject(Set<Long> taskIds, Cursor cursor, boolean moveUp) {
+        Task firstTask = findById(Id.create(taskIds.iterator().next()));
+        Id projectId = firstTask.getProjectId();
+
+        Map<Integer,Integer> positions = Maps.newHashMap();
+
+        cursor.moveToPosition(-1);
+        int startPosition = -1;
+        while (cursor.moveToNext()) {
+            if (startPosition == -1) {
+                startPosition = cursor.getPosition();
+            }
+            Id id = readLocalId(cursor);
+            if (taskIds.contains(id.getId())) {
+                if (positions.containsKey(startPosition)) {
+                    positions.put(startPosition, positions.get(startPosition) + 1);
+                } else {
+                    positions.put(startPosition, startPosition);
+                }
+            } else {
+                startPosition = -1;
+            }
+        }
+
+        for (int position : positions.keySet()) {
+            moveTask(cursor, position, positions.get(position), moveUp);
+        }
+        mAnalytics.onEvent(cFlurryReorderTasksEvent);
+    }
+
+    /**
+     * Moves a range of tasks up or down within a project
+     * 
+     * @param cursor
+     * @param pos1 start of range
+     * @param pos2 end of range
+     * @param moveUp are the tasks moving up the list
+     */
+    private void moveTask(Cursor cursor, int pos1, int pos2, boolean moveUp) {
+        ContentValues values = new ContentValues();
+        cursor.moveToPosition(moveUp ? pos1 - 1: pos2 + 1);
+        Id initialId = readId(cursor, ID_INDEX);
+        int newOrder = cursor.getInt(DISPLAY_ORDER_INDEX);
+
+        if (moveUp) {
+            for (int position = pos1; position <= pos2; position++) {
+                cursor.moveToPosition(position);
+                Id id = readId(cursor, ID_INDEX);
+                int order = cursor.getInt(DISPLAY_ORDER_INDEX);
+                updateOrder(id.getId(), newOrder, values);
+                newOrder = order;
+            }
+        } else {
+            for (int position = pos2; position >= pos1; position--) {
+                cursor.moveToPosition(position);
+                Id id = readId(cursor, ID_INDEX);
+                int order = cursor.getInt(DISPLAY_ORDER_INDEX);
+                updateOrder(id.getId(), newOrder, values);
+                newOrder = order;
+            }
+
+        }
+        updateOrder(initialId.getId(), newOrder, values);
+    }
+
+    private void updateOrder(long id, int order, ContentValues values) {
+        Uri uri = ContentUris.withAppendedId(getContentUri(), id);
+        values.clear();
+        values.put(DISPLAY_ORDER, order);
+        mResolver.update(uri, values, null, null);
+    }
+
     /**
      * Swap the display order of two tasks at the given cursor positions.
      * The cursor is committed and re-queried after the update.
@@ -278,20 +351,14 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
     public void swapTaskPositions(Cursor cursor, int pos1, int pos2) {
         cursor.moveToPosition(pos1);
         Id id1 = readId(cursor, ID_INDEX);
-        int positionValue1 = cursor.getInt(DISPLAY_ORDER_INDEX);
+        int order1 = cursor.getInt(DISPLAY_ORDER_INDEX);
         cursor.moveToPosition(pos2);
         Id id2 = readId(cursor, ID_INDEX);
-        int positionValue2 = cursor.getInt(DISPLAY_ORDER_INDEX);
+        int order2 = cursor.getInt(DISPLAY_ORDER_INDEX);
 
-        Uri uri = ContentUris.withAppendedId(getContentUri(), id1.getId());
         ContentValues values = new ContentValues();
-        values.put(DISPLAY_ORDER, positionValue2);
-        mResolver.update(uri, values, null, null);
-
-        uri = ContentUris.withAppendedId(getContentUri(), id2.getId());
-        values.clear();
-        values.put(DISPLAY_ORDER, positionValue1);
-        mResolver.update(uri, values, null, null);
+        updateOrder(id1.getId(), order2, values);
+        updateOrder(id2.getId(), order1, values);
         mAnalytics.onEvent(cFlurryReorderTasksEvent);
     }
 

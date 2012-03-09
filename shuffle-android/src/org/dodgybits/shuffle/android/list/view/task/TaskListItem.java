@@ -170,7 +170,7 @@ public class TaskListItem extends View {
         setContext(task.getContextId());
         mIsActive = task.isActive();
         mIsDeleted = task.isDeleted();
-        setText(task.getDescription(), task.getDetails(), false);
+        setText(task.getDescription() + " (" + task.getOrder() + ")", task.getDetails(), false);
         setTimestamp(task.getDueDate());
     }
 

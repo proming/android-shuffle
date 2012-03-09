@@ -37,6 +37,7 @@ public class TaskListFragment extends RoboListFragment
     
     /** Argument name(s) */
     public static final String ARG_LIST_CONTEXT = "listContext";
+    public static final String SHOW_MOVE_ACTIONS = "showMoveActions";
 
     private static final String BUNDLE_LIST_STATE = "taskListFragment.state.listState";
     private static final String BUNDLE_KEY_SELECTED_TASK_ID
@@ -93,6 +94,7 @@ public class TaskListFragment extends RoboListFragment
     private void initializeArgCache() {
         if (mListContext != null) return;
         mListContext = getArguments().getParcelable(ARG_LIST_CONTEXT);
+        mShowMoveActions = getArguments().getBoolean(SHOW_MOVE_ACTIONS, false);
     }
 
     protected ActionBarFragmentActivity getActionBarFragmentActivity() {
@@ -317,6 +319,11 @@ public class TaskListFragment extends RoboListFragment
         return mListContext;
     }
 
+    private boolean showMoveActions() {
+        initializeArgCache();
+        return mShowMoveActions;
+    }
+
     private boolean doesSelectionContainIncompleteMessage() {
         Set<Long> selectedSet = mListAdapter.getSelectedSet();
         return testMultiple(selectedSet, false, new EntryMatcher() {
@@ -520,8 +527,10 @@ public class TaskListFragment extends RoboListFragment
             // Show appropriate menu items.
             boolean incompleteExists = doesSelectionContainIncompleteMessage();
             boolean undeletedExists = doesSelectionContainUndeletedMessage();
-            mMoveUp.setVisible(mShowMoveActions);
-            mMoveDown.setVisible(mShowMoveActions);
+            mMoveUp.setVisible(showMoveActions());
+            mMoveUp.setEnabled(showMoveActions() && moveUpEnabled());
+            mMoveDown.setVisible(showMoveActions());
+            mMoveDown.setEnabled(showMoveActions() && moveDownEnabled());
             mMarkComplete.setVisible(incompleteExists);
             mMarkIncomplete.setVisible(!incompleteExists);
             mMarkDelete.setVisible(undeletedExists);
@@ -535,10 +544,14 @@ public class TaskListFragment extends RoboListFragment
             if (selectedTasks.isEmpty()) return true;
             switch (item.getItemId()) {
                 case R.id.action_move_up:
-                    mEventManager.fire(new MoveTasksEvent(selectedTasks, true));
+                    if (moveUpEnabled()) {
+                        mEventManager.fire(new MoveTasksEvent(selectedTasks, true, mListAdapter.getCursor()));
+                    }
                     break;
                 case R.id.action_move_down:
-                    mEventManager.fire(new MoveTasksEvent(selectedTasks, false));
+                    if (moveDownEnabled()) {
+                        mEventManager.fire(new MoveTasksEvent(selectedTasks, false, mListAdapter.getCursor()));
+                    }
                     break;
                 case R.id.action_mark_complete:
                     mEventManager.fire(new UpdateTasksCompletedEvent(selectedTasks, true));
@@ -569,7 +582,15 @@ public class TaskListFragment extends RoboListFragment
                 onDeselectAll();
             }
         }
-    }
+
+        private boolean moveUpEnabled() {
+            return !mListAdapter.isFirstTaskSelected();
+        }
+
+        private boolean moveDownEnabled() {
+            return !mListAdapter.isLastTaskSelected();
+        }
+}
 
     /**
      * Highlight the selected message.

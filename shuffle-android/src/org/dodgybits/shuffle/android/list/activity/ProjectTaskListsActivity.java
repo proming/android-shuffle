@@ -142,6 +142,7 @@ public class ProjectTaskListsActivity extends ActionBarFragmentActivity {
             TaskListFragment fragment = mTaskListFragmentProvider.get(ProjectTaskListsActivity.this);
             Bundle args = new Bundle();
             args.putParcelable(TaskListFragment.ARG_LIST_CONTEXT, listContext);
+            args.putBoolean(TaskListFragment.SHOW_MOVE_ACTIONS, true);
             fragment.setArguments(args);
             return fragment;
         }
