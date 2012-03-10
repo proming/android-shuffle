@@ -1,18 +1,14 @@
 package org.dodgybits.shuffle.android.core.model.encoding;
 
-import static android.provider.BaseColumns._ID;
-import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.COLOUR;
-import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.ICON;
-import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.MODIFIED_DATE;
-import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.NAME;
-import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.TRACKS_ID;
-
+import android.os.Bundle;
+import com.google.inject.Singleton;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Context.Builder;
 
-import android.os.Bundle;
-
-import com.google.inject.Singleton;
+import static android.provider.BaseColumns._ID;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.ACTIVE;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.DELETED;
+import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.*;
 
 @Singleton
 public class ContextEncoder extends AbstractEntityEncoder implements EntityEncoder<Context> {
@@ -22,6 +18,8 @@ public class ContextEncoder extends AbstractEntityEncoder implements EntityEncod
         putId(icicle, _ID, context.getLocalId());
         putId(icicle, TRACKS_ID, context.getTracksId());
         icicle.putLong(MODIFIED_DATE, context.getModifiedDate());
+        icicle.putBoolean(DELETED, context.isDeleted());
+        icicle.putBoolean(ACTIVE, context.isActive());
 
         putString(icicle, NAME, context.getName());
         icicle.putInt(COLOUR, context.getColourIndex());
@@ -36,6 +34,8 @@ public class ContextEncoder extends AbstractEntityEncoder implements EntityEncod
         builder.setLocalId(getId(icicle, _ID));
         builder.setModifiedDate(icicle.getLong(MODIFIED_DATE, 0L));
         builder.setTracksId(getId(icicle, TRACKS_ID));
+        builder.setDeleted(icicle.getBoolean(DELETED));
+        builder.setActive(icicle.getBoolean(ACTIVE));
 
         builder.setName(getString(icicle, NAME));
         builder.setColourIndex(icicle.getInt(COLOUR));

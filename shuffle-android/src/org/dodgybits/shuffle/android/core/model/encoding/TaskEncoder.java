@@ -1,28 +1,14 @@
 package org.dodgybits.shuffle.android.core.model.encoding;
 
-import static android.provider.BaseColumns._ID;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.ALL_DAY;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.CAL_EVENT_ID;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.COMPLETE;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.CONTEXT_ID;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.CREATED_DATE;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.DESCRIPTION;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.DETAILS;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.DISPLAY_ORDER;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.DUE_DATE;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.HAS_ALARM;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.MODIFIED_DATE;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.PROJECT_ID;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.START_DATE;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.TIMEZONE;
-import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.TRACKS_ID;
-
+import android.os.Bundle;
+import com.google.inject.Singleton;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.Task.Builder;
 
-import android.os.Bundle;
-
-import com.google.inject.Singleton;
+import static android.provider.BaseColumns._ID;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.ACTIVE;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.DELETED;
+import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.*;
 
 @Singleton
 public class TaskEncoder extends AbstractEntityEncoder implements
@@ -33,6 +19,8 @@ public class TaskEncoder extends AbstractEntityEncoder implements
         putId(icicle, _ID, task.getLocalId());
         putId(icicle, TRACKS_ID, task.getTracksId());
         icicle.putLong(MODIFIED_DATE, task.getModifiedDate());
+        icicle.putBoolean(DELETED, task.isDeleted());
+        icicle.putBoolean(ACTIVE, task.isActive());
 
         putString(icicle, DESCRIPTION, task.getDescription());
         putString(icicle, DETAILS, task.getDetails());
@@ -57,6 +45,8 @@ public class TaskEncoder extends AbstractEntityEncoder implements
         builder.setLocalId(getId(icicle, _ID));
         builder.setModifiedDate(icicle.getLong(MODIFIED_DATE, 0L));
         builder.setTracksId(getId(icicle, TRACKS_ID));
+        builder.setDeleted(icicle.getBoolean(DELETED));
+        builder.setActive(icicle.getBoolean(ACTIVE));
 
         builder.setDescription(getString(icicle, DESCRIPTION));
         builder.setDetails(getString(icicle, DETAILS));

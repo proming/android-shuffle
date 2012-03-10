@@ -1,19 +1,12 @@
 package org.dodgybits.shuffle.android.core.model.encoding;
 
-import static android.provider.BaseColumns._ID;
-import static org.dodgybits.shuffle.android.persistence.provider.ProjectProvider.Projects.ARCHIVED;
-import static org.dodgybits.shuffle.android.persistence.provider.ProjectProvider.Projects.DEFAULT_CONTEXT_ID;
-import static org.dodgybits.shuffle.android.persistence.provider.ProjectProvider.Projects.MODIFIED_DATE;
-import static org.dodgybits.shuffle.android.persistence.provider.ProjectProvider.Projects.NAME;
-import static org.dodgybits.shuffle.android.persistence.provider.ProjectProvider.Projects.PARALLEL;
-import static org.dodgybits.shuffle.android.persistence.provider.ProjectProvider.Projects.TRACKS_ID;
-
+import android.os.Bundle;
+import com.google.inject.Singleton;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.Project.Builder;
 
-import android.os.Bundle;
-
-import com.google.inject.Singleton;
+import static android.provider.BaseColumns._ID;
+import static org.dodgybits.shuffle.android.persistence.provider.ProjectProvider.Projects.*;
 
 @Singleton
 public class ProjectEncoder extends AbstractEntityEncoder implements EntityEncoder<Project> {
@@ -23,6 +16,8 @@ public class ProjectEncoder extends AbstractEntityEncoder implements EntityEncod
         putId(icicle, _ID, project.getLocalId());
         putId(icicle, TRACKS_ID, project.getTracksId());
         icicle.putLong(MODIFIED_DATE, project.getModifiedDate());
+        icicle.putBoolean(DELETED, project.isDeleted());
+        icicle.putBoolean(ACTIVE, project.isActive());
 
         putString(icicle, NAME, project.getName());
         putId(icicle, DEFAULT_CONTEXT_ID, project.getDefaultContextId());
@@ -38,12 +33,13 @@ public class ProjectEncoder extends AbstractEntityEncoder implements EntityEncod
         builder.setLocalId(getId(icicle, _ID));
         builder.setModifiedDate(icicle.getLong(MODIFIED_DATE, 0L));
         builder.setTracksId(getId(icicle, TRACKS_ID));
+        builder.setDeleted(icicle.getBoolean(DELETED));
+        builder.setActive(icicle.getBoolean(ACTIVE));
 
         builder.setName(getString(icicle, NAME));
         builder.setDefaultContextId(getId(icicle, DEFAULT_CONTEXT_ID));
         builder.setArchived(icicle.getBoolean(ARCHIVED));
         builder.setParallel(icicle.getBoolean(PARALLEL));
-        
         return builder.build();
     }
     
