@@ -1,12 +1,11 @@
 package org.dodgybits.shuffle.android.core.model.persistence;
 
-import java.util.Collection;
-
+import android.database.Cursor;
+import android.net.Uri;
 import org.dodgybits.shuffle.android.core.model.Entity;
 import org.dodgybits.shuffle.android.core.model.Id;
 
-import android.database.Cursor;
-import android.net.Uri;
+import java.util.Collection;
 
 public interface EntityPersister<E extends Entity> {
 
@@ -57,5 +56,5 @@ public interface EntityPersister<E extends Entity> {
      * @return whether the operation succeeded
      */
 	boolean deletePermanently(Id id);
-    
+
 }

@@ -303,6 +303,57 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
     }
 
     /**
+     * There may be clashing orders for the given list of projects. Regenerate order values
+     * for all tasks to insure they don't clash.
+     *
+     * @param projectIds set of projects to update
+     */
+    public void reorderProjects(Set<Id> projectIds) {
+        StringBuilder whereBuilder = new StringBuilder();
+        whereBuilder.append(TaskProvider.Tasks.PROJECT_ID).
+                append(" in (").
+                append(StringUtils.repeat(projectIds.size(), "?", ",")).
+                append(")");
+
+        String[] whereArgs = new String[projectIds.size()];
+        int index = 0;
+        for (Id id : projectIds) {
+            whereArgs[index] = String.valueOf(id.getId());
+            index++;
+        }
+
+        Cursor cursor =  mResolver.query(
+                TaskProvider.Tasks.CONTENT_URI,
+                new String[] {BaseColumns._ID, TaskProvider.Tasks.PROJECT_ID, TaskProvider.Tasks.DISPLAY_ORDER},
+                whereBuilder.toString(),
+                whereArgs,
+                TaskProvider.Tasks.PROJECT_ID + " ASC, " + TaskProvider.Tasks.DISPLAY_ORDER + " ASC");
+
+        cursor.moveToPosition(-1);
+        Id currentProjectId = Id.NONE;
+        int newOrder = 0;
+        ContentValues values = new ContentValues();
+        while (cursor.moveToNext()) {
+            long id = cursor.getLong(0);
+            Id projectId = readId(cursor, 1);
+            int order = cursor.getInt(2);
+
+            if (!projectId.equals(currentProjectId)) {
+                currentProjectId = projectId;
+                newOrder = 0;
+            }
+
+            if (newOrder != order) {
+                updateOrder(id, newOrder, values);
+            }
+            newOrder++;
+        }
+
+        mAnalytics.onEvent(cFlurryReorderTasksEvent);
+    }
+
+
+    /**
      * Moves a range of tasks up or down within a project
      * 
      * @param cursor

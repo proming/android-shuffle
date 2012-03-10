@@ -1,36 +1,5 @@
 package org.dodgybits.shuffle.android.preference.activity;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
-import org.dodgybits.shuffle.android.core.model.Context;
-import org.dodgybits.shuffle.android.core.model.Id;
-import org.dodgybits.shuffle.android.core.model.Project;
-import org.dodgybits.shuffle.android.core.model.Task;
-import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
-import org.dodgybits.shuffle.android.core.model.protocol.ContextProtocolTranslator;
-import org.dodgybits.shuffle.android.core.model.protocol.EntityDirectory;
-import org.dodgybits.shuffle.android.core.model.protocol.HashEntityDirectory;
-import org.dodgybits.shuffle.android.core.model.protocol.ProjectProtocolTranslator;
-import org.dodgybits.shuffle.android.core.model.protocol.TaskProtocolTranslator;
-import org.dodgybits.shuffle.android.core.util.StringUtils;
-import org.dodgybits.shuffle.android.core.view.AlertUtils;
-import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
-import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
-import org.dodgybits.shuffle.android.preference.view.Progress;
-import org.dodgybits.shuffle.dto.ShuffleProtos.Catalogue;
-
-import roboguice.inject.InjectView;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -38,13 +7,30 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.TextView;
-
+import android.widget.*;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
+import org.dodgybits.shuffle.android.core.model.Context;
+import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.core.model.Project;
+import org.dodgybits.shuffle.android.core.model.Task;
+import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
+import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
+import org.dodgybits.shuffle.android.core.model.protocol.*;
+import org.dodgybits.shuffle.android.core.util.StringUtils;
+import org.dodgybits.shuffle.android.core.view.AlertUtils;
+import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
+import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
+import org.dodgybits.shuffle.android.preference.view.Progress;
+import org.dodgybits.shuffle.dto.ShuffleProtos.Catalogue;
+import roboguice.inject.InjectView;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
+import java.util.*;
 
 public class PreferencesRestoreBackupActivity extends FlurryEnabledActivity
 	implements View.OnClickListener {
@@ -60,9 +46,12 @@ public class PreferencesRestoreBackupActivity extends FlurryEnabledActivity
     @InjectView(R.id.progress_horizontal) ProgressBar mProgressBar;
     @InjectView(R.id.progress_label) TextView mProgressText;
     
-    @Inject EntityPersister<Context> mContextPersister;
-    @Inject EntityPersister<Project> mProjectPersister;
-    @Inject EntityPersister<Task> mTaskPersister;
+    @Inject
+    EntityPersister<Context> mContextPersister;
+    @Inject
+    EntityPersister<Project> mProjectPersister;
+    @Inject
+    TaskPersister mTaskPersister;
     
     private AsyncTask<?, ?, ?> mTask;
     
@@ -436,6 +425,7 @@ public class PreferencesRestoreBackupActivity extends FlurryEnabledActivity
 		    
 			// add all tasks back, even if they're duplicates
 			
+            Set<Id> projectIds = Sets.newHashSet();
 	        String type = getString(R.string.task_name);
 			List<Task> newTasks = new ArrayList<Task>();
 	        int i = 0;
@@ -444,12 +434,19 @@ public class PreferencesRestoreBackupActivity extends FlurryEnabledActivity
 			{
 			    Task task = translator.fromMessage(protoTask);
 				newTasks.add(task);
+                if (task.getProjectId().isInitialised()) {
+                    projectIds.add(task.getProjectId());
+                }
+                
 				Log.d(cTag, "Adding task " + task.getDescription());
 				String text = getString(R.string.restore_progress, type, task.getDescription());
 				int percent = calculatePercent(progressStart, progressEnd, ++i, total);
             	publishProgress(Progress.createProgress(percent, text));
 			}
 			mTaskPersister.bulkInsert(newTasks);
+
+            // reset project task orders for all affected projects in case they have changed
+            mTaskPersister.reorderProjects(projectIds);
 		}
                 
         private int calculatePercent(int start, int end, int current, int total) {
