@@ -10,6 +10,9 @@ import org.dodgybits.shuffle.android.list.model.ListTitles;
 import javax.annotation.Nullable;
 import java.util.List;
 
+/**
+ * Represents a task list view that can switch between several different queries (e.g. the Due Actions screen).
+ */
 public class MultiTaskListContext extends TaskListContext {
     private static int sDefaultIndex = 0;
     private final List<ListQuery> mQueries;

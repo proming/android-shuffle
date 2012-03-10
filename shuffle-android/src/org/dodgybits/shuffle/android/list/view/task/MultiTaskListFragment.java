@@ -14,6 +14,9 @@ import org.dodgybits.shuffle.android.list.model.ListTitles;
 import javax.annotation.Nullable;
 import java.util.List;
 
+/**
+ * Switch between multiple different task list views via a spinner in the action bar.
+ */
 public class MultiTaskListFragment extends TaskListFragment {
     private static final String TAG = "MultiTaskListFragment";
     public static final String SELECTED_INDEX = "SELECTED_INDEX";
