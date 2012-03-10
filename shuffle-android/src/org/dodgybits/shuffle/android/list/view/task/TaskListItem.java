@@ -85,7 +85,7 @@ public class TaskListItem extends View {
     private String mSnippet;
     private String mDescription;
     private StaticLayout mContentsLayout;
-    private boolean mCompleted;
+    private boolean mIsCompleted;
     private boolean mIsActive = true;
     private boolean mIsDeleted = false;
     private String mContextName; 
@@ -135,7 +135,7 @@ public class TaskListItem extends View {
             sStateInactive =
                     BitmapFactory.decodeResource(r, R.drawable.ic_badge_reply_holo_light);
             sStateDeleted =
-                    BitmapFactory.decodeResource(r, R.drawable.ic_badge_forward_holo_light);
+                    BitmapFactory.decodeResource(r, R.drawable.ic_badge_delete);
 
             ACTIVATED_TEXT_COLOR = r.getColor(android.R.color.black);
             DESCRIPTION_TEXT_COLOR_COMPLETE = r.getColor(R.color.description_text_color_complete);
@@ -165,7 +165,7 @@ public class TaskListItem extends View {
         mTask = task;
 
         mTaskId = task.getLocalId().getId();
-        mCompleted = task.isComplete();
+        mIsCompleted = task.isComplete();
         setProject(task.getProjectId());
         setContext(task.getContextId());
         mIsActive = task.isActive();
@@ -214,7 +214,7 @@ public class TaskListItem extends View {
             boolean hasContents = false;
             if (!TextUtils.isEmpty(mDescription)) {
                 SpannableString ss = new SpannableString(mDescription);
-                ss.setSpan(new StyleSpan(mCompleted ? Typeface.NORMAL : Typeface.BOLD), 0, ss.length(),
+                ss.setSpan(new StyleSpan(mIsCompleted ? Typeface.NORMAL : Typeface.BOLD), 0, ss.length(),
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 ssb.append(ss);
                 hasContents = true;
@@ -238,11 +238,15 @@ public class TaskListItem extends View {
         }
     }
 
+    private boolean isDone() {
+        return mIsCompleted || mIsDeleted;
+    }
+
     private Drawable mCurrentBackground = null; // Only used by updateBackground()
 
     private void updateBackground() {
         final Drawable newBackground;
-        if (mCompleted) {
+        if (isDone()) {
             if (mCompleteSelector == null) {
                 mCompleteSelector = getContext().getResources()
                         .getDrawable(R.drawable.task_complete_selector);
@@ -269,14 +273,14 @@ public class TaskListItem extends View {
         boolean hasContents = false;
         int snippetStart = 0;
         if (!TextUtils.isEmpty(mDescription)) {
-            int contentsColor = getFontColor(mCompleted ? DESCRIPTION_TEXT_COLOR_COMPLETE
+            int contentsColor = getFontColor(isDone() ? DESCRIPTION_TEXT_COLOR_COMPLETE
                     : DESCRIPTION_TEXT_COLOR_INCOMPLETE);
             mText.setSpan(new ForegroundColorSpan(contentsColor), 0, mDescription.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             snippetStart = mDescription.length() + 1;
         }
         if (!TextUtils.isEmpty(mSnippet)) {
-            int snippetColor = getFontColor(mCompleted ? SNIPPET_TEXT_COLOR_COMPLETE
+            int snippetColor = getFontColor(isDone() ? SNIPPET_TEXT_COLOR_COMPLETE
                     : SNIPPET_TEXT_COLOR_INCOMPLETE);
             mText.setSpan(new ForegroundColorSpan(snippetColor), snippetStart, mText.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -295,14 +299,14 @@ public class TaskListItem extends View {
         }
 
         // Now, format the project for its width
-        TextPaint projectPaint = mCompleted ? sDefaultPaint : sBoldPaint;
+        TextPaint projectPaint = isDone() ? sDefaultPaint : sBoldPaint;
         // And get the ellipsized string for the calculated width
         if (TextUtils.isEmpty(mProject)) {
             mFormattedProject = "";
         } else {
             int projectWidth = mCoordinates.projectWidth;
             projectPaint.setTextSize(mCoordinates.projectFontSize);
-            projectPaint.setColor(getFontColor(mCompleted ? PROJECT_TEXT_COLOR_COMPLETE
+            projectPaint.setColor(getFontColor(isDone() ? PROJECT_TEXT_COLOR_COMPLETE
                     : PROJECT_TEXT_COLOR_INCOMPLETE));
             mFormattedProject = TextUtils.ellipsize(mProject, projectPaint, projectWidth,
                     TextUtils.TruncateAt.END);
@@ -370,8 +374,8 @@ public class TaskListItem extends View {
                 mCoordinates.checkmarkX, mCoordinates.checkmarkY, null);
 
         // Draw the project name
-        Paint projectPaint = mCompleted ? sDefaultPaint : sBoldPaint;
-        projectPaint.setColor(getFontColor(mCompleted ? PROJECT_TEXT_COLOR_COMPLETE
+        Paint projectPaint = isDone() ? sDefaultPaint : sBoldPaint;
+        projectPaint.setColor(getFontColor(isDone() ? PROJECT_TEXT_COLOR_COMPLETE
                 : PROJECT_TEXT_COLOR_INCOMPLETE));
         projectPaint.setTextSize(mCoordinates.projectFontSize);
         canvas.drawText(mFormattedProject, 0, mFormattedProject.length(),
@@ -382,7 +386,7 @@ public class TaskListItem extends View {
         if (mIsDeleted) {
             canvas.drawBitmap(sStateDeleted,
                     mCoordinates.stateX, mCoordinates.stateY, null);
-        } else if (mIsActive) {
+        } else if (!mIsActive) {
             canvas.drawBitmap(sStateInactive,
                     mCoordinates.stateX, mCoordinates.stateY, null);
         }
@@ -398,7 +402,7 @@ public class TaskListItem extends View {
 
         // Draw the date
         sDatePaint.setTextSize(mCoordinates.dateFontSize);
-        sDatePaint.setColor(mCompleted ? DATE_TEXT_COLOR_COMPLETE : DATE_TEXT_COLOR_INCOMPLETE);
+        sDatePaint.setColor(mIsCompleted ? DATE_TEXT_COLOR_COMPLETE : DATE_TEXT_COLOR_INCOMPLETE);
         int dateX = mCoordinates.dateXEnd
                 - (int) sDatePaint.measureText(mFormattedDate, 0, mFormattedDate.length());
 
