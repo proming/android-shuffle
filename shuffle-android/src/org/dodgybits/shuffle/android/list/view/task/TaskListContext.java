@@ -13,7 +13,6 @@ import org.dodgybits.shuffle.android.list.event.NewTaskEvent;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
 import org.dodgybits.shuffle.android.list.model.ListTitles;
-import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
 
 public class TaskListContext implements Parcelable {
@@ -48,7 +47,6 @@ public class TaskListContext implements Parcelable {
     public static final TaskListContext createForProject(Id projectId) {
         TaskSelector selector = TaskSelector.newBuilder().setListQuery(ListQuery.project).
                 setProjectId(projectId).
-                setSortOrder(TaskProvider.Tasks.DISPLAY_ORDER + " ASC").
                 build();
         return create(selector);
     }

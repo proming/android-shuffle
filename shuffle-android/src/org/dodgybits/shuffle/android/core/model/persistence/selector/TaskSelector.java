@@ -264,6 +264,15 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
     }
 
     @Override
+    public String getSortOrder() {
+        String sortOrder =  super.getSortOrder();
+        if (sortOrder == null && mListQuery == ListQuery.project) {
+            sortOrder = TaskProvider.Tasks.DISPLAY_ORDER + " ASC";
+        }
+        return sortOrder;
+    }
+
+    @Override
     public Builder builderFrom() {
         return newBuilder().mergeFrom(this);
     }
