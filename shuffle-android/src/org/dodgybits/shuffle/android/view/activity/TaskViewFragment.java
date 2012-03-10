@@ -272,8 +272,8 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
             mSchedulingEntry.setVisibility(View.GONE);
         } else {
             mSchedulingEntry.setVisibility(View.VISIBLE);
-            mShowFromView.setText(formatDateTime(showFromMillis));
-            mDueView.setText(formatDateTime(dueMillis));
+            mShowFromView.setText(formatDateTime(showFromMillis, false));
+            mDueView.setText(formatDateTime(dueMillis, false));
         }
     }
 
@@ -285,10 +285,10 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         }
     }
 
-    private CharSequence formatDateTime(long millis) {
+    private CharSequence formatDateTime(long millis, boolean withPreposition) {
         CharSequence value;
         if (millis > 0L) {
-            value = DateUtils.getRelativeTimeSpanString(getActivity(), millis, true);
+            value = DateUtils.getRelativeTimeSpanString(getActivity(), millis, withPreposition);
         } else {
             value = "";
         }
@@ -297,10 +297,11 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     }
 
     private void updateExtras(Task task, Context context, Project project) {
-        mStatusView.updateStatus(task, context, project, !task.isComplete());
+        boolean showStatus = task.isDeleted() || !task.isComplete();
+        mStatusView.updateStatus(task, context, project, showStatus);
         mCompletedView.setText(task.isComplete() ? getString(R.string.completed) : "");
-        mCreatedView.setText(getString(R.string.created_title) + " " + formatDateTime(task.getCreatedDate()));
-        mModifiedView.setText(getString(R.string.modified_title) + " " + formatDateTime(task.getModifiedDate()));
+        mCreatedView.setText(getString(R.string.created_title) + " " + formatDateTime(task.getCreatedDate(), true));
+        mModifiedView.setText(getString(R.string.modified_title) + " " + formatDateTime(task.getModifiedDate(), true));
     }
 
     private void updatePageDisplay() {
