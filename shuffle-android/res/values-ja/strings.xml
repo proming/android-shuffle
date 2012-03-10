@@ -53,8 +53,6 @@
     <string name="title_project_tasks">プロジェクト > %s</string>
     <string name="title_context_tasks">コンテキスト > %s</string>
     <string name="title_shortcut_picker">ショートカット選択</string>
-    <string name="title_shuffle_2x2">Shuffle (2x2)</string>
-    <string name="title_shuffle_4x4">Shuffle (4x4)</string>
     <string name="title_widget_picker">ウィジェット内容選択</string>
 
 	<!--  Option menu -->

@@ -20,11 +20,11 @@ import org.dodgybits.shuffle.android.actionbarcompat.ActionMode;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
+import org.dodgybits.shuffle.android.core.util.IntentUtils;
 import org.dodgybits.shuffle.android.core.util.UiUtilities;
 import org.dodgybits.shuffle.android.list.event.*;
 import org.dodgybits.shuffle.android.list.view.QuickAddController;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-import org.dodgybits.shuffle.android.view.activity.TaskPagerActivity;
 import roboguice.event.EventManager;
 import roboguice.event.Observes;
 import roboguice.fragment.RoboListFragment;
@@ -37,7 +37,6 @@ public class TaskListFragment extends RoboListFragment
     
     /** Argument name(s) */
     public static final String ARG_LIST_CONTEXT = "listContext";
-    public static final String SHOW_MOVE_ACTIONS = "showMoveActions";
 
     private static final String BUNDLE_LIST_STATE = "taskListFragment.state.listState";
     private static final String BUNDLE_KEY_SELECTED_TASK_ID
@@ -94,7 +93,7 @@ public class TaskListFragment extends RoboListFragment
     private void initializeArgCache() {
         if (mListContext != null) return;
         mListContext = getArguments().getParcelable(ARG_LIST_CONTEXT);
-        mShowMoveActions = getArguments().getBoolean(SHOW_MOVE_ACTIONS, false);
+        mShowMoveActions = mListContext.showMoveActions();
     }
 
     protected ActionBarFragmentActivity getActionBarFragmentActivity() {
@@ -202,12 +201,8 @@ public class TaskListFragment extends RoboListFragment
             intent.putExtras(bundle);
             getActivity().setResult(Activity.RESULT_OK, intent);
         } else {
-            // Launch activity to view/edit the currently selected item
-            Intent intent = new Intent(getActivity(), TaskPagerActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putInt(TaskPagerActivity.INITIAL_POSITION, position);
-            bundle.putParcelable(TaskPagerActivity.TASK_LIST_CONTEXT, mListContext);
-            intent.putExtras(bundle);
+            // Launch activity to view the currently selected item
+            Intent intent = IntentUtils.createTaskViewIntent(getActivity(), mListContext, position);
             startActivity(intent);
         }
     }

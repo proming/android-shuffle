@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.core.activity.HelpActivity;
+import org.dodgybits.shuffle.android.core.util.IntentUtils;
 import org.dodgybits.shuffle.android.list.event.*;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
@@ -37,16 +38,7 @@ public class NavigationListener {
     }
 
     public void onNewTask(@Observes EditNewTaskEvent event) {
-        Intent intent = new Intent(Intent.ACTION_INSERT, TaskProvider.Tasks.CONTENT_URI);
-        if (event.getContextId().isInitialised()) {
-            intent.putExtra(TaskProvider.Tasks.CONTEXT_ID, event.getContextId().getId());
-        }
-        if (event.getProjectId().isInitialised()) {
-            intent.putExtra(TaskProvider.Tasks.PROJECT_ID, event.getProjectId().getId());
-        }
-        if (event.getDescription() != null) {
-            intent.putExtra(TaskProvider.Tasks.DESCRIPTION, event.getDescription());
-        }
+        Intent intent = IntentUtils.createNewTaskIntent(event.getDescription(), event.getContextId(), event.getProjectId());
         mActivity.startActivity(intent);
     }
 

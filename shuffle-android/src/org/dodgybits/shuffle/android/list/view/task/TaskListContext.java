@@ -1,7 +1,6 @@
 package org.dodgybits.shuffle.android.list.view.task;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import org.dodgybits.shuffle.android.core.model.Id;
@@ -56,6 +55,20 @@ public class TaskListContext implements Parcelable {
         return create(selector);
     }
 
+    public static final TaskListContext create(ListQuery query, Id contextId, Id projectId) {
+        TaskListContext listContext;
+        if (contextId.isInitialised()) {
+            listContext = TaskListContext.createForContext(contextId);
+        } else {
+            if (projectId.isInitialised()) {
+                listContext = TaskListContext.createForProject(projectId);
+            } else {
+                listContext = TaskListContext.create(query);
+            }
+        }
+        return listContext;
+    }
+
     private static final TaskListContext create(TaskSelector selector) {
         ListQuery query = selector.getListQuery();
         return new TaskListContext(selector, ListTitles.getTitleId(query));
@@ -85,7 +98,7 @@ public class TaskListContext implements Parcelable {
         return mSelector.builderFrom().applyListPreferences(context, settings).build();
     }
     
-    public String createTitle(ContextWrapper context, 
+    public String createTitle(Context context,
                               EntityCache<org.dodgybits.shuffle.android.core.model.Context> contextCache, 
                               EntityCache<Project> projectCache) {
         String title;
@@ -118,4 +131,7 @@ public class TaskListContext implements Parcelable {
         return "[TaskListContext " + mSelector.getListQuery() + "]";
     }
 
+    public boolean showMoveActions() {
+        return getListQuery() == ListQuery.project;
+    }
 }

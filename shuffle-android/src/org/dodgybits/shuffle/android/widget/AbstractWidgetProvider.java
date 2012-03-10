@@ -3,11 +3,9 @@ package org.dodgybits.shuffle.android.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -21,7 +19,8 @@ import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
-import org.dodgybits.shuffle.android.list.old.config.StandardTaskQueries;
+import org.dodgybits.shuffle.android.core.util.IntentUtils;
+import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
@@ -31,7 +30,8 @@ import org.dodgybits.shuffle.android.preference.model.Preferences;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static org.dodgybits.shuffle.android.core.util.Constants.*;
+import static org.dodgybits.shuffle.android.core.util.Constants.cIdType;
+import static org.dodgybits.shuffle.android.core.util.Constants.cPackage;
 
 public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
     private static final String TAG = "AbstractWidgetProvider";
@@ -74,14 +74,13 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
         for (int i=0; i<N; i++) {
             int appWidgetId = appWidgetIds[i];
             if (Arrays.binarySearch(localAppWidgetIds, appWidgetId) >= 0) {
-                String prefKey = Preferences.getWidgetQueryKey(appWidgetId);
-                String queryName = Preferences.getWidgetQuery(context, prefKey);
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    String message = String.format("App widget %s found query %s for key %s", 
-                            appWidgetId, queryName, prefKey);
-                    Log.d(TAG, message);
+                TaskListContext listContext = WidgetManager.loadListContextPref(context, appWidgetId);
+                if (listContext != null) {
+                    Log.d(TAG, "Updating widget " + appWidgetId + " with context " + listContext);
+                    updateAppWidget(context, appWidgetManager, appWidgetId, listContext);
+                } else {
+                    Log.e(TAG, "Couldn't build TaskListContext for app widget " + appWidgetId);
                 }
-                updateAppWidget(context, appWidgetManager, appWidgetId, queryName);
             } else {
                 if (Log.isLoggable(TAG, Log.DEBUG)) {
                     String message = String.format("App widget %s not handled by this provider %s", appWidgetId, getClass());
@@ -113,22 +112,22 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
     }
 
     private void updateAppWidget(final android.content.Context androidContext, AppWidgetManager appWidgetManager,
-            int appWidgetId, String queryName) {
+            int appWidgetId, TaskListContext listContext) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
             String message = String.format("updateAppWidget appWidgetId=%s queryName=%s provider=%s", 
-                    appWidgetId, queryName, getClass());
+                    appWidgetId, listContext, getClass());
             Log.d(TAG, message);
         }
 
         RemoteViews views = new RemoteViews(androidContext.getPackageName(), getWidgetLayoutId());
 
-        Cursor taskCursor = createCursor(androidContext, queryName);
+        Cursor taskCursor = createCursor(androidContext, listContext);
         if (taskCursor == null) return;
 
-        int titleId = getIdentifier(androidContext, "title_" + queryName, cStringType);
-        views.setTextViewText(R.id.title, androidContext.getString(titleId) + " (" + taskCursor.getCount() + ")");
+        String title = listContext.createTitle(androidContext, mContextCache, mProjectCache);
+        views.setTextViewText(R.id.title, title + " (" + taskCursor.getCount() + ")");
 
-        setupFrameClickIntents(androidContext, views, queryName);
+        setupFrameClickIntents(androidContext, views, listContext);
 
         int totalEntries = getTotalEntries();
         for (int taskCount = 1; taskCount <= totalEntries; taskCount++) {
@@ -146,15 +145,9 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
             int contextIconId = updateContext(androidContext, views, context, taskCount);
 
             if (task != null) {
-                Uri.Builder builder = TaskProvider.Tasks.CONTENT_URI.buildUpon();
-                ContentUris.appendId(builder, task.getLocalId().getId());
-                Uri taskUri = builder.build();
-                Intent intent = new Intent(Intent.ACTION_VIEW, taskUri);
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Adding pending event for viewing uri " + taskUri);
-                }
-                int entryId = getIdIdentifier(androidContext, "entry_" + taskCount);
+                Intent intent = IntentUtils.createTaskViewIntent(androidContext, listContext, taskCount - 1);
                 PendingIntent pendingIntent = PendingIntent.getActivity(androidContext, 0, intent, 0);
+                int entryId = getIdIdentifier(androidContext, "entry_" + taskCount);
                 views.setOnClickPendingIntent(entryId, pendingIntent);
                 views.setOnClickPendingIntent(descriptionViewId, pendingIntent);
                 views.setOnClickPendingIntent(projectViewId, pendingIntent);
@@ -169,14 +162,8 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
-    protected Cursor createCursor(android.content.Context androidContext, String queryName) {
-        TaskSelector query = StandardTaskQueries.getQuery(queryName);
-        if (query == null) return null;
-
-        String key = StandardTaskQueries.getFilterPrefsKey(queryName);
-        ListSettings settings = new ListSettings(key);
-        query = query.builderFrom().applyListPreferences(androidContext, settings).build();
-
+    protected Cursor createCursor(android.content.Context androidContext, TaskListContext listContext) {
+        TaskSelector query = listContext.createSelectorWithPreferences(androidContext);
         return androidContext.getContentResolver().query(
                 TaskProvider.Tasks.CONTENT_URI,
                 TaskProvider.Tasks.FULL_PROJECTION,
@@ -189,12 +176,14 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
 
     abstract int getTotalEntries();
 
-    protected void setupFrameClickIntents(android.content.Context androidContext, RemoteViews views, String queryName){
-        Intent intent = StandardTaskQueries.getActivityIntent(androidContext, queryName);
+    protected void setupFrameClickIntents(android.content.Context androidContext, RemoteViews views, TaskListContext listContext){
+        Intent intent = IntentUtils.createTaskListIntent(androidContext, listContext);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // just in case intent comes without it
         PendingIntent pendingIntent = PendingIntent.getActivity(androidContext, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.title, pendingIntent);
 
-        intent = new Intent(Intent.ACTION_INSERT, TaskProvider.Tasks.CONTENT_URI);
+        intent = IntentUtils.createNewTaskIntent(androidContext, listContext);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         pendingIntent = PendingIntent.getActivity(androidContext, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.add_task, pendingIntent);
     }

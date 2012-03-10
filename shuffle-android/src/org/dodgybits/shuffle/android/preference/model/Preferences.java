@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import org.dodgybits.shuffle.android.core.model.Id;
 
 public class Preferences {
     private static final String cTag = "Preferences";
@@ -60,6 +61,8 @@ public class Preferences {
     public static final String NOTIFICATION_ID = "notificationId";
     
     public static final String WIDGET_QUERY_PREFIX = "widget_query_";
+    public static final String WIDGET_PROJECT_ID_PREFIX = "widget_projectId_";
+    public static final String WIDGET_CONTEXT_ID_PREFIX = "widget_contextId_";
     
 
     public static boolean validateTracksSettings(Context context) {
@@ -207,11 +210,22 @@ public class Preferences {
 	    return WIDGET_QUERY_PREFIX + widgetId;
 	}
 
+    public static String getWidgetProjectIdKey(int widgetId) {
+        return WIDGET_PROJECT_ID_PREFIX + widgetId;
+    }
 
+    public static String getWidgetContextIdKey(int widgetId) {
+        return WIDGET_CONTEXT_ID_PREFIX + widgetId;
+    }
+    
 	public static String getWidgetQuery(Context context, String key) {
         return getSharedPreferences(context).getString(key, null);
 	}
 	
+    public static Id getWidgetId(Context context, String key) {
+        return Id.create(getSharedPreferences(context).getLong(key, 0L));
+    }
+    
 	public static SharedPreferences.Editor getEditor(Context context) {
 		return getSharedPreferences(context).edit();
 	}

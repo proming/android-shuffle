@@ -47,8 +47,6 @@
     <string name="title_project_tasks">Projekter &gt; %s</string>
     <string name="title_context_tasks">Kontekster &gt; %s</string>
     <string name="title_shortcut_picker">Vælg genvej</string>
-    <string name="title_shuffle_2x2">Shuffle (2x2)</string>
-    <string name="title_shuffle_4x4">Shuffle (4x4)</string>
     <string name="title_widget_picker">Vælg widget-indhold</string>
 
 	<!--  Option menu -->

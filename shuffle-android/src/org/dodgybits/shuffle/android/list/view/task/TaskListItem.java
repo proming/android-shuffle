@@ -36,7 +36,7 @@ public class TaskListItem extends View {
 
     private TaskListAdaptor mAdapter;
     private TaskListItemCoordinates mCoordinates;
-    private Context mContext;
+    private Context mAndroidContext;
 
     private final EntityCache<org.dodgybits.shuffle.android.core.model.Context> mContextCache;
     private final EntityCache<Project> mProjectCache;
@@ -80,7 +80,7 @@ public class TaskListItem extends View {
     private static int DATE_TEXT_COLOR_COMPLETE;
     private static int DATE_TEXT_COLOR_INCOMPLETE;
 
-    private String mProject;
+    private Project mProject;
     private SpannableStringBuilder mText;
     private String mSnippet;
     private String mDescription;
@@ -88,7 +88,7 @@ public class TaskListItem extends View {
     private boolean mIsCompleted;
     private boolean mIsActive = true;
     private boolean mIsDeleted = false;
-    private String mContextName; 
+    private org.dodgybits.shuffle.android.core.model.Context mContext;
     private int mContextTextColor;
     private int mContextBackgroundColor;
 
@@ -107,7 +107,7 @@ public class TaskListItem extends View {
     private CharSequence mFormattedDate = "";
 
     private void init(Context context) {
-        mContext = context;
+        mAndroidContext = context;
         
         if (!sInit) {
             sTextColours = TextColours.getInstance(context);
@@ -133,7 +133,7 @@ public class TaskListItem extends View {
                     BitmapFactory.decodeResource(r, R.drawable.btn_check_on_normal_holo_light);
 
             sStateInactive =
-                    BitmapFactory.decodeResource(r, R.drawable.ic_badge_reply_holo_light);
+                    BitmapFactory.decodeResource(r, R.drawable.ic_badge_inactive);
             sStateDeleted =
                     BitmapFactory.decodeResource(r, R.drawable.ic_badge_delete);
 
@@ -168,29 +168,21 @@ public class TaskListItem extends View {
         mIsCompleted = task.isComplete();
         setProject(task.getProjectId());
         setContext(task.getContextId());
-        mIsActive = task.isActive();
-        mIsDeleted = task.isDeleted();
+        mIsActive = task.isActive() && (mProject == null || mProject.isActive()) && (mContext == null || mContext.isActive());
+        mIsDeleted = task.isDeleted() || (mProject != null && mProject.isDeleted()) || (mContext != null && mContext.isDeleted());
         setText(task.getDescription() + " (" + task.getOrder() + ")", task.getDetails(), false);
         setTimestamp(task.getDueDate());
     }
 
     private void setProject(Id projectId) {
-        mProject = "";
-        if (projectId.isInitialised()) {
-            Project project = mProjectCache.findById(projectId);
-            if (project != null) {
-                mProject = project.getName();
-            }
-        }
+        mProject = mProjectCache.findById(projectId);
     }
     
     private void setContext(Id contextId) {
-        mContextName = "";
-        if (contextId.isInitialised()) {
-            org.dodgybits.shuffle.android.core.model.Context context = mContextCache.findById(contextId);
-            mContextName = context.getName();
-            mContextTextColor = sTextColours.getTextColour(context.getColourIndex());
-            mContextBackgroundColor = sTextColours.getBackgroundColour(context.getColourIndex());
+        mContext = mContextCache.findById(contextId);
+        if (mContext != null) {
+            mContextTextColor = sTextColours.getTextColour(mContext.getColourIndex());
+            mContextBackgroundColor = sTextColours.getBackgroundColour(mContext.getColourIndex());
         }
     }
     
@@ -233,7 +225,7 @@ public class TaskListItem extends View {
     long mTimeFormatted = 0;
     private void setTimestamp(long timestamp) {
         if (mTimeFormatted != timestamp) {
-            mFormattedDate = DateUtils.getRelativeTimeSpanString(mContext, timestamp).toString();
+            mFormattedDate = DateUtils.getRelativeTimeSpanString(mAndroidContext, timestamp).toString();
             mTimeFormatted = timestamp;
         }
     }
@@ -301,14 +293,14 @@ public class TaskListItem extends View {
         // Now, format the project for its width
         TextPaint projectPaint = isDone() ? sDefaultPaint : sBoldPaint;
         // And get the ellipsized string for the calculated width
-        if (TextUtils.isEmpty(mProject)) {
+        if (mProject == null) {
             mFormattedProject = "";
         } else {
             int projectWidth = mCoordinates.projectWidth;
             projectPaint.setTextSize(mCoordinates.projectFontSize);
             projectPaint.setColor(getFontColor(isDone() ? PROJECT_TEXT_COLOR_COMPLETE
                     : PROJECT_TEXT_COLOR_INCOMPLETE));
-            mFormattedProject = TextUtils.ellipsize(mProject, projectPaint, projectWidth,
+            mFormattedProject = TextUtils.ellipsize(mProject.getName(), projectPaint, projectWidth,
                     TextUtils.TruncateAt.END);
         }
     }
@@ -359,7 +351,7 @@ public class TaskListItem extends View {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
-        mCoordinates = TaskListItemCoordinates.forWidth(mContext, mViewWidth);
+        mCoordinates = TaskListItemCoordinates.forWidth(mAndroidContext, mViewWidth);
         calculateDrawingData();
     }
 
@@ -414,13 +406,13 @@ public class TaskListItem extends View {
         int contextsX = dateX - (mCoordinates.contextsWidth + contextPadding);
 
         // Draw the context
-        if (!TextUtils.isEmpty(mContextName)) {
+        if (mContext != null) {
             sContextBackgroundPaint.setColor(mContextBackgroundColor);
             canvas.drawRect(contextsX - padding, mCoordinates.contextsY - padding, contextsX + mCoordinates.contextsWidth + padding,
                     mCoordinates.contextsY + mCoordinates.contextsHeight + padding, sContextBackgroundPaint);
             sContextPaint.setTextSize(mCoordinates.contextsFontSize);
             sContextPaint.setColor(getFontColor(mContextTextColor));
-            canvas.drawText(mContextName, 0, mContextName.length(),
+            canvas.drawText(mContext.getName(), 0, mContext.getName().length(),
                     contextsX, mCoordinates.contextsY - mCoordinates.contextsAscent,
                     sContextPaint);
         }

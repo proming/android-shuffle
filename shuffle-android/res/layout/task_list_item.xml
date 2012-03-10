@@ -19,7 +19,7 @@
                 android:layout_marginTop="@dimen/activestate_margin_top"
                 android:layout_marginLeft="@dimen/activestate_margin_left"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/ic_badge_reply_holo_light"
+                android:src="@drawable/ic_badge_inactive"
                 />
         <ImageView
                 android:id="@+id/checkmark"

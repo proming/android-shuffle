@@ -1,10 +1,12 @@
 package org.dodgybits.shuffle.android.core.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewParent;
 import android.widget.ListView;
+import org.dodgybits.android.shuffle.R;
 
 public class UiUtilities {
     private UiUtilities() {
@@ -124,5 +126,15 @@ public class UiUtilities {
         });
     }
 
+    public static String getCountForUi(Context context, int count,
+                                              boolean replaceZeroWithBlank) {
+        if (replaceZeroWithBlank && (count == 0)) {
+            return "";
+        } else if (count > 999) {
+            return context.getString(R.string.more_than_999);
+        } else {
+            return Integer.toString(count);
+        }
+    }
 
 }

@@ -66,4 +66,11 @@
     <color name="view_minimal_text_color">#8a8a8a</color>
 
     <drawable name="list_incomplete">@color/list_background_color</drawable>
+
+    <!--  Widget colors -->
+    <color name="widget_default_text_color">#ff000000</color>
+    <color name="widget_light_text_color">#ff666666</color>
+    <color name="widget_title_color">#333333</color>
+    <color name="widget_unread_color">#777777</color>
+
 </resources>

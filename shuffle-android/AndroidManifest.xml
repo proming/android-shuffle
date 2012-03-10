@@ -492,24 +492,34 @@
 
 		<!--  app widget -->
 
-		<receiver android:name="org.dodgybits.shuffle.android.widget.LightWidgetProvider"
-                  android:label="@string/title_shuffle_2x2"
+        <service
+                android:name="org.dodgybits.shuffle.android.widget.WidgetProvider$WidgetService"
+                android:permission="android.permission.BIND_REMOTEVIEWS"
+                android:exported="false"
+                android:enabled="@bool/atLeastHoneyComb"
+                />
+        <receiver
+                android:name="org.dodgybits.shuffle.android.widget.WidgetProvider"
+                android:enabled="@bool/atLeastHoneyComb"
                 >
-			<meta-data android:name="android.appwidget.provider"
-				android:resource="@xml/appwidget_provider" />
-			<intent-filter>
-				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-			</intent-filter>
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/widget_info" />
+            <intent-filter>
+                <action
+                        android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="org.dodgybits.shuffle.android.TASK_UPDATE" />
                 <action android:name="org.dodgybits.shuffle.android.PROJECT_UPDATE" />
                 <action android:name="org.dodgybits.shuffle.android.CONTEXT_UPDATE" />
                 <action android:name="org.dodgybits.shuffle.android.LIST_PREFERENCES_UPDATE"/>
             </intent-filter>
-		</receiver>
+        </receiver>
+
 
         <receiver android:name="org.dodgybits.shuffle.android.widget.DarkWidgetProvider"
-                  android:label="@string/title_shuffle_4x4"
+                  android:label="@string/app_name" android:enabled="@bool/preHoneyComb"
                 >
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_provider_4x4" />
@@ -530,6 +540,8 @@
 				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 			</intent-filter>
 		</activity>
+
+
 
     </application>
 
