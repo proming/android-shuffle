@@ -89,14 +89,12 @@ public class TaskWidget implements RemoteViewsService.RemoteViewsFactory,
     private static final Uri COMMAND_URI_VIEW_TASK =
             COMMAND_URI.buildUpon().appendPath(COMMAND_NAME_VIEW_TASK).build();
 
-    // TODO Can this be moved to the loader and made a database 'LIMIT'?
     private static final int MAX_MESSAGE_LIST_COUNT = 25;
 
     private static String sContentsSnippetDivider;
     private static int sProjectFontSize;
     private static int sContentsFontSize;
     private static int sDateFontSize;
-    private static int sContextsFontSize;
     private static int sDefaultTextColor;
     private static int sLightTextColor;
 
@@ -146,7 +144,6 @@ public class TaskWidget implements RemoteViewsService.RemoteViewsFactory,
             sProjectFontSize = res.getDimensionPixelSize(R.dimen.widget_project_font_size);
             sContentsFontSize = res.getDimensionPixelSize(R.dimen.widget_contents_font_size);
             sDateFontSize = res.getDimensionPixelSize(R.dimen.widget_date_font_size);
-            sContextsFontSize = res.getDimensionPixelSize(R.dimen.widget_contexts_font_size);
             sDefaultTextColor = res.getColor(R.color.widget_default_text_color);
             sLightTextColor = res.getColor(R.color.widget_light_text_color);
         }
@@ -416,6 +413,9 @@ public class TaskWidget implements RemoteViewsService.RemoteViewsFactory,
         views.setTextViewText(R.id.widget_contents, contents);
 
         views.setViewVisibility(R.id.widget_deleted, task.isDeleted() ? View.VISIBLE : View.GONE);
+
+        org.dodgybits.shuffle.android.core.model.Context context = mContextCache.findById(task.getContextId());
+        // TODO update context graphic
 
         TaskSelector selector = mListContext.createSelectorWithPreferences(mContext);
         

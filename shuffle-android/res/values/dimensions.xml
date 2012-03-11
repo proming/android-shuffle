@@ -24,6 +24,5 @@
     <dimen name="widget_project_font_size">18sp</dimen>
     <dimen name="widget_contents_font_size">14sp</dimen>
     <dimen name="widget_date_font_size">14sp</dimen>
-    <dimen name="widget_contexts_font_size">12sp</dimen>
 
 </resources>

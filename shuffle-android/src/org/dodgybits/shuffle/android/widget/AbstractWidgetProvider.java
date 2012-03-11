@@ -125,7 +125,8 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
         if (taskCursor == null) return;
 
         String title = listContext.createTitle(androidContext, mContextCache, mProjectCache);
-        views.setTextViewText(R.id.title, title + " (" + taskCursor.getCount() + ")");
+        views.setTextViewText(R.id.widget_title, title);
+        views.setTextViewText(R.id.widget_count, String.valueOf(taskCursor.getCount()));
 
         setupFrameClickIntents(androidContext, views, listContext);
 
@@ -140,6 +141,7 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
                 context = mContextCache.findById(task.getContextId());
             }
 
+            int entryId = updateBackground(androidContext, views, task, taskCount);
             int descriptionViewId = updateDescription(androidContext, views, task, taskCount);
             int projectViewId = updateProject(androidContext, views, project, taskCount);
             int contextIconId = updateContext(androidContext, views, context, taskCount);
@@ -147,7 +149,6 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
             if (task != null) {
                 Intent intent = IntentUtils.createTaskViewIntent(androidContext, listContext, taskCount - 1);
                 PendingIntent pendingIntent = PendingIntent.getActivity(androidContext, 0, intent, 0);
-                int entryId = getIdIdentifier(androidContext, "entry_" + taskCount);
                 views.setOnClickPendingIntent(entryId, pendingIntent);
                 views.setOnClickPendingIntent(descriptionViewId, pendingIntent);
                 views.setOnClickPendingIntent(projectViewId, pendingIntent);
@@ -180,14 +181,31 @@ public abstract class AbstractWidgetProvider extends RoboAppWidgetProvider {
         Intent intent = IntentUtils.createTaskListIntent(androidContext, listContext);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // just in case intent comes without it
         PendingIntent pendingIntent = PendingIntent.getActivity(androidContext, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.title, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_title, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_logo, pendingIntent);
 
         intent = IntentUtils.createNewTaskIntent(androidContext, listContext);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         pendingIntent = PendingIntent.getActivity(androidContext, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.add_task, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_compose, pendingIntent);
     }
 
+    protected int updateBackground(android.content.Context androidContext, RemoteViews views, Task task, int taskCount) {
+        int entryId = getIdIdentifier(androidContext, "entry_" + taskCount);
+        if (entryId != 0) {
+            int drawableId = R.drawable.list_selector_background;
+            if (task != null) {
+                boolean isIncomplete = !(task.isComplete() || task.isDeleted());
+                drawableId = R.drawable.task_complete_selector;
+                if (isIncomplete) {
+                    drawableId = R.drawable.task_incomplete_selector;
+                }
+            }
+            views.setInt(entryId, "setBackgroundResource", drawableId);
+        }
+        return entryId;
+    }
+    
     protected int updateDescription(android.content.Context androidContext, RemoteViews views, Task task, int taskCount) {
         int descriptionViewId = getIdIdentifier(androidContext, "description_" + taskCount);
         if (descriptionViewId != 0) {

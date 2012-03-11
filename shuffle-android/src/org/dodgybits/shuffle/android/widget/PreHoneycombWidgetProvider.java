@@ -16,7 +16,6 @@
 
 package org.dodgybits.shuffle.android.widget;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -26,15 +25,10 @@ import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
-import org.dodgybits.shuffle.android.core.util.IntentUtils;
 import org.dodgybits.shuffle.android.core.util.TextColours;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
-import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
-import roboguice.inject.ContextSingleton;
 
 import java.util.HashMap;
-
-@ContextSingleton
 
 /**
  * A widget provider.  We have a string that we pull from a preference in order to show
@@ -42,7 +36,7 @@ import java.util.HashMap;
  * register a BroadcastReceiver for time-changed and timezone-changed broadcasts, and
  * update then too.
  */
-public class DarkWidgetProvider extends AbstractWidgetProvider {
+public class PreHoneycombWidgetProvider extends AbstractWidgetProvider {
     private static final Bitmap sEmptyBitmap = Bitmap.createBitmap(8, 40, Bitmap.Config.ARGB_8888);
 
     private HashMap<Integer, Bitmap> mGradientCache;
@@ -50,7 +44,7 @@ public class DarkWidgetProvider extends AbstractWidgetProvider {
 
     @Override
     protected int getWidgetLayoutId() {
-        return R.layout.widget_dark;
+        return R.layout.widget_pre_honeycomb;
     }
 
     @Override
@@ -64,16 +58,6 @@ public class DarkWidgetProvider extends AbstractWidgetProvider {
         mGradientCache = new HashMap<Integer, Bitmap>(mColours.getNumColours());
 
         super.handleReceive(context, intent);
-    }
-
-    @Override
-    protected void setupFrameClickIntents(android.content.Context androidContext, RemoteViews views, TaskListContext listContext){
-        super.setupFrameClickIntents(androidContext, views, listContext);
-
-        Intent intent = IntentUtils.createTaskListIntent(androidContext, listContext);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // just in case intent comes without it
-        PendingIntent pendingIntent = PendingIntent.getActivity(androidContext, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.all_tasks, pendingIntent);
     }
 
     @Override
