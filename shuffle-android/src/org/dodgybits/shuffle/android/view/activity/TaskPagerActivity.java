@@ -80,6 +80,7 @@ public class TaskPagerActivity extends ActionBarFragmentActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(EntityListsActivity.QUERY_NAME, getListContext().getListQuery().name());
                 startActivity(intent);
+                finish();
                 return true;
         }
 

@@ -1,27 +1,22 @@
 package org.dodgybits.shuffle.android.core.model.persistence;
 
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryCountParam;
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryCreateEntityEvent;
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryDeleteEntityEvent;
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryEntityTypeParam;
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryUpdateEntityEvent;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
-import org.dodgybits.shuffle.android.core.model.Entity;
-import org.dodgybits.shuffle.android.core.model.Id;
-import org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable;
-
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
+import org.dodgybits.shuffle.android.core.model.Entity;
+import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.dodgybits.shuffle.android.core.util.Constants.*;
 
 public abstract class AbstractEntityPersister<E extends Entity> implements EntityPersister<E> {
 
@@ -133,7 +128,20 @@ public abstract class AbstractEntityPersister<E extends Entity> implements Entit
 
         return success;
     }
-    
+
+    @Override
+    public int getPositionOfItemWithId(Cursor cursor, long id) {
+        int position = -1;
+        cursor.moveToPosition(-1);
+        while (cursor.moveToNext()) {
+            if (id == cursor.getLong(0)) {
+                position = cursor.getPosition();
+                break;
+            }
+        }
+        return position;
+    }
+
     abstract public Uri getContentUri();
     
     abstract protected void writeContentValues(ContentValues values, E e);

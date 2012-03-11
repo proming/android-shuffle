@@ -30,6 +30,7 @@ import roboguice.inject.ContextScopedProvider;
 public class ProjectTaskListsActivity extends ActionBarFragmentActivity {
     public static final String TAG = "ProjectTaskListsActivity";
     public static final String INITIAL_POSITION = "initialPosition";
+    public static final String INITIAL_ID = "initialId";
 
     private static final int LOADER_ID_CONTEXT_LIST_LOADER = 1;
 
@@ -75,6 +76,7 @@ public class ProjectTaskListsActivity extends ActionBarFragmentActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(EntityListsActivity.QUERY_NAME, ListQuery.project.name());
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.action_preferences:
                 Log.d(TAG, "Bringing up preferences");
@@ -102,10 +104,12 @@ public class ProjectTaskListsActivity extends ActionBarFragmentActivity {
             new LoaderManager.LoaderCallbacks<Cursor>() {
 
                 int mInitialPosition;
-
+                long mInitialId;
+                
                 @Override
                 public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                     mInitialPosition = args.getInt(INITIAL_POSITION, 0);
+                    mInitialId = args.getLong(INITIAL_ID, -1L);
                     return new ProjectCursorLoader(ProjectTaskListsActivity.this);
                 }
 
@@ -113,6 +117,13 @@ public class ProjectTaskListsActivity extends ActionBarFragmentActivity {
                 public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
                     mAdapter = new MyAdapter(getSupportFragmentManager(), c);
                     mPager.setAdapter(mAdapter);
+                    if (mInitialId > -1L) {
+                        int position = mPersister.getPositionOfItemWithId(c, mInitialId);
+                        if (position > -1) {
+                            mInitialPosition = position;
+                        }
+                    }
+                    
                     mPager.setCurrentItem(mInitialPosition);
                 }
 
@@ -145,5 +156,6 @@ public class ProjectTaskListsActivity extends ActionBarFragmentActivity {
             fragment.setArguments(args);
             return fragment;
         }
+        
     }
 }

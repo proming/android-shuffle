@@ -1,8 +1,6 @@
 package org.dodgybits.shuffle.android.widget;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +28,7 @@ public class WidgetConfigureListFragment extends RoboListFragment {
             new ListItem(R.drawable.ic_media_pause, ListQuery.custom, TaskSelector.newBuilder().setListQuery(ListQuery.custom).build()),
             new ListItem(R.drawable.ic_media_pause, ListQuery.tickler, TaskSelector.newBuilder().setListQuery(ListQuery.tickler).build())
     };
-
+    
     private ListAdaptor mAdaptor;
 
     @Override
@@ -60,26 +58,30 @@ public class WidgetConfigureListFragment extends RoboListFragment {
 
     @Override
     public void onListItemClick(ListView parent, View view, int position, long id) {
-        String key = Preferences.getWidgetQueryKey(getAppWidgetId());
         ListQuery listQuery = sListItems[position].getQuery();
-        Preferences.getEditor(getActivity()).putString(key, listQuery.name()).commit();
-
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            String message = String.format("Saving query %s under key %s", listQuery, key);
-            Log.d(TAG, message);
+        
+        switch (listQuery) {
+            case project:
+                getActivity().showDialog(WidgetConfigure.PROJECT_PICKER_DIALOG);
+                break;
+            case context:
+                getActivity().showDialog(WidgetConfigure.CONTEXT_PICKER_DIALOG);
+                break;
+            default:
+                String key = Preferences.getWidgetQueryKey(getAppWidgetId());
+                Preferences.getEditor(getActivity()).putString(key, listQuery.name()).commit();
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    String message = String.format("Saving query %s under key %s", listQuery, key);
+                    Log.d(TAG, message);
+                }
+                confirmSelection();
+                break;
         }
+    }
 
-        // let widget update itself (suggested approach of calling updateAppWidget did nothing)
-        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {getAppWidgetId()});
-        intent.setPackage(getActivity().getPackageName());
-        getActivity().sendBroadcast(intent);
+    private void confirmSelection() {
+        ((WidgetConfigure)getActivity()).confirmSelection();
 
-        // Make sure we pass back the original appWidgetId
-        Intent resultValue = new Intent();
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, getAppWidgetId());
-        getActivity().setResult(WidgetConfigure.RESULT_OK, resultValue);
-        getActivity().finish();
     }
 
     private int getAppWidgetId() {

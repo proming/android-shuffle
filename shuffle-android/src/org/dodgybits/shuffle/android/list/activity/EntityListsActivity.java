@@ -91,6 +91,7 @@ public class EntityListsActivity extends ActionBarFragmentActivity {
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.action_preferences:
                 Log.d(TAG, "Bringing up preferences");

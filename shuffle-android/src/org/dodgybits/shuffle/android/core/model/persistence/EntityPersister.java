@@ -57,4 +57,13 @@ public interface EntityPersister<E extends Entity> {
      */
 	boolean deletePermanently(Id id);
 
+    /**
+     * Find the entity with the given id in the query result.
+     *
+     * @param cursor query result to search
+     * @param id entity id
+     * @return position of entity in cursor or -1 if not found
+     */
+    int getPositionOfItemWithId(Cursor cursor, long id);
+
 }

@@ -50,6 +50,8 @@
     <string name="title_context_tasks">Contexts > %s</string>
     <string name="title_shortcut_picker">Pick shortcut</string>
     <string name="title_widget_picker">Pick widget content</string>
+    <string name="title_widget_context_picker">Pick a context</string>
+    <string name="title_widget_project_picker">Pick a project</string>
 
 	<!--  Option menu -->
     <string name="menu_save">Save</string>

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
+import org.dodgybits.shuffle.android.list.activity.ContextTaskListsActivity;
 import org.dodgybits.shuffle.android.list.activity.EntityListsActivity;
+import org.dodgybits.shuffle.android.list.activity.ProjectTaskListsActivity;
 import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.view.activity.TaskPagerActivity;
@@ -31,9 +33,28 @@ public class IntentUtils {
     }
     
     public static Intent createTaskListIntent(Context context, TaskListContext listContext) {
-        Intent intent = new Intent(context, EntityListsActivity.class);
+        Intent intent = new Intent();
+        Class activityClass;
+        TaskSelector selector;
+        switch (listContext.getListQuery()) {
+            case project:
+                activityClass = ProjectTaskListsActivity.class;
+                selector = listContext.createSelectorWithPreferences(context);
+                intent.putExtra(ProjectTaskListsActivity.INITIAL_ID, selector.getProjectId().getId());
+                break;
+            case context:
+                activityClass = ContextTaskListsActivity.class;
+                selector = listContext.createSelectorWithPreferences(context);
+                intent.putExtra(ContextTaskListsActivity.INITIAL_ID, selector.getContextId().getId());
+                break;
+            default:
+                activityClass = EntityListsActivity.class;
+                intent.putExtra(EntityListsActivity.QUERY_NAME, listContext.getListQuery().name());
+                break;
+        }
+
+        intent.setClass(context, activityClass);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(EntityListsActivity.QUERY_NAME, listContext.getListQuery().name());
         return intent;
     }
     
