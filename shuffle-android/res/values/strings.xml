@@ -38,7 +38,6 @@
     <string name="title_edit_context">Edit context</string>
     <string name="title_task_extras">Action extras</string>
     <string name="title_preferences">General Settings</string>
-    <string name="title_preferences_appearance">General Settings > Action appearance</string>
     <string name="title_preferences_clean">General Settings > Clean up</string>
     <string name="title_preferences_create_backup">Create backup</string>
     <string name="title_preferences_restore_backup">Restore from backup</string>
@@ -50,8 +49,8 @@
     <string name="title_context_tasks">Contexts > %s</string>
     <string name="title_shortcut_picker">Pick shortcut</string>
     <string name="title_widget_picker">Pick widget content</string>
-    <string name="title_widget_context_picker">Pick a context</string>
-    <string name="title_widget_project_picker">Pick a project</string>
+    <string name="title_context_picker">Pick a context</string>
+    <string name="title_project_picker">Pick a project</string>
 
 	<!--  Option menu -->
     <string name="menu_save">Save</string>
@@ -65,7 +64,6 @@
     <string name="menu_insert">Add %s</string>
     <string name="menu_revert">Revert</string>
     <string name="menu_discard">Discard</string>
-    <string name="menu_view">Perspectives</string>
     <string name="menu_preferences">Settings</string>
     <string name="menu_sync">Synchronize</string>
     <string name="menu_search">Search</string>
@@ -204,10 +202,10 @@ allow that, you can turn it off under Settings.</string>
     <string name="due_title">Due</string>
     <string name="all_day_title">All day</string>
     <string name="reminders_title">Reminders</string>
-    <string name="add_to_gcal_title">Add to Google Calendar</string>
+    <string name="add_to_gcal_title">Add to Calendar</string>
     <string name="add_to_gcal_detail_disabled">Add dates to enable this option</string>
     <string name="add_to_gcal_detail">New entry will load after saving</string>
-    <string name="update_gcal_title">Update Google Calendar</string>
+    <string name="update_gcal_title">Update Calendar</string>
     <string name="update_gcal_detail">Updated entry will load after saving</string>
     <string name="completed_title">Completed</string>
     <string name="active_title">Active</string>
@@ -251,22 +249,9 @@ allow that, you can turn it off under Settings.</string>
     <string name="title_send_analytics_preference">Send usage data</string>
     <string name="summary_send_analytics_preference">Anonymous data is used for finding bugs and prioritizing features.</string>
 
-	<string name="layout_preferences">Layout settings</string>
-
-	<string name="title_project_view_preference">Project view</string>
-	<string name="summary_project_view_preference">Display project actions on separate screen</string>
-
-	<string name="title_context_view_preference">Context view</string>
-	<string name="summary_context_view_preference">Display context actions on separate screen</string>
-
-	<string name="title_action_appearance_preference">Action appearance</string>
-	<string name="summary_action_appearance_preference">Customize display of actions in lists</string>
-
-
     <string name="sync_preferences">Synchronization settings</string>
 
     <string name="changeSynchronizationSettings">Tracks settings</string>
-
 
 	<string name="backup_preferences">Backup settings</string>
 	

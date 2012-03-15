@@ -29,7 +29,6 @@
 	android:gravity="center_vertical"
     android:paddingLeft="5dip" 
     android:paddingRight="5dip"
-    style="@style/list_text"
     />
     
  </LinearLayout>

@@ -16,16 +16,6 @@
 
 package org.dodgybits.shuffle.android.editor.activity;
 
-import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
-import org.dodgybits.shuffle.android.core.model.Entity;
-import org.dodgybits.shuffle.android.core.model.Id;
-import org.dodgybits.shuffle.android.core.model.encoding.EntityEncoder;
-import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
-import org.dodgybits.shuffle.android.core.view.MenuUtils;
-import org.dodgybits.shuffle.android.list.old.activity.State;
-import org.dodgybits.shuffle.android.preference.model.Preferences;
-
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
@@ -37,6 +27,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
+import org.dodgybits.shuffle.android.core.model.Entity;
+import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.core.model.encoding.EntityEncoder;
+import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
+import org.dodgybits.shuffle.android.list.view.State;
 
 /**
  * A generic activity for editing an item in a database. This can be used either
@@ -91,10 +88,6 @@ public abstract class AbstractEditorActivity<E extends Entity> extends
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		MenuItem item = menu.findItem(MenuUtils.SYNC_ID);
-		if (item != null) {
-			item.setVisible(Preferences.validateTracksSettings(this));
-		}
 		return true;
 	}
 
@@ -102,8 +95,8 @@ public abstract class AbstractEditorActivity<E extends Entity> extends
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		MenuUtils.addEditorMenuItems(menu, mState);
-		MenuUtils.addPrefsHelpMenuItems(this, menu);
+//		MenuUtils.addEditorMenuItems(menu, mState);
+//		MenuUtils.addPrefsHelpMenuItems(this, menu);
 
 		return true;
 	}
@@ -111,29 +104,29 @@ public abstract class AbstractEditorActivity<E extends Entity> extends
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle all of the possible menu actions.
-		switch (item.getItemId()) {
-		case MenuUtils.SAVE_ID:
-			doSaveAction();
-			break;
-		case MenuUtils.SAVE_AND_ADD_ID:
-			// create an Intent for the new item based on the current item
-			startActivity(getInsertIntent());
-			doSaveAction();
-			break;
-		case MenuUtils.DELETE_ID:
-			doDeleteAction();
-			finish();
-			break;
-		case MenuUtils.DISCARD_ID:
-			doRevertAction();
-			break;
-		case MenuUtils.REVERT_ID:
-			doRevertAction();
-			break;
-		}
-		if (MenuUtils.checkCommonItemsSelected(item, this, MenuUtils.INBOX_ID)) {
-			return true;
-		}
+//		switch (item.getItemId()) {
+//		case MenuUtils.SAVE_ID:
+//			doSaveAction();
+//			break;
+//		case MenuUtils.SAVE_AND_ADD_ID:
+//			// create an Intent for the new item based on the current item
+//			startActivity(getInsertIntent());
+//			doSaveAction();
+//			break;
+//		case MenuUtils.DELETE_ID:
+//			doDeleteAction();
+//			finish();
+//			break;
+//		case MenuUtils.DISCARD_ID:
+//			doRevertAction();
+//			break;
+//		case MenuUtils.REVERT_ID:
+//			doRevertAction();
+//			break;
+//		}
+//		if (MenuUtils.checkCommonItemsSelected(item, this, MenuUtils.INBOX_ID)) {
+//			return true;
+//		}
 		return super.onOptionsItemSelected(item);
 	}
 

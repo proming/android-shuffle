@@ -39,7 +39,7 @@
             android:paddingLeft="5dip"
             android:paddingRight="5dip"
             android:text="@string/name_title"
-            style="@style/label" />
+                />
 
         <EditText android:id="@+id/name" android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -50,7 +50,6 @@
             android:autoText="true"
             android:singleLine="true"
             android:maxLength="50"
-            style="@style/text_editable"
             >
             <requestFocus />
         </EditText>
@@ -61,7 +60,6 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/name"
             android:text="@string/default_context_title"
-            style="@style/label"
             />
 
         <Spinner android:id="@+id/default_context"

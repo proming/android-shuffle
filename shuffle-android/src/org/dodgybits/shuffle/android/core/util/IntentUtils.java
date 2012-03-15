@@ -12,7 +12,8 @@ import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.view.activity.TaskPagerActivity;
 
 public class IntentUtils {
-
+    private static final String TAG = "IntentUtils";
+    
     public static Intent createNewTaskIntent(Context context, TaskListContext listContext) {
         TaskSelector selector = listContext.createSelectorWithPreferences(context);
         return createNewTaskIntent(null, selector.getContextId(), selector.getProjectId());

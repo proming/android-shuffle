@@ -1,5 +1,6 @@
 package org.dodgybits.shuffle.android.core.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -13,7 +14,9 @@ import org.dodgybits.shuffle.android.core.model.persistence.selector.ContextSele
 import org.dodgybits.shuffle.android.core.model.persistence.selector.EntitySelector;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.ProjectSelector;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
-import org.dodgybits.shuffle.android.core.view.HomeListAdaptor;
+import org.dodgybits.shuffle.android.core.view.IconNameCountListAdaptor;
+import org.dodgybits.shuffle.android.core.view.IconNameCountListAdaptor.ListItem;
+import org.dodgybits.shuffle.android.core.view.ListIcons;
 import org.dodgybits.shuffle.android.list.activity.EntityListsActivity;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
@@ -24,25 +27,58 @@ public class HomeListFragment extends RoboListFragment {
     private static final String TAG = "HomeListFragment";
     private static final String[] PROJECTION = new String[]{"_id"};
 
-    private static HomeItem[] sHomeItems = new HomeItem[] {
-            new HomeItem(R.drawable.inbox, ListQuery.inbox, TaskSelector.newBuilder().setListQuery(ListQuery.inbox).build()),
-            new HomeItem(R.drawable.due_actions, ListQuery.dueToday, TaskSelector.newBuilder().setListQuery(ListQuery.dueToday).build()),
-            new HomeItem(R.drawable.next_actions, ListQuery.nextTasks, TaskSelector.newBuilder().setListQuery(ListQuery.nextTasks).build()),
-            new HomeItem(R.drawable.projects, ListQuery.project, ProjectSelector.newBuilder().build()),
-            new HomeItem(R.drawable.applications_internet, ListQuery.context, ContextSelector.newBuilder().build()),
-            new HomeItem(R.drawable.ic_media_pause, ListQuery.custom, TaskSelector.newBuilder().setListQuery(ListQuery.custom).build()),
-            new HomeItem(R.drawable.ic_media_pause, ListQuery.tickler, TaskSelector.newBuilder().setListQuery(ListQuery.tickler).build())
-    };
+    private static ListItem<HomeEntry>[] sListItems = null;
+    
+    private void createListItems() {
+        if (sListItems == null) {
+            String[] perspectives = getResources().getStringArray(R.array.perspectives).clone();
+            int[] cachedCounts = Preferences.getTopLevelCounts(getActivity());
+            int i = 0;
+            sListItems = new ListItem[] {
+                    createTaskListItem(ListIcons.INBOX, perspectives[i], getInitialCount(cachedCounts, i++), ListQuery.inbox),
+                    createTaskListItem(ListIcons.DUE_TODAY, perspectives[i], getInitialCount(cachedCounts, i++), ListQuery.dueToday),
+                    createTaskListItem(ListIcons.NEXT_TASKS, perspectives[i], getInitialCount(cachedCounts, i++), ListQuery.nextTasks),
+                    createListItem(ListIcons.PROJECTS, perspectives[i], getInitialCount(cachedCounts, i++), ListQuery.project, ProjectSelector.newBuilder().build()),
+                    createListItem(ListIcons.CONTEXTS, perspectives[i], getInitialCount(cachedCounts, i++), ListQuery.context, ContextSelector.newBuilder().build()),
+                    createTaskListItem(ListIcons.CUSTOM, perspectives[i], getInitialCount(cachedCounts, i++), ListQuery.custom),
+                    createTaskListItem(ListIcons.TICKLER, perspectives[i], getInitialCount(cachedCounts, i++), ListQuery.tickler)
+            };
+        };
+    }
+    
+    private String getInitialCount(int[] cachedCounts, int index) {
+        String result = "";
+        if (cachedCounts != null && cachedCounts.length > index) {
+            result = String.valueOf(cachedCounts[index]);
+        }
+        return result;
+    }
+
+    private ListItem<HomeEntry> createTaskListItem(int iconResId, String name, 
+                                                   String initialCount, ListQuery query) {
+        final TaskSelector selector = TaskSelector.newBuilder().setListQuery(query).build();
+        return createListItem(iconResId, name, initialCount, query, selector);
+    }
+
+    private ListItem<HomeEntry> createListItem(int iconResId, String name, String initialCount, 
+                                               ListQuery query, EntitySelector selector) {
+        HomeEntry entry = new HomeEntry(query, selector);
+        ListItem<HomeEntry> listItem = new ListItem<HomeEntry>(iconResId, name, entry);
+        listItem.setCount(initialCount);
+        return listItem;
+    }
+    
 
     private AsyncTask<?, ?, ?> mTask;
 
-    private HomeListAdaptor mAdaptor;
+    private IconNameCountListAdaptor mAdaptor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
+        createListItems();
     }
 
     @Override
@@ -50,7 +86,6 @@ public class HomeListFragment extends RoboListFragment {
         super.onActivityCreated(savedInstanceState);
 
         final ListView lv = getListView();
-//        lv.setItemsCanFocus(false);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         Log.d(TAG, "-onActivityCreated");
@@ -65,38 +100,15 @@ public class HomeListFragment extends RoboListFragment {
     }
 
     private void setupAdaptor() {
-        addNames();
-        addInitialCounts();
-        mAdaptor = new HomeListAdaptor(
-                getActivity(), R.layout.list_item_view, sHomeItems);
+        mAdaptor = new IconNameCountListAdaptor(
+                getActivity(), R.layout.list_item_view, sListItems);
         setListAdapter(mAdaptor);
-    }
-
-    private void addNames() {
-        String[] perspectives = getResources().getStringArray(R.array.perspectives).clone();
-        int viewCount = sHomeItems.length;
-        for (int i = 0; i < viewCount; i++) {
-            sHomeItems[i].setName(perspectives[i]);
-        }
-    }
-
-
-    private void addInitialCounts() {
-        int[] cachedCounts = Preferences.getTopLevelCounts(getActivity());
-        int viewCount = sHomeItems.length;
-        if (cachedCounts != null && cachedCounts.length == viewCount) {
-            for (int i = 0; i < viewCount; i++) {
-                sHomeItems[i].setCount(String.valueOf(cachedCounts[i]));
-            }
-        }
     }
 
 
     @Override
     public void onListItemClick(ListView parent, View view, int position, long id) {
-        ListQuery query = sHomeItems[position].getQuery();
-        Intent intent = new Intent(getActivity(), EntityListsActivity.class);
-        intent.putExtra(EntityListsActivity.QUERY_NAME, query.name());
+        Intent intent = sListItems[position].getPayload().createIntent(getActivity());
         startActivity(intent);
     }
 
@@ -105,25 +117,12 @@ public class HomeListFragment extends RoboListFragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            String[] perspectives = getResources().getStringArray(R.array.perspectives);
-            int length = perspectives.length;
-
+            int length = sListItems.length;
             StringBuilder cachedCountStr = new StringBuilder();
             for (int i = 0; i < length; i++) {
-                HomeItem item = sHomeItems[i];
-                ListQuery query = item.getQuery();
-                EntitySelector selector = item.getSelector();
-                selector = selector.builderFrom().applyListPreferences(getActivity(),
-                        ListSettingsCache.findSettings(query)).build();
-                Cursor cursor = getActivity().getContentResolver().query(
-                        selector.getContentUri(),
-                        PROJECTION,
-                        selector.getSelection(getActivity()),
-                        selector.getSelectionArgs(),
-                        selector.getSortOrder());
-                int count = cursor.getCount();
-                item.setCount(String.valueOf(count));
-                cursor.close();
+                ListItem<HomeEntry> item = sListItems[i];
+                String count = item.getPayload().getCount(getActivity());
+                item.setCount(count);
                 publishProgress();
 
                 cachedCountStr.append(count);
@@ -145,63 +144,43 @@ public class HomeListFragment extends RoboListFragment {
             mAdaptor.notifyDataSetChanged();
         }
 
-//        @Override
-//        public void onProgressUpdate(CharSequence[]... progress) {
-//            CharSequence[] labels = progress[0];
-//            ArrayAdapter<CharSequence> adapter = new IconArrayAdapter(
-//                    TopLevelActivity.this, R.layout.list_item_view, R.id.name, labels, mIconIds);
-//            int position = getSelectedItemPosition();
-//            setListAdapter(adapter);
-//            setSelection(position);
-//        }
-
-        @SuppressWarnings("unused")
-        public void onPostExecute() {
+        @Override
+        protected void onPostExecute(Void aVoid) {
             mTask = null;
         }
 
     }
+    
+    private static class HomeEntry {
+        final ListQuery mListQuery;
+        final EntitySelector mSelector;
 
-    public static class HomeItem {
-        private final int mIconResId;
-        private final ListQuery mQuery;
-        private final EntitySelector mSelector;
-        private String mName;
-        private String mCount = "";
-
-        public HomeItem(int iconResId, ListQuery query, EntitySelector selector) {
-            mIconResId = iconResId;
+        private HomeEntry(ListQuery listQuery, EntitySelector selector) {
+            mListQuery = listQuery;
             mSelector = selector;
-            mQuery = query;
         }
 
-        public int getIconResId() {
-            return mIconResId;
+        public String getCount(Activity activity) {
+            EntitySelector selector = mSelector.builderFrom().applyListPreferences(activity,
+                    ListSettingsCache.findSettings(mListQuery)).build();
+            Cursor cursor = activity.getContentResolver().query(
+                    selector.getContentUri(),
+                    PROJECTION,
+                    selector.getSelection(activity),
+                    selector.getSelectionArgs(),
+                    selector.getSortOrder());
+            int count = cursor.getCount();
+            cursor.close();
+            return String.valueOf(count);
         }
 
-        public String getName() {
-            return mName;
+        public Intent createIntent(Activity activity) {
+            Intent intent = new Intent(activity, EntityListsActivity.class);
+            intent.putExtra(EntityListsActivity.QUERY_NAME, mListQuery.name());
+            return intent;
         }
+    };
 
-        public void setName(String name) {
-            mName = name;
-        }
 
-        public String getCount() {
-            return mCount;
-        }
-
-        public void setCount(String count) {
-            mCount = count;
-        }
-
-        public EntitySelector getSelector() {
-            return mSelector;
-        }
-
-        public ListQuery getQuery() {
-            return mQuery;
-        }
-    }
     
 }

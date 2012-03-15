@@ -1,19 +1,15 @@
 package org.dodgybits.shuffle.android.widget;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.view.EntityPickerDialogHelper;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
-import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
-import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 import roboguice.activity.RoboFragmentActivity;
 
@@ -69,12 +65,35 @@ public class WidgetConfigure extends RoboFragmentActivity {
     @Override
     protected Dialog onCreateDialog(int id) {
         Dialog dialog = null;
+        EntityPickerDialogHelper.OnEntitySelected listener;
         switch(id) {
             case CONTEXT_PICKER_DIALOG:
-                dialog = selectContext();
+                listener = new EntityPickerDialogHelper.OnEntitySelected() {
+                    public void onSelected(long id) {
+                        String queryKey = Preferences.getWidgetQueryKey(getAppWidgetId());
+                        String contextKey = Preferences.getWidgetContextIdKey(getAppWidgetId());
+                        SharedPreferences.Editor editor = Preferences.getEditor(WidgetConfigure.this);
+                        editor.putString(queryKey, ListQuery.context.name());
+                        editor.putLong(contextKey, id);
+                        editor.commit();
+                        confirmSelection();
+                    }
+                };
+                dialog = EntityPickerDialogHelper.createContentPickerDialog(WidgetConfigure.this, listener);
                 break;
             case PROJECT_PICKER_DIALOG:
-                dialog = selectProject();
+                listener = new EntityPickerDialogHelper.OnEntitySelected() {
+                    public void onSelected(long id) {
+                        String queryKey = Preferences.getWidgetQueryKey(getAppWidgetId());
+                        String projectKey = Preferences.getWidgetProjectIdKey(getAppWidgetId());
+                        SharedPreferences.Editor editor = Preferences.getEditor(WidgetConfigure.this);
+                        editor.putString(queryKey, ListQuery.project.name());
+                        editor.putLong(projectKey, id);
+                        editor.commit();
+                        confirmSelection();
+                    }
+                };
+                dialog = EntityPickerDialogHelper.createProjectPickerDialog(WidgetConfigure.this, listener);
                 break;
         }
         return dialog;
@@ -82,76 +101,6 @@ public class WidgetConfigure extends RoboFragmentActivity {
 
     public int getAppWidgetId() {
         return mAppWidgetId;
-    }
-
-    private Dialog selectProject() {
-        Cursor cursor = getContentResolver().query(
-                ProjectProvider.Projects.CONTENT_URI,
-                new String[] {ProjectProvider.Projects._ID, ProjectProvider.Projects.NAME},
-                null, null, null);
-        String title = getString(R.string.title_widget_project_picker);
-        OnEntitySelected listener = new OnEntitySelected() {
-            public void onSelected(long id) {
-                String queryKey = Preferences.getWidgetQueryKey(getAppWidgetId());
-                String projectKey = Preferences.getWidgetProjectIdKey(getAppWidgetId());
-                SharedPreferences.Editor editor = Preferences.getEditor(WidgetConfigure.this);
-                editor.putString(queryKey, ListQuery.project.name());
-                editor.putLong(projectKey, id);
-                editor.commit();
-                confirmSelection();
-            }
-        };
-        return selectEntity(cursor, title, listener);
-    }
-
-
-    private Dialog selectContext() {
-        Cursor cursor = getContentResolver().query(
-                ContextProvider.Contexts.CONTENT_URI,
-                new String[] {ContextProvider.Contexts._ID, ContextProvider.Contexts.NAME},
-                null, null, null);
-        String title = getString(R.string.title_widget_context_picker);
-        OnEntitySelected listener = new OnEntitySelected() {
-            public void onSelected(long id) {
-                String queryKey = Preferences.getWidgetQueryKey(getAppWidgetId());
-                String contextKey = Preferences.getWidgetContextIdKey(getAppWidgetId());
-                SharedPreferences.Editor editor = Preferences.getEditor(WidgetConfigure.this);
-                editor.putString(queryKey, ListQuery.context.name());
-                editor.putLong(contextKey, id);
-                editor.commit();
-                confirmSelection();
-            }
-        };
-        return selectEntity(cursor, title, listener);
-    }
-
-    private Dialog selectEntity(Cursor cursor, String title, final OnEntitySelected listener) {
-        Dialog dialog = null;
-        if (cursor.getCount() > 0) {
-            String[] names = new String[cursor.getCount()];
-            final long[] ids = new long[cursor.getCount()];
-            cursor.moveToPosition(-1);
-            int index = 0;
-            while (cursor.moveToNext()) {
-                ids[index] = cursor.getLong(0);
-                names[index] = cursor.getString(1);
-                index++;
-            }
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(title);
-            builder.setItems(names, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    listener.onSelected(ids[item]);
-                }
-            });
-            dialog = builder.create();
-        }
-        cursor.close();
-        return dialog;
-    }
-
-    private interface OnEntitySelected {
-        void onSelected(long id);
     }
 
     void confirmSelection() {

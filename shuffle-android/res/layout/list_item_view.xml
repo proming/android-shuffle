@@ -29,7 +29,6 @@
 	android:gravity="center_vertical"
     android:paddingLeft="5dip" 
     android:paddingRight="5dip"
-    style="@style/list_text"
     />
     
 	<ImageView
@@ -40,8 +39,7 @@
 		android:paddingLeft="5dip"
 		android:paddingRight="5dip" 
 		android:gravity="center_horizontal"
-		android:src="@drawable/user_input_icon"
-		style="@style/image" 
+		android:src="@drawable/applications_system"
 		/>
 
  </RelativeLayout>

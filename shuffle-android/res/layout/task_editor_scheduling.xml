@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_title"
-        style="@style/label"/>
+        />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/due_title"
-        style="@style/label"/>
+        />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -78,44 +78,6 @@
             />
         
     </RelativeLayout>
-
-    <!-- REMINDERS -->
-    <LinearLayout android:id="@+id/reminders_container"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        >
-
-        <TextView android:id="@+id/reminders_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/reminders_title"
-            style="@style/label"/>
-
-        <LinearLayout android:id="@+id/reminder_items_container"
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical|right"
-        android:paddingBottom="5dip"
-        android:visibility="gone"
-        >
-        <ImageButton android:id="@+id/reminder_add"
-            style="@style/PlusButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dip"
-            android:gravity="center_vertical|right"
-        />
-    </LinearLayout>
-    <!-- /REMINDERS -->
-    
 
     <View
         android:layout_width="fill_parent"

@@ -29,7 +29,7 @@
     <RelativeLayout
         android:padding="4dip"
         android:layout_width="fill_parent" android:layout_height="fill_parent"
-        android:paddingBottom="10dip" style="@style/editor">
+        android:paddingBottom="10dip">
 
         <TextView android:id="@+id/name_label"
             android:layout_width="fill_parent"
@@ -39,7 +39,6 @@
             android:paddingLeft="5dip"
             android:paddingRight="5dip"
             android:text="@string/name_title"
-            style="@style/label"
             />
 
         <EditText android:id="@+id/name" android:layout_width="fill_parent"
@@ -51,7 +50,6 @@
             android:autoText="true"
             android:singleLine="true"
             android:maxLength="50"
-            style="@style/text_editable"
             >
             <requestFocus />
         </EditText>
@@ -106,12 +104,12 @@
                 android:clickable="false"
                 />
 
-            <ImageButton android:id="@+id/unused_clear_button"
-                style="@style/MinusButton"
+            <Button android:id="@+id/unused_clear_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dip"
                 android:visibility="invisible"
+                android:text="-"
                 />
 
         </LinearLayout>
@@ -176,11 +174,12 @@
                 android:gravity="center"
                 />
 
-            <ImageButton android:id="@+id/icon_clear_button"
-                style="@style/MinusButton"
+            <Button android:id="@+id/icon_clear_button"
                 android:layout_marginLeft="40dip"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="-"
+                    />
 
         </LinearLayout>
 
@@ -203,7 +202,6 @@
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:text="@string/preview_title"
-            style="@style/label"
             />
 
 
@@ -218,7 +216,6 @@
             android:drawablePadding="2dip"
             android:paddingLeft="3dip"
             android:paddingRight="3dip"
-            style="@style/context"
             />
 
         <View android:id="@+id/active_divider"

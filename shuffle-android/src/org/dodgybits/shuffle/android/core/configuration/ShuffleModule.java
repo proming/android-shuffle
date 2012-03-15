@@ -1,10 +1,7 @@
 package org.dodgybits.shuffle.android.core.configuration;
 
-import android.content.ContextWrapper;
 import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
 import com.google.inject.TypeLiteral;
-import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.Task;
@@ -13,11 +10,6 @@ import org.dodgybits.shuffle.android.core.model.encoding.EntityEncoder;
 import org.dodgybits.shuffle.android.core.model.encoding.ProjectEncoder;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.*;
-import org.dodgybits.shuffle.android.core.model.persistence.selector.Flag;
-import org.dodgybits.shuffle.android.core.view.MenuUtils;
-import org.dodgybits.shuffle.android.list.annotation.*;
-import org.dodgybits.shuffle.android.list.old.config.*;
-import org.dodgybits.shuffle.android.preference.model.ListSettings;
 
 public class ShuffleModule extends AbstractModule {
 
@@ -26,10 +18,6 @@ public class ShuffleModule extends AbstractModule {
         addCaches();
         addPersisters();
         addEncoders();
-
-        //next two will go
-        addListPreferenceSettings();
-        addListConfig();
 	}
 
     private void addCaches() {
@@ -48,100 +36,5 @@ public class ShuffleModule extends AbstractModule {
         bind(new TypeLiteral<EntityEncoder<Project>>() {}).to(ProjectEncoder.class);
         bind(new TypeLiteral<EntityEncoder<Task>>() {}).to(TaskEncoder.class);
     }
-
-    private void addListPreferenceSettings() {
-        bind(ListSettings.class).annotatedWith(Inbox.class).toInstance(
-                new ListSettings(StandardTaskQueries.cInbox));
-
-        bind(ListSettings.class).annotatedWith(TopTasks.class).toInstance(
-                new ListSettings(StandardTaskQueries.cNextTasks)
-                    .setDefaultCompleted(Flag.no)
-                    .disableCompleted()
-                    .disableDeleted()
-                    .disableActive());
-
-        ListSettings projectSettings = new ListSettings(StandardTaskQueries.cProjectFilterPrefs);
-        bind(ListSettings.class).annotatedWith(ProjectTasks.class).toInstance(projectSettings);
-        bind(ListSettings.class).annotatedWith(Projects.class).toInstance(projectSettings);
-        bind(ListSettings.class).annotatedWith(ExpandableProjects.class).toInstance(projectSettings);
-
-        ListSettings contextSettings = new ListSettings(StandardTaskQueries.cContextFilterPrefs);
-        bind(ListSettings.class).annotatedWith(ContextTasks.class).toInstance(contextSettings);
-        bind(ListSettings.class).annotatedWith(Contexts.class).toInstance(contextSettings);
-        bind(ListSettings.class).annotatedWith(ExpandableContexts.class).toInstance(contextSettings);
-
-        bind(ListSettings.class).annotatedWith(DueTasks.class).toInstance(
-            new ListSettings(StandardTaskQueries.cDueTasksFilterPrefs).setDefaultCompleted(Flag.no));
-
-        bind(ListSettings.class).annotatedWith(Tickler.class).toInstance(
-            new ListSettings(StandardTaskQueries.cTickler)
-                    .setDefaultCompleted(Flag.no)
-                    .setDefaultActive(Flag.no));
-
-    }
-
-    private void addListConfig() {
-        bind(DueActionsListConfig.class).annotatedWith(DueTasks.class).to(DueActionsListConfig.class);
-        bind(ContextTasksListConfig.class).annotatedWith(ContextTasks.class).to(ContextTasksListConfig.class);
-        bind(ProjectTasksListConfig.class).annotatedWith(ProjectTasks.class).to(ProjectTasksListConfig.class);
-        bind(ProjectListConfig.class).annotatedWith(Projects.class).to(ProjectListConfig.class);
-        bind(ContextListConfig.class).annotatedWith(Contexts.class).to(ContextListConfig.class);
-    }
-
-    @Provides @Inbox
-    TaskListConfig providesInboxTaskListConfig(TaskPersister taskPersister, @Inbox ListSettings settings) {
-		return new AbstractTaskListConfig(
-                StandardTaskQueries.getQuery(StandardTaskQueries.cInbox),
-                taskPersister, settings) {
-
-		    public int getCurrentViewMenuId() {
-		    	return MenuUtils.INBOX_ID;
-		    }
-
-		    public String createTitle(ContextWrapper context)
-		    {
-		    	return context.getString(R.string.title_inbox);
-		    }
-
-		};
-    }
-
-    @Provides @TopTasks
-    TaskListConfig providesTopTasksTaskListConfig(TaskPersister taskPersister, @TopTasks ListSettings settings) {
-        return new AbstractTaskListConfig(
-                StandardTaskQueries.getQuery(StandardTaskQueries.cNextTasks),
-                taskPersister, settings) {
-
-		    public int getCurrentViewMenuId() {
-		    	return MenuUtils.TOP_TASKS_ID;
-		    }
-
-		    public String createTitle(ContextWrapper context)
-		    {
-		    	return context.getString(R.string.title_next_tasks);
-		    }
-
-		};
-    }
-
-    @Provides @Tickler
-    TaskListConfig providesTicklerTaskListConfig(TaskPersister taskPersister, @Tickler ListSettings settings) {
-        return new AbstractTaskListConfig(
-                StandardTaskQueries.getQuery(StandardTaskQueries.cTickler),
-                taskPersister, settings) {
-
-		    public int getCurrentViewMenuId() {
-		    	return MenuUtils.INBOX_ID;
-		    }
-
-		    public String createTitle(ContextWrapper context)
-		    {
-		    	return context.getString(R.string.title_tickler);
-		    }
-
-		};
-    }
-
-
 
 }

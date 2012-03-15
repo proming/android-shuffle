@@ -25,8 +25,7 @@ import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
 import org.dodgybits.shuffle.android.core.util.TextColours;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
-import org.dodgybits.shuffle.android.list.old.activity.State;
-import org.dodgybits.shuffle.android.list.old.view.ContextView;
+import org.dodgybits.shuffle.android.list.view.State;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 
 import roboguice.inject.InjectView;
@@ -60,7 +59,7 @@ public class ContextEditorActivity extends AbstractEditorActivity<Context> imple
     @InjectView(R.id.icon_display) private ImageView mIconWidget;
     @InjectView(R.id.icon_none) private TextView mIconNoneWidget;
     @InjectView(R.id.icon_clear_button) private ImageButton mClearIconButton;
-	@InjectView(R.id.context_preview) private ContextView mContext;
+	@InjectView(R.id.context_preview) private View mContext;
 
     private @InjectView(R.id.deleted_entry) View mDeletedEntry;
     private CheckBox mDeletedCheckBox;
@@ -325,7 +324,7 @@ public class ContextEditorActivity extends AbstractEditorActivity<Context> imple
 		if (TextUtils.isEmpty(name) || mColourIndex == -1) {
 			mContext.setVisibility(View.INVISIBLE);
 		} else {
-			mContext.updateView(createItemFromUI(false));
+//			mContext.updateView(createItemFromUI(false));
 			mContext.setVisibility(View.VISIBLE);
 		}				
 	}

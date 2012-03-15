@@ -35,36 +35,8 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-            android:title="@string/layout_preferences">
-            
-        <CheckBoxPreference
-                android:key="project_view"
-                android:title="@string/title_project_view_preference"
-                android:summary="@string/summary_project_view_preference" 
-				android:defaultValue="false"                
-                />
-
-        <CheckBoxPreference
-                android:key="context_view"
-                android:title="@string/title_context_view_preference"
-                android:summary="@string/summary_context_view_preference" 
-				android:defaultValue="true"                
-                />
-            
-        <PreferenceScreen
-                android:title="@string/title_action_appearance_preference"
-                android:summary="@string/summary_action_appearance_preference">
-
-            <intent android:action="android.intent.action.MAIN" 
-                android:targetPackage="org.dodgybits.android.shuffle" 
-            	android:targetClass="org.dodgybits.shuffle.android.preference.activity.PreferencesAppearanceActivity" />
-        </PreferenceScreen>
-
-    </PreferenceCategory>
-
-         <PreferenceCategory
-            android:title="@string/sync_preferences">
+     <PreferenceCategory
+        android:title="@string/sync_preferences">
 
         <PreferenceScreen
                 android:title="@string/appengine_synchronization_settings">

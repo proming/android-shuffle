@@ -19,13 +19,11 @@
         android:orientation="vertical"
         android:layout_width="fill_parent" 
         android:layout_height="fill_parent"
-        style="@style/activity"
         >
 
     <TextView android:layout_width="fill_parent" 
               android:layout_height="wrap_content"
               android:text="@string/welcome1"
-              style="@style/text"                
               />
               
     <Button android:id="@+id/sample_data_button"
@@ -39,7 +37,6 @@
     <TextView android:layout_width="fill_parent" 
               android:layout_height="wrap_content"
               android:text="@string/welcome2"
-              style="@style/text"                
               />
 
     <Button android:id="@+id/clean_slate_button"
@@ -51,7 +48,6 @@
     <TextView android:layout_width="fill_parent" 
               android:layout_height="wrap_content"
               android:text="@string/welcome3"
-              style="@style/text"                
               />
               
 </LinearLayout>

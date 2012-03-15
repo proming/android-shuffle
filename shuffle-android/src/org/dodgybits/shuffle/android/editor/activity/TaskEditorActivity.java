@@ -25,7 +25,6 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +33,6 @@ import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -49,16 +47,13 @@ import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.CalendarUtils;
 import org.dodgybits.shuffle.android.core.util.Constants;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
-import org.dodgybits.shuffle.android.list.old.activity.State;
+import org.dodgybits.shuffle.android.list.view.State;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
-import org.dodgybits.shuffle.android.persistence.provider.ReminderProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 import roboguice.inject.InjectView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.TimeZone;
 
 /**
@@ -81,12 +76,6 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
     	ProjectProvider.Projects.NAME
     };
     
-    private static final String REMINDERS_WHERE = ReminderProvider.Reminders.TASK_ID + "=? AND (" +
-	    ReminderProvider.Reminders.METHOD + "=" + ReminderProvider.Reminders.METHOD_ALERT + 
-	    " OR " + ReminderProvider.Reminders.METHOD + "=" + ReminderProvider.Reminders.METHOD_DEFAULT + ")";
-    
-    private static final int MAX_REMINDERS = 3;
-
 	private static final int cNewContextCode = 100;
 	private static final int cNewProjectCode = 101;
 
@@ -129,15 +118,7 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
     private CheckBox mUpdateCalendarCheckBox;
 	private TextView mCalendarLabel;
 	private TextView mCalendarDetail;
-    
-    private ArrayList<Integer> mReminderValues;
-    private ArrayList<String> mReminderLabels;
-    private int mDefaultReminderMinutes;
-	
-    private @InjectView(R.id.reminder_items_container) LinearLayout mRemindersContainer;
-    private ArrayList<Integer> mOriginalMinutes = new ArrayList<Integer>();
-    private ArrayList<LinearLayout> mReminderItems = new ArrayList<LinearLayout>(0);
-    
+
     @Inject private TaskPersister mPersister;
     @Inject private EntityEncoder<Task> mEncoder;
     
@@ -223,8 +204,6 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
         mStartTimeButton.setVisibility(View.VISIBLE);
         mDueTimeButton.setVisibility(View.VISIBLE);
         updateCalendarPanel();
-
-        updateRemindersVisibility();
     }
     
     @Override
@@ -292,34 +271,6 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
         mDeletedCheckBox.setChecked(task.isDeleted());
         
         updateCalendarPanel();
-        
-        // Load reminders (if there are any)
-        if (task.hasAlarms()) {
-            Uri uri = ReminderProvider.Reminders.CONTENT_URI;
-            ContentResolver cr = getContentResolver();
-            Cursor reminderCursor = cr.query(uri, ReminderProvider.Reminders.cFullProjection, 
-            		REMINDERS_WHERE, new String[] {String.valueOf(task.getLocalId().getId())}, null);
-            try {
-                // First pass: collect all the custom reminder minutes (e.g.,
-                // a reminder of 8 minutes) into a global list.
-                while (reminderCursor.moveToNext()) {
-                    int minutes = reminderCursor.getInt(ReminderProvider.Reminders.MINUTES_INDEX);
-                    addMinutesToList(this, mReminderValues, mReminderLabels, minutes);
-                }
-                
-                // Second pass: create the reminder spinners
-                reminderCursor.moveToPosition(-1);
-                while (reminderCursor.moveToNext()) {
-                    int minutes = reminderCursor.getInt(ReminderProvider.Reminders.MINUTES_INDEX);
-                    mOriginalMinutes.add(minutes);
-                    addReminder(this, this, mReminderItems, mReminderValues,
-                            mReminderLabels, minutes);
-                }
-            } finally {
-                reminderCursor.close();
-            }
-        }
-        updateRemindersVisibility();
     }
     
     @Override
@@ -336,7 +287,6 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
         final Id projectId = getSpinnerSelectedId(mProjectSpinner, mProjectIds);
         final boolean allDay = mAllDayCheckBox.isChecked();
         final boolean complete = mCompletedCheckBox.isChecked();
-        final boolean hasAlarms = !mReminderItems.isEmpty();
         final boolean deleted = mDeletedCheckBox.isChecked();
         final boolean active = true;
         
@@ -349,8 +299,7 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
             .setAllDay(allDay)
             .setComplete(complete)
             .setDeleted(deleted)
-            .setActive(active)
-            .setHasAlarm(hasAlarms);
+            .setActive(active);
 
         // If we are creating a new task, set the creation date
         if (mState == State.STATE_INSERT) {
@@ -535,32 +484,7 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
     	intent.putExtras(extras);
     	return intent;
     }
-    
-    @Override
-    protected Uri create() {
-    	Uri uri = super.create();
-    	if (uri != null) {
-            ContentResolver cr = getContentResolver();
-            ArrayList<Integer> reminderMinutes = reminderItemsToMinutes(mReminderItems,
-                    mReminderValues);
-            long taskId = ContentUris.parseId(uri);
-            saveReminders(cr, taskId, reminderMinutes, mOriginalMinutes);
-    	}
-    	return uri;
-    }    
-     
-    @Override
-    protected Uri save() {
-    	Uri uri = super.save();
-    	if (uri != null) {
-            ContentResolver cr = getContentResolver();
-            ArrayList<Integer> reminderMinutes = reminderItemsToMinutes(mReminderItems,
-                    mReminderValues);
-            long taskId = ContentUris.parseId(uri);
-            saveReminders(cr, taskId, reminderMinutes, mOriginalMinutes);
-    	}
-    	return uri;
-    }
+
     
     /**
      * @return id of layout for this view
@@ -629,16 +553,7 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
                 updateCalendarPanel();
                 break;
             }
-            
-            case R.id.reminder_remove: {
-                LinearLayout reminderItem = (LinearLayout) v.getParent();
-                LinearLayout parent = (LinearLayout) reminderItem.getParent();
-                parent.removeView(reminderItem);
-                mReminderItems.remove(reminderItem);
-                updateRemindersVisibility();
-            	break;
-            }
-            
+
             default:
             	super.onClick(v);
             	break;
@@ -700,12 +615,12 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
         // The text view for our task description, identified by its ID in the XML file.
         
         setupContextSpinner();
-        ImageButton addContextButton = (ImageButton) findViewById(R.id.context_add);
+        Button addContextButton = (Button) findViewById(R.id.context_add);
         addContextButton.setOnClickListener(this);
         addContextButton.setOnFocusChangeListener(this);
         
         setupProjectSpinner();
-        ImageButton addProjectButton = (ImageButton) findViewById(R.id.project_add);
+        Button addProjectButton = (Button) findViewById(R.id.project_add);
         addProjectButton.setOnClickListener(this);
         addProjectButton.setOnFocusChangeListener(this);
 
@@ -745,28 +660,6 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
         mSchedulingDetail = (TextView) schedulingEntry.findViewById(R.id.scheduling_detail);
         mSchedulingExpanded = mSchedulingExtra.getVisibility() == View.VISIBLE;
 
-        
-        // Initialize the reminder values array.
-        Resources r = getResources();
-        String[] strings = r.getStringArray(R.array.reminder_minutes_values);
-        ArrayList<Integer> list = new ArrayList<Integer>(strings.length);
-        for (String numberString: strings) {
-            list.add(Integer.parseInt(numberString));
-        }
-        mReminderValues = list;
-        String[] labels = r.getStringArray(R.array.reminder_minutes_labels);
-        mReminderLabels = new ArrayList<String>(Arrays.asList(labels));
-
-        mDefaultReminderMinutes = Preferences.getDefaultReminderMinutes(this);
-        
-        // Setup the + Add Reminder Button
-        ImageButton reminderAddButton = (ImageButton) findViewById(R.id.reminder_add);
-        reminderAddButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                addReminder();
-            }
-        });
-        
     }
     
     private void setupContextSpinner() {
@@ -858,53 +751,7 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
         }
         return name;
     }
-    
-    private void addReminder() {
-        if (mDefaultReminderMinutes == 0) {
-            addReminder(this, this, mReminderItems, mReminderValues,
-                    mReminderLabels, 10 /* minutes */);
-        } else {
-            addReminder(this, this, mReminderItems, mReminderValues,
-                    mReminderLabels, mDefaultReminderMinutes);
-        }
-        updateRemindersVisibility();
-    }
-        
-    // Adds a reminder to the displayed list of reminders.
-    // Returns true if successfully added reminder, false if no reminders can
-    // be added.
-    static boolean addReminder(Activity activity, View.OnClickListener listener,
-            ArrayList<LinearLayout> items, ArrayList<Integer> values,
-            ArrayList<String> labels, int minutes) {
 
-        if (items.size() >= MAX_REMINDERS) {
-            return false;
-        }
-
-        LayoutInflater inflater = activity.getLayoutInflater();
-        LinearLayout parent = (LinearLayout) activity.findViewById(R.id.reminder_items_container);
-        LinearLayout reminderItem = (LinearLayout) inflater.inflate(R.layout.edit_reminder_item, null);
-        parent.addView(reminderItem);
-        
-        Spinner spinner = (Spinner) reminderItem.findViewById(R.id.reminder_value);
-        Resources res = activity.getResources();
-        spinner.setPrompt(res.getString(R.string.reminders_title));
-        int resource = android.R.layout.simple_spinner_item;
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, resource, labels);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        
-        ImageButton reminderRemoveButton;
-        reminderRemoveButton = (ImageButton) reminderItem.findViewById(R.id.reminder_remove);
-        reminderRemoveButton.setOnClickListener(listener);
-
-        int index = findMinutesInReminderList(values, minutes);
-        spinner.setSelection(index);
-        items.add(reminderItem);
-
-        return true;
-    }
-    
     private void toggleSchedulingSection() {
         mSchedulingExpanded = !mSchedulingExpanded;
         setSchedulingVisibility(mSchedulingExpanded);
@@ -991,81 +838,6 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
         view.setText(value);
     }
 
-    static void addMinutesToList(android.content.Context context, ArrayList<Integer> values,
-            ArrayList<String> labels, int minutes) {
-        int index = values.indexOf(minutes);
-        if (index != -1) {
-            return;
-        }
-        
-        // The requested "minutes" does not exist in the list, so insert it
-        // into the list.
-        
-        String label = constructReminderLabel(context, minutes, false);
-        int len = values.size();
-        for (int i = 0; i < len; i++) {
-            if (minutes < values.get(i)) {
-                values.add(i, minutes);
-                labels.add(i, label);
-                return;
-            }
-        }
-        
-        values.add(minutes);
-        labels.add(len, label);
-    }
-    
-    /**
-     * Finds the index of the given "minutes" in the "values" list.
-     * 
-     * @param values the list of minutes corresponding to the spinner choices
-     * @param minutes the minutes to search for in the values list
-     * @return the index of "minutes" in the "values" list
-     */
-    private static int findMinutesInReminderList(ArrayList<Integer> values, int minutes) {
-        int index = values.indexOf(minutes);
-        if (index == -1) {
-            // This should never happen.
-            Log.e(TAG, "Cannot find minutes (" + minutes + ") in list");
-            return 0;
-        }
-        return index;
-    }
-    
-    // Constructs a label given an arbitrary number of minutes.  For example,
-    // if the given minutes is 63, then this returns the string "63 minutes".
-    // As another example, if the given minutes is 120, then this returns
-    // "2 hours".
-    static String constructReminderLabel(android.content.Context context, int minutes, boolean abbrev) {
-        Resources resources = context.getResources();
-        int value, resId;
-        
-        if (minutes % 60 != 0) {
-            value = minutes;
-            if (abbrev) {
-                resId = R.plurals.Nmins;
-            } else {
-                resId = R.plurals.Nminutes;
-            }
-        } else if (minutes % (24 * 60) != 0) {
-            value = minutes / 60;
-            resId = R.plurals.Nhours;
-        } else {
-            value = minutes / ( 24 * 60);
-            resId = R.plurals.Ndays;
-        }
-
-        String format = resources.getQuantityString(resId, value);
-        return String.format(format, value);
-    }
-
-    private void updateRemindersVisibility() {
-        if (mReminderItems.size() == 0) {
-            mRemindersContainer.setVisibility(View.GONE);
-        } else {
-            mRemindersContainer.setVisibility(View.VISIBLE);
-        }
-    }
     
     private void updateCalendarPanel() {
     	boolean enabled = true;
@@ -1084,58 +856,7 @@ public class TaskEditorActivity extends AbstractEditorActivity<Task>
         mUpdateCalendarEntry.setEnabled(enabled);
         mUpdateCalendarCheckBox.setEnabled(enabled);
     }
-    
-    static ArrayList<Integer> reminderItemsToMinutes(ArrayList<LinearLayout> reminderItems,
-            ArrayList<Integer> reminderValues) {
-        int len = reminderItems.size();
-        ArrayList<Integer> reminderMinutes = new ArrayList<Integer>(len);
-        for (int index = 0; index < len; index++) {
-            LinearLayout layout = reminderItems.get(index);
-            Spinner spinner = (Spinner) layout.findViewById(R.id.reminder_value);
-            int minutes = reminderValues.get(spinner.getSelectedItemPosition());
-            reminderMinutes.add(minutes);
-        }
-        return reminderMinutes;
-    }
 
-    /**
-     * Saves the reminders, if they changed.  Returns true if the database
-     * was updated.
-     * 
-     * @param cr the ContentResolver
-     * @param taskId the id of the task whose reminders are being updated
-     * @param reminderMinutes the array of reminders set by the user
-     * @param originalMinutes the original array of reminders
-     * @return true if the database was updated
-     */
-    static boolean saveReminders(ContentResolver cr, long taskId,
-            ArrayList<Integer> reminderMinutes, ArrayList<Integer> originalMinutes
-            ) {
-        // If the reminders have not changed, then don't update the database
-        if (reminderMinutes.equals(originalMinutes)) {
-            return false;
-        }
-
-        // Delete all the existing reminders for this event
-        String where = ReminderProvider.Reminders.TASK_ID + "=?";
-        String[] args = new String[] { Long.toString(taskId) };
-        cr.delete(ReminderProvider.Reminders.CONTENT_URI, where, args);
-
-        ContentValues values = new ContentValues();
-        int len = reminderMinutes.size();
-
-        // Insert the new reminders, if any
-        for (int i = 0; i < len; i++) {
-            int minutes = reminderMinutes.get(i);
-
-            values.clear();
-            values.put(ReminderProvider.Reminders.MINUTES, minutes);
-            values.put(ReminderProvider.Reminders.METHOD, ReminderProvider.Reminders.METHOD_ALERT);
-            values.put(ReminderProvider.Reminders.TASK_ID, taskId);
-            cr.insert(ReminderProvider.Reminders.CONTENT_URI, values);
-        }
-        return true;
-    }    
     /* This class is used to update the time buttons. */
     private class TimeListener implements OnTimeSetListener {
         private View mView;

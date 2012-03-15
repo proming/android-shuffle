@@ -25,7 +25,7 @@ import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.list.event.EditTaskEvent;
 import org.dodgybits.shuffle.android.list.event.UpdateTasksCompletedEvent;
 import org.dodgybits.shuffle.android.list.event.UpdateTasksDeletedEvent;
-import org.dodgybits.shuffle.android.list.old.view.LabelView;
+import org.dodgybits.shuffle.android.list.view.LabelView;
 import org.dodgybits.shuffle.android.list.view.StatusView;
 import roboguice.event.EventManager;
 import roboguice.fragment.RoboFragment;

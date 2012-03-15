@@ -29,25 +29,11 @@ public class Preferences {
 	public static final String FIRST_TIME = "first_time";
 	public static final String ANALYTICS_ENABLED = "send_analytics";
 	
-	public static final String SCREEN_KEY = "screen";
-	public static final String DELETE_COMPLETED_PERIOD_KEY = "delete_complete_period_str";
-	public static final String LAST_DELETE_COMPLETED_KEY = "last_delete_completed";
 	public static final String LAST_VERSION = "last_version";
-	
-	public static final String DISPLAY_CONTEXT_ICON_KEY = "display_context_icon";
-	public static final String DISPLAY_CONTEXT_NAME_KEY = "display_context_name";
-	public static final String DISPLAY_PROJECT_KEY = "display_project";
-	public static final String DISPLAY_DETAILS_KEY = "display_details";
-	public static final String DISPLAY_DUE_DATE_KEY = "display_due_date";
-	
-	public static final String PROJECT_VIEW_KEY = "project_view";
-	public static final String CONTEXT_VIEW_KEY = "context_view";
 
 	public static final String TOP_LEVEL_COUNTS_KEY = "top_level_counts";
 	public static final String CALENDAR_ID_KEY = "calendar_id";
 	public static final String DEFAULT_REMINDER_KEY = "default_reminder";
-	
-	public static final String KEY_DEFAULT_REMINDER = "default_reminder";
 
     public static final String TRACKS_URL = "tracks_url";
     public static final String TRACKS_USER = "tracks_user";
@@ -136,49 +122,12 @@ public class Preferences {
 		return getSharedPreferences(context).getBoolean(TRACKS_SELF_SIGNED_CERT, false);
 	}
 	
-	public static String getDeleteCompletedPeriod(Context context) {
-		return getSharedPreferences(context).getString(DELETE_COMPLETED_PERIOD_KEY, DeleteCompletedPeriod.never.name());
-	}
-
-	public static long getLastDeleteCompleted(Context context) {
-		return getSharedPreferences(context).getLong(LAST_DELETE_COMPLETED_KEY, 0L);
-	}
-
 	public static int getDefaultReminderMinutes(Context context) {
         String durationString =
         	getSharedPreferences(context).getString(Preferences.DEFAULT_REMINDER_KEY, "0");
 		return Integer.parseInt(durationString);
 	}
 	
-
-	public static Boolean isProjectViewExpandable(Context context) {
-		return !getSharedPreferences(context).getBoolean(PROJECT_VIEW_KEY, false);
-	}
-	
-
-	public static Boolean isContextViewExpandable(Context context) {
-		return !getSharedPreferences(context).getBoolean(CONTEXT_VIEW_KEY, true);
-	}
-
-	public static boolean displayContextIcon(Context context) {
-		return getSharedPreferences(context).getBoolean(DISPLAY_CONTEXT_ICON_KEY, true);
-	}
-
-	public static boolean displayContextName(Context context) {
-		return getSharedPreferences(context).getBoolean(DISPLAY_CONTEXT_NAME_KEY, true);
-	}
-
-	public static boolean displayDueDate(Context context) {
-		return getSharedPreferences(context).getBoolean(DISPLAY_DUE_DATE_KEY, true);
-	}
-
-	public static boolean displayProject(Context context) {
-		return getSharedPreferences(context).getBoolean(DISPLAY_PROJECT_KEY, true);
-	}
-
-	public static boolean displayDetails(Context context) {
-		return getSharedPreferences(context).getBoolean(DISPLAY_DETAILS_KEY, true);
-	}
 
 	public static int[] getTopLevelCounts(Context context) {
 		String countString = getSharedPreferences(context).getString(Preferences.TOP_LEVEL_COUNTS_KEY, null);

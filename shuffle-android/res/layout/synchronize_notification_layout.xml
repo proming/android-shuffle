@@ -18,7 +18,7 @@
                android:orientation="horizontal"
               android:layout_width="fill_parent" android:layout_height="fill_parent"
               android:paddingBottom="10dip"
-              style="@style/list">
+              >
     <ImageView android:id="@+id/image"
                  android:layout_width="wrap_content"
                  android:layout_height="fill_parent"
@@ -28,12 +28,11 @@
               android:padding="4dip"
                android:orientation="vertical"
               android:layout_width="fill_parent" android:layout_height="fill_parent"
-              style="@style/list">
+              >
 
       <TextView android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:text="@string/synchronizing"
-              style="@style/text"
               />
 
     <ProgressBar android:id="@+id/progress_horizontal"

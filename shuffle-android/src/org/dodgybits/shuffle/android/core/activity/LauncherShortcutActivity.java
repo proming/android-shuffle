@@ -1,105 +1,107 @@
 package org.dodgybits.shuffle.android.core.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledListActivity;
-import org.dodgybits.shuffle.android.core.view.IconArrayAdapter;
-import org.dodgybits.shuffle.android.core.view.MenuUtils;
-import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.support.v4.app.FragmentTransaction;
+import com.google.inject.Inject;
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.fragment.LaunchListFragment;
+import org.dodgybits.shuffle.android.core.model.Context;
+import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.core.model.Project;
+import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
+import org.dodgybits.shuffle.android.core.util.IntentUtils;
+import org.dodgybits.shuffle.android.core.view.EntityPickerDialogHelper;
+import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
+import roboguice.activity.RoboFragmentActivity;
 
-public class LauncherShortcutActivity extends FlurryEnabledListActivity {
-	private static final String cScreenId = "screenId";
-	
-    private static final int NEW_TASK = 0;
-    private static final int INBOX = 1;
-    private static final int DUE_TASKS = 2;
-    private static final int TOP_TASKS = 3;
-    private static final int PROJECTS = 4;
-    private static final int CONTEXTS = 5;
-	
-    private List<String> mLabels;
-    
+public class LauncherShortcutActivity extends RoboFragmentActivity {
+    public static final int CONTEXT_PICKER_DIALOG = 1;
+    public static final int PROJECT_PICKER_DIALOG = 2;
+
+    @Inject
+    EntityCache<Context> mContextCache;
+
+    @Inject
+    EntityCache<Project> mProjectCache;
+
+    @Inject
+    private LaunchListFragment mFragment;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
         final String action = getIntent().getAction();
 
-        setContentView(R.layout.launcher_shortcut);
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
-        
-        String[] perspectives = getResources().getStringArray(R.array.perspectives);
-        
-        mLabels = new ArrayList<String>();
-        // TODO figure out a non-retarded way of added padding between text and icon
-        mLabels.add(0, "  " + getString(R.string.title_new_task));
-        for (String label : perspectives) {
-            mLabels.add("  " + label);
-        	
-        }
 
         if (!Intent.ACTION_CREATE_SHORTCUT.equals(action)) {
-        	int screenId = getIntent().getExtras().getInt(cScreenId, -1);
-        	if (screenId < INBOX && screenId > CONTEXTS) {
-        		// unknown id - just go to BootstrapActivity
-            	startActivity(new Intent(this, BootstrapActivity.class));
-        	} else {
-        		int menuIndex = (screenId - INBOX) + MenuUtils.INBOX_ID;
-        		MenuUtils.checkCommonItemsSelected(
-        				menuIndex, this, -1, false);
-        	}
+            // handle old school shortcuts by just going to home screen
+            startActivity(new Intent(this, BootstrapActivity.class));
         	finish();
         	return;
         }
-        
-        setTitle(R.string.title_shortcut_picker);
-        
-		Integer[] iconIds = new Integer[6];
-		iconIds[NEW_TASK] = R.drawable.list_add;
-		iconIds[INBOX] = R.drawable.inbox;
-		iconIds[DUE_TASKS] = R.drawable.due_actions;
-		iconIds[TOP_TASKS] = R.drawable.next_actions;
-		iconIds[PROJECTS] = R.drawable.projects;
-		iconIds[CONTEXTS] = R.drawable.contexts;
-		
-        ArrayAdapter<CharSequence> adapter = new IconArrayAdapter(
-        		this, R.layout.text_item_view, R.id.name, mLabels.toArray(new String[0]), iconIds);
-        setListAdapter(adapter);
-    }
-    
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-    	Intent shortcutIntent;
-    	Parcelable iconResource;
-    	if (position == NEW_TASK) {
-    		shortcutIntent = new Intent(Intent.ACTION_INSERT, TaskProvider.Tasks.CONTENT_URI);
-    		iconResource = Intent.ShortcutIconResource.fromContext(
-                    this,  R.drawable.shuffle_icon_add);
-    	} else {
-    		shortcutIntent = new Intent(this, LauncherShortcutActivity.class);
-    		shortcutIntent.putExtra(cScreenId, position);
-    		iconResource = Intent.ShortcutIconResource.fromContext(
-                    this,  R.drawable.shuffle_icon);
-    	}
 
+        setContentView(R.layout.fragment_container);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.fragment_container, mFragment);
+        ft.commit();
+
+        setTitle(R.string.title_shortcut_picker);
+    }
+
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
+        EntityPickerDialogHelper.OnEntitySelected listener;
+        final Intent.ShortcutIconResource iconResource = Intent.ShortcutIconResource.fromContext(
+                this, R.drawable.shuffle_icon);
+
+        switch(id) {
+            case CONTEXT_PICKER_DIALOG:
+                listener = new EntityPickerDialogHelper.OnEntitySelected() {
+                    public void onSelected(long id) {
+                        Id contextId = Id.create(id);
+                        TaskListContext listContext = TaskListContext.createForContext(contextId);
+                        Intent shortcutIntent = IntentUtils.createTaskListIntent(LauncherShortcutActivity.this, listContext);
+                        String name = mContextCache.findById(contextId).getName();
+                        returnShortcut(shortcutIntent, name, iconResource);
+                    }
+                };
+                dialog = EntityPickerDialogHelper.createContentPickerDialog(LauncherShortcutActivity.this, listener);
+                break;
+            case PROJECT_PICKER_DIALOG:
+                listener = new EntityPickerDialogHelper.OnEntitySelected() {
+                    public void onSelected(long id) {
+                        Id projectId = Id.create(id);
+                        TaskListContext listContext = TaskListContext.createForProject(projectId);
+                        Intent shortcutIntent = IntentUtils.createTaskListIntent(LauncherShortcutActivity.this, listContext);
+                        String name = mProjectCache.findById(projectId).getName();
+                        returnShortcut(shortcutIntent, name, iconResource);
+                    }
+                };
+                dialog = EntityPickerDialogHelper.createProjectPickerDialog(LauncherShortcutActivity.this, listener);
+                break;
+        }
+        return dialog;
+    }    
+    
+    public void returnShortcut(Intent shortcutIntent,
+                                       String name, Intent.ShortcutIconResource iconResource) {
         Intent intent = new Intent();
         intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-        intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, mLabels.get(position).trim());
+        intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, name);
         intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource);
 
         // Now, return the result to the launcher
-
-        setResult(RESULT_OK, intent);
+        setResult(Activity.RESULT_OK, intent);
         finish();
     }
-    
+
+
 }

@@ -16,26 +16,21 @@
 
 package org.dodgybits.shuffle.android.core.activity;
 
-import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
-import org.dodgybits.shuffle.android.core.model.persistence.InitialDataGenerator;
-import org.dodgybits.shuffle.android.core.view.MenuUtils;
-import org.dodgybits.shuffle.android.preference.model.Preferences;
-
-import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-
 import com.google.inject.Inject;
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
+import org.dodgybits.shuffle.android.core.model.persistence.InitialDataGenerator;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
+import roboguice.inject.InjectView;
 
 public class WelcomeActivity extends FlurryEnabledActivity {
     private static final String cTag = "WelcomeActivity";
@@ -121,20 +116,5 @@ public class WelcomeActivity extends FlurryEnabledActivity {
 		editor.putBoolean(Preferences.FIRST_TIME, value);
 		editor.commit();
     }
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuUtils.addPrefsHelpMenuItems(this, menu);
-
-        return true;
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return MenuUtils.checkCommonItemsSelected(item, this, MenuUtils.INBOX_ID) || super.onOptionsItemSelected(item);
-    }
-
-
 
 }

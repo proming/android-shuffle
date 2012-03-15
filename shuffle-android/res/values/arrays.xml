@@ -26,10 +26,6 @@
     </array>
 
 
-    <array name="view_types">
-        <item>Expandable list</item>
-        <item>Drill-down list</item>
-    </array>
     <array name="help_screens">
         <item>Introduction</item>
         <item>Inbox</item>
@@ -41,12 +37,7 @@
         <item>Handy tips</item>
         <item>Acknowledgements</item>
     </array>
-    <array name="preference_screens">
-        <item>Action appearance</item>
-        <item>List layout</item>
-        <item>Clean up</item>
-    </array>
-	    
+
     <array name="text_colours">
     	<item>c5b6985</item>
     	<item>c2c6cfc</item>

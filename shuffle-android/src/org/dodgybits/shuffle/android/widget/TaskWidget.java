@@ -24,6 +24,7 @@ import android.content.Loader;
 import android.content.Loader.OnLoadCompleteListener;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.Spannable;
@@ -129,12 +130,15 @@ public class TaskWidget implements RemoteViewsService.RemoteViewsFactory,
     @Inject
     TaskPersister mTaskPersister;
 
+    ContextBitmapProvider mBitmapProvider;
+    
     @Inject
     public TaskWidget(Context context) {
         super();
         mContext = context.getApplicationContext();
         mWidgetManager = AppWidgetManager.getInstance(mContext);
-
+        mBitmapProvider = new ContextBitmapProvider(mContext);
+        
         mLoader = new TaskWidgetLoader(mContext);
         mLoader.registerListener(0, this);
         if (sContentsSnippetDivider == null) {
@@ -348,7 +352,7 @@ public class TaskWidget implements RemoteViewsService.RemoteViewsFactory,
      * @param read whether or not the message is read
      * @return a CharSequence suitable for use in RemoteViews.setTextViewText()
      */
-    private CharSequence getStyledSubjectSnippet(String subject, String snippet, boolean read) {
+    private CharSequence getStyledContents(String subject, String snippet, boolean read) {
         SpannableStringBuilder ssb = new SpannableStringBuilder();
         boolean hasSubject = false;
         if (!TextUtils.isEmpty(subject)) {
@@ -390,7 +394,7 @@ public class TaskWidget implements RemoteViewsService.RemoteViewsFactory,
         }
         views.setInt(R.id.widget_task, "setBackgroundResource", drawableId);
 
-        // Add style to sender
+        // Add style to project
         Project project = mProjectCache.findById(task.getProjectId());
         String projectName = project == null ? "" : project.getName();
         SpannableStringBuilder projectBuilder = new SpannableStringBuilder(projectName);
@@ -408,17 +412,19 @@ public class TaskWidget implements RemoteViewsService.RemoteViewsFactory,
         CharSequence styledDate = addStyle(date, sDateFontSize, sDefaultTextColor);
         views.setTextViewText(R.id.widget_date, styledDate);
 
-        // Add style to subject/snippet
-        CharSequence contents = getStyledSubjectSnippet(task.getDescription(), task.getDetails(), !isIncomplete);
+        // Add style to contents
+        CharSequence contents = getStyledContents(task.getDescription(), task.getDetails(), !isIncomplete);
         views.setTextViewText(R.id.widget_contents, contents);
 
+        // Add badge icons
         views.setViewVisibility(R.id.widget_deleted, task.isDeleted() ? View.VISIBLE : View.GONE);
 
+        // Add context graphic
         org.dodgybits.shuffle.android.core.model.Context context = mContextCache.findById(task.getContextId());
-        // TODO update context graphic
+        Bitmap bitmap = mBitmapProvider.getBitmapForContext(context);
+        views.setImageViewBitmap(R.id.widget_context, mBitmapProvider.getBitmapForContext(context));
 
         TaskSelector selector = mListContext.createSelectorWithPreferences(mContext);
-        
         String queryName = selector.getListQuery().name();
         String contextId = String.valueOf(selector.getContextId().getId());
         String projectId = String.valueOf(selector.getProjectId().getId());

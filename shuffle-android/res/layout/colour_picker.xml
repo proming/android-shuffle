@@ -26,6 +26,5 @@
     android:columnWidth="40dip"
     android:stretchMode="spacingWidth"
     android:gravity="center"
-    style="@style/context"
-    
+
     />

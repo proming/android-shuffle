@@ -27,14 +27,18 @@
     android:fillViewport="true"
         >
 
-	<LinearLayout android:id="@+id/main" android:orientation="vertical"
-		android:padding="4dip" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:scrollbars="vertical">
+	<LinearLayout
+            android:id="@+id/main"
+                  android:orientation="vertical"
+		android:padding="4dip"
+        android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+        android:scrollbars="vertical">
 
 		<TextView android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:paddingLeft="5dip"
 			android:paddingRight="5dip" android:text="@string/description_title"
-			style="@style/label" />
+			/>
 
 		<EditText android:id="@+id/description"
 			android:layout_width="fill_parent"
@@ -43,14 +47,14 @@
 			android:capitalize="sentences"
 			android:autoText="true"
 			android:singleLine="true"
-			style="@style/text_editable">
+			>
 			<requestFocus />
 		</EditText>
 		
 		<TextView android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:paddingLeft="5dip"
 			android:paddingRight="5dip" android:text="@string/project_title"
-			style="@style/label" />
+			/>
 
 		<RelativeLayout
 		    android:layout_width="fill_parent"
@@ -59,13 +63,13 @@
 		    android:background="@android:drawable/list_selector_background"
 		    >
 
-	        <ImageButton android:id="@+id/project_add"
-	            style="@style/PlusButton"
+	        <Button android:id="@+id/project_add"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_alignParentRight="true"
 	            android:layout_alignParentTop="true"
 	            android:layout_marginLeft="5dip"
+                android:text="+"
 	        />
 
 			<Spinner android:id="@+id/project"
@@ -81,7 +85,7 @@
 		<TextView android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:paddingLeft="5dip"
 			android:paddingRight="5dip" android:text="@string/context_title"
-			style="@style/label" />
+                />
 
 		<RelativeLayout
 		    android:layout_width="fill_parent"
@@ -90,13 +94,13 @@
 		    android:background="@android:drawable/list_selector_background"
 		    >
 
-	        <ImageButton android:id="@+id/context_add"
-	            style="@style/PlusButton"
+	        <Button android:id="@+id/context_add"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_alignParentTop="true"
 	            android:layout_alignParentRight="true"
 	            android:layout_marginLeft="5dip"
+                android:text="+"
 	        />
 
 			<Spinner android:id="@+id/context"
@@ -112,7 +116,7 @@
 		<TextView android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:paddingLeft="5dip"
 			android:paddingRight="5dip" android:text="@string/details_title"
-			style="@style/label" />
+			/>
 
 		<EditText android:id="@+id/details"
 			android:layout_width="fill_parent"
@@ -121,7 +125,7 @@
 			android:capitalize="sentences" 
 			android:autoText="true"
 			android:singleLine="false"
-			style="@style/text_editable" />
+			/>
 
 		<LinearLayout android:id="@+id/scheduling_section"
 		    android:layout_width="fill_parent"
@@ -175,19 +179,19 @@
 					
 			    </RelativeLayout>
 					
-			    <ImageView android:id="@+id/expand"
-			        style="@style/ExpandButton"
+			    <Button android:id="@+id/expand"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 		            android:duplicateParentState="true"
+                    android:text="+"
 			        />
 
-			    <ImageView android:id="@+id/collapse"
-			        style="@style/CollapseButton"
+			    <Button android:id="@+id/collapse"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 		            android:duplicateParentState="true"
 		            android:visibility="gone"
+                    android:text="-"
 			        />
 			
 			</LinearLayout>
