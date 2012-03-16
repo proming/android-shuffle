@@ -1,5 +1,6 @@
 package org.dodgybits.shuffle.android.list.view.task;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -8,6 +9,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.dodgybits.shuffle.android.actionbarcompat.ActionBarHelper;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
+import org.dodgybits.shuffle.android.list.activity.EntityListsActivity;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListTitles;
 
@@ -56,6 +58,17 @@ public class MultiTaskListFragment extends TaskListFragment {
         if (savedInstanceState != null) {
             // Fragment doesn't have this method.  Call it manually.
             restoreInstanceState(savedInstanceState);
+        } else {
+            // first time here - check if a list was specified on the intent
+            Intent intent = getActivity().getIntent();
+            String queryName = intent.getStringExtra(EntityListsActivity.QUERY_NAME);
+            if (queryName != null) {
+                ListQuery query = ListQuery.valueOf(queryName);
+                int index = getMultiTaskListContext().getListQueries().indexOf(query);
+                if (index > -1) {
+                    mListContext.setListIndex(index);
+                }
+            }
         }
 
         super.onActivityCreated(savedInstanceState);
@@ -96,7 +109,9 @@ public class MultiTaskListFragment extends TaskListFragment {
     @Override
     void restoreInstanceState(Bundle savedInstanceState) {
         super.restoreInstanceState(savedInstanceState);
-        mListContext.setListIndex(savedInstanceState.getInt(SELECTED_INDEX, 0));
+        
+        int savedIndex = savedInstanceState.getInt(SELECTED_INDEX, 0);
+        mListContext.setListIndex(savedIndex);
     }
 
     private MultiTaskListContext getMultiTaskListContext() {
