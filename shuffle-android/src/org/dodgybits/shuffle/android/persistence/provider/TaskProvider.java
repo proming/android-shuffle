@@ -60,6 +60,7 @@ public class TaskProvider extends AbstractCollectionProvider {
 		 * The content:// style URL for this table
 		 */
 		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY+"/tasks");
+        public static final Uri LIST_CONTENT_URI = Uri.parse("content://" + AUTHORITY+"/taskLists");
 
 		/**
 		 * The default sort order for this table

@@ -2,6 +2,7 @@ package org.dodgybits.shuffle.android.core.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
 import org.dodgybits.shuffle.android.list.activity.ContextTaskListsActivity;
@@ -35,6 +36,8 @@ public class IntentUtils {
     
     public static Intent createTaskListIntent(Context context, TaskListContext listContext) {
         Intent intent = new Intent();
+        Uri uri = TaskProvider.Tasks.LIST_CONTENT_URI.buildUpon().appendPath(listContext.getListQuery().name()).build();
+        intent.setData(uri);
         Class activityClass;
         TaskSelector selector;
         switch (listContext.getListQuery()) {
