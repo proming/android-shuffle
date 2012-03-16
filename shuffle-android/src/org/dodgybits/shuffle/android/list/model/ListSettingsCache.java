@@ -11,25 +11,30 @@ import java.util.HashMap;
 public class ListSettingsCache {
 
     private static final String DUE_TASKS_SETTINGS_KEY = "due_tasks";
+    private static final String NEXT_TASKS_SETTINGS_KEY = "next_tasks";
 
     private static ListSettings projectSettings =
-            new ListSettings(ListQuery.project.name()).setDefaultQuickAdd(true).disableProject();
+            new ListSettings(ListQuery.project.name()).
+                    setDefaultQuickAdd(true).disableProject();
     private static ListSettings contextSettings =
-            new ListSettings(ListQuery.context.name()).setDefaultQuickAdd(true).disableContext();
+            new ListSettings(ListQuery.context.name()).
+                    setDefaultQuickAdd(true).disableContext();
     private static ListSettings inboxSettings =
-            new ListSettings(ListQuery.inbox.name()).setDefaultQuickAdd(true);
+            new ListSettings(ListQuery.inbox.name()).
+                    setDefaultQuickAdd(true);
     private static ListSettings dueTaskSettings =
-            new ListSettings(DUE_TASKS_SETTINGS_KEY).setDefaultCompleted(Flag.no);
+            new ListSettings(DUE_TASKS_SETTINGS_KEY).
+                    setDefaultCompleted(Flag.no);
     private static ListSettings ticklerSettings =
-            new ListSettings(ListQuery.tickler.name())
-                    .setDefaultCompleted(Flag.no)
-                    .setDefaultActive(Flag.no);
+            new ListSettings(ListQuery.tickler.name()).
+                    setDefaultCompleted(Flag.no).
+                    setDefaultActive(Flag.no);
     private static ListSettings nextTasksSettings =
-            new ListSettings(ListQuery.nextTasks.name())
-                    .setDefaultCompleted(Flag.no)
-                    .disableCompleted()
-                    .disableDeleted()
-                    .disableActive();
+            new ListSettings(NEXT_TASKS_SETTINGS_KEY).
+                    setDefaultCompleted(Flag.no).
+                    disableCompleted().
+                    disableDeleted().
+                    disableActive();
 
     private static final HashMap<ListQuery,ListSettings> SPARSE_SETTINGS_MAP =
             new HashMap<ListQuery,ListSettings>();
