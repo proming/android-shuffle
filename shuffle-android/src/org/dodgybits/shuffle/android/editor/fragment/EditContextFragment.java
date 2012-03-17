@@ -2,24 +2,16 @@ package org.dodgybits.shuffle.android.editor.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
-import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.core.model.Context;
-import org.dodgybits.shuffle.android.core.model.encoding.EntityEncoder;
-import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
 import org.dodgybits.shuffle.android.core.util.TextColours;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
@@ -27,10 +19,9 @@ import org.dodgybits.shuffle.android.editor.activity.ColourPickerActivity;
 import org.dodgybits.shuffle.android.editor.activity.IconPickerActivity;
 import org.dodgybits.shuffle.android.list.view.context.ContextListItem;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
-import roboguice.fragment.RoboFragment;
 
-public class EditContextFragment extends RoboFragment 
-        implements View.OnClickListener, View.OnFocusChangeListener, TextWatcher {
+public class EditContextFragment extends AbstractEditFragment<Context>
+        implements TextWatcher {
     private static final String TAG = "EditContextFragment";
 
     private static final int COLOUR_PICKER = 0;
@@ -50,70 +41,15 @@ public class EditContextFragment extends RoboFragment
     private View mActiveEntry;
     private CheckBox mActiveCheckBox;
     private ContextListItem mContextPreview;
-    
-    @Inject
-    private EntityPersister<Context> mPersister;
-    @Inject
-    private EntityEncoder<Context> mEncoder;
-
-    private Uri mUri;
-    private boolean mIsNewEntity;
-    private Cursor mCursor;
-    private Context mOriginalItem;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView+");
-
-        View view;
-        view = inflater.inflate(R.layout.context_editor, null);
-
-        View actionBarButtons = inflater.inflate(R.layout.edit_custom_actionbar,
-                new LinearLayout(getActivity()), false);
-        View cancelActionView = actionBarButtons.findViewById(R.id.action_cancel);
-        cancelActionView.setOnClickListener(this);
-        View doneActionView = actionBarButtons.findViewById(R.id.action_done);
-        doneActionView.setOnClickListener(this);
-
-        getActionBarFragmentActivity().getActionBarHelper().setCustomView(actionBarButtons);
-
-        return view;
-    }
 
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.d(TAG, "onActivityCreated+");
-        
-        mUri = getActivity().getIntent().getData();
-        mIsNewEntity = Intent.ACTION_INSERT.equals(getActivity().getIntent().getAction());
-        loadCursor();
-        findViewsAndAddListeners();
-        if (mIsNewEntity) {
-            resetUI();
-        } else {
-            mOriginalItem = mPersister.read(mCursor);
-            updateUIFromItem(mOriginalItem);
-        }
-
-        if (savedInstanceState != null) {
-            // Fragment doesn't have this method.  Call it manually.
-            restoreInstanceState(savedInstanceState);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        getActionBarFragmentActivity().getActionBarHelper().setCustomView(null);
+    protected int getContentViewResId() {
+        return R.layout.context_editor;
     }
 
     @Override
     public void onClick(View v) {
-        Log.d(TAG, "Got click on " + v.getId());
         switch (v.getId()) {
             case R.id.colour_entry: {
                 // Launch activity to pick colour
@@ -150,34 +86,13 @@ public class EditContextFragment extends RoboFragment
                 break;
             }
 
-            case R.id.action_done:
-                doSaveAction();
+            default:
+                super.onClick(v);
                 break;
 
-            case R.id.action_cancel:
-                doRevertAction();
-                break;
         }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Context item = createItemFromUI(false);
-        mEncoder.save(outState, item);
-    }
-
-    private void restoreInstanceState(Bundle savedInstanceState) {
-        Context item = mEncoder.restore(savedInstanceState);
-        updateUIFromItem(item);
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        // Because we're emulating a ListView, we need to setSelected() for
-        // views as they are focused.
-        v.setSelected(hasFocus);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -220,7 +135,8 @@ public class EditContextFragment extends RoboFragment
         updatePreview();
     }
 
-    private void findViewsAndAddListeners() {
+    @Override
+    protected void findViewsAndAddListeners() {
         mNameWidget = (EditText) getView().findViewById(R.id.name);
         mColourWidget = (TextView) getView().findViewById(R.id.colour_display);
         mIconWidget = (ImageView) getView().findViewById(R.id.icon_display);
@@ -256,75 +172,8 @@ public class EditContextFragment extends RoboFragment
         mDeletedCheckBox = (CheckBox) mDeletedEntry.findViewById(R.id.deleted_entry_checkbox);
     }
 
-    public void doSaveAction() {
-        // Save or create the contact if needed
-        Uri result = null;
-        if (mIsNewEntity) {
-            result = create();
-        } else {
-            result = save();
-        }
-
-        if (result == null) {
-            getActivity().setResult(Activity.RESULT_CANCELED);
-        } else {
-            getActivity().setResult(Activity.RESULT_OK, new Intent().setData(result));
-        }
-        getActivity().finish();
-    }
-
-    /**
-     * Take care of canceling work on a item. Deletes the item if we had created
-     * it, otherwise reverts to the original text.
-     */
-    protected void doRevertAction() {
-        if (mCursor != null) {
-            if (!mIsNewEntity) {
-                // Put the original item back into the database
-                mCursor.close();
-                mCursor = null;
-                mPersister.update(mOriginalItem);
-            }
-        }
-        getActivity().setResult(Activity.RESULT_CANCELED);
-        getActivity().finish();
-    }
-
-
-    protected Uri create() {
-        Uri uri = null;
-        if (isValid()) {
-            Context item = createItemFromUI(true);
-            uri = mPersister.insert(item);
-            showSaveToast();
-        }
-        return uri;
-    }
-
-    protected Uri save() {
-        Uri uri = null;
-        if (isValid()) {
-            Context item = createItemFromUI(true);
-            mPersister.update(item);
-            showSaveToast();
-            uri = mUri;
-        }
-        return uri;
-    }
-
-    protected final void showSaveToast() {
-        String text;
-        if (mIsNewEntity) {
-            text = getResources().getString(R.string.itemCreatedToast,
-                    getString(R.string.context_name));
-        } else {
-            text = getResources().getString(R.string.itemSavedToast,
-                    getString(R.string.context_name));
-        }
-        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
-    }
-
-    private void loadCursor() {
+    @Override
+    protected void loadCursor() {
         if (mUri != null && !mIsNewEntity) {
             mCursor = getActivity().managedQuery(mUri, ContextProvider.Contexts.FULL_PROJECTION, null, null, null);
             if (mCursor == null || mCursor.getCount() == 0) {
@@ -335,13 +184,14 @@ public class EditContextFragment extends RoboFragment
         }
     }
 
-    private boolean isValid() {
+    @Override
+    protected boolean isValid() {
         String name = mNameWidget.getText().toString();
         return !TextUtils.isEmpty(name);
     }
 
-
-    private Context createItemFromUI(boolean commitValues) {
+    @Override
+    protected Context createItemFromUI(boolean commitValues) {
         Context.Builder builder = Context.newBuilder();
         if (mOriginalItem != null) {
             builder.mergeFrom(mOriginalItem);
@@ -357,7 +207,8 @@ public class EditContextFragment extends RoboFragment
         return builder.build();
     }
 
-    private void resetUI() {
+    @Override
+    protected void updateUIFromExtras(Bundle savedState) {
         mDeletedEntry.setVisibility(View.GONE);
         mDeletedDivider.setVisibility(View.GONE);
         mDeletedCheckBox.setChecked(false);
@@ -372,7 +223,8 @@ public class EditContextFragment extends RoboFragment
         updatePreview();
     }
 
-    private void updateUIFromItem(Context context) {
+    @Override
+    protected void updateUIFromItem(Context context) {
         mNameWidget.setTextKeepState(context.getName());
 
         mColourIndex = context.getColourIndex();
@@ -393,6 +245,11 @@ public class EditContextFragment extends RoboFragment
         if (mOriginalItem == null) {
             mOriginalItem = context;
         }
+    }
+
+    @Override
+    protected CharSequence getItemName() {
+        return getString(R.string.context_name);
     }
 
     private void displayColour() {
@@ -425,8 +282,5 @@ public class EditContextFragment extends RoboFragment
 		}
     }
     
-    private ActionBarFragmentActivity getActionBarFragmentActivity() {
-        return (ActionBarFragmentActivity) getActivity();
-    }
 
 }

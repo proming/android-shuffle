@@ -52,8 +52,6 @@
                       android:layout_width="fill_parent"
                       android:layout_height="wrap_content"
                       android:layout_centerVertical="true"
-                      android:layout_marginLeft="8dip"
-                      android:layout_marginRight="8dip"
                       android:layout_alignParentLeft="true"
                       android:layout_toLeftOf="@+id/colour_display"
                       android:focusable="false"
@@ -102,8 +100,6 @@
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:layout_centerVertical="true"
-                      android:layout_marginLeft="8dip"
-                      android:layout_marginRight="8dip"
                       android:layout_alignParentLeft="true"
                       android:layout_toLeftOf="@+id/icon_display"
                       android:focusable="false"
@@ -118,7 +114,6 @@
                     />
 
             <ImageButton android:id="@+id/icon_clear_button"
-                         android:layout_marginRight="8dip"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
                          android:layout_alignParentRight="true"

@@ -2,13 +2,13 @@ package org.dodgybits.shuffle.android.editor.activity;
 
 import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.editor.fragment.AbstractEditFragment;
-import org.dodgybits.shuffle.android.editor.fragment.EditContextFragment;
+import org.dodgybits.shuffle.android.editor.fragment.EditProjectFragment;
 
-public class EditContextActivity extends AbstractEditActivity {
-    private static final String TAG = "EditContextActivity";
+public class EditProjectActivity extends AbstractEditActivity {
+    private static final String TAG = "EditProjectActivity";
 
     @Inject
-    private EditContextFragment mEditFragment;
+    private EditProjectFragment mEditFragment;
 
     @Override
     protected AbstractEditFragment getFragment() {
@@ -17,6 +17,6 @@ public class EditContextActivity extends AbstractEditActivity {
 
     @Override
     protected void setFragment(AbstractEditFragment fragment) {
-        mEditFragment = (EditContextFragment) fragment;
+        mEditFragment = (EditProjectFragment) fragment;
     }
 }

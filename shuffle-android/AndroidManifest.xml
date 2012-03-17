@@ -198,17 +198,36 @@
 			<intent-filter android:label="@string/title_edit_project">
 				<action android:name="android.intent.action.EDIT" />
 				<action android:name="org.dodgybits.android.shuffle.action.EDIT_PROJECT" />
-				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.ALTERNATIVE" />
 				<data android:mimeType="vnd.android.cursor.item/vnd.dodgybits.project" />
 			</intent-filter>
 
 			<intent-filter>
 				<action android:name="android.intent.action.INSERT" />
-				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.ALTERNATIVE" />
 				<data android:mimeType="vnd.android.cursor.dir/vnd.dodgybits.project" />
 			</intent-filter>
 
 		</activity>
+
+        <activity
+                android:name="org.dodgybits.shuffle.android.editor.activity.EditProjectActivity"
+                android:label="@string/title_new_project" android:theme="@style/ShuffleTheme"
+                android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter android:label="@string/title_edit_project">
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="org.dodgybits.android.shuffle.action.EDIT_PROJECT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.dodgybits.project" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.dodgybits.project" />
+            </intent-filter>
+
+        </activity>
 
 		<activity
 			android:name="org.dodgybits.shuffle.android.editor.activity.ContextEditorActivity"
