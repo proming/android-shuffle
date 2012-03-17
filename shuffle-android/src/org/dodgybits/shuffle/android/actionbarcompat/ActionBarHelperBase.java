@@ -59,7 +59,8 @@ public class ActionBarHelperBase extends ActionBarHelper {
     private ImageButton mHomeButton = null;
     private TextView mTitleView;
     private Spinner mSpinner;
-    
+    private View mCustomView = null;
+
     private boolean mInitialized = false;
 
     private boolean mHasSplitBar = false;
@@ -184,10 +185,12 @@ public class ActionBarHelperBase extends ActionBarHelper {
 
     @Override
     public void setCustomView(View view) {
+        mCustomView = view;
     }
 
     @Override
     public void setDisplayOptions(int options, int mask) {
+        mDisplayOptions = options;
     }
 
     @Override
@@ -236,6 +239,7 @@ public class ActionBarHelperBase extends ActionBarHelper {
         if (!mInitialized) {
             mActivity.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
                     R.layout.actionbar_compat);
+
             setupActionBar();
             supportResetOptionsMenu();
             mInitialized = true;
@@ -265,6 +269,14 @@ public class ActionBarHelperBase extends ActionBarHelper {
         LinearLayout.LayoutParams springLayoutParams = new LinearLayout.LayoutParams(
                 0, ViewGroup.LayoutParams.FILL_PARENT);
         springLayoutParams.weight = 1;
+
+        if (mCustomView != null) {
+            LinearLayout.LayoutParams fillParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+            mCustomView.setLayoutParams(fillParams);
+            actionBarCompat.addView(mCustomView);
+            return;
+        }
 
         // Add Home button
         SimpleMenu tempMenu = new SimpleMenu(mActivity);

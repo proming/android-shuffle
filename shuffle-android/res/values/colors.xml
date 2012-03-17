@@ -59,6 +59,6 @@
     <color name="widget_title_color">#333333</color>
     <color name="widget_unread_color">#777777</color>
 
-    <color name="label_color">#FF999999</color>
+    <color name="label_color">#ff999999</color>
 
 </resources>

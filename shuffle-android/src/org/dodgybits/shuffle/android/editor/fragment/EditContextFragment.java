@@ -256,7 +256,7 @@ public class EditContextFragment extends RoboFragment
         mDeletedCheckBox = (CheckBox) mDeletedEntry.findViewById(R.id.deleted_entry_checkbox);
     }
 
-    protected void doSaveAction() {
+    public void doSaveAction() {
         // Save or create the contact if needed
         Uri result = null;
         if (mIsNewEntity) {

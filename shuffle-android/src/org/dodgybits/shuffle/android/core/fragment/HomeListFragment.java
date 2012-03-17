@@ -99,6 +99,15 @@ public class HomeListFragment extends RoboListFragment {
         mTask = new CalculateCountTask().execute();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
+    }
+
     private void setupAdaptor() {
         mAdaptor = new IconNameCountListAdaptor(
                 getActivity(), R.layout.list_item_view, sListItems);

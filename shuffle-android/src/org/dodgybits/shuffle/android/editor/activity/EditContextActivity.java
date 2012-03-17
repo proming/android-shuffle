@@ -36,5 +36,12 @@ public class EditContextActivity extends ActionBarFragmentActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mEditFragment != null) {
+            mEditFragment.doSaveAction();
+        }
 
+        super.onBackPressed();
+    }
 }
