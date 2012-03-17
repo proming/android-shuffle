@@ -23,4 +23,7 @@
         <item name="android:textColor">@color/actionbar_title_color</item>
     </style>
 
+    <style name="ShuffleDialogTheme" parent="@android:style/Theme.Holo.Light.Dialog" >
+    </style>
+
 </resources>

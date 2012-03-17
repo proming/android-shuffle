@@ -45,7 +45,7 @@ public class ColourPickerActivity extends FlurryEnabledActivity implements
 		super.onCreate(icicle);
 
 		setContentView(R.layout.colour_picker);
-		mGrid.setAdapter(new IconAdapter(this));
+		mGrid.setAdapter(new ColourAdaptor(this));
 		mGrid.setOnItemClickListener(this);
 	}
 
@@ -58,10 +58,10 @@ public class ColourPickerActivity extends FlurryEnabledActivity implements
 		finish();
 	}
 
-	public class IconAdapter extends BaseAdapter {
+	public class ColourAdaptor extends BaseAdapter {
 		private TextColours textColours;
 		
-		public IconAdapter(Context context) {
+		public ColourAdaptor(Context context) {
 			textColours = TextColours.getInstance(context);
 		}
 

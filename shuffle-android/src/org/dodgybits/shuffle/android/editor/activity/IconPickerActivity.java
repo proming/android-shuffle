@@ -102,7 +102,7 @@ public class IconPickerActivity extends FlurryEnabledActivity implements OnItemC
             ImageView i = new ImageView(IconPickerActivity.this);
             Integer iconId = mIconIds[position];
             i.setImageResource(iconId);
-            i.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            i.setScaleType(ImageView.ScaleType.CENTER);
             return i;
         }
 

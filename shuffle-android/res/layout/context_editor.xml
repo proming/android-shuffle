@@ -37,19 +37,6 @@
             <requestFocus/>
         </EditText>
 
-        <TextView android:id="@+id/colour_label"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:singleLine="true"
-                  android:paddingLeft="8dip"
-                  android:paddingRight="8dip"
-                  android:layout_marginLeft="8dip"
-                  android:layout_marginRight="8dip"
-                  android:textColor="@color/label_color"
-                  android:textAppearance="?android:attr/textAppearanceMedium"
-                  android:text="@string/colour_title"
-                  style="?android:attr/listSeparatorTextViewStyle"
-                />
 
         <RelativeLayout android:id="@+id/colour_entry"
                       android:layout_width="fill_parent"
@@ -61,12 +48,23 @@
                       android:clickable="true"
                 >
 
-            <!-- No idea why, but having this here causes onClick to fire for this entry -->
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:duplicateParentState="true"
-                    android:visibility="gone"
+            <TextView android:id="@+id/colour_label"
+                      android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_centerVertical="true"
+                      android:layout_marginLeft="8dip"
+                      android:layout_marginRight="8dip"
+                      android:layout_alignParentLeft="true"
+                      android:layout_toLeftOf="@+id/colour_display"
+                      android:focusable="false"
+                      android:clickable="false"
+                      android:paddingLeft="8dip"
+                      android:paddingRight="8dip"
+                      android:singleLine="true"
+                      android:textColor="@color/label_color"
+                      android:textAppearance="?android:attr/textAppearanceMedium"
+                      android:text="@string/colour_title"
+                      android:duplicateParentState="true"
                     />
 
             <TextView android:id="@+id/colour_display"
@@ -76,25 +74,17 @@
                       android:layout_marginRight="80dip"
                       android:layout_centerVertical="true"
                       android:paddingTop="8dip"
+                      android:focusable="false"
+                      android:clickable="false"
                       android:duplicateParentState="true"
                     />
 
         </RelativeLayout>
 
-        <TextView android:id="@+id/icon_label"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_alignParentTop="true"
-                  android:singleLine="true"
-                  android:paddingLeft="8dip"
-                  android:paddingRight="8dip"
-                  android:layout_marginLeft="8dip"
-                  android:layout_marginRight="8dip"
-                  android:textColor="@color/label_color"
-                  android:textAppearance="?android:attr/textAppearanceMedium"
-                  android:text="@string/icon_title"
-                  style="?android:attr/listSeparatorTextViewStyle"
-                  android:duplicateParentState="true"
+        <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@android:drawable/divider_horizontal_bright"
                 />
 
 
@@ -108,12 +98,23 @@
                       android:clickable="true"
                 >
 
-            <!-- No idea why, but having this here causes onClick to fire for this entry -->
-            <TextView
+            <TextView android:id="@+id/icon_label"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
+                      android:layout_centerVertical="true"
+                      android:layout_marginLeft="8dip"
+                      android:layout_marginRight="8dip"
+                      android:layout_alignParentLeft="true"
+                      android:layout_toLeftOf="@+id/icon_display"
+                      android:focusable="false"
+                      android:clickable="false"
+                      android:paddingLeft="8dip"
+                      android:paddingRight="8dip"
+                      android:singleLine="true"
+                      android:textColor="@color/label_color"
+                      android:textAppearance="?android:attr/textAppearanceMedium"
+                      android:text="@string/icon_title"
                       android:duplicateParentState="true"
-                      android:visibility="gone"
                     />
 
             <ImageButton android:id="@+id/icon_clear_button"
@@ -137,8 +138,8 @@
                     />
 
             <TextView android:id="@+id/icon_none"
-                      android:layout_width="80dip"
-                      android:layout_height="40dip"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
                       android:layout_toLeftOf="@+id/icon_clear_button"
                       android:layout_centerVertical="true"
                       android:layout_marginRight="40dip"
@@ -172,20 +173,11 @@
                 />
 
 
-        <TextView android:id="@+id/preview_label"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:singleLine="true"
-                  android:paddingLeft="8dip"
-                  android:paddingRight="8dip"
-                  android:layout_marginLeft="8dip"
-                  android:layout_marginRight="8dip"
-                  android:textColor="@color/label_color"
-                  android:textAppearance="?android:attr/textAppearanceMedium"
-                  android:text="@string/preview_title"
-                  style="?android:attr/listSeparatorTextViewStyle"
+        <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@android:drawable/divider_horizontal_bright"
                 />
-
 
         <org.dodgybits.shuffle.android.list.view.context.ContextListItem
                     android:id="@+id/context_preview"
