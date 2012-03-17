@@ -84,6 +84,19 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
     }
 
     @Override
+    public void setDisplayOptions(int options, int mask) {
+        ActionBar bar = mActivity.getActionBar();
+        bar.setDisplayOptions(options, mask);
+    }
+
+
+    @Override
+    public void setCustomView(View view) {
+        ActionBar bar = mActivity.getActionBar();
+        bar.setCustomView(view);
+    }
+
+    @Override
     public int getNavigationMode() {
         return mActivity.getActionBar().getNavigationMode();
     }

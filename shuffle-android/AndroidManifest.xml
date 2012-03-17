@@ -217,16 +217,35 @@
 			<intent-filter android:label="@string/title_edit_context">
 				<action android:name="android.intent.action.EDIT" />
 				<action android:name="org.dodgybits.android.shuffle.action.EDIT_CONTEXT" />
-				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.ALTERNATIVE" />
 				<data android:mimeType="vnd.android.cursor.item/vnd.dodgybits.context" />
 			</intent-filter>
 
 			<intent-filter>
 				<action android:name="android.intent.action.INSERT" />
-				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.ALTERNATIVE" />
 				<data android:mimeType="vnd.android.cursor.dir/vnd.dodgybits.context" />
 			</intent-filter>
 		</activity>
+
+
+        <activity
+                android:name="org.dodgybits.shuffle.android.editor.activity.EditContextActivity"
+                android:label="@string/title_new_context"
+                android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter android:label="@string/title_edit_context">
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="org.dodgybits.android.shuffle.action.EDIT_CONTEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.dodgybits.context" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.dodgybits.context" />
+            </intent-filter>
+        </activity>
 
 
 		<activity

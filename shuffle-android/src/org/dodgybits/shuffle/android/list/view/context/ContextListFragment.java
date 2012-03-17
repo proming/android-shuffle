@@ -216,7 +216,6 @@ public class ContextListFragment extends RoboListFragment {
         return super.onContextItemSelected(item);
     }
 
-
     private void onVisibilityChange() {
         if (getUserVisibleHint()) {
             updateTitle();
@@ -224,7 +223,6 @@ public class ContextListFragment extends RoboListFragment {
             ((ActionBarFragmentActivity)getActivity()).supportResetOptionsMenu();
         }
     }
-
 
     private void updateTitle() {
         getActivity().setTitle(R.string.title_context);

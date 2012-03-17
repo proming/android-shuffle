@@ -1,6 +1,7 @@
 package org.dodgybits.shuffle.android.list.view.context;
 
 import android.graphics.drawable.GradientDrawable;
+import android.util.AttributeSet;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,16 @@ public class ContextListItem extends LinearLayout {
     @Inject
     public ContextListItem(android.content.Context context) {
         super(context);
+        init(context);
+    }
+
+    public ContextListItem(android.content.Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    public ContextListItem(android.content.Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
         init(context);
     }
 

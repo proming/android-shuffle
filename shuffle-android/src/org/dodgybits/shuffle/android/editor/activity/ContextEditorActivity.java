@@ -58,8 +58,8 @@ public class ContextEditorActivity extends AbstractEditorActivity<Context> imple
 
     @InjectView(R.id.icon_display) private ImageView mIconWidget;
     @InjectView(R.id.icon_none) private TextView mIconNoneWidget;
-    @InjectView(R.id.icon_clear_button) private ImageButton mClearIconButton;
-	@InjectView(R.id.context_preview) private View mContext;
+    @InjectView(R.id.icon_clear_button) private Button mClearIconButton;
+//	@InjectView(R.id.context_preview) private View mContext;
 
     private @InjectView(R.id.deleted_entry) View mDeletedEntry;
     private CheckBox mDeletedCheckBox;
@@ -320,13 +320,13 @@ public class ContextEditorActivity extends AbstractEditorActivity<Context> imple
     }
 	
 	private void updatePreview() {
-		String name = mNameWidget.getText().toString();
-		if (TextUtils.isEmpty(name) || mColourIndex == -1) {
-			mContext.setVisibility(View.INVISIBLE);
-		} else {
-//			mContext.updateView(createItemFromUI(false));
-			mContext.setVisibility(View.VISIBLE);
-		}				
+//		String name = mNameWidget.getText().toString();
+//		if (TextUtils.isEmpty(name) || mColourIndex == -1) {
+//			mContext.setVisibility(View.INVISIBLE);
+//		} else {
+////			mContext.updateView(createItemFromUI(false));
+//			mContext.setVisibility(View.VISIBLE);
+//		}
 	}
 
 	@Override

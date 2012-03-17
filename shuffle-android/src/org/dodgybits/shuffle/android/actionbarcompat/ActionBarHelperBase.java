@@ -183,6 +183,14 @@ public class ActionBarHelperBase extends ActionBarHelper {
     }
 
     @Override
+    public void setCustomView(View view) {
+    }
+
+    @Override
+    public void setDisplayOptions(int options, int mask) {
+    }
+
+    @Override
     public int getNavigationMode() {
         return mNavigationMode;
     }

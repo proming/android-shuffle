@@ -13,242 +13,188 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
->
-
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="1px"
-    android:layout_weight="1"
-    android:fillViewport="true"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
         >
 
-    <RelativeLayout
-        android:padding="4dip"
-        android:layout_width="fill_parent" android:layout_height="fill_parent"
-        android:paddingBottom="10dip">
-
-        <TextView android:id="@+id/name_label"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:paddingLeft="5dip"
-            android:paddingRight="5dip"
-            android:text="@string/name_title"
-            />
-
-        <EditText android:id="@+id/name" android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/name_label"
-            android:hint="@string/name_title"
-            android:capitalize="sentences"
-            android:autoText="true"
-            android:singleLine="true"
-            android:maxLength="50"
+    <LinearLayout
+            android:padding="4dip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             >
-            <requestFocus />
+
+        <EditText android:id="@+id/name"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="@string/name_title"
+                  android:autoText="true"
+                  android:singleLine="true"
+                  android:maxLength="50"
+                  android:inputType="textAutoCorrect|textCapSentences"
+                >
+            <requestFocus/>
         </EditText>
 
-        <View android:id="@+id/colour_separator"
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:layout_below="@+id/name"
-            android:background="@android:drawable/divider_horizontal_bright"
-        />
+        <TextView android:id="@+id/colour_label"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:singleLine="true"
+                  android:paddingLeft="8dip"
+                  android:paddingRight="8dip"
+                  android:layout_marginLeft="8dip"
+                  android:layout_marginRight="8dip"
+                  android:textColor="@color/label_color"
+                  android:textAppearance="?android:attr/textAppearanceMedium"
+                  android:text="@string/colour_title"
+                  style="?android:attr/listSeparatorTextViewStyle"
+                />
 
-        <LinearLayout android:id="@+id/colour_entry"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/colour_separator"
-            android:paddingRight="?android:attr/scrollbarSize"
-            android:minHeight="?android:attr/listPreferredItemHeight"
-            android:background="@android:drawable/list_selector_background"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:focusable="true"
-            android:clickable="true"
-            >
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="14dip"
-                android:layout_marginTop="6dip"
-                android:layout_marginBottom="6dip"
-                android:layout_weight="1"
-                android:duplicateParentState="true"
+        <RelativeLayout android:id="@+id/colour_entry"
+                      android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:minHeight="?android:attr/listPreferredItemHeight"
+                      android:paddingRight="?android:attr/scrollbarSize"
+                      android:background="@drawable/list_selector_background"
+                      android:focusable="true"
+                      android:clickable="true"
                 >
 
-                <TextView android:id="@+id/colour_label"
-                    android:layout_width="wrap_content"
+            <!-- No idea why, but having this here causes onClick to fire for this entry -->
+            <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:ellipsize="marquee"
-                    android:fadingEdge="horizontal"
                     android:duplicateParentState="true"
-                    android:text="@string/colour_title"
+                    android:visibility="gone"
                     />
-
-            </RelativeLayout>
 
             <TextView android:id="@+id/colour_display"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:focusable="false"
-                android:clickable="false"
+                      android:layout_width="40dip"
+                      android:layout_height="40dip"
+                      android:layout_alignParentRight="true"
+                      android:layout_marginRight="80dip"
+                      android:layout_centerVertical="true"
+                      android:paddingTop="8dip"
+                      android:duplicateParentState="true"
+                    />
+
+        </RelativeLayout>
+
+        <TextView android:id="@+id/icon_label"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentTop="true"
+                  android:singleLine="true"
+                  android:paddingLeft="8dip"
+                  android:paddingRight="8dip"
+                  android:layout_marginLeft="8dip"
+                  android:layout_marginRight="8dip"
+                  android:textColor="@color/label_color"
+                  android:textAppearance="?android:attr/textAppearanceMedium"
+                  android:text="@string/icon_title"
+                  style="?android:attr/listSeparatorTextViewStyle"
+                  android:duplicateParentState="true"
                 />
 
-            <Button android:id="@+id/unused_clear_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dip"
-                android:visibility="invisible"
-                android:text="-"
-                />
 
-        </LinearLayout>
-
-        <View android:id="@+id/icon_separator"
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:layout_below="@+id/colour_entry"
-            android:background="@android:drawable/divider_horizontal_bright"
-        />
-
-        <LinearLayout android:id="@+id/icon_entry"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/icon_separator"
-            android:paddingRight="?android:attr/scrollbarSize"
-            android:minHeight="?android:attr/listPreferredItemHeight"
-            android:background="@android:drawable/list_selector_background"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:focusable="true"
-            android:clickable="true"
-            >
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="14dip"
-                android:layout_marginTop="6dip"
-                android:layout_marginBottom="6dip"
-                android:layout_weight="1"
-                android:duplicateParentState="true"
+        <RelativeLayout android:id="@+id/icon_entry"
+                      android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:minHeight="?android:attr/listPreferredItemHeight"
+                      android:paddingRight="?android:attr/scrollbarSize"
+                      android:background="@drawable/list_selector_background"
+                      android:focusable="true"
+                      android:clickable="true"
                 >
 
-                <TextView android:id="@+id/icon_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:ellipsize="marquee"
-                    android:fadingEdge="horizontal"
-                    android:duplicateParentState="true"
-                    android:text="@string/icon_title"
+            <!-- No idea why, but having this here causes onClick to fire for this entry -->
+            <TextView
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:duplicateParentState="true"
+                      android:visibility="gone"
                     />
 
-            </RelativeLayout>
+            <ImageButton android:id="@+id/icon_clear_button"
+                         android:layout_marginRight="8dip"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentRight="true"
+                         android:layout_centerVertical="true"
+                         android:background="?android:attr/selectableItemBackground"
+                         android:src="@drawable/ic_menu_remove_field_holo_light"
+                    />
 
             <ImageView android:id="@+id/icon_display"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:focusable="false"
-                android:clickable="false"
-                />
-
-            <TextView android:id="@+id/icon_none"
-                android:layout_width="80dip"
-                android:layout_height="40dip"
-                android:focusable="false"
-                android:clickable="false"
-                android:text="@string/no_icon"
-                android:visibility="gone"
-                android:gravity="center"
-                />
-
-            <Button android:id="@+id/icon_clear_button"
-                android:layout_marginLeft="40dip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_toLeftOf="@+id/icon_clear_button"
+                       android:layout_centerVertical="true"
+                       android:layout_marginRight="40dip"
+                       android:focusable="false"
+                       android:clickable="false"
                     />
 
-        </LinearLayout>
+            <TextView android:id="@+id/icon_none"
+                      android:layout_width="80dip"
+                      android:layout_height="40dip"
+                      android:layout_toLeftOf="@+id/icon_clear_button"
+                      android:layout_centerVertical="true"
+                      android:layout_marginRight="40dip"
+                      android:text="@string/no_icon"
+                      android:visibility="gone"
+                      android:focusable="false"
+                      android:clickable="false"
+                    />
 
-        <View android:id="@+id/preview_separator"
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:layout_below="@+id/icon_entry"
-            android:background="@android:drawable/divider_horizontal_bright"
-        />
-
-        <TextView android:id="@+id/preview_label"
-            android:layout_marginLeft="14dip"
-            android:layout_marginTop="6dip"
-            android:layout_marginBottom="6dip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/preview_separator"
-            android:layout_alignParentLeft="true"
-            android:singleLine="true"
-            android:ellipsize="marquee"
-            android:fadingEdge="horizontal"
-            android:text="@string/preview_title"
-            />
+        </RelativeLayout>
 
 
-        <org.dodgybits.shuffle.android.list.old.view.ContextView
-            android:id="@+id/context_preview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dip"
-            android:layout_marginBottom="20dip"
-            android:layout_below="@+id/preview_separator"
-            android:drawablePadding="2dip"
-            android:paddingLeft="3dip"
-            android:paddingRight="3dip"
-            />
-
-        <View android:id="@+id/active_divider"
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/context_preview"
-            android:background="@android:drawable/divider_horizontal_bright"
-        />
+        <View
+              android:layout_width="fill_parent"
+              android:layout_height="1dip"
+              android:background="@android:drawable/divider_horizontal_bright"
+                />
 
         <include layout="@layout/editor_active_entry"
                  android:id="@+id/active_entry"
                 />
 
-
-        <View android:id="@+id/deleted_divider"
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/active_entry"
-            android:background="@android:drawable/divider_horizontal_bright"
-        />
-
+        <View   android:id="@+id/deleted_divider"
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="@android:drawable/divider_horizontal_bright"
+                />
 
         <include layout="@layout/editor_delete_entry"
-                android:id="@+id/deleted_entry"
+                 android:id="@+id/deleted_entry"
                 />
 
 
-    </RelativeLayout>
+        <TextView android:id="@+id/preview_label"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:singleLine="true"
+                  android:paddingLeft="8dip"
+                  android:paddingRight="8dip"
+                  android:layout_marginLeft="8dip"
+                  android:layout_marginRight="8dip"
+                  android:textColor="@color/label_color"
+                  android:textAppearance="?android:attr/textAppearanceMedium"
+                  android:text="@string/preview_title"
+                  style="?android:attr/listSeparatorTextViewStyle"
+                />
+
+
+        <org.dodgybits.shuffle.android.list.view.context.ContextListItem
+                    android:id="@+id/context_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dip"
+                    android:layout_marginBottom="20dip"
+                    />
+
+    </LinearLayout>
 
 </ScrollView>
-
-    <include android:id="@+id/save_panel" layout="@layout/editor_save_panel" />
-
-</LinearLayout>

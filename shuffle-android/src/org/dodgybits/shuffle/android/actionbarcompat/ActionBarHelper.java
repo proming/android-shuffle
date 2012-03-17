@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.widget.SpinnerAdapter;
 
 /**
@@ -75,6 +76,14 @@ public abstract class ActionBarHelper {
      */
     public static final int DISPLAY_SHOW_TITLE = 0x8;
 
+    /**
+     * Show the custom view if one has been set.
+     * @see #setCustomView(android.view.View)
+     * @see #setDisplayOptions(int)
+     * @see #setDisplayOptions(int, int)
+     */
+    public static final int DISPLAY_SHOW_CUSTOM = 0x10;
+
 
     protected Activity mActivity;
 
@@ -124,6 +133,35 @@ public abstract class ActionBarHelper {
 
     public void supportResetOptionsMenu() {
     }
+
+    /**
+     * Set the action bar into custom navigation mode, supplying a view
+     * for custom navigation.
+     *
+     * Custom navigation views appear between the application icon and
+     * any action buttons and may use any space available there. Common
+     * use cases for custom navigation views might include an auto-suggesting
+     * address bar for a browser or other navigation mechanisms that do not
+     * translate well to provided navigation modes.
+     *
+     * @param view Custom navigation view to place in the ActionBar.
+     */
+    public abstract void setCustomView(View view);
+
+    /**
+     * Set selected display options. Only the options specified by mask will be changed.
+     * To change all display option bits at once, see {@link #setDisplayOptions(int)}.
+     *
+     * <p>Example: setDisplayOptions(0, DISPLAY_SHOW_HOME) will disable the
+     * {@link #DISPLAY_SHOW_HOME} option.
+     * setDisplayOptions(DISPLAY_SHOW_HOME, DISPLAY_SHOW_HOME | DISPLAY_USE_LOGO)
+     * will enable {@link #DISPLAY_SHOW_HOME} and disable DISPLAY_USE_LOGO.
+     *
+     * @param options A combination of the bits defined by the DISPLAY_ constants
+     *                defined in ActionBar.
+     * @param mask A bit mask declaring which display options should be changed.
+     */
+    public abstract void setDisplayOptions(int options, int mask);
 
     /**
      * @return The current set of display options.
