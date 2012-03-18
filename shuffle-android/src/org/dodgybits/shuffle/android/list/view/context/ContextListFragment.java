@@ -193,8 +193,16 @@ public class ContextListFragment extends RoboListFragment {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
         org.dodgybits.shuffle.android.core.model.Context context = mContextPersister.read(cursor);
-        menu.findItem(R.id.action_delete).setVisible(!context.isDeleted());
-        menu.findItem(R.id.action_undelete).setVisible(context.isDeleted());
+
+        String entityName = getString(R.string.context_name);
+
+        MenuItem deleteMenu = menu.findItem(R.id.action_delete);
+        deleteMenu.setVisible(!context.isDeleted());
+        deleteMenu.setTitle(getString(R.string.menu_delete_entity, entityName));
+
+        MenuItem undeleteMenu = menu.findItem(R.id.action_undelete);
+        undeleteMenu.setVisible(context.isDeleted());
+        undeleteMenu.setTitle(getString(R.string.menu_undelete_entity, entityName));
     }
 
     @Override

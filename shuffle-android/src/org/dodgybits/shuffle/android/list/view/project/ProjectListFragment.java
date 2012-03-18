@@ -194,8 +194,16 @@ public class ProjectListFragment extends RoboListFragment {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
         Project project = mProjectPersister.read(cursor);
-        menu.findItem(R.id.action_delete).setVisible(!project.isDeleted());
-        menu.findItem(R.id.action_undelete).setVisible(project.isDeleted());
+
+        String entityName = getString(R.string.project_name);
+
+        MenuItem deleteMenu = menu.findItem(R.id.action_delete);
+        deleteMenu.setVisible(!project.isDeleted());
+        deleteMenu.setTitle(getString(R.string.menu_delete_entity, entityName));
+        
+        MenuItem undeleteMenu = menu.findItem(R.id.action_undelete);
+        undeleteMenu.setVisible(project.isDeleted());
+        undeleteMenu.setTitle(getString(R.string.menu_undelete_entity, entityName));
     }
 
     @Override
