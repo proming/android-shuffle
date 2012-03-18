@@ -36,20 +36,25 @@ public class IntentUtils {
     
     public static Intent createTaskListIntent(Context context, TaskListContext listContext) {
         Intent intent = new Intent();
-        Uri uri = TaskProvider.Tasks.LIST_CONTENT_URI.buildUpon().appendPath(listContext.getListQuery().name()).build();
-        intent.setData(uri);
+        Uri.Builder builder = TaskProvider.Tasks.LIST_CONTENT_URI.buildUpon();
+        builder.appendPath(listContext.getListQuery().name());
         Class activityClass;
         TaskSelector selector;
+        long id;
         switch (listContext.getListQuery()) {
             case project:
                 activityClass = ProjectTaskListsActivity.class;
                 selector = listContext.createSelectorWithPreferences(context);
-                intent.putExtra(ProjectTaskListsActivity.INITIAL_ID, selector.getProjectId().getId());
+                id = selector.getProjectId().getId();
+                intent.putExtra(ProjectTaskListsActivity.INITIAL_ID, id);
+                builder.appendPath(String.valueOf(id));
                 break;
             case context:
                 activityClass = ContextTaskListsActivity.class;
                 selector = listContext.createSelectorWithPreferences(context);
-                intent.putExtra(ContextTaskListsActivity.INITIAL_ID, selector.getContextId().getId());
+                id = selector.getContextId().getId();
+                intent.putExtra(ContextTaskListsActivity.INITIAL_ID, id);
+                builder.appendPath(String.valueOf(id));
                 break;
             default:
                 activityClass = EntityListsActivity.class;
@@ -57,6 +62,8 @@ public class IntentUtils {
                 break;
         }
 
+        Uri uri = builder.build();
+        intent.setData(uri);
         intent.setClass(context, activityClass);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
