@@ -18,9 +18,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.Task;
+import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.CalendarUtils;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
@@ -91,6 +94,9 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
     private TextView mCalendarLabel;
     private TextView mCalendarDetail;
 
+    @Inject
+    private EntityCache<Project> mProjectCache;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         mShowFromTime = new Time();
@@ -141,6 +147,8 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
 
             long projectId = extras.getLong(TaskProvider.Tasks.PROJECT_ID, 0L);
             setSpinnerSelection(mProjectSpinner, mProjectIds, projectId);
+            
+            applyDefaultContext();
         }
 
         mCompleteEntry.setVisibility(View.GONE);
@@ -157,6 +165,26 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
         mDueTimeButton.setVisibility(View.VISIBLE);
         updateCalendarPanel();
     }
+
+    /**
+     * When a project is selected and the context is empty, set it
+     * to the project default.
+     */
+    private void applyDefaultContext() {
+        Id contextId = getSpinnerSelectedId(mContextSpinner, mContextIds);
+        Id projectId = getSpinnerSelectedId(mProjectSpinner, mProjectIds);
+        
+        if (projectId.isInitialised() && !contextId.isInitialised()) {
+            Project project = mProjectCache.findById(projectId);
+            if (project != null) {
+                contextId = project.getDefaultContextId();
+                if (contextId.isInitialised()) {
+                    setSpinnerSelection(mContextSpinner, mContextIds, contextId.getId());
+                }
+            }
+        }
+    }
+
 
     @Override
     protected void updateUIFromItem(Task task) {
@@ -563,6 +591,17 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
         View addProjectButton = getView().findViewById(R.id.project_add);
         addProjectButton.setOnClickListener(this);
         addProjectButton.setOnFocusChangeListener(this);
+
+        mProjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                applyDefaultContext();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         mCompleteEntry.setOnClickListener(this);
         mCompleteEntry.setOnFocusChangeListener(this);
