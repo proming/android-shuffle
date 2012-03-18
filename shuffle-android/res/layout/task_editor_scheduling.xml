@@ -3,81 +3,79 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
 
-    <TextView android:id="@+id/start_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/start_title"
-        />
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingRight="?android:attr/scrollbarSize"
+        android:gravity="center_vertical"
+            >
 
-        <Button android:id="@+id/start_date"
+        <Button android:id="@+id/show_from_date"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:gravity="left|center_vertical"/>
+            android:hint="@string/show_from_title"
+                />
 
-        <Button android:id="@+id/start_time"
+        <Button android:id="@+id/show_from_time"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="4"
-            android:gravity="left|center_vertical"/>
+                />
+
+        <ImageButton android:id="@+id/clear_from_date"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginLeft="4dip"
+                     android:src="@drawable/ic_menu_remove_field_holo_light"
+                     android:background="@drawable/blank"
+                />
 
     </LinearLayout>
-
-    <TextView android:id="@+id/due_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/due_title"
-        />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingRight="?android:attr/scrollbarSize"
+        android:gravity="center_vertical"
+            >
 
         <Button android:id="@+id/due_date"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:gravity="left|center_vertical"/>
+            android:hint="@string/due_date_title"
+                />
 
         <Button android:id="@+id/due_time"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="4"
-            android:gravity="left|center_vertical"/>
+                />
+
+        <ImageButton android:id="@+id/clear_due_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dip"
+                android:src="@drawable/ic_menu_remove_field_holo_light"
+                android:background="@drawable/blank"
+                />
+
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
+    <CheckBox android:id="@+id/is_all_day"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dip"
-        >
-        
-        <Button android:id="@+id/clear_dates"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:text="@string/clear_title"
-            />
+        android:paddingTop="15dip"
+        android:paddingBottom="15dip"
+        android:paddingRight="10dip"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/label_color"
+        android:text="@string/all_day_title"
+        />
 
-        <CheckBox android:id="@+id/is_all_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:paddingTop="15dip"
-            android:paddingBottom="15dip"
-            android:paddingRight="10dip"
-            android:text="@string/all_day_title"
-            />
-        
-    </RelativeLayout>
 
     <View
         android:layout_width="fill_parent"
@@ -90,7 +88,7 @@
 	    android:layout_height="wrap_content"
 	    android:paddingRight="?android:attr/scrollbarSize"
 	    android:minHeight="?android:attr/listPreferredItemHeight"
-	    android:background="@android:drawable/list_selector_background"
+	    android:background="@drawable/list_selector_background"
 	    android:orientation="horizontal"
 	    android:gravity="center_vertical"
 	    android:focusable="true"
@@ -100,7 +98,7 @@
 	    <RelativeLayout
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="14dip"
+	        android:layout_marginLeft="8dip"
 	        android:layout_marginTop="6dip"
 	        android:layout_marginBottom="6dip"
 	        android:layout_weight="1"
@@ -112,6 +110,7 @@
 	            android:layout_height="wrap_content"
 	            android:singleLine="true"
 	            android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/label_color"
 	            android:ellipsize="marquee"
 	            android:fadingEdge="horizontal"
 	            android:duplicateParentState="true"
@@ -124,6 +123,7 @@
 	            android:layout_below="@+id/gcal_label"
 	            android:layout_alignLeft="@+id/gcal_label"
 	            android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/label_color"
 	            android:maxLines="2"
 	            android:duplicateParentState="true"
 	            android:text="@string/add_to_gcal_detail"

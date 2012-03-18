@@ -4,7 +4,11 @@ import org.dodgybits.shuffle.android.core.model.Id;
 
 public class UpdateContextDeletedEvent {
     private Id mContextId;
-    private boolean mDeleted;
+    private Boolean mDeleted = null;
+
+    public UpdateContextDeletedEvent(Id contextId) {
+        mContextId = contextId;
+    }
 
     public UpdateContextDeletedEvent(Id contextId, boolean deleted) {
         mContextId = contextId;
@@ -15,7 +19,7 @@ public class UpdateContextDeletedEvent {
         return mContextId;
     }
 
-    public boolean isDeleted() {
+    public Boolean isDeleted() {
         return mDeleted;
     }
 }

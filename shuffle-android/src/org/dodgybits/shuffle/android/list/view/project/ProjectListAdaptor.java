@@ -24,7 +24,7 @@ public class ProjectListAdaptor extends CursorAdapter {
     public ProjectListAdaptor(Context context, ProjectPersister persister,
                               ContextScopedProvider<ProjectListItem> ProjectListItemProvider
     ) {
-        super(context.getApplicationContext(), null, 0 /* no auto requery */);
+        super(context, null, 0 /* no auto requery */);
         mPersister = persister;
         mProjectListItemProvider = ProjectListItemProvider;
     }

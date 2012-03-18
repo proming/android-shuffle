@@ -147,6 +147,9 @@ public class ProjectListFragment extends RoboListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.list_menu, menu);
+
+        String addTitle = getString(R.string.menu_insert, getString(R.string.project_name));
+        menu.findItem(R.id.action_add).setTitle(addTitle);
     }
 
     @Override

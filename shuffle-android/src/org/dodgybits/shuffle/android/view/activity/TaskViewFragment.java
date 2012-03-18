@@ -297,9 +297,10 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     }
 
     private void updateExtras(Task task, Context context, Project project) {
-        boolean showStatus = task.isDeleted() || !task.isComplete();
-        mStatusView.updateStatus(task, context, project, showStatus);
+        mStatusView.updateStatus(task, context, project, true);
+        mStatusView.setVisibility(task.isComplete() ? View.INVISIBLE : View.VISIBLE);
         mCompletedView.setText(task.isComplete() ? getString(R.string.completed) : "");
+
         mCreatedView.setText(getString(R.string.created_title) + " " + formatDateTime(task.getCreatedDate(), true));
         mModifiedView.setText(getString(R.string.modified_title) + " " + formatDateTime(task.getModifiedDate(), true));
     }

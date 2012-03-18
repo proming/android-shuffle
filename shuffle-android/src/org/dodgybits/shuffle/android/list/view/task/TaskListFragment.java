@@ -239,6 +239,17 @@ public class TaskListFragment extends RoboListFragment
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        String addTitle = getString(R.string.menu_insert, getString(R.string.task_name));
+        menu.findItem(R.id.action_add).setTitle(addTitle);
+
+        menu.findItem(R.id.action_edit).setVisible(getListContext().showEditActions());
+        menu.findItem(R.id.action_delete).setVisible(getListContext().showEditActions());
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
@@ -253,6 +264,14 @@ public class TaskListFragment extends RoboListFragment
                 Log.d(TAG, "Bringing up view settings");
                 mEventManager.fire(new EditListSettingsEvent(mListContext.getListQuery(), this, FILTER_CONFIG));
                 return true;
+            case R.id.action_edit:
+                mEventManager.fire(mListContext.createEditEvent());
+                return true;
+            case R.id.action_delete:
+                mEventManager.fire(mListContext.createDeleteEvent());
+                getActivity().finish();
+                return true;
+
         }
         return false;
     }
@@ -273,11 +292,17 @@ public class TaskListFragment extends RoboListFragment
 
     protected void onVisibilityChange() {
         if (getUserVisibleHint()) {
+            flushCaches();
             updateTitle();
             updateQuickAdd();
             getActionBarFragmentActivity().supportResetOptionsMenu();
         }
         updateSelectionMode();
+    }
+
+    private void flushCaches() {
+        mContextCache.flush();
+        mProjectCache.flush();
     }
 
     private void updateTitle() {

@@ -16,6 +16,16 @@
           android:icon="@drawable/ic_menu_view"
           android:title="@string/menu_view_settings"
           android:showAsAction="ifRoom" />
+    <item android:id="@+id/action_edit"
+          android:icon="@drawable/ic_menu_compose_holo_light"
+          android:title="@string/menu_edit"
+          android:visible="false"
+          android:showAsAction="never" />
+    <item android:id="@+id/action_delete"
+          android:icon="@drawable/ic_menu_trash_holo_light"
+          android:title="@string/menu_delete"
+          android:visible="false"
+          android:showAsAction="never" />
     <item android:id="@+id/action_preferences"
           android:icon="@drawable/ic_menu_settings_holo_light"
           android:title="@string/menu_preferences"

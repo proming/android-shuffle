@@ -28,6 +28,8 @@ import org.dodgybits.shuffle.android.core.util.TextColours;
  * 2.  It handles internal clicks such as the checkbox or the favorite star
  */
 public class TaskListItem extends View {
+    private static final String TAG = "TaskListItem";
+
     // Note: messagesAdapter directly fiddles with these fields.
     /* package */ long mTaskId;
 

@@ -77,8 +77,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
                         android:paddingRight="8dip"
                         android:paddingTop="4dip"
+                        android:textColor="@color/view_status_color"
                         android:textStyle="bold"
                         android:textSize="12sp"
                         style="?android:attr/textAppearanceSmall"
@@ -89,10 +91,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_below="@+id/completed"
+                        android:layout_alignParentTop="true"
                         android:paddingRight="8dip"
                         android:paddingTop="4dip"
                         android:singleLine="true"
+                        android:textColor="@color/view_status_color"
                         android:textSize="12sp"
                         style="?android:attr/textAppearanceSmall"
                         />
@@ -162,8 +165,7 @@
                           android:layout_marginLeft="8dip"
                           android:layout_marginRight="8dip"
                           android:text="@string/scheduling_title"
-                          android:textAppearance="?android:attr/textAppearanceMedium"
-                          style="?android:attr/listSeparatorTextViewStyle"
+                          style="@style/ListSeparatorTextViewStyle"
                         />
 
                 <TextView

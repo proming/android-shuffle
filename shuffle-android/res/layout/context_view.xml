@@ -25,7 +25,7 @@
         android:paddingBottom="5dip"
         >
 
-    <ImageView android:id="@+id/icon"
+    <ImageView android:id="@+id/context_view_icon"
                android:layout_alignParentLeft="true"
                android:layout_centerVertical="true"
                android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
                android:padding="8dip"
             />
 
-    <TextView android:id="@+id/count"
+    <TextView android:id="@+id/context_view_count"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_alignParentRight="true"
@@ -54,13 +54,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/icon"
-            android:layout_toLeftOf="@+id/count"
+            android:layout_toRightOf="@+id/context_view_icon"
+            android:layout_toLeftOf="@+id/context_view_count"
             android:layout_marginLeft="16dip"
             android:paddingRight="8dip"
             android:orientation="vertical"
         >
-        <TextView android:id="@+id/name"
+        <TextView android:id="@+id/context_view_name"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:maxLines="2"
@@ -76,7 +76,7 @@
                 />
 
         <org.dodgybits.shuffle.android.list.view.StatusView
-                android:id="@+id/status_view"
+                android:id="@+id/context_view_status_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"

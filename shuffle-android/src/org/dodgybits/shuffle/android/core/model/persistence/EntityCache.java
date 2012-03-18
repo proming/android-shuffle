@@ -6,5 +6,5 @@ import org.dodgybits.shuffle.android.core.model.Id;
 public interface EntityCache<E extends Entity> {
 
 	E findById(Id localId);
-
+    void flush();
 }

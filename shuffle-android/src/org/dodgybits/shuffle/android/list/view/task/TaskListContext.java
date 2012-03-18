@@ -7,8 +7,7 @@ import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
-import org.dodgybits.shuffle.android.list.event.EditNewTaskEvent;
-import org.dodgybits.shuffle.android.list.event.NewTaskEvent;
+import org.dodgybits.shuffle.android.list.event.*;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
 import org.dodgybits.shuffle.android.list.model.ListTitles;
@@ -140,5 +139,43 @@ public class TaskListContext implements Parcelable {
 
     public boolean showMoveActions() {
         return getListQuery() == ListQuery.project;
+    }
+
+    public boolean showEditActions() {
+        return getListQuery() == ListQuery.project || getListQuery() == ListQuery.context;
+    }
+    
+    public Object createEditEvent() {
+        Object event;
+        switch (getListQuery()) {
+            case context:
+                event = new EditContextEvent(mSelector.getContextId());
+                break;
+
+            case project:
+                event = new EditProjectEvent(mSelector.getProjectId());
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Cannot create edit event for listContext " + this);
+        }
+        return event;
+    }
+
+    public Object createDeleteEvent() {
+        Object event;
+        switch (getListQuery()) {
+            case context:
+                event = new UpdateContextDeletedEvent(mSelector.getContextId());
+                break;
+
+            case project:
+                event = new UpdateProjectDeletedEvent(mSelector.getProjectId());
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Cannot create delete event for listContext " + this);
+        }
+        return event;
     }
 }

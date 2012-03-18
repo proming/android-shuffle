@@ -36,23 +36,31 @@ public class EntityUpdateListener {
     }
 
     public void onToggleProjectDeleted(@Observes UpdateProjectDeletedEvent event) {
-        mProjectPersister.updateDeletedFlag(event.getProjectId(), event.isDeleted());
-        String entityName = mActivity.getString(R.string.project_name);
-        if (event.isDeleted()) {
-            showDeletedToast(entityName);
-        } else {
-            showSavedToast(entityName);
+        Id id = event.getProjectId();
+        boolean isDeleted = event.isDeleted();
+        if (event.isDeleted() == null) {
+            // need to look up current value and toggle
+            Project project = mProjectPersister.findById(id);
+            isDeleted = !project.isDeleted();
         }
+        
+        mProjectPersister.updateDeletedFlag(event.getProjectId(), isDeleted);
+        String entityName = mActivity.getString(R.string.project_name);
+        showDeletedToast(entityName, isDeleted);
     }
 
     public void onToggleContextDeleted(@Observes UpdateContextDeletedEvent event) {
+        Id id = event.getContextId();
+        boolean isDeleted = event.isDeleted();
+        if (event.isDeleted() == null) {
+            // need to look up current value and toggle
+            Context context = mContextPersister.findById(id);
+            isDeleted = !context.isDeleted();
+        }
+        
         mContextPersister.updateDeletedFlag(event.getContextId(), event.isDeleted());
         String entityName = mActivity.getString(R.string.context_name);
-        if (event.isDeleted()) {
-            showDeletedToast(entityName);
-        } else {
-            showSavedToast(entityName);
-        }
+        showDeletedToast(entityName, isDeleted);
     }
 
     public void onMoveTasks(@Observes MoveTasksEvent event) {
@@ -67,11 +75,7 @@ public class EntityUpdateListener {
         }
 
         String entityName = mActivity.getString(R.string.task_name);
-        if (event.isDeleted()) {
-            showDeletedToast(entityName);
-        } else {
-            showSavedToast(entityName);
-        }
+        showDeletedToast(entityName, event.isDeleted());
     }
 
     public void onToggleTaskCompleted(@Observes UpdateTasksCompletedEvent event) {
@@ -134,9 +138,10 @@ public class EntityUpdateListener {
         showSavedToast(entityName);
     }
 
-    private void showDeletedToast(String entityName) {
+    private void showDeletedToast(String entityName, boolean isDeleted) {
         String text = mActivity.getResources().getString(
-                R.string.itemDeletedToast, entityName);
+                isDeleted ? R.string.itemDeletedToast : R.string.itemUndeletedToast,
+                entityName);
         Toast.makeText(mActivity, text, Toast.LENGTH_SHORT).show();
     }
     

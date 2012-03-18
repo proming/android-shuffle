@@ -1,11 +1,8 @@
 package org.dodgybits.shuffle.android.list.view;
 
 import android.content.Context;
-import android.text.ParcelableSpan;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -48,12 +45,6 @@ public class StatusView extends TextView {
     }
 
     private void createStatusStrings() {
-        int deletedColour = getResources().getColor(R.color.red);
-        ParcelableSpan deletedColorSpan = new ForegroundColorSpan(deletedColour);
-
-        int inactiveColour = getResources().getColor(R.color.view_minimal_text_color);
-        ParcelableSpan inactiveColorSpan = new ForegroundColorSpan(inactiveColour);
-
         String deleted = getResources().getString(R.string.deleted);
         String active = getResources().getString(R.string.active);
         String inactive = getResources().getString(R.string.inactive);
@@ -61,19 +52,13 @@ public class StatusView extends TextView {
         String fromProject =  getResources().getString(R.string.from_project);
 
         mDeleted = new SpannableString(deleted);
-        mDeleted.setSpan(deletedColorSpan, 0, mDeleted.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         mDeletedFromContext = new SpannableString(deleted + " " + fromContext);
-        mDeletedFromContext.setSpan(deletedColorSpan, 0, mDeletedFromContext.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         mDeletedFromProject = new SpannableString(deleted + " " + fromProject);
-        mDeletedFromProject.setSpan(deletedColorSpan, 0, mDeletedFromProject.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
         mActive = new SpannableString(active);
         mInactive = new SpannableString(inactive);
-        mInactive.setSpan(inactiveColorSpan, 0, mInactive.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         mInactiveFromContext = new SpannableString(inactive + " " + fromContext);
-        mInactiveFromContext.setSpan(inactiveColorSpan, 0, mInactiveFromContext.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         mInactiveFromProject = new SpannableString(inactive + " " + fromProject);
-        mInactiveFromProject.setSpan(inactiveColorSpan, 0, mInactiveFromProject.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
     }
 
     public void updateStatus(Task task, org.dodgybits.shuffle.android.core.model.Context context, Project project, boolean showSomething) {

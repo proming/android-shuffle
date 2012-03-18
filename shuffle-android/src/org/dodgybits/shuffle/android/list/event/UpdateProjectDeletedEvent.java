@@ -4,7 +4,11 @@ import org.dodgybits.shuffle.android.core.model.Id;
 
 public class UpdateProjectDeletedEvent {
     private Id mProjectId;
-    private boolean mDeleted;
+    private Boolean mDeleted;
+
+    public UpdateProjectDeletedEvent(Id projectId) {
+        mProjectId = projectId;
+    }
 
     public UpdateProjectDeletedEvent(Id projectId, boolean deleted) {
         mProjectId = projectId;
@@ -15,7 +19,7 @@ public class UpdateProjectDeletedEvent {
         return mProjectId;
     }
 
-    public boolean isDeleted() {
+    public Boolean isDeleted() {
         return mDeleted;
     }
 }

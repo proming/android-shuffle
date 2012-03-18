@@ -77,7 +77,7 @@ public abstract class AbstractEditorActivity<E extends Entity> extends
 		return super.onKeyDown(keyCode, event);
 	}
 
-	@Override
+    @Override
 	public void finish() {
 		if (mNextIntent != null) {
 			startActivity(mNextIntent);

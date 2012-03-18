@@ -28,7 +28,8 @@
         <EditText android:id="@+id/name"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:hint="@string/name_title"
+                  android:paddingTop="16dip"
+                  android:hint="@string/project_name_title"
                   android:autoText="true"
                   android:singleLine="true"
                   android:maxLength="50"
@@ -37,29 +38,20 @@
             <requestFocus/>
         </EditText>
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+        <TextView android:id="@+id/default_context_label"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:paddingLeft="8dip"
+                  android:paddingRight="4dip"
+                  android:text="@string/default_context_title"
+                  style="@style/LabelTextViewStyle"
+                />
 
-            <TextView android:id="@+id/default_context_label"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:paddingLeft="8dip"
-                      android:paddingRight="4dip"
-                      android:text="@string/default_context_title"
-                      android:textColor="@color/label_color"
-                      android:textAppearance="?android:attr/textAppearanceMedium"
-                    />
 
-            <Spinner android:id="@+id/default_context"
-                     android:layout_width="fill_parent"
-                     android:layout_height="48dip"
-                     android:layout_weight="1"
-                    />
-
-        </LinearLayout>
+        <Spinner android:id="@+id/default_context"
+                 android:layout_width="fill_parent"
+                 android:layout_height="48dip"
+                />
 
         <View
                 android:layout_width="fill_parent"

@@ -20,13 +20,14 @@ public class DefaultEntityCache<E extends Entity> implements EntityCache<E> {
     
     @Inject
     public DefaultEntityCache(EntityPersister<E> persister) {
-        Log.d(cTag, "Created entity cache with " + persister);
+        Log.d(cTag, "Created entity cache");
         
         mPersister = persister;
         mBuilder = new Builder();
         mCache = new ItemCache<Id, E>(mBuilder);
     }
-    
+
+    @Override
     public E findById(Id localId) {
         E entity = null;
         if (localId.isInitialised()) {
@@ -34,7 +35,13 @@ public class DefaultEntityCache<E extends Entity> implements EntityCache<E> {
         }
         return entity;
     }
-    
+
+    @Override
+    public void flush() {
+        Log.d(cTag, "Flushing cache");
+        mCache.clear();
+    }
+
     private class Builder implements ValueBuilder<Id, E> {
     
         @Override

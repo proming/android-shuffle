@@ -45,10 +45,10 @@ public class ContextListItem extends LinearLayout {
                 getSystemService(android.content.Context.LAYOUT_INFLATER_SERVICE);
         vi.inflate(R.layout.context_view, this, true);
 
-        mName = (TextView) findViewById(R.id.name);
-        mCount = (TextView) findViewById(R.id.count);
-        mStatus = (StatusView)findViewById(R.id.status_view);
-        mIcon = (ImageView) findViewById(R.id.icon);
+        mName = (TextView) findViewById(R.id.context_view_name);
+        mCount = (TextView) findViewById(R.id.context_view_count);
+        mStatus = (StatusView)findViewById(R.id.context_view_status_view);
+        mIcon = (ImageView) findViewById(R.id.context_view_icon);
         mTextColours = TextColours.getInstance(androidContext);
     }
 

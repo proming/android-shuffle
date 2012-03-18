@@ -43,6 +43,15 @@ public abstract class AbstractEditActivity extends ActionBarFragmentActivity {
         super.onBackPressed();
     }
 
+    @Override
+    public void finish() {
+        if (getFragment() != null && getFragment().getNextIntent() != null) {
+            startActivity(getFragment().getNextIntent());
+        }
+        super.finish();
+    }
+
+
     protected abstract AbstractEditFragment getFragment();
     protected abstract void setFragment(AbstractEditFragment fragment);
 

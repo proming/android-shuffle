@@ -53,7 +53,7 @@ public class TaskListAdaptor extends CursorAdapter {
     @Inject
     public TaskListAdaptor(Context context, TaskPersister persister,
                            ContextScopedProvider<TaskListItem> taskListItemProvider) {
-        super(context.getApplicationContext(), null, 0 /* no auto requery */);
+        super(context, null, 0 /* no auto requery */);
         mPersister = persister;
         mTaskListItemProvider = taskListItemProvider;
     }

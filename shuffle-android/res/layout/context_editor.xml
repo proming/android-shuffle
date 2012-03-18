@@ -25,10 +25,20 @@
             android:orientation="vertical"
             >
 
+        <org.dodgybits.shuffle.android.list.view.context.ContextListItem
+                android:id="@+id/context_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:layout_marginBottom="20dip"
+                />
+
+
         <EditText android:id="@+id/name"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:hint="@string/name_title"
+                  android:paddingTop="20dip"
+                  android:hint="@string/context_name_title"
                   android:autoText="true"
                   android:singleLine="true"
                   android:maxLength="50"
@@ -166,21 +176,6 @@
         <include layout="@layout/editor_delete_entry"
                  android:id="@+id/deleted_entry"
                 />
-
-
-        <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:background="@android:drawable/divider_horizontal_bright"
-                />
-
-        <org.dodgybits.shuffle.android.list.view.context.ContextListItem
-                    android:id="@+id/context_preview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dip"
-                    android:layout_marginBottom="20dip"
-                    />
 
     </LinearLayout>
 

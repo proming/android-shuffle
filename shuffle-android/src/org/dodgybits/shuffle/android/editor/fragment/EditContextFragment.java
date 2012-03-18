@@ -150,7 +150,7 @@ public class EditContextFragment extends AbstractEditFragment<Context>
 
         mNameWidget.addTextChangedListener(this);
 
-        mColourIndex = -1;
+        mColourIndex = 0;
         mIcon = ContextIcon.NONE;
 
         View colourEntry = getView().findViewById(R.id.colour_entry);
@@ -214,10 +214,6 @@ public class EditContextFragment extends AbstractEditFragment<Context>
         mDeletedCheckBox.setChecked(false);
         mActiveCheckBox.setChecked(true);
 
-        if (mColourIndex == -1) {
-            mColourIndex = 0;
-        }
-
         displayIcon();
         displayColour();
         updatePreview();
@@ -225,8 +221,6 @@ public class EditContextFragment extends AbstractEditFragment<Context>
 
     @Override
     protected void updateUIFromItem(Context context) {
-        mNameWidget.setTextKeepState(context.getName());
-
         mColourIndex = context.getColourIndex();
         displayColour();
 
@@ -240,7 +234,7 @@ public class EditContextFragment extends AbstractEditFragment<Context>
         mDeletedDivider.setVisibility(context.isDeleted() ? View.VISIBLE : View.GONE);
         mDeletedCheckBox.setChecked(context.isDeleted());
 
-        updatePreview();
+        mNameWidget.setTextKeepState(context.getName());
 
         if (mOriginalItem == null) {
             mOriginalItem = context;
@@ -273,13 +267,7 @@ public class EditContextFragment extends AbstractEditFragment<Context>
     }
 
     private void updatePreview() {
-		String name = mNameWidget.getText().toString();
-		if (TextUtils.isEmpty(name) || mColourIndex == -1) {
-			mContextPreview.setVisibility(View.INVISIBLE);
-		} else {
-			mContextPreview.updateView(createItemFromUI(false));
-            mContextPreview.setVisibility(View.VISIBLE);
-		}
+        mContextPreview.updateView(createItemFromUI(false));
     }
     
 

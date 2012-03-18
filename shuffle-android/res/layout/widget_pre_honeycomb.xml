@@ -58,7 +58,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="0dp"
                         android:focusable="false" android:clickable="true"
-                        android:background="@android:drawable/list_selector_background"
+                        android:background="@drawable/list_selector_background"
                         android:paddingTop="4dp" android:paddingBottom="4dp"
                 >
 
@@ -86,7 +86,7 @@
 
         <RelativeLayout android:id="@+id/entry_2" android:layout_width="fill_parent"
                         android:layout_height="48sp" android:layout_below="@+id/divider_1" android:layout_marginLeft="0dp"
-                        android:focusable="false" android:clickable="true" android:background="@android:drawable/list_selector_background"
+                        android:focusable="false" android:clickable="true" android:background="@drawable/list_selector_background"
                         android:paddingTop="4dp" android:paddingBottom="4dp"
                 >
 
@@ -114,7 +114,7 @@
 
         <RelativeLayout android:id="@+id/entry_3" android:layout_width="fill_parent"
                         android:layout_height="48sp" android:layout_below="@+id/divider_2" android:layout_marginLeft="0dp"
-                        android:focusable="false" android:clickable="true" android:background="@android:drawable/list_selector_background"
+                        android:focusable="false" android:clickable="true" android:background="@drawable/list_selector_background"
                         android:paddingTop="4dp" android:paddingBottom="4dp"
                 >
 
@@ -142,7 +142,7 @@
 
         <RelativeLayout android:id="@+id/entry_4" android:layout_width="fill_parent"
                         android:layout_height="48sp" android:layout_below="@+id/divider_3" android:layout_marginLeft="0dp"
-                        android:focusable="false" android:clickable="true" android:background="@android:drawable/list_selector_background"
+                        android:focusable="false" android:clickable="true" android:background="@drawable/list_selector_background"
                         android:paddingTop="4dp" android:paddingBottom="4dp"
                 >
 
@@ -170,7 +170,7 @@
 
         <RelativeLayout android:id="@+id/entry_5" android:layout_width="fill_parent"
                         android:layout_height="48sp" android:layout_below="@+id/divider_4" android:layout_marginLeft="0dp"
-                        android:focusable="false" android:clickable="true" android:background="@android:drawable/list_selector_background"
+                        android:focusable="false" android:clickable="true" android:background="@drawable/list_selector_background"
                         android:paddingTop="4dp" android:paddingBottom="4dp"
                 >
 
@@ -198,7 +198,7 @@
 
         <RelativeLayout android:id="@+id/entry_6" android:layout_width="fill_parent"
                         android:layout_height="48sp" android:layout_below="@+id/divider_5" android:layout_marginLeft="0dp"
-                        android:focusable="false" android:clickable="true" android:background="@android:drawable/list_selector_background"
+                        android:focusable="false" android:clickable="true" android:background="@drawable/list_selector_background"
                         android:paddingTop="4dp" android:paddingBottom="4dp"
                 >
 
@@ -226,7 +226,7 @@
 
         <RelativeLayout android:id="@+id/entry_7" android:layout_width="fill_parent"
                         android:layout_height="48sp" android:layout_below="@+id/divider_6" android:layout_marginLeft="0dp"
-                        android:focusable="false" android:clickable="true" android:background="@android:drawable/list_selector_background"
+                        android:focusable="false" android:clickable="true" android:background="@drawable/list_selector_background"
                         android:paddingTop="4dp" android:paddingBottom="4dp"
                 >
 

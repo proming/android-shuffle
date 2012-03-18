@@ -23,7 +23,7 @@ public class ContextListAdaptor extends CursorAdapter {
     public ContextListAdaptor(Context context, ContextPersister persister,
                               ContextScopedProvider<ContextListItem> contextListItemProvider
     ) {
-        super(context.getApplicationContext(), null, 0 /* no auto requery */);
+        super(context, null, 0 /* no auto requery */);
         mPersister = persister;
         mContextListItemProvider = contextListItemProvider;
     }

@@ -32,6 +32,7 @@ public abstract class AbstractEditFragment<E extends Entity> extends RoboFragmen
     protected boolean mIsNewEntity;
     protected Cursor mCursor;
     protected E mOriginalItem;
+    protected Intent mNextIntent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,6 +110,11 @@ public abstract class AbstractEditFragment<E extends Entity> extends RoboFragmen
         E item = createItemFromUI(false);
         mEncoder.save(outState, item);
     }
+
+    public Intent getNextIntent() {
+        return mNextIntent;
+    }
+
 
     private void restoreInstanceState(Bundle savedInstanceState) {
         E item = mEncoder.restore(savedInstanceState);
