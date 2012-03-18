@@ -1,5 +1,7 @@
 package org.dodgybits.shuffle.android.core.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
@@ -76,6 +78,21 @@ public class HomeActivity extends ActionBarFragmentActivity {
         return false;
     }
 
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog;
+        if (id == WHATS_NEW_DIALOG) {
+            dialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.whats_new_dialog_title)
+                    .setPositiveButton(R.string.ok_button_title, null)
+                    .setMessage(R.string.whats_new_dialog_message)
+                    .create();
+        } else {
+            dialog = super.onCreateDialog(id);
+        }
+        return dialog;
+    }
+    
     private void addVersionToTitle() {
         String title = getTitle().toString();
         try {
