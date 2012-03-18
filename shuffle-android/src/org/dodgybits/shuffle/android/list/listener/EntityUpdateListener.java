@@ -94,12 +94,20 @@ public class EntityUpdateListener {
             Log.d(TAG, "Ignoring new task event with no description");
             return;
         }
+        
+        Id projectId = event.getProjectId();
+        Id contextId = event.getContextId();
+        // apply default context if project set but not context
+        if (projectId.isInitialised() && !contextId.isInitialised()) {
+            Project project = mProjectPersister.findById(projectId);
+            contextId = project.getDefaultContextId();
+        }
 
         Task.Builder builder = Task.newBuilder();
         builder.setDescription(event.getDescription()).
                 setOrder(mTaskPersister.calculateTaskOrder(null, event.getProjectId(), 0L)).
-                setContextId(event.getContextId()).
-                setProjectId(event.getProjectId()).
+                setContextId(contextId).
+                setProjectId(projectId).
                 setCreatedDate(System.currentTimeMillis()).
                 setModifiedDate(System.currentTimeMillis());
 
