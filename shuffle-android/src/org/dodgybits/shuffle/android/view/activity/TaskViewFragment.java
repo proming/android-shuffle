@@ -39,6 +39,8 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     public static final String INDEX = "TaskViewFragment.index";
     public static final String COUNT = "TaskViewFragment.count";
 
+    private View mMainView;
+    
     private TextView mProjectView;
     private TextView mDescriptionView;
     private LabelView mContextView;
@@ -127,6 +129,9 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
             final boolean isComplete = getTask().isComplete();
             menu.findItem(R.id.action_mark_complete).setVisible(!isComplete);
             menu.findItem(R.id.action_mark_incomplete).setVisible(isComplete);
+            final boolean isDeleted = getTask().isDeleted();
+            menu.findItem(R.id.action_delete).setVisible(!isDeleted);
+            menu.findItem(R.id.action_undelete).setVisible(isDeleted);
         }
     }
 
@@ -135,6 +140,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         switch (item.getItemId()) {
             case R.id.action_mark_complete:
             case R.id.action_mark_incomplete:
+                Log.d(TAG, "Toggling complete on task");
                 mEventManager.fire(new UpdateTasksCompletedEvent(mTask.getLocalId().getId(), !mTask.isComplete()));
                 getActivity().finish();
                 return true;
@@ -144,7 +150,8 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
                 getActivity().finish();
                 return true;
             case R.id.action_delete:
-                Log.d(TAG, "Deleting task");
+            case R.id.action_undelete:
+                Log.d(TAG, "Toggling delete on task");
                 mEventManager.fire(new UpdateTasksDeletedEvent(mTask.getLocalId().getId(), !mTask.isDeleted()));
                 getActivity().finish();
                 return true;
@@ -175,6 +182,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     }
 
     private void findViews() {
+        mMainView = getView().findViewById(R.id.main);
         mProjectView = (TextView) getView().findViewById(R.id.project);
         mDescriptionView = (TextView) getView().findViewById(R.id.description);
         mContextView = (LabelView) getView().findViewById(R.id.context);
@@ -191,7 +199,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         mPageDisplayEntry = getView().findViewById(R.id.page_display_entry);
         mPageDisplay = (TextView) getView().findViewById(R.id.page_display);
     }
-
 
     private void updateUIFromItem(Task task) {
         Context context = mContextCache.findById(task.getContextId());
@@ -313,4 +320,5 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
             mPageDisplay.setText(getString(R.string.pager_display, mPosition+1, mTaskCount));
         }
     }
+
 }

@@ -44,15 +44,17 @@
     <color name="date_text_color_complete">@color/project_text_color_complete</color>
 
     <color name="list_main_text_color">#403c36</color>
-    <color name="list_background_color">#eff7f7</color>
+    <color name="list_background_color">@color/view_incomplete_background_color</color>
     <color name="pager_background_color">#555555</color>
     <color name="view_highlight_color">#33B5E5</color>
     <color name="view_project_color">#eeeeff</color>
     <color name="view_status_color">#eeeeff</color>
     <color name="view_description_color">#eeeeff</color>
     <color name="view_minimal_text_color">#8a8a8a</color>
+    <color name="view_complete_background_color">#eeeeee</color>
+    <color name="view_incomplete_background_color">#eff7f7</color>
 
-    <drawable name="list_incomplete">@color/list_background_color</drawable>
+    <drawable name="list_incomplete">@color/view_incomplete_background_color</drawable>
 
     <!--  Widget colors -->
     <color name="widget_default_text_color">#ff000000</color>

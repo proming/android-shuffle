@@ -20,6 +20,7 @@
         >
 
     <ScrollView
+            android:id="@+id/main"
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_weight="1"
@@ -30,7 +31,6 @@
             >
 
         <LinearLayout
-                android:id="@+id/main"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
