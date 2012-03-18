@@ -136,10 +136,10 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
     @Override
     protected void updateUIFromExtras(Bundle extras) {
         if (extras != null) {
-            Long contextId = extras.getLong(TaskProvider.Tasks.CONTEXT_ID);
+            long contextId = extras.getLong(TaskProvider.Tasks.CONTEXT_ID, 0L);
             setSpinnerSelection(mContextSpinner, mContextIds, contextId);
 
-            Long projectId = extras.getLong(TaskProvider.Tasks.PROJECT_ID);
+            long projectId = extras.getLong(TaskProvider.Tasks.PROJECT_ID, 0L);
             setSpinnerSelection(mProjectSpinner, mProjectIds, projectId);
         }
 
@@ -651,8 +651,8 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
         return id;
     }
 
-    private void setSpinnerSelection(Spinner spinner, long[] ids, Long id) {
-        if (id == null || id == 0) {
+    private void setSpinnerSelection(Spinner spinner, long[] ids, long id) {
+        if (id == 0L) {
             spinner.setSelection(0);
         } else {
             for (int i = 1; i < ids.length; i++) {
