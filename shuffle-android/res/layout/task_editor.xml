@@ -152,9 +152,9 @@
                     <TextView android:id="@+id/scheduling_label"
                               android:layout_width="wrap_content"
                               android:layout_height="wrap_content"
-                              android:fadingEdge="horizontal"
                               android:duplicateParentState="true"
                               android:text="@string/scheduling_title"
+                              android:paddingLeft="0dp"
                               style="@style/LabelTextViewStyle"
                             />
 
