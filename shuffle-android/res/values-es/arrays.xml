@@ -24,10 +24,7 @@
         <item>Costumbre</item>
         <item>Recordatorio</item>
     </array>
-    <array name="view_types">
-        <item>Pantalla actual</item>
-        <item>Pantalla nueva</item>
-    </array>
+
     <array name="help_screens">
         <item>Introducción</item>
         <item>Bandeja de entrada</item>
@@ -38,14 +35,10 @@
         <item>Configuración</item>
         <item>Trucos</item>
         <item>Agradecimientos</item>
-    </array>
-    <array name="preference_screens">
-        <item>Apariencia de la Acción</item>
-        <item>Apariencia de la Lista</item>
-        <item>Limpiar</item>
+        <item>Costumbre</item>
+        <item>Recordatorio</item>
     </array>
 
-    
     <!-- Choices for the "Reminder minutes" spinner.
          These must be kept in sync with the reminder_minutes_values array.
     -->

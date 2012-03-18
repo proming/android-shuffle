@@ -32,7 +32,7 @@ public class NavigationListener {
     public void onViewHelp(@Observes ViewHelpEvent event) {
         Intent intent = new Intent(mActivity, HelpActivity.class);
         if (event.getListQuery() != null) {
-            intent.putExtra(HelpActivity.LIST_QUERY, event.getListQuery().name());
+            intent.putExtra(HelpActivity.QUERY_NAME, event.getListQuery().name());
         }
         mActivity.startActivity(intent);
     }

@@ -127,8 +127,17 @@
 <string name="whats_new_dialog_title">Shuffle</string>
 <string name="whats_new_dialog_message">Thanks for downloading Shuffle.\n\n
 <b>New in this version:</b>\n
-\t• Support for ICS\n
-\t• Integrated with Shuffle website\n
+\t• Complete UI rewrite\n
+\t• Full ICS compatibility\n
+\t• Swipe to navigate between views\n
+\t• Context and project specific widgets and shortcuts\n
+\t• New widget look (scrollable on ICS)\n
+\t• Multi-select operations on action lists\n
+\t• Default context applied more consistently\n
+\t• More and higher resolution context icons\n
+\t• Quick add bar for actions, contexts and projects\n
+\t• Ability to filter by project or context on any view\n
+\t• New Custom action view (set it up however you want)\n
 \n
 <b>New in version 1.7.2:</b>\n
 \t• Fixed dates when viewing Google calendar entries\n
@@ -443,12 +452,13 @@ Or get stuck in straight away with no actions or projects and only the default s
     <string name="welcome3">
 See Help menu for additional instructions and tips.
     </string>
+    <string name="help_swipe_hint">Swipe to navigate help</string>
     <string name="help0">
 Shuffle is a \"Getting Things Done\" inspired personal organization tool.
-It lets you quickly enter and categorize \'actions\'. With 5 supported perspectives,
+It lets you quickly enter and categorize \'actions\'. With many different views,
 you can attack your actions any way you please.
 \n
-A simple elegant workflow encourages you to categorize your actions into projects and optionally provide context.
+A simple elegant workflow encourages you to categorize your actions into projects and contexts.
 This structure lets you to break down formidable projects into individual achievable tasks.\n
 As a project evolves, clean out old actions as they\'re performed, 
 add new actions and reorder any remaining actions depending on your current priorities.
@@ -458,29 +468,27 @@ This is the best place to add your actions.
 The <b>Inbox</b> is where all actions start off before they are processed.
 Try to regularly scan the Inbox, analyzing each action and either discard it, do it or assign it
 to a project and/or context.\n
+Once a project or context is assigned to an action, it will automatically be removed from the Inbox.
     </string>
     <string name="help2">
 The <b>Project</b> perspective lists all your projects, and allows you to drill-down 
 into each project to view its actions. In addition to the standard adding, editing and deleting
 of actions, the project view also supports rearranging actions in the order you intend to complete them.
-\n
+This step is important for the Next Actions perspective.\n
 For some projects it makes sense for actions to completed one after the other in strict order. For other
-projects,  actions can be completed in any order. This is configurable when creating or editing a project.
-\n
-Projects, like contexts, can be viewed in two different modes: drill-down or expandable view. 
-In drill down mode, clicking on a project takes you to another 
-screen showing the actions for that project. In expandable mode, clicking a project shows
-its actions on the same screen.
+projects, actions can be completed in any order. This is configurable when creating or editing a project.
     </string>
     <string name="help3">
-<b>Contexts</b> are situations in which you intend to perform actions. Shuffle comes with a few standard contexts to get you started: 
+<b>Contexts</b> are like tags for your actions. They can be locations, categories or whatever makes sense to you.
+Shuffle comes with a few standard contexts to get you started:
 <i>At home</i>, <i>At  work</i>, <i>Online</i>, <i>Errands</i>, <i>Contact</i> and <i>Read</i>. \n
 Feel free to modify or delete the existing, or add your own contexts that suit your situation.\n
-\n
-Like the Projects perspective, contexts can be viewed in either drill-down or expandable mode, configurable via Settings. 
+The context view is especially useful when you\'re intending on getting something done, and need to see what
+actions are applicable to your current situation. For instance, you\'re out and about in town, so you
+check your Errands context and see you need to buy an umbrella and pick up the dry cleaning on your way home.
     </string>
     <string name="help4">
-<b>Next actions</b> is the best place to look to determine what needs to be done. \n
+<b>Next actions</b> is the best place to look to determine what the next this to work on is. \n
 It shows the following actions\n
 - those without a project\n
 - the first action for sequential projects\n
@@ -494,11 +502,9 @@ There are 3 views - <i>Today</i>, <i>This Week</i> and
 Overdue actions are shown in all views.
     </string>
     <string name="help6">
-A number of aspects of Shuffle are user-configurable. The <b>Settings</b> screen is available from all Perspectives via the menu. \n
+A number of aspects of Shuffle are user-configurable. The <b>Settings</b> screen is available from all views via the menu. \n
 <b>Calendar</b>  - Select a calendar to use when integrating actions with Google Calendar. \n
-<b>Project/Context view</b>  - Show projects and contexts in two screens (drill-down) or in a tree structure (expandable). \n
-<b>Action appearance</b> - Lets you customize what information to display for actions in each perspective.  \n
-<b>Tracks settings</b> - Configure synchronization with a Tracks server . \n
+<b>Synchronize Settings</b>  - Configure a website you\'d like your data to be synchronized with. \n
 <b>Backup to SD Card</b> - Save all your actions, contexts and projects to your SD Card. You can them back this up to your computer. \n
 <b>Restore from SD Card</b> - Restores all your data from a backup. No attempt is made to avoid duplicate actions, 
 so it\'s best to restore onto a clean Shuffle instance. \n
@@ -507,12 +513,13 @@ so it\'s best to restore onto a clean Shuffle instance. \n
     </string>
     <string name="help7">
 Some handy Shuffle features you may not know about:\n
-1) In any list view, long press on an item to see a menu of options.\n
-2) Hitting the Back button saves before closing.\n
-3) Use the <i>Save and New</i> menu to create a bunch of actions in one go.\n
-4) You can mark an action as complete by swiping your finger over it in a list.\n
+1) In almost all views, swipe left or right to navigate between similar views.\n
+2) All lists have View Settings to let you pick exactly what you want to see. For instance whether to show completed or deleted actions.\n
+3) Enabled the Quick Add Bar via View Settings on any view to quickly add actions, projects and contexts in place.\n
+4) Hitting the Back button saves before closing.\n
 5) Create shortcuts on your Home Screens for various Shuffle views and actions\n
-6) In Global Settings &gt; Search, enable Shuffle for actions to appear in Quick Search Box queries (Android 1.6+ only)
+6) Add a widget to your Home Screen to get a quick view on any list\n
+7) In Global Settings &gt; Search, enable Shuffle for actions to appear in Quick Search Box queries\n
     </string>
     <string name="help8">
 Thanks to the team behind the Tango Desktop Project, an open source collection of icons used in Shuffle.
@@ -521,7 +528,14 @@ and to Gudrun for tolerating my nights and weekends spent tinkering with Android
 \n
 For feedback or bug reports, please check http://code.google.com/p/android-shuffle/issues/list or email me at andy@dodgybits.org
     </string>
-
+    <string name="help9">
+<b>Custom</b> by default shows all actions. Change the view settings to whatever you want to create your own personalized view.\n
+    </string>
+    <string name="help10">
+<b>Tickler</b> shows actions you\'ve decided to delay for whatever reason. By default it includes actions that are set to start in the future.
+You can change this (via View Settings) to whatever you want. For instance, you may change it to show all inactive actions
+(actions assigned to inactive projects or contexts).
+    </string>
 
     <!-- Reminder format strings -->
     <plurals name="Nminutes">

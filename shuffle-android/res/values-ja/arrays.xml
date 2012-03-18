@@ -31,10 +31,7 @@
         <item>カスタム</item>
         <item>保留アクション</item>
     </array>
-    <array name="view_types">
-        <item>展開リスト</item>
-        <item>掘り下げリスト</item>
-    </array>
+
     <array name="help_screens">
         <item>はじめに</item>
         <item>新着アクション</item>
@@ -45,11 +42,8 @@
         <item>設定</item>
         <item>ヒント</item>
         <item>注意事項</item>
-    </array>
-    <array name="preference_screens">
-        <item>アクションの表示形式</item>
-        <item>リストのレイアウト</item>
-        <item>初期設定に戻す</item>
+        <item>カスタム</item>
+        <item>保留アクション</item>
     </array>
 
 

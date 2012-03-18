@@ -24,10 +24,7 @@
         <item>Brugerdefineret</item>
         <item>Huskeliste</item>
     </array>
-    <array name="view_types">
-        <item>Udvidbar liste</item>
-        <item>Niveauliste</item>
-    </array>
+
     <array name="help_screens">
         <item>Introduktion</item>
         <item>Indbakke</item>
@@ -38,13 +35,9 @@
         <item>Indstillinger</item>
         <item>Nyttige tips</item>
         <item>Anerkendelser</item>
+        <item>Brugerdefineret</item>
+        <item>Huskeliste</item>
     </array>
-    <array name="preference_screens">
-        <item>Handlingsudseende</item>
-        <item>Listelayout</item>
-        <item>Oprydning</item>
-    </array>
-	    
 
     <!-- Choices for the "Reminder minutes" spinner.
          These must be kept in sync with the reminder_minutes_values array.

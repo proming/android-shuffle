@@ -24,10 +24,7 @@
         <item>Zwyczaj</item>
         <item>Przypomnienie</item>
     </array>
-    <array name="view_types">
-        <item>Lista rozszerzalna</item>
-        <item>Drill-down list</item>
-    </array>
+
     <array name="help_screens">
         <item>Wprowadzenie</item>
         <item>Skrzynka</item>
@@ -38,14 +35,10 @@
         <item>Ustawienia</item>
         <item>Przydatne porady</item>
         <item>Podziękowania</item>
-    </array>
-    <array name="preference_screens">
-        <item>Wygląd działań</item>
-        <item>Układ list</item>
-        <item>Czyszczenie</item>
+        <item>Zwyczaj</item>
+        <item>Przypomnienie</item>
     </array>
 
-    
     <!-- Choices for the "Reminder minutes" spinner.
          These must be kept in sync with the reminder_minutes_values array.
     -->

@@ -24,10 +24,7 @@
         <item>习俗</item>
         <item>提醒</item>
     </array>
-    <array name="view_types">
-        <item>可收縮清單</item>
-        <item>層疊清單</item>
-    </array>
+
     <array name="help_screens">
         <item>介紹</item>
         <item>活動清單</item>
@@ -38,14 +35,10 @@
         <item>設定</item>
         <item>便捷提示</item>
         <item>致謝</item>
-    </array>
-    <array name="preference_screens">
-        <item>活動樣式</item>
-        <item>清單樣式</item>
-        <item>清空</item>
+        <item>习俗</item>
+        <item>提醒</item>
     </array>
 
-    
     <!-- Choices for the "Reminder minutes" spinner.
          These must be kept in sync with the reminder_minutes_values array.
     -->

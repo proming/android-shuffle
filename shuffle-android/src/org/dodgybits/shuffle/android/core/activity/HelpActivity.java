@@ -16,106 +16,147 @@
 
 package org.dodgybits.shuffle.android.core.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.*;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.MenuItem;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarHelper;
+import org.dodgybits.shuffle.android.core.fragment.HelpListFragment;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
-import roboguice.inject.InjectView;
+import roboguice.inject.ContextScopedProvider;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.dodgybits.shuffle.android.core.util.Constants.cPackage;
 import static org.dodgybits.shuffle.android.core.util.Constants.cStringType;
 
-public class HelpActivity extends FlurryEnabledActivity {
-    public static final String cHelpPage = "helpPage";
-    public static final String LIST_QUERY = "listQuery";
+public class HelpActivity extends ActionBarFragmentActivity {
+    private static final String TAG = "HelpActivity";
     
-	@InjectView(R.id.help_screen) Spinner mHelpSpinner;
-	@InjectView(R.id.help_text) TextView mHelpContent;
-	@InjectView(R.id.previous_button) Button mPrevious;
-	@InjectView(R.id.next_button) Button mNext;
-    	
-	@Override
-	protected void onCreate(Bundle icicle) {
-		super.onCreate(icicle);
+    public static final String QUERY_NAME = "queryName";
 
-        setContentView(R.layout.help);
-        
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-        		this, R.array.help_screens,
-                android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mHelpSpinner.setAdapter(adapter);
-        mHelpSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-        	public void onNothingSelected(AdapterView<?> arg0) {
-        		// do nothing
-        	}
-        	
-        	public void onItemSelected(AdapterView<?> parent, View v,
-        			int position, long id) {
-        		int resId = HelpActivity.this.getResources().getIdentifier(
-        				"help" + position, cStringType, cPackage);
-        		mHelpContent.setText(HelpActivity.this.getText(resId));
-        		updateNavigationButtons();
-        	}
-        });
+    private MyAdapter mAdapter;
 
-        mPrevious.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-        		int position = mHelpSpinner.getSelectedItemPosition();
-            	mHelpSpinner.setSelection(position - 1);
-            }
-        });        
+    private ViewPager mPager;
 
+    private List<Fragment> mFragments;
+    private Map<ListQuery,Integer> mQueryIndex;
+
+    @Inject
+    private ContextScopedProvider<HelpListFragment> mHelpListFragmentProvider;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_list_pager);
+
+        getActionBarHelper().setDisplayOptions(ActionBarHelper.DISPLAY_HOME_AS_UP |
+                ActionBarHelper.DISPLAY_SHOW_HOME |
+                ActionBarHelper.DISPLAY_SHOW_TITLE);
+
+        initFragments();
+
+        mAdapter = new MyAdapter(getSupportFragmentManager());
+        mPager = (ViewPager)findViewById(R.id.pager);
+        mPager.setAdapter(mAdapter);
+
+        int position = getRequestedPosition(getIntent());
+        mPager.setCurrentItem(position);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; go home
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+                return true;
+        }
+
+        return false;
+    }
+
+    private void initFragments() {
+        mFragments = Lists.newArrayList();
         
-        mNext.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-        		int position = mHelpSpinner.getSelectedItemPosition();
-            	mHelpSpinner.setSelection(position + 1);
-            }
-        });        
+        String[] helpTitles = getResources().getStringArray(R.array.help_screens);
+        int[] helpKeys = getResources().getIntArray(R.array.help_keys);
+        int length = helpTitles.length;
+        if (helpKeys.length != length) {
+            Log.e(TAG, "Mismatch between keys length " + helpKeys.length + " and titles " + length);
+            length = Math.min(length, helpKeys.length);
+        }
+
+        for (int i = 0; i < length; i++) {
+            HelpListFragment fragment = mHelpListFragmentProvider.get(this);
+            Bundle args = new Bundle();
+            int index = helpKeys[i];
+            String idKey = "help" + index;
+            int contentId = getResources().getIdentifier(idKey, cStringType, cPackage);
+            CharSequence content = getText(contentId);
+            args.putCharSequence(HelpListFragment.CONTENT, content);
+            args.putString(HelpListFragment.TITLE, helpTitles[index]);
+
+            fragment.setArguments(args);
+            mFragments.add(fragment);
+        }
         
-        setSelectionFromBundle();
-	}
-	
-	private void setSelectionFromBundle() {
-        String queryName = getIntent().getStringExtra(LIST_QUERY);
-        int position = -1;
+        // few magic numbers for good luck...
+        mQueryIndex = Maps.newHashMap();
+        mQueryIndex.put(ListQuery.inbox, 1);
+        mQueryIndex.put(ListQuery.dueToday, 2);
+        mQueryIndex.put(ListQuery.dueNextWeek, 2);
+        mQueryIndex.put(ListQuery.dueNextMonth, 2);
+        mQueryIndex.put(ListQuery.nextTasks, 3);
+        mQueryIndex.put(ListQuery.project, 4);
+        mQueryIndex.put(ListQuery.context, 5);
+        mQueryIndex.put(ListQuery.custom, 6);
+        mQueryIndex.put(ListQuery.tickler, 7);
+    }
+
+    private int getRequestedPosition(Intent intent) {
+        int position = 0;
+        String queryName = intent.getStringExtra(QUERY_NAME);
         if (queryName != null) {
             ListQuery query = ListQuery.valueOf(queryName);
-            // TODO use global list query lookup (used by help, top level and Entity list activities)
-            switch (query) {
-                case inbox:
-                   position = 1;
-                    break;
-                case project:
-                    position = 2;
-                    break;
-                case context:
-                    position = 3;
-                    break;
-                case nextTasks:
-                    position = 4;
-                    break;
-                case dueNextMonth:
-                case dueNextWeek:
-                case dueToday:
-                    position = 5;
-                    break;
+            position = mQueryIndex.get(query);
+            if (position == -1) {
+                Log.e(TAG, "Couldn't find page of list " + queryName);
+                position = 0;
             }
         }
-        if (position == -1) {
-            position = getIntent().getIntExtra(cHelpPage, 0);
-        }
-        mHelpSpinner.setSelection(position);
-	}
 
-	private void updateNavigationButtons() {
-		int position = mHelpSpinner.getSelectedItemPosition();
-		mPrevious.setEnabled(position > 0);
-		mNext.setEnabled(position < mHelpSpinner.getCount() - 1);
-	}
-	
+        return position;
+    }
+
+    public class MyAdapter extends FragmentPagerAdapter {
+        public MyAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragments.size();
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
+        }
+    }
+    
 }

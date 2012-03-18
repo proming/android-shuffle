@@ -24,10 +24,7 @@
         <item>Coutume</item>
         <item>Rappel</item>
     </array>
-    <array name="view_types">
-        <item>Liste expansible</item>
-        <item>Liste avec zoom</item>
-    </array>
+
     <array name="help_screens">
         <item>Introduction</item>
         <item>Inbox</item>
@@ -38,14 +35,10 @@
         <item>Préférences</item>
         <item>Astuces pratiques</item>
         <item>Remerciements</item>
-    </array>
-    <array name="preference_screens">
-        <item>Apparence d\'une tâche</item>
-        <item>Layout d\'une liste</item>
-        <item>Purger</item>
+        <item>Coutume</item>
+        <item>Rappel</item>
     </array>
 
-    
     <!-- Choices for the "Reminder minutes" spinner.
          These must be kept in sync with the reminder_minutes_values array.
     -->

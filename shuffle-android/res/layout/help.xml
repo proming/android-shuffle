@@ -15,46 +15,36 @@
 -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
     >
 
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="bottom|right"
+            >
 
-<LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent" 
-        android:layout_height="fill_parent">
+        <TextView android:id="@+id/help_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:autoLink="web"
+            android:padding="8dip"
+            style="?android:attr/textAppearanceMedium"
+            />
 
-    <Spinner android:id="@+id/help_screen"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:drawSelectorOnTop="true"
-    />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/help_swipe_hint"
+                android:textColor="@color/view_minimal_text_color"
+                android:padding="8dip"
+                style="?android:attr/textAppearanceSmall"
+                />
 
-    <TextView android:id="@+id/help_text" 
-		android:layout_width="fill_parent" 
-        android:layout_height="fill_parent"
-        android:autoLink="web"
-        />
-
-	<LinearLayout android:layout_width="fill_parent"
-		android:layout_height="wrap_content" 
-		android:orientation="horizontal"
-		android:paddingTop="10dip"
-		>
-
-		<Button android:id="@+id/previous_button" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:layout_weight="1"
-			android:paddingLeft="5dip" android:paddingRight="5dip"
-			android:text="@string/previous_button_title" />
-
-		<Button android:id="@+id/next_button" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:paddingLeft="5dip"
-			android:layout_weight="1" android:paddingRight="5dip" 
-			android:text="@string/next_button_title" />
-
-	</LinearLayout>
-        
-</LinearLayout>
+    </LinearLayout>
 
 </ScrollView>

@@ -24,10 +24,7 @@
         <item>Personalizado</item>
         <item>Ref. Rápida (tickler)</item>
     </array>
-    <array name="view_types">
-        <item>Lista expansível</item>
-        <item>Lista drill-down</item>
-    </array>
+
     <array name="help_screens">
         <item>Introdução</item>
         <item>Caixa de Entrada</item>
@@ -38,11 +35,8 @@
         <item>Preferências</item>
         <item>Dicas úteis</item>
         <item>Agradecimentos</item>
-    </array>
-    <array name="preference_screens">
-        <item>Action appearance</item>
-        <item>Layout das listas</item>
-        <item>Clean up</item>
+        <item>Personalizado</item>
+        <item>Ref. Rápida (tickler)</item>
     </array>
 
     <!-- Choices for the "Reminder minutes" spinner.
