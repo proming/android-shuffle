@@ -242,11 +242,27 @@ public class TaskListFragment extends RoboListFragment
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        String addTitle = getString(R.string.menu_insert, getString(R.string.task_name));
+        String taskName = getString(R.string.task_name);
+        String addTitle = getString(R.string.menu_insert, taskName);
         menu.findItem(R.id.action_add).setTitle(addTitle);
 
-        menu.findItem(R.id.action_edit).setVisible(getListContext().showEditActions());
-        menu.findItem(R.id.action_delete).setVisible(getListContext().showEditActions());
+        MenuItem editMenu = menu.findItem(R.id.action_edit);
+        MenuItem deleteMenu = menu.findItem(R.id.action_delete);
+        MenuItem undeleteMenu = menu.findItem(R.id.action_undelete);
+        if (getListContext().showEditActions()) {
+            String entityName = getListContext().getEditEntityName(getActivity());
+            boolean entityDeleted = getListContext().isEditEntityDeleted(getActivity(), mContextCache, mProjectCache);
+            editMenu.setVisible(true);
+            editMenu.setTitle(getString(R.string.menu_edit, entityName));
+            deleteMenu.setVisible(!entityDeleted);
+            deleteMenu.setTitle(getString(R.string.menu_delete_entity, entityName));
+            undeleteMenu.setVisible(entityDeleted);
+            undeleteMenu.setTitle(getString(R.string.menu_undelete_entity, entityName));
+        } else {
+            editMenu.setVisible(false);
+            deleteMenu.setVisible(false);
+            undeleteMenu.setVisible(false);
+        }
     }
 
     @Override
@@ -268,7 +284,11 @@ public class TaskListFragment extends RoboListFragment
                 mEventManager.fire(mListContext.createEditEvent());
                 return true;
             case R.id.action_delete:
-                mEventManager.fire(mListContext.createDeleteEvent());
+                mEventManager.fire(mListContext.createDeleteEvent(true));
+                getActivity().finish();
+                return true;
+            case R.id.action_undelete:
+                mEventManager.fire(mListContext.createDeleteEvent(false));
                 getActivity().finish();
                 return true;
 

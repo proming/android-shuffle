@@ -26,6 +26,11 @@
           android:title="@string/menu_delete"
           android:visible="false"
           android:showAsAction="never" />
+    <item android:id="@+id/action_undelete"
+          android:icon="@drawable/ic_menu_trash_holo_light"
+          android:title="@string/menu_undelete"
+          android:visible="false"
+          android:showAsAction="never" />
     <item android:id="@+id/action_preferences"
           android:icon="@drawable/ic_menu_settings_holo_light"
           android:title="@string/menu_preferences"

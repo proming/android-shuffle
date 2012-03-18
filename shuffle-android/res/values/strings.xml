@@ -63,6 +63,8 @@
     <string name="menu_edit">Edit %s</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_undelete">Undelete</string>
+    <string name="menu_delete_entity">Delete %s</string>
+    <string name="menu_undelete_entity">Undelete %s</string>
     <string name="menu_revert">Revert</string>
     <string name="menu_discard">Discard</string>
     <string name="menu_preferences">Settings</string>

@@ -3,6 +3,7 @@ package org.dodgybits.shuffle.android.list.view.task;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
@@ -145,6 +146,46 @@ public class TaskListContext implements Parcelable {
         return getListQuery() == ListQuery.project || getListQuery() == ListQuery.context;
     }
     
+    public String getEditEntityName(Context context) {
+        String name;
+        switch (getListQuery()) {
+            case context:
+                name = context.getString(R.string.context_name);
+                break;
+
+            case project:
+                name = context.getString(R.string.project_name);
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Cannot create edit event for listContext " + this);
+        }
+
+        return name;
+    }
+    
+    public boolean isEditEntityDeleted(Context androidContext,
+                                       EntityCache<org.dodgybits.shuffle.android.core.model.Context> contextCache,
+                                       EntityCache<Project> projectCache) {
+        boolean isDeleted;
+        switch (getListQuery()) {
+            case context:
+                org.dodgybits.shuffle.android.core.model.Context context = contextCache.findById(mSelector.getContextId());
+                isDeleted = context.isDeleted();
+                break;
+
+            case project:
+                Project project = projectCache.findById(mSelector.getProjectId());
+                isDeleted = project.isDeleted();
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Cannot create edit event for listContext " + this);
+        }
+
+        return isDeleted;
+    }
+    
     public Object createEditEvent() {
         Object event;
         switch (getListQuery()) {
@@ -162,15 +203,15 @@ public class TaskListContext implements Parcelable {
         return event;
     }
 
-    public Object createDeleteEvent() {
+    public Object createDeleteEvent(boolean delete) {
         Object event;
         switch (getListQuery()) {
             case context:
-                event = new UpdateContextDeletedEvent(mSelector.getContextId());
+                event = new UpdateContextDeletedEvent(mSelector.getContextId(), delete);
                 break;
 
             case project:
-                event = new UpdateProjectDeletedEvent(mSelector.getProjectId());
+                event = new UpdateProjectDeletedEvent(mSelector.getProjectId(), delete);
                 break;
 
             default:
