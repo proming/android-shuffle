@@ -28,7 +28,7 @@
         <EditText android:id="@+id/name"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:paddingTop="16dip"
+                  android:layout_marginTop="16dip"
                   android:hint="@string/project_name_title"
                   android:autoText="true"
                   android:singleLine="true"
