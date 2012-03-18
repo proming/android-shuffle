@@ -63,6 +63,7 @@ public class ListSettingsCache {
 
     public static Intent createListSettingsEditorIntent(Context context, ListQuery query) {
         Intent intent = new Intent(context, ListSettingsEditorActivity.class);
+        intent.putExtra(ListSettingsEditorActivity.LIST_QUERY_EXTRA, query.name());
         ListSettings settings = ListSettingsCache.findSettings(query);
         settings.addToIntent(intent);
         return intent;

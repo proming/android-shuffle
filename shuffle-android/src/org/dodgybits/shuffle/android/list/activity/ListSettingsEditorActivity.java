@@ -8,13 +8,17 @@ import android.util.Log;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.util.Constants;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
+import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
+import roboguice.activity.RoboPreferenceActivity;
 
-public class ListSettingsEditorActivity extends PreferenceActivity {
+public class ListSettingsEditorActivity extends RoboPreferenceActivity {
     private static final String TAG = "ListSettingsEditor";
 
+    public static final String LIST_QUERY_EXTRA = "listQuery";
+    
     private static final String[] CONTEXT_PROJECTION = new String[] {
             ContextProvider.Contexts._ID,
             ContextProvider.Contexts.NAME
@@ -26,14 +30,16 @@ public class ListSettingsEditorActivity extends PreferenceActivity {
     };
 
     private ListSettings mSettings;
+    private ListQuery mListQuery;
     private boolean mPrefsChanged;
     private ListListener mListListener;
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mSettings = ListSettings.fromIntent(getIntent());
+        mListQuery = ListQuery.valueOf(getIntent().getStringExtra(LIST_QUERY_EXTRA));
         mListListener = new ListListener();
         
         setupScreen();
@@ -51,7 +57,9 @@ public class ListSettingsEditorActivity extends PreferenceActivity {
         super.onPause();
 
         if (mPrefsChanged) {
-            sendBroadcast(new Intent(ListSettings.LIST_PREFERENCES_UPDATED));
+            Intent intent = new Intent(ListSettings.LIST_PREFERENCES_UPDATED);
+            intent.putExtra(LIST_QUERY_EXTRA, mListQuery.name());
+            sendBroadcast(intent);
         }
     }
 

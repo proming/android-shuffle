@@ -302,7 +302,7 @@ public class TaskListFragment extends RoboListFragment
         Log.d(TAG, "Got resultCode " + resultCode + " with data " + data);
         switch (requestCode) {
             case FILTER_CONFIG:
-                restartLoading();
+                mEventManager.fire(new ListSettingsUpdatedEvent(getListContext().getListQuery()));
                 break;
 
             default:
@@ -332,6 +332,13 @@ public class TaskListFragment extends RoboListFragment
     public void onQuickAddEvent(@Observes QuickAddEvent event) {
         if (getUserVisibleHint() && mResumed) {
             mEventManager.fire(getListContext().createNewTaskEventWithDescription(event.getValue()));
+        }
+    }
+
+    public void onListSettingsUpdated(@Observes ListSettingsUpdatedEvent event) {
+        if (event.getListQuery().equals(getListContext().getListQuery())) {
+            // our list settings changed - reload list (even if this list isn't currently visible)
+            restartLoading();
         }
     }
 
