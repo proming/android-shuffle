@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import com.google.common.base.Objects;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Id;
@@ -21,6 +22,9 @@ import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.core.util.TextColours;
+import org.dodgybits.shuffle.android.core.view.ContextIcon;
+
+import java.util.Map;
 
 /**
  * This custom View is the list item for the MessageList activity, and serves two purposes:
@@ -64,13 +68,19 @@ public class TaskListItem extends View {
     private static final TextPaint sContextPaint = new TextPaint();
     private static final Paint sContextBackgroundPaint = new Paint();
 
-    private static int sBadgeMargin;
+    private static int sContextPadding;
+    private static int sContextRounding;
+    
     private static Bitmap sSelectedIconOn;
     private static Bitmap sSelectedIconOff;
     private static Bitmap sStateInactive;
     private static Bitmap sStateDeleted;
-    private static String sContentsSnippetDivider;
+    private static Bitmap sStateCompleted;
 
+    private static String sContentsSnippetDivider;
+    
+    private static Map<String, Bitmap> mContextIconMap;
+    
     // Static colors.
     private static int ACTIVATED_TEXT_COLOR;
     private static int DESCRIPTION_TEXT_COLOR_COMPLETE;
@@ -80,8 +90,8 @@ public class TaskListItem extends View {
     private static int PROJECT_TEXT_COLOR_COMPLETE;
     private static int PROJECT_TEXT_COLOR_INCOMPLETE;
     private static int DATE_TEXT_COLOR_COMPLETE;
-    private static int DATE_TEXT_COLOR_INCOMPLETE;
 
+    private static int DATE_TEXT_COLOR_INCOMPLETE;
     private Project mProject;
     private SpannableStringBuilder mText;
     private String mSnippet;
@@ -91,8 +101,10 @@ public class TaskListItem extends View {
     private boolean mIsActive = true;
     private boolean mIsDeleted = false;
     private org.dodgybits.shuffle.android.core.model.Context mContext;
+    private String mContextName;
     private int mContextTextColor;
     private int mContextBackgroundColor;
+    private CharSequence mFormattedContext;
 
     private int mViewWidth = 0;
     private int mViewHeight = 0;
@@ -128,7 +140,9 @@ public class TaskListItem extends View {
             sContextPaint.setTypeface(Typeface.DEFAULT);
             sContextPaint.setAntiAlias(true);
 
-            sBadgeMargin = r.getDimensionPixelSize(R.dimen.message_list_badge_margin);
+            sContextPadding = r.getDimensionPixelSize(R.dimen.task_list_context_padding);
+            sContextRounding = r.getDimensionPixelSize(R.dimen.task_list_context_rounding);
+            
             sSelectedIconOff =
                     BitmapFactory.decodeResource(r, R.drawable.btn_check_off_normal_holo_light);
             sSelectedIconOn =
@@ -138,7 +152,11 @@ public class TaskListItem extends View {
                     BitmapFactory.decodeResource(r, R.drawable.ic_badge_inactive);
             sStateDeleted =
                     BitmapFactory.decodeResource(r, R.drawable.ic_badge_delete);
+            sStateCompleted =
+                    BitmapFactory.decodeResource(r, R.drawable.ic_badge_complete);
 
+            mContextIconMap = Maps.newHashMap();        
+    
             ACTIVATED_TEXT_COLOR = r.getColor(android.R.color.black);
             DESCRIPTION_TEXT_COLOR_COMPLETE = r.getColor(R.color.description_text_color_complete);
             DESCRIPTION_TEXT_COLOR_INCOMPLETE = r.getColor(R.color.description_text_color_incomplete);
@@ -151,6 +169,16 @@ public class TaskListItem extends View {
 
             sInit = true;
         }
+    }
+    
+    private Bitmap getContextIcon(String iconName) {
+        Bitmap icon = mContextIconMap.get(iconName);
+        if (icon == null) {
+            ContextIcon contextIcon = ContextIcon.createIcon(iconName, mAndroidContext.getResources());
+            icon = BitmapFactory.decodeResource(mAndroidContext.getResources(), contextIcon.smallIconId);
+            mContextIconMap.put(iconName, icon);
+        }
+        return icon;
     }
 
     /**
@@ -169,29 +197,44 @@ public class TaskListItem extends View {
         mTaskId = task.getLocalId().getId();
         mIsCompleted = task.isComplete();
         setProject(task.getProjectId());
-        setContext(task.getContextId());
         mIsActive = task.isActive() && (mProject == null || mProject.isActive()) && (mContext == null || mContext.isActive());
         mIsDeleted = task.isDeleted() || (mProject != null && mProject.isDeleted()) || (mContext != null && mContext.isDeleted());
-        setText(task.getDescription() + " (" + task.getOrder() + ")", task.getDetails(), false);
         setTimestamp(task.getDueDate());
+
+        boolean changed = setContext(task.getContextId());
+        changed |= setText(task.getDescription(), task.getDetails());
+        
+        if (changed) {
+            requestLayout();
+        }
     }
 
     private void setProject(Id projectId) {
         mProject = mProjectCache.findById(projectId);
     }
     
-    private void setContext(Id contextId) {
+    private boolean setContext(Id contextId) {
+        boolean changed = false;
+
         mContext = mContextCache.findById(contextId);
         if (mContext != null) {
             mContextTextColor = sTextColours.getTextColour(mContext.getColourIndex());
             mContextBackgroundColor = sTextColours.getBackgroundColour(mContext.getColourIndex());
         }
+
+        String contextName = mContext == null ? "" : mContext.getName();
+        if (!Objects.equal(mContextName, contextName)) {
+            mContextName = contextName;
+            changed = true;
+        }
+        
+        return changed;
     }
     
     /**
      * Sets message contents and snippet safely, ensuring the cache is invalidated.
      */
-    private void setText(String description, String snippet, boolean forceUpdate) {
+    private boolean setText(String description, String snippet) {
         boolean changed = false;
         if (!Objects.equal(mDescription, description)) {
             mDescription = description;
@@ -203,7 +246,7 @@ public class TaskListItem extends View {
             changed = true;
         }
 
-        if (forceUpdate || changed || (mDescription == null && mSnippet == null) /* first time */) {
+        if (changed || (mDescription == null && mSnippet == null) /* first time */) {
             SpannableStringBuilder ssb = new SpannableStringBuilder();
             boolean hasContents = false;
             if (!TextUtils.isEmpty(mDescription)) {
@@ -220,14 +263,17 @@ public class TaskListItem extends View {
                 ssb.append(mSnippet);
             }
             mText = ssb;
-            requestLayout();
+            changed = true;
         }
+        
+        return changed;
     }
 
-    long mTimeFormatted = 0;
+    long mTimeFormatted = 0L;
     private void setTimestamp(long timestamp) {
         if (mTimeFormatted != timestamp) {
-            mFormattedDate = DateUtils.getRelativeTimeSpanString(mAndroidContext, timestamp).toString();
+            mFormattedDate = timestamp == 0L ? "" :
+                    DateUtils.getRelativeTimeSpanString(mAndroidContext, timestamp).toString();
             mTimeFormatted = timestamp;
         }
     }
@@ -264,7 +310,6 @@ public class TaskListItem extends View {
         if (mText == null || mText.length() == 0) {
             return;
         }
-        boolean hasContents = false;
         int snippetStart = 0;
         if (!TextUtils.isEmpty(mDescription)) {
             int contentsColor = getFontColor(isDone() ? DESCRIPTION_TEXT_COLOR_COMPLETE
@@ -292,20 +337,33 @@ public class TaskListItem extends View {
                     sDefaultPaint, mCoordinates.contentsWidth, Layout.Alignment.ALIGN_NORMAL, 1, 0, true);
         }
 
-        // Now, format the project for its width
+        // Calculate the size the context wants to be
+        TextPaint contextPaint = sContextPaint;
+        contextPaint.setTextSize(mCoordinates.contextsFontSize);
+        contextPaint.setColor(mContextTextColor);
+        int contextTextWidth = (int)sContextPaint.measureText(mContextName, 0, mContextName.length());
+
+        // And the project...
         TextPaint projectPaint = isDone() ? sDefaultPaint : sBoldPaint;
-        // And get the ellipsized string for the calculated width
-        if (mProject == null) {
-            mFormattedProject = "";
-        } else {
-            int projectWidth = mCoordinates.projectWidth;
-            projectPaint.setTextSize(mCoordinates.projectFontSize);
-            projectPaint.setColor(getFontColor(isDone() ? PROJECT_TEXT_COLOR_COMPLETE
-                    : PROJECT_TEXT_COLOR_INCOMPLETE));
-            mFormattedProject = TextUtils.ellipsize(mProject.getName(), projectPaint, projectWidth,
-                    TextUtils.TruncateAt.END);
-        }
+        String projectName = mProject == null ? "" : mProject.getName();
+        projectPaint.setTextSize(mCoordinates.projectFontSize);
+        projectPaint.setColor(getFontColor(isDone() ? PROJECT_TEXT_COLOR_COMPLETE
+                : PROJECT_TEXT_COLOR_INCOMPLETE));
+        int projectTextWidth = (int)projectPaint.measureText(projectName, 0, projectName.length());
+        
+        // if project needs less that it's given, give that to the context...
+        int spareWidth = Math.max(0, mCoordinates.projectWidth - projectTextWidth);
+        int contextWidth = mCoordinates.contextsWidth + spareWidth;
+        mFormattedContext = TextUtils.ellipsize(mContextName, contextPaint, contextWidth,
+                TextUtils.TruncateAt.END);
+
+        // and visa versa
+        spareWidth = Math.max(0, mCoordinates.contextsWidth - contextTextWidth);
+        int projectWidth = mCoordinates.projectWidth + spareWidth;
+        mFormattedProject = TextUtils.ellipsize(projectName, projectPaint, projectWidth,
+                TextUtils.TruncateAt.END);
     }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (widthMeasureSpec != 0 || mViewWidth == 0) {
@@ -376,9 +434,12 @@ public class TaskListItem extends View {
                 mCoordinates.projectX, mCoordinates.projectY - mCoordinates.projectAscent,
                 projectPaint);
 
-        // Draw the reply state. Draw nothing if neither replied nor forwarded.
+        // Draw the task state. Most important being deleted, then complete, then inactive
         if (mIsDeleted) {
             canvas.drawBitmap(sStateDeleted,
+                    mCoordinates.stateX, mCoordinates.stateY, null);
+        } else if (mIsCompleted) {
+            canvas.drawBitmap(sStateCompleted,
                     mCoordinates.stateX, mCoordinates.stateY, null);
         } else if (!mIsActive) {
             canvas.drawBitmap(sStateInactive,
@@ -403,21 +464,58 @@ public class TaskListItem extends View {
         canvas.drawText(mFormattedDate, 0, mFormattedDate.length(),
                 dateX, mCoordinates.dateY - mCoordinates.dateAscent, sDatePaint);
 
-        int padding = 5;
-        int contextPadding = mCoordinates.dateX - (mCoordinates.contextsX + mCoordinates.contextsWidth + padding);
-        int contextsX = dateX - (mCoordinates.contextsWidth + contextPadding);
-
         // Draw the context
         if (mContext != null) {
-            sContextBackgroundPaint.setColor(mContextBackgroundColor);
-            canvas.drawRect(contextsX - padding, mCoordinates.contextsY - padding, contextsX + mCoordinates.contextsWidth + padding,
-                    mCoordinates.contextsY + mCoordinates.contextsHeight + padding, sContextBackgroundPaint);
             sContextPaint.setTextSize(mCoordinates.contextsFontSize);
-            sContextPaint.setColor(getFontColor(mContextTextColor));
-            canvas.drawText(mContext.getName(), 0, mContext.getName().length(),
+            sContextPaint.setColor(mContextTextColor);
+            int contextTextWidth = (int)sContextPaint.measureText(mFormattedContext, 0, mFormattedContext.length());
+            int contextsX = dateX - (contextTextWidth + sContextPadding * 4);
+
+
+            boolean hasIcon = !TextUtils.isEmpty(mContext.getIconName());
+            int contextIconX = contextsX - (mCoordinates.contextIconWidth + sContextPadding);
+            
+            RectF backgroundRectF;
+            if (hasIcon)
+            {
+                backgroundRectF = new RectF(contextIconX - sContextPadding, mCoordinates.contextsY - sContextPadding,
+                        contextsX + contextTextWidth + sContextPadding * 2,
+                        mCoordinates.contextsY + mCoordinates.contextsHeight + sContextPadding);
+            } else {
+                backgroundRectF = new RectF(contextsX - sContextPadding, mCoordinates.contextsY - sContextPadding,
+                        contextsX + contextTextWidth + sContextPadding * 2,
+                        mCoordinates.contextsY + mCoordinates.contextsHeight + sContextPadding);
+            }
+            sContextBackgroundPaint.setShader(getShader(mContextBackgroundColor, backgroundRectF));
+            canvas.drawRoundRect(backgroundRectF, sContextRounding, sContextRounding, sContextBackgroundPaint);
+
+            if (hasIcon) {
+                Bitmap contextIcon = getContextIcon(mContext.getIconName());
+                canvas.drawBitmap(contextIcon, contextIconX, mCoordinates.contextsY, null);
+            }
+
+            canvas.drawText(mFormattedContext, 0, mFormattedContext.length(),
                     contextsX, mCoordinates.contextsY - mCoordinates.contextsAscent,
                     sContextPaint);
         }
+    }
+    
+    private Shader getShader(int colour, RectF rect) {
+        final float startOffset = 1.1f;
+        final float endOffset = 0.9f;
+        
+        int[] colours = new int[2];
+        float[] hsv1 = new float[3];
+        float[] hsv2 = new float[3];
+        Color.colorToHSV(colour, hsv1);
+        Color.colorToHSV(colour, hsv2);
+        hsv1[2] *= startOffset;
+        hsv2[2] *= endOffset;
+        colours[0] = Color.HSVToColor(hsv1);
+        colours[1] = Color.HSVToColor(hsv2);
+
+        return new LinearGradient(rect.left, rect.top, rect.left, rect.bottom,
+                colours, null, Shader.TileMode.CLAMP);
     }
 
     /**

@@ -53,6 +53,9 @@ public class TaskListItemCoordinates {
     int contextsHeight;
     int contextsAscent;
 
+    int contextIconWidth;
+    int contextIconHeight;
+    
     // Date.
     int dateX;
     int dateXEnd;
@@ -181,6 +184,10 @@ public class TaskListItemCoordinates {
             coordinates.contextsHeight = getHeight(contexts, false);
             coordinates.contextsFontSize = (int) contexts.getTextSize();
             coordinates.contextsAscent = Math.round(contexts.getPaint().ascent());
+
+            View contextIcon = view.findViewById(R.id.context_icon);
+            coordinates.contextIconWidth = getWidth(contextIcon, false);
+            coordinates.contextIconHeight = getHeight(contextIcon, false);
 
             TextView date = (TextView) view.findViewById(R.id.date);
             coordinates.dateX = UiUtilities.getX(date);
