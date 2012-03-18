@@ -38,6 +38,7 @@
      <PreferenceCategory
         android:title="@string/sync_preferences">
 
+         <!--
         <PreferenceScreen
                 android:title="@string/appengine_synchronization_settings">
 
@@ -45,7 +46,8 @@
                 android:targetPackage="org.dodgybits.android.shuffle"
                 android:targetClass="org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity" />
         </PreferenceScreen>
-
+-->
+         
         <PreferenceScreen
                 android:title="@string/changeSynchronizationSettings">
 
