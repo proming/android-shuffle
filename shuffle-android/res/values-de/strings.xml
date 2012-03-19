@@ -130,10 +130,7 @@
 
     <!-- What's new dialog -->
     <string name="whats_new_dialog_title">Shuffle</string>
-    <string name="whats_new_dialog_message">Danke, dass Sie Shuffle heruntergeladen haben.\n\n
-        <b>Neu in dieser Version:</b>
-
-\t• gesamte Oberfläche neu gestaltet\n
+    <string name="whats_new_dialog_message">anke, dass Sie Shuffle heruntergeladen haben.\n\n<b>Neu in dieser Version:</b>\t• gesamte Oberfläche neu gestaltet\n
 \t• Vollständige ICS-Unterstützung\n
 \t• Wischen, um zwischen Ansichten umzuschalten\n
 \t• Widgets und Shortcuts für Kategorien und Projekte\n
@@ -193,7 +190,7 @@
 
 \t• Patch für mehrere Trackssynchronisationsfehler\n
 
-\n<b>Neu in Version 1.5.0:</b>\n
+\n<b>Neu in Version 1.5.0:</b>n
 \t• Handlungen können nun gesucht werden\n
 \t• Handlungen werden aus dem Eingang entfernt, sobald Projekt oder Kategorie gesetzt wurde\n
 \t• Handlungen ohne Projekt werden und Nächste Handlungen angezeigt\n
@@ -204,8 +201,7 @@
 \n
 \n
 Bitte beachten Sie: diese Anwendung sendet anonyme Nutzungsstatistiken an einen Server. Falls Sie dies 
-lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.
-</string>
+lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</string>
 
     <!-- task view screen -->
     <string name="complete_toggle_button">Mark %s</string> <!-- TODO -->
@@ -400,6 +396,7 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.
     <string name="skip">Überspringen</string>
     <!-- App Engine synchronization -->
 
+
     <!-- Notification message -->
     <string name="unregistration_succeeded">%1$s für C2DM-Nachrichten abgemeldet.</string>
 
@@ -425,179 +422,193 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.
     <string name="error_title">Fehler</string>
     <string name="error_message">Fehler beim Laden der Handlung</string>
     <string name="web_error_message">Konnte keine Verbindung zu Tracks aufbauen.</string>
-    <string name="welcome1">
-        Willkommen in Shuffle, einem Organisationsprogramm, das von \"Getting 
+    <string name="welcome1">        Willkommen in Shuffle, einem Organisationsprogramm, das von \"Getting 
         Things Done\" inspiriert wurde. Wenn Sie erfahren wollen, wie Sie 
         Shuffle am besten benutzen, wählen Sie \"Beispieleinträge\". Es werden 
         dann einige Beispiele geladen.\n
         
         Später können Sie noch einmal neu anfangen, indem Sie \"Alles Löschen!\"
-        im Einstellungsmenü wählen.
-    </string>
-    <string name="welcome2">
-        Natürlich können Sie auch direkt ohne Beispiele beginnen. Es werden nur 
+        im Einstellungsmenü wählen.</string>
+    <string name="welcome2">        Natürlich können Sie auch direkt ohne Beispiele beginnen. Es werden nur 
         die Standardkategorien erstellt.</string>
-    <string name="welcome3">
-        Sehen Sie sich die Hilfe an, um weitere Anweisungen und Tipps zu erhalten.
-        </string>
-
-    <string name="help0">
-        Shuffle ist ein Organisationsprogramm, das von \"Getting Things Done\" 
+    <string name="welcome3">        Sehen Sie sich die Hilfe an, um weitere Anweisungen und Tipps zu erhalten.</string>
+    <string name="help0">        
+        <p>Shuffle ist ein Organisationsprogramm, das von \"Getting Things Done\" 
         inspiriert wurde. Man kann schnell \'Handlungen\' erstellen, und diese 
         sofort kategorisieren. Mit 5 verschiedenen Ansichten können Sie Ihre 
         Handlungen so angehen, wie Sie es wollen.\n
-        
+        </p>
+    	  <p>    
         Ein einfacher Arbeitsablauf ermutigt Sie dazu, ihre Handlungen in 
         Projekten zusammenzufassen und optional auch einer Kategorie zuzuweisen.
         Durch dieses Vorgehen können schwierige Projekte in kleine, machbare 
         Aufgaben geteilt werden.\n
-        
-        Wenn das Projekt fortschreitet, können erledigte Handlungen entfernt 
+        </p>
+    	  <p>
+	      Wenn das Projekt fortschreitet, können erledigte Handlungen entfernt 
         werden, anfallende Handlungen neu erzeugt werden und Ihre verbleibenden 
         Handlungen nach Ihren Prioritäten angeordnet werden.
-</string>
-
+        </p>
+        </string>
     <string name="help1">
+        <p>
         Hier ist der beste Platz, um neue Handlungen zu erstellen. Der 
-        <b>Eingang</b>sammelt alle Handlungen, bevor sie weiterverarbeitet 
+        <b>Eingang</b> sammelt alle Handlungen, bevor sie weiterverarbeitet
         werden. Sie sollten Ihren Eingang regelmäßig durchgehen, jede Handlung 
         überprüfen, und diese dann löschen, erledigen, delegieren, einem Projekt
-         oder einer Kategorie zuweisen.\n
-         
-         Sollten Sie einer Handlung ein Projekt, eine Kategorie, oder beides 
-         zuweisen, wird sie automatisch aus dem Eingang entfernt.
-</string>
+        oder einer Kategorie zuweisen.\n
+        </p>
+        <p>
+        Sollten Sie einer Handlung ein Projekt, eine Kategorie, oder beides 
+        zuweisen, wird sie automatisch aus dem Eingang entfernt.
+        </p>
+    </string>
     <string name="help2">
-        Die <b>Projektansicht</b>listet alle Ihre Projekte auf und erlaubt Ihnen,
+        <p>
+        Die <b>Projektansicht</b>istet alle Ihre Projekte auf und erlaubt Ihnen,
         die Handlungen eines Projekts anzusehen. Zusätzlich zu den 
         Standardfunktionen \"Hinzufügen\", \"Bearbeiten\" \"Löschen\" können Sie
         hier die Handlungen neu anordnen, um diese in der von Ihnen 
         geüwnschten Reihenfolge abzuarbeiten.\n
-        
+		</p>
+		<p>
         Für einige Projekte macht es Sinn, die Handlungen nacheinander 
         auszuführen; bei anderen können Sie in beliebiger ausgeführt werden. 
         Dies können Sie auch in Shuffle einstellen. Projekte können genau wie 
         Kategorien mit verschiedenen Ansichten betrachtet werden. Bei 
         Einzelansicht öffnet der Klick auf ein Projekt einen neuen Bildschirm, 
-        auf dem die Handlungen zu sehen sind. In der Erweiterungsansicht werden die Handlungen nach einem Klick auf dem selben Bildschirm gezeigt.
-</string>
-
+        auf dem die Handlungen zu sehen sind. In der Erweiterungsansicht werden 
+        die Handlungen nach einem Klick auf dem selben Bildschirm gezeigt.
+        </p>
+    </string>
     <string name="help3">
-        <b>Kategorien</b>sind verschiedene Situationen, in denen Sie Handlungen 
-        erledigen können. Shuffle erstellt zu Beginn folgende Standardkategorien:
-        <i>Zu Hause</i>, <i>Auf der Arbeit</i>, <i>Online</i>, <i>Besorgungen</i>, 
-        <i>Kontakte</i> und <i>Zu Lesen</i>\n
-
+        <p>
+        <b>Kategorien</b>ind verschiedene Situationen, in denen Sie Handlungen 
+        erledigen können. Shuffle erstellt zu Beginn folgende Standardkategorien
+        :<i>Zu Hause</i>, <i>Auf der Arbeit</i>, <i>Online</i>, 
+        <i>Besorgungen</i><i>Kontakte</i> und <i>Zu Lesen</i>\n
+		</p>
+		<p>
 		Beispielweise können Sie in der Stadt unterwegs sein. Deshalb überprüfen
-		Sie "Besorgungen" und sehen, dass sie noch frische Milche besorgen müssen.\n
-		        
+		Sie "Besorgungen" und sehen, dass sie noch frische Milche besorgen 
+		müssen.\n
+		</p>
+		<p>
         Es steht Ihnen frei, die vorhandenen Kategorien zu bearbeiten, zu 
         löschen, oder eigene Kategorien hinzuzufügen, die am besten zu Ihnen 
         passen.\n
-        
+		</p>
+		<p>
         Wie auch die Projektansicht kann die Kategorieansicht entweder mit 
         Einzelansicht oder mit Erweiterungsansicht betrachtet werden. Dies kann 
         in den Einstellungen geändert werden.
-</string>
-
-    <string name="help4">
-        Unter <b>Nächste Schritte</b> können Sie am besten feststellen, was als 
+        </p>
+        </string>
+    <string name="help4">        
+		<p>
+		Unter <b>Nächste Schritte</b>können Sie am besten feststellen, was als 
         nächstes erledigt werden muss.\n
-        
+        </p>
+		<p>
         Hier werden jeweils gezeigt:\n
         - Handlungen ohne Projekt\n
         - die ersten unerledigten Handlungen Ihrer sequentiellen Projekte\n
         - alle Handlungen in "parallenen" Projekten\n\n
-        
+		</p>        
+		<p>
         Die Reihenfolge, in der die Handlungen eines Projekts erledigt 
         werden müssen, können Sie in der Projektansicht selbst festlegen.
-</string>
-
-    <string name="help5">
-        Unter <b>Fällige Handlungen</b> können Sie feststellen, welchen 
+        </p>
+        </string>
+    <string name="help5">        
+		<p>
+	    Unter <b>Fällige Handlungen</b> können Sie feststellen, welchen 
         Handlungen Sie einen bestimmten Fälligkeitstermin zugewiesen haben. Es 
-        gibt hier 3 Ansichten - <i>Heute</i>, <i>Woche</i> und <i>Monat</i>-, 
+        gibt hier 3 Ansichten - <i>Heute</i>, <i>Woche</i> und <i>Monat</i>, 
         welche Ihnen fällige Aufgaben für den entsprechenden Zeitraum zeigen. 
         Unerledigte Aufgaben, die bereits fällig waren, werden in jeder Ansicht 
         gezeigt.
-</string>
-
-     <string name="help6">
-         Viele Teile von Shuffle sind an den Benutzer anpassbar. Die 
-         <b>Einstellungen</b> sind von überall über das Menü zu erreichen.\n
-         
-         <b>Kalender</b> - Wählen Sie den Kalender, den Shuffle benutzen soll\n
-         
-         <b>Listenansicht</b> - Projekte und Kategorien können auf zwei 
-         verschiedene Weisen angezeigt werden: Einzelansicht oder 
-         Erweiterungsansicht.\n
-         
-         <b>Handlungsansicht</b>- Hier können Sie anpassen, welche Informationen
-         über jede Handlung angezeigt werden. Diese Einstellung betrifft jede 
-         Ansicht.\n
-         
-         <b>Aufräumen</b>- Löscht entweder alle erledigten Handlungen oder 
-         alles.\n
-         
-         <b>Synchronisierungseinstellungen</b> - Setzen Sie eine website, mit 
-         der sich Shuffle synchronisieren soll\n
-         
-         <b>Sicherung auf SD-Karte</b> - Speichern Sie alle ihre Handlungen,
-         Kategorien und Projekte auf die SD-Karte. Sie können Sie dann auf ihrem
-         Computer sichern.\n
-         
-         <b>Von SD-Karte wiederherstellen</b> - Alle daten werden aus einer 
-         Sicherung wiederhergestellt. Shufflen kann keine Duplikate erkennen;
-         sie sollten also vor einer Wiederherstellung alle Daten aus Shuffle 
-         löschen.
-         
-         <b>Abgeschlossene handlungen löschen</b> - Alle abgeschlossenen 
-         Handlungen dauerhaft löschen\n
-                 
-         <b>Alles löschen!</b> - Dauerhaft alle Handlungen, Projekte und 
-         Kategorien löschen\n
-</string>
+        </p>
+        </string>
+    <string name="help6">
+		<p>
+		Viele Teile von Shuffle sind an den Benutzer anpassbar. Die 
+		<b>Einstellungen</b>sind von überall über das Menü zu erreichen.\n
+		<b>Kalender</b>- Wählen Sie den Kalender, den Shuffle benutzen soll\n
+		<b>Listenansicht</b>- Projekte und Kategorien können auf zwei 
+        verschiedene Weisen angezeigt werden: Einzelansicht oder 
+        Erweiterungsansicht.\n
+        <b>Handlungsansicht</b> Hier können Sie anpassen, welche Informationen
+        über jede Handlung angezeigt werden. Diese Einstellung betrifft jede 
+        Ansicht.\n
+        <b>Aufräumen</b> Löscht entweder alle erledigten Handlungen oder 
+        alles.\n
+        <b>Synchronisierungseinstellungen</b>- Setzen Sie eine website, mit 
+        der sich Shuffle synchronisieren soll\n
+        <b>Sicherung auf SD-Karte</b>- Speichern Sie alle ihre Handlungen,
+        Kategorien und Projekte auf die SD-Karte. Sie können Sie dann auf ihrem
+        Computer sichern.\n
+        <b>Von SD-Karte wiederherstellen</b>- Alle daten werden aus einer 
+        Sicherung wiederhergestellt. Shufflen kann keine Duplikate erkennen;
+        sie sollten also vor einer Wiederherstellung alle Daten aus Shuffle 
+        löschen.
+        <b>Abgeschlossene handlungen löschen</b>- Alle abgeschlossenen 
+        Handlungen dauerhaft löschen\n
+        <b>Alles löschen!</b>- Dauerhaft alle Handlungen, Projekte und 
+        Kategorien löschen\n
+    	</p>    
+    </string>
     <string name="help7">
-        Einige nützliche Tipps für Sie:\n
-1) In almost all views, swipe left or right to navigate between similar views.\n
-2) All lists have View Settings to let you pick exactly what you want to see. For instance whether to show completed or deleted actions.\n
-3) Enabled the Quick Add Bar via View Settings on any view to quickly add actions, projects and contexts in place.\n
-4) Hitting the Back button saves before closing.\n
-5) Create shortcuts on your Home Screens for various Shuffle views and actions\n
-6) Add a widget to your Home Screen to get a quick view on any list\n
-7) In Global Settings > Search, enable Shuffle for actions to appear in Quick Search Box queries\n
+        <p>
+       Einige nützliche Tipps für Sie:\n
+
+        1) In almost all views, swipe left or right to navigate between similar views.\n
+
+        2) All lists have View Settings to let you pick exactly what you want to see. For instance whether to show completed or deleted actions.\n
+
+        3) Enabled the Quick Add Bar via View Settings on any view to quickly add actions, projects and contexts in place.\n
+
+        4) Hitting the Back button saves before closing.\n
+
+        5) Create shortcuts on your Home Screens for various Shuffle views and actions\n
+
+        6) Add a widget to your Home Screen to get a quick view on any list\n
+
+        7) In Global Settings > Search, enable Shuffle for actions to appear in Quick Search Box queries\n
+        </p>
 </string>
-    
     <string name="help8">
+        <p>
         Danke an das Team vom Tango Desktop Project, welches eine 
         Open-Source-Sammlung an Icons bereitstellt, die in Shuffle verwendet 
         wird. Danke auch an David Gibb, der mir tolles Feedback bezüglich des 
         Designs gegeben hat, und an Gudrun, die es toleriert hat, dass ich meine 
         Nächte und Wochenenden mit Android verbracht habe.\n\n
-        
+        </p>
+        <p>        
         Um Feedback oder einen Bugreport einzureichen, besuchen Sie bitte 
         http://code.google.com/p/android-shuffle/issues/list oder schicken Sie 
         eine Mail an andy@dodgybits.org (nur Englisch).
-</string>
-
+        </p>
+    </string>
     <string name="help9">
-        <b>Anpassbar:</b> standardmäßig werden alle Handlungen gezeigt. Passen 
+        <p>
+        <b>Anpassbar:</b>standardmäßig werden alle Handlungen gezeigt. Passen 
         Sie die ansichteneinstellungen an, um das anzuzeigen, was Sie wirklich
         sehen wollen. 
-        </string>
+        </p>
+    </string>
     <string name="help10">
-        <b>Erinnerungen</b> zeigt Handlungen, die Sie pausiert haben - aus 
+        <p><b>Erinnerungen</b>zeigt Handlungen, die Sie pausiert haben - aus 
         welchen Gründen auch immmer. Standardmäßig werden auch Handlungen 
         angezeigt, die in der Zukunft starten. Die können Sie jedoch - über die
         Ansichteneinstellung - ändern. Beispielsweise können sie alle inaktiven 
         Handlungen - Handlungen, deren Projekt oder Kategorie inaktiv sind - 
         anzeigen. 
-</string>
+        </p>
+    </string>
+    <string name="help_swipe_hint">Wischen Sie, um in der Hilfe zu navigieren</string>
 
-    
-     <string name="help_swipe_hint">Wischen Sie, um in der Hilfe zu navigieren</string>
-    
-       
     <!-- Reminder format strings -->
     <plurals name="Nminutes">
 
@@ -644,6 +655,7 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.
          a reminder of 1 hour would be displayed as '1 hour'.  The translation
          should use the shortest acceptable abbreviation of 'hour' to save space.
     -->
+
 
     <!-- new task list -->
 
