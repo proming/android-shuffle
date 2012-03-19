@@ -131,7 +131,8 @@
     <!-- What's new dialog -->
     <string name="whats_new_dialog_title">Shuffle</string>
     <string name="whats_new_dialog_message">Danke, dass Sie Shuffle heruntergeladen haben.\n\n
-        <b>Neu in dieser Version:</b>n
+        <b>Neu in dieser Version:</b>
+
 \t• gesamte Oberfläche neu gestaltet\n
 \t• Vollständige ICS-Unterstützung\n
 \t• Wischen, um zwischen Ansichten umzuschalten\n
@@ -145,16 +146,19 @@
 \t• Anpassbare Handlungsansicht\n
 \t• Changelog auf Deutsch
 
-\n<b>Neu in Version 1.7.2:</b>n
+\n<b>Neu in Version 1.7.2:</b>\n
+
 \t• Fehler bei Datumseinträge behoben\n
 \t• Verbesserte Japanische Übersetzung\n
 \t• Niederländische Übersetzung\n
 
-\n<b>Neu in Version 1.7.1:</b>n
+\n<b>Neu in Version 1.7.1:</b>\n
+
 \t• Absturz in spanischer Version beim Erstellen von Nachrichten behoben\n 
 \t• gelöschte Elemente werden in "Nächste Handlungen" nun ignoriert\n	
 
-\n<b>Neu in Version 1.7.0:</b>n
+\n<b>Neu in Version 1.7.0:</b>\n
+
 \t• Anpassbare Filter in jeder ansicht\n
 \t• Kategorien und Projekte können nun aktiv bzw inaktiv sein\n
 \t• Gelöschte Elemente können wiederhergestellt werden\n
@@ -167,13 +171,16 @@
 \t• Eigene Ansicht für Handlung hinzugefügt\n
 \t• Spanisch, Portugiesische und Japanische Übersetzung\n
 
-\n<b>Neu in Version 1.6.3:</b>n
+\n<b>Neu in Version 1.6.3:</b>\n
+
 \t• Fehler bei Bearbeiten von Handlungen unter Android 1.5 behoben\n
 
-\n<b>Neu in Version 1.6.2:</b>n
+\n<b>Neu in Version 1.6.2:</b>\n
+
 \t• Fehler behoben, bei dem Kategorie und Projekt nicht von einer Handlung gelöscht werden konnten\n
 
-\n<b>Neu in Version 1.6.1:</b>n
+\n<b>Neu in Version 1.6.1:</b>\n
+
 \t• Trackssynchronisationsfehler behoben\n
 \t• Verhalten des Eingangs "umgekehrt"\n
 
@@ -182,7 +189,8 @@
 \t• Fehler beim Erstellen eines Google Kalenders unter Android 2.2\n
 \t• Code-Restrukturierung um die Zuverlässigkeit zu verbessern, und um einfacher neue Features hinzuzufügen\n
 
-\n<b>Neu in Version 1.5.1:</b>n
+\n<b>Neu in Version 1.5.1:</b>\n
+
 \t• Patch für mehrere Trackssynchronisationsfehler\n
 
 \n<b>Neu in Version 1.5.0:</b>\n
