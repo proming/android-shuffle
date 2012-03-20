@@ -114,15 +114,15 @@
     <string name="search_label">Shuffle</string>
     <string name="search_hint">Beschreibung oder Details durchsuchen</string>
     <string name="search_settings_description_action">Beschreibungen und Details von Handlungen</string>
-    <string name="search_label_context">Shuffle Kategorien</string>
+    <string name="search_label_context">Shuffle-Kategorien</string>
     <string name="search_hint_context">Suche Kategorie durch Name</string>
     <string name="search_settings_description">Beschreibung und Details von Handlungen</string> <!-- TODO Check for correct translation -->
-    <string name="search_label_action">Shuffle actions</string>
-    <string name="search_hint_action">Search actions by description or details</string>
-    <string name="search_settings_description_context">Names of contexts</string>
-    <string name="search_label_project">Shuffle projects</string>
-    <string name="search_hint_project">Search project by name</string>
-    <string name="search_settings_description_project">Names of projects</string>
+    <string name="search_label_action">Shuffle-Handlungen</string>
+    <string name="search_hint_action">Handlungen suchen</string>
+    <string name="search_settings_description_context">Kategorienamen</string>
+    <string name="search_label_project">Shuffle-Projekte</string>
+    <string name="search_hint_project">Projekt m.H. von Name suchen</string>
+    <string name="search_settings_description_project">Projektnamen</string>
 
     <!-- Welcome screen -->
     <string name="sample_data_title">Beispieleinträge</string>
@@ -130,7 +130,7 @@
 
     <!-- What's new dialog -->
     <string name="whats_new_dialog_title">Shuffle</string>
-    <string name="whats_new_dialog_message">anke, dass Sie Shuffle heruntergeladen haben.\n\n<b>Neu in dieser Version:</b>\t• gesamte Oberfläche neu gestaltet\n
+    <string name="whats_new_dialog_message">Danke, dass Sie Shuffle heruntergeladen haben.\n\n<b>Neu in dieser Version:</b>\t• gesamte Oberfläche neu gestaltet\n
 \t• Vollständige ICS-Unterstützung\n
 \t• Wischen, um zwischen Ansichten umzuschalten\n
 \t• Widgets und Shortcuts für Kategorien und Projekte\n
@@ -275,26 +275,26 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
     <string name="sync_preferences">Synchronisierungseinstellungen</string>
     <string name="changeSynchronizationSettings">Tracks-Einstellungen</string>
     <string name="backup_preferences">Backup</string>
-    <string name="title_create_backup_preference">Backup auf SD Card</string>
+    <string name="title_create_backup_preference">Sicherung auf SD Card</string>
     <string name="summary_create_backup_preference">Alle Handlungen, Projekte und Kategorien speichern</string>
-    <string name="filename_title">Backupdatei</string>
+    <string name="filename_title">Sicherungsdatei</string>
     <string name="backup_progress">Schreibe %1$s %2$s.</string>
-    <string name="toast_backup_saved">Backup erfolgreich in %1$S gespeichert.</string>
+    <string name="toast_backup_saved">Sicherung erfolgreich in %1$S gespeichert.</string>
     <string name="title_restore_backup_preference">Wiederherstellung</string>
-    <string name="summary_restore_backup_preference">Daten aus Backup wiederherstellen</string>
+    <string name="summary_restore_backup_preference">Daten aus Sicherung wiederherstellen</string>
     <string name="toast_backup_restored">Die Daten wurden erfolgreich aus %1$s wiederhergestellt.</string>
     <string name="restore_progress">Lese %1$s %2$s.</string>
     <string name="restore_button_title">Wiederherstellen</string>
-    <string name="warning_filename_empty">Es muss ein Datename angegeben werden.</string>
+    <string name="warning_filename_empty">Es muss ein Dateiname angegeben werden.</string>
     <string name="warning_filename_exists">%1$s existiert bereits.</string>
     <string name="warning_media_not_mounted">SD-Karte ist nicht eingebunden: %1$s</string>
-    <string name="warning_backup_failed">Backup fehlgeschlagen: %1$s</string>
+    <string name="warning_backup_failed">Sicherung fehlgeschlagen: %1$s</string>
     <string name="warning_no_files">Keine Dateien vorhanden.</string>
     <string name="warning_restore_failed">Wiederherstellung fehlgeschlagen: %1$s</string>
     <string name="status_checking_media">Überprüfe den Status der SD-Karte.</string>
-    <string name="status_creating_backup">Erzeuge Backup-Datei.</string>
-    <string name="status_backup_complete">Backup wurde erstellt.</string>
-    <string name="status_reading_backup">Lese Backup ein.</string>
+    <string name="status_creating_backup">Erzeuge Sicherungsdatei.</string>
+    <string name="status_backup_complete">Sicherung wurde erstellt.</string>
+    <string name="status_reading_backup">Lese Sicherung ein.</string>
     <string name="status_restore_complete">Wiederherstellung beendet.</string>
     <string name="cleanup_preferences">Aufräumen</string>
     <string name="dialog_title_cleanup_preference">Erledigte Handlungen löschen</string>
@@ -306,7 +306,7 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
     <string name="delete_completed_button_title">Löschen</string>
     <string name="clean_slate_button_title">Löschen</string>
     <string name="permanently_delete_button_title">Dauerhaft löschen</string>
-    <string name="quick_add_title">Quick Add Bar</string> <!-- TODO translate -->
+    <string name="quick_add_title">Schnellzugriff</string>
     <string name="show_all">Zeige alle</string>
 
     <!-- Toast displayed when an item is created -->
@@ -404,7 +404,7 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
     <string name="list_settings_title">Einstellungen</string>
     <string name="active_items_title">Aktive Elemente</string>
     <string name="deleted_items_title">Gelöschte Elemente</string>
-    <string name="pending_items_title">Zukpnftige Handlungen</string>
+    <string name="pending_items_title">Zukünftige Handlungen</string>
     <string name="completed_items_title">Abgeschlossene Handlungen</string>
 
     <!-- messages -->
@@ -465,7 +465,7 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
     </string>
     <string name="help2">
         <p>
-        Die <b>Projektansicht</b> istet alle Ihre Projekte auf und erlaubt Ihnen,
+        Die <b>Projektansicht</b> listet alle Ihre Projekte auf und erlaubt Ihnen,
         die Handlungen eines Projekts anzusehen. Zusätzlich zu den 
         Standardfunktionen \"Hinzufügen\", \"Bearbeiten\" \"Löschen\" können Sie
         hier die Handlungen neu anordnen, um diese in der von Ihnen 
@@ -562,19 +562,19 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
         <p>
        Einige nützliche Tipps für Sie:\n
 
-        1) In almost all views, swipe left or right to navigate between similar views.\n
+       1) In fast allen Ansichten können sie nach rechts oder links wischen, um zu ähnlichen Ansichten zu wechseln.\n
 
-        2) All lists have View Settings to let you pick exactly what you want to see. For instance whether to show completed or deleted actions.\n
+	   2) Alle Listen haben Ansichtseinstellungen, so dass sie auswählen können, was genau Sie sehen wollen - beispielweise können inaktive Handlungen ausgeblendet werden.\n
 
-        3) Enabled the Quick Add Bar via View Settings on any view to quickly add actions, projects and contexts in place.\n
+       3) Aktivieren sie <i>Schnellzugriff</i> in den Ansichtseinstellungen um von überall Handlungen, Projekte und Kategorien erstellen zu können.\n
 
-        4) Hitting the Back button saves before closing.\n
+       4) Der Zurück-Button speichert, bevor die Ansicht geschlossen wird.\n
 
-        5) Create shortcuts on your Home Screens for various Shuffle views and actions\n
+       5) Erstellen Sie Icons auf ihrem Homescreen, um direkt auf verschiedene Ansichten und Handlungen zugreifen zu können.\n
 
-        6) Add a widget to your Home Screen to get a quick view on any list\n
+       6) Fügen Sie Widgets zu ihrem Homescreen hinzu, um einen schnellen Überblick über bestimmte Listen zu bekommen.\n
 
-        7) In Global Settings > Search, enable Shuffle for actions to appear in Quick Search Box queries\n
+       7) Unter Einstellungen > Suche, können Sie wählen, ob Shuffle-Handlungen in der Android-Schnellsuche angezeigt werden sollen.\n
         </p>
 </string>
     <string name="help8">
@@ -593,13 +593,13 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
     </string>
     <string name="help9">
         <p>
-        <b>Anpassbar:</b>standardmäßig werden alle Handlungen gezeigt. Passen 
-        Sie die ansichteneinstellungen an, um das anzuzeigen, was Sie wirklich
+        <b>Anpassbar:</b> standardmäßig werden alle Handlungen gezeigt. Passen 
+        Sie die Ansichtseinstellungen an, um das anzuzeigen, was Sie wirklich
         sehen wollen. 
         </p>
     </string>
     <string name="help10">
-        <p><b>Erinnerungen</b>zeigt Handlungen, die Sie pausiert haben - aus 
+        <p><b>Erinnerungen</b> zeigt Handlungen, die Sie pausiert haben - aus 
         welchen Gründen auch immmer. Standardmäßig werden auch Handlungen 
         angezeigt, die in der Zukunft starten. Die können Sie jedoch - über die
         Ansichteneinstellung - ändern. Beispielsweise können sie alle inaktiven 
