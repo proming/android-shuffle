@@ -27,7 +27,7 @@
     <string name="title_due_today">Heute fällig</string>
     <string name="title_due_next_week">Nächste Woche fällig</string>
     <string name="title_due_next_month">Nächsten Monat fällig</string>
-    <string name="title_tickler">Erinnerung</string>
+    <string name="title_tickler">Zur Erinnerung</string>
     <string name="title_trash">Müll</string>
     <string name="title_all">Alle</string>
     <string name="title_new_task">Neu</string>
@@ -465,7 +465,7 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
     </string>
     <string name="help2">
         <p>
-        Die <b>Projektansicht</b>istet alle Ihre Projekte auf und erlaubt Ihnen,
+        Die <b>Projektansicht</b> istet alle Ihre Projekte auf und erlaubt Ihnen,
         die Handlungen eines Projekts anzusehen. Zusätzlich zu den 
         Standardfunktionen \"Hinzufügen\", \"Bearbeiten\" \"Löschen\" können Sie
         hier die Handlungen neu anordnen, um diese in der von Ihnen 
@@ -483,7 +483,7 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
     </string>
     <string name="help3">
         <p>
-        <b>Kategorien</b>ind verschiedene Situationen, in denen Sie Handlungen 
+        <b>Kategorien</b> sind verschiedene Situationen, in denen Sie Handlungen 
         erledigen können. Shuffle erstellt zu Beginn folgende Standardkategorien
         :<i>Zu Hause</i>, <i>Auf der Arbeit</i>, <i>Online</i>, 
         <i>Besorgungen</i><i>Kontakte</i> und <i>Zu Lesen</i>\n
@@ -506,7 +506,7 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
         </string>
     <string name="help4">        
 		<p>
-		Unter <b>Nächste Schritte</b>können Sie am besten feststellen, was als 
+		Unter <b>Nächste Schritte</b> können Sie am besten feststellen, was als 
         nächstes erledigt werden muss.\n
         </p>
 		<p>
@@ -533,9 +533,9 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
     <string name="help6">
 		<p>
 		Viele Teile von Shuffle sind an den Benutzer anpassbar. Die 
-		<b>Einstellungen</b>sind von überall über das Menü zu erreichen.\n
-		<b>Kalender</b>- Wählen Sie den Kalender, den Shuffle benutzen soll\n
-		<b>Listenansicht</b>- Projekte und Kategorien können auf zwei 
+		<b>Einstellungen</b> sind von überall über das Menü zu erreichen.\n
+		<b>Kalender</b> - Wählen Sie den Kalender, den Shuffle benutzen soll\n
+		<b>Listenansicht</b> - Projekte und Kategorien können auf zwei 
         verschiedene Weisen angezeigt werden: Einzelansicht oder 
         Erweiterungsansicht.\n
         <b>Handlungsansicht</b> Hier können Sie anpassen, welche Informationen
@@ -543,18 +543,18 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
         Ansicht.\n
         <b>Aufräumen</b> Löscht entweder alle erledigten Handlungen oder 
         alles.\n
-        <b>Synchronisierungseinstellungen</b>- Setzen Sie eine website, mit 
+        <b>Synchronisierungseinstellungen</b> - Setzen Sie eine website, mit 
         der sich Shuffle synchronisieren soll\n
-        <b>Sicherung auf SD-Karte</b>- Speichern Sie alle ihre Handlungen,
+        <b>Sicherung auf SD-Karte</b> - Speichern Sie alle ihre Handlungen,
         Kategorien und Projekte auf die SD-Karte. Sie können Sie dann auf ihrem
         Computer sichern.\n
-        <b>Von SD-Karte wiederherstellen</b>- Alle daten werden aus einer 
+        <b>Von SD-Karte wiederherstellen</b> - Alle daten werden aus einer 
         Sicherung wiederhergestellt. Shufflen kann keine Duplikate erkennen;
         sie sollten also vor einer Wiederherstellung alle Daten aus Shuffle 
         löschen.
-        <b>Abgeschlossene handlungen löschen</b>- Alle abgeschlossenen 
+        <b>Abgeschlossene handlungen löschen</b> - Alle abgeschlossenen 
         Handlungen dauerhaft löschen\n
-        <b>Alles löschen!</b>- Dauerhaft alle Handlungen, Projekte und 
+        <b>Alles löschen!</b> - Dauerhaft alle Handlungen, Projekte und 
         Kategorien löschen\n
     	</p>    
     </string>
