@@ -77,38 +77,38 @@
     <string name="menu_undelete_entity">Undelete %s</string>
 
     <!-- general purpose -->
-    <string name="project_title">Project</string>
-    <string name="context_title">Context</string>
+    <string name="project_title">Projekt</string>
+    <string name="context_title">Kategorie</string>
     <string name="details_title">Details</string>
-    <string name="set_button_title">Set</string>
-    <string name="clear_button_title">Clear</string>
-    <string name="edit_button_title">Edit</string>
-    <string name="extras_button_title">Extra details...</string>
-    <string name="save_button_title">Save</string>
+    <string name="set_button_title">Setzen</string>
+    <string name="clear_button_title">Aufräumen</string>
+    <string name="edit_button_title">Bearbeiten</string>
+    <string name="extras_button_title">Details...</string>
+    <string name="save_button_title">Speichern</string>
     <string name="ok_button_title">OK</string>
-    <string name="cancel_button_title">Cancel</string>
-    <string name="replace_button_title">Replace</string>
-    <string name="warning_title">Warning</string>
+    <string name="cancel_button_title">Abbrechen</string>
+    <string name="replace_button_title">Ersetzen</string>
+    <string name="warning_title">Warnung</string>
     <string name="info_title">Information</string>
-    <string name="task_name">Action</string>
-    <string name="project_name">Project</string>
-    <string name="context_name">Context</string>
+    <string name="task_name">Handlung</string>
+    <string name="project_name">Projekt</string>
+    <string name="context_name">Kategorie</string>
     <string name="nothing"></string>
-    <string name="deleted">Deleted</string>
-    <string name="active">Active</string>
-    <string name="inactive">Inactive</string>
-    <string name="from_context">(via context)</string>
-    <string name="from_project">(via project)</string>
-    <string name="complete">Complete</string>
-    <string name="completed">Completed</string>
-    <string name="incomplete">Incomplete</string>
-    <string name="none_empty">None</string>
-    <string name="undefined">None</string>
-    <string name="today">Today</string>
-    <string name="yesterday">Yesterday</string>
-    <string name="previous_button_title">Previous</string>
-    <string name="next_button_title">Next</string>
-    <string name="pager_display">%1$d of %2$d</string>
+    <string name="deleted">Gelöscht</string>
+    <string name="active">Aktiv</string>
+    <string name="inactive">Inaktiv</string>
+    <string name="from_context">(via Kategorie)</string>
+    <string name="from_project">(via Projekt)</string>
+    <string name="complete">Abgeschlossen</string>
+    <string name="completed">Abgeschlossen</string>
+    <string name="incomplete">Unvollständig</string>
+    <string name="none_empty">Nichts</string>
+    <string name="undefined">Nichts</string>
+    <string name="today">Heute</string>
+    <string name="yesterday">Gestern</string>
+    <string name="previous_button_title">Vorhergehendes</string>
+    <string name="next_button_title">Nächstes</string>
+    <string name="pager_display">%1$d von %2$d</string>
 
     <!-- search -->
     <string name="search_label">Shuffle</string>
@@ -599,12 +599,11 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
         </p>
     </string>
     <string name="help10">
-        <p><b>Erinnerungen</b> zeigt Handlungen, die Sie pausiert haben - aus 
-        welchen Gründen auch immmer. Standardmäßig werden auch Handlungen 
-        angezeigt, die in der Zukunft starten. Die können Sie jedoch - über die
-        Ansichteneinstellung - ändern. Beispielsweise können sie alle inaktiven 
-        Handlungen - Handlungen, deren Projekt oder Kategorie inaktiv sind - 
-        anzeigen. 
+        <p><b>Erinnerungen</b> zeigt Handlungen, die Sie pausiert haben.
+	Standardmäßig werden auch Handlungen angezeigt, die in der Zukunft 
+	starten. Die können Sie jedoch - über die Ansichteneinstellung - 
+	ändern. Beispielsweise können sie alle inaktiven Handlungen - 
+	Handlungen, deren Projekt oder Kategorie inaktiv sind - anzeigen. 
         </p>
     </string>
     <string name="help_swipe_hint">Wischen Sie, um in der Hilfe zu navigieren</string>
