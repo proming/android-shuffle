@@ -22,7 +22,7 @@
         <item>Projekte</item>
         <item>Kategorien</item>
         <item>Benutzerdefiniert</item>
-        <item>Erinnerung</item>
+        <item>Zur Erinnerung</item>
     </array>
     <array name="help_screens">
         <item>Einführung</item>
@@ -35,7 +35,7 @@
         <item>Tipps und Tricks</item>
         <item>Danksagungen</item>
         <item>Benutzerdefiniert</item>
-        <item>Erinnerung</item>
+        <item>Zur Erinnerung</item>
     </array>
 
     <!--
