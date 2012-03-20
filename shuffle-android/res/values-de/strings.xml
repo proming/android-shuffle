@@ -138,7 +138,7 @@
 \t• Mehrfachauswahl in Handlungslisten\n
 \t• Standardkategorie wird nun konsistenter angewendet\n
 \t• Mehr Kategorie-Icon ins besserer Auflösung\n
-\t• "Quick add bar" für Handlungen, Kategorien und Projekte\n
+\t• "Schnellzugriff" für Handlungen, Kategorien und Projekte\n
 \t• Möglichkeit, jede Ansicht nach Kategorie und Projekt zu filtern\n
 \t• Anpassbare Handlungsansicht\n
 \t• Changelog auf Deutsch
@@ -663,7 +663,7 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
         <item quantity="other"><xliff:g id="message_count" example="9">%d</xliff:g> ausgewählt</item>
     </plurals>
 
-    <string name="quick_add_hint">Quick Add %1$s</string>
+    <string name="quick_add_hint">Schnellzugriff: %1$s</string>
 
     <!-- widget -->
     <string name="more_than_999">"999+"</string>
