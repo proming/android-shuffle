@@ -74,8 +74,8 @@
     <string name="menu_view_settings">Ansichtseinstellungen</string>
     <string name="menu_help">Hilfe</string>
     <string name="menu_edit">%s bearbeiten</string>
-    <string name="menu_delete_entity">Delete %s</string>
-    <string name="menu_undelete_entity">Undelete %s</string>
+    <string name="menu_delete_entity">Lösche %s</string>
+    <string name="menu_undelete_entity">Stelle %s wieder her</string>
 
     <!-- general purpose -->
     <string name="project_title">Projekt</string>
