@@ -53,6 +53,7 @@
     <string name="title_widget_picker">Bildschirm für Widget wählen</string>
     <string name="title_context_picker">Kategorie wählen</string>
     <string name="title_project_picker">Projekt wählen</string>
+    <string name="title_custom">Benutzerdefiniert</string>
 
     <!-- Option menu -->
     <string name="menu_save">Speichern</string>
@@ -102,8 +103,8 @@
     <string name="complete">Abgeschlossen</string>
     <string name="completed">Abgeschlossen</string>
     <string name="incomplete">Unvollständig</string>
-    <string name="none_empty">Nichts</string>
-    <string name="undefined">Nichts</string>
+    <string name="none_empty">-</string>
+    <string name="undefined">-</string>
     <string name="today">Heute</string>
     <string name="yesterday">Gestern</string>
     <string name="previous_button_title">Vorhergehendes</string>
@@ -225,7 +226,7 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
     <string name="all_day_title">Ganztägig</string>
     <string name="reminders_title">Erinnerung</string>
     <string name="add_to_gcal_title">Zum Kalender hinzufügen</string>
-    <string name="add_to_gcal_detail_disabled">Termine hinzufügen, um diese Option anzuzeigen</string>
+    <string name="add_to_gcal_detail_disabled">Terminplanung hinzufügen, um diese Option anzuzeigen</string>
     <string name="add_to_gcal_detail">Neuer Eintrag wird nach dem Speichern geladen</string>
     <string name="update_gcal_title">Kalender aktualisieren</string>
     <string name="update_gcal_detail">Aktualisierter Eintrag wird nach dem Speichern geladen</string>
@@ -401,10 +402,10 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
     <string name="unregistration_succeeded">%1$s für C2DM-Nachrichten abgemeldet.</string>
 
     <!-- list filter preferences -->
-    <string name="list_settings_title">Einstellungen</string>
+    <string name="list_settings_title">Ansichtseinstellungen</string>
     <string name="active_items_title">Aktive Elemente</string>
     <string name="deleted_items_title">Gelöschte Elemente</string>
-    <string name="pending_items_title">Zukünftige Handlungen</string>
+    <string name="pending_items_title">Bevorstehende Handlungen</string>
     <string name="completed_items_title">Abgeschlossene Handlungen</string>
 
     <!-- messages -->

@@ -91,8 +91,8 @@
     
     <string-array name="list_preferences_pending_labels">
         <item>Zeige Alle</item>
-        <item>Zeige nur Pending</item>
-        <item>Verstecke Pending</item>
+        <item>Zeige nur zukünftige</item>
+        <item>Verstecke zukünftige</item>
     </string-array>
     
     <string-array name="list_preferences_completed_labels">
