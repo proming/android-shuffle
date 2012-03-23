@@ -94,7 +94,18 @@ public class IconPickerActivity extends FlurryEnabledActivity implements OnItemC
     			R.drawable.utilities_terminal,    			
     			R.drawable.video_x_generic,    			
     			R.drawable.weather_showers_scattered,    			
-    			R.drawable.x_office_address_book,    			
+    			R.drawable.x_office_address_book,
+    			// new icons
+    			R.drawable.accessories_clock,
+    			R.drawable.applications_utilities,
+    			R.drawable.bookmark,
+    			R.drawable.colorize,
+    			R.drawable.document_properties,
+    			R.drawable.edit_clear,
+    			R.drawable.emblem_generic,
+    			R.drawable.help,
+    			R.drawable.lock,
+    			R.drawable.tools_report_bug,
         	};
         }
 
