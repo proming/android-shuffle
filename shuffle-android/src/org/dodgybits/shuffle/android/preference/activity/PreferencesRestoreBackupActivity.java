@@ -41,8 +41,8 @@ public class PreferencesRestoreBackupActivity extends FlurryEnabledActivity
     
     private State mState = State.SELECTING;
     @InjectView(R.id.filename) Spinner mFileSpinner;
-    @InjectView(R.id.saveButton) Button mRestoreButton;
-    @InjectView(R.id.discardButton) Button mCancelButton;
+    @InjectView(R.id.action_done) Button mRestoreButton;
+    @InjectView(R.id.action_cancel) Button mCancelButton;
     @InjectView(R.id.progress_horizontal) ProgressBar mProgressBar;
     @InjectView(R.id.progress_label) TextView mProgressText;
     
@@ -133,12 +133,12 @@ public class PreferencesRestoreBackupActivity extends FlurryEnabledActivity
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.saveButton:
+            case R.id.action_done:
             	setState(State.IN_PROGRESS);
             	restoreBackup();
                 break;
 
-            case R.id.discardButton:
+            case R.id.action_cancel:
             	finish();
                 break;
         }

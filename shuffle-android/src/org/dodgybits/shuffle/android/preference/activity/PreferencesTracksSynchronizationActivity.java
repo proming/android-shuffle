@@ -1,14 +1,11 @@
 package org.dodgybits.shuffle.android.preference.activity;
 
-import static org.dodgybits.shuffle.android.preference.model.Preferences.TRACKS_INTERVAL;
-import static org.dodgybits.shuffle.android.preference.model.Preferences.TRACKS_PASSWORD;
-import static org.dodgybits.shuffle.android.preference.model.Preferences.TRACKS_SELF_SIGNED_CERT;
-import static org.dodgybits.shuffle.android.preference.model.Preferences.TRACKS_URL;
-import static org.dodgybits.shuffle.android.preference.model.Preferences.TRACKS_USER;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.*;
 import org.apache.http.HttpStatus;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
@@ -16,20 +13,12 @@ import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.synchronisation.tracks.ApiException;
 import org.dodgybits.shuffle.android.synchronisation.tracks.WebClient;
 import org.dodgybits.shuffle.android.synchronisation.tracks.WebResult;
-
 import roboguice.inject.InjectView;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import static org.dodgybits.shuffle.android.preference.model.Preferences.*;
 
 /**
  * Activity that changes the options set for synchronization
@@ -116,9 +105,9 @@ public class PreferencesTracksSynchronizationActivity extends FlurryEnabledActiv
         final int color = mUrlTextbox.getCurrentTextColor();
         verifyUrl(color);
         // Setup the bottom buttons
-        View view = findViewById(R.id.saveButton);
+        View view = findViewById(R.id.action_done);
         view.setOnClickListener(saveClick);
-        view = findViewById(R.id.discardButton);
+        view = findViewById(R.id.action_cancel);
         view.setOnClickListener(cancelClick);
 
         view = findViewById(R.id.checkSettings);

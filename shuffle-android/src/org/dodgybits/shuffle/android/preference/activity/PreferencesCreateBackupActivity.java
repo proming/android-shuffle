@@ -1,12 +1,20 @@
 package org.dodgybits.shuffle.android.preference.activity;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
+import android.database.Cursor;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Environment;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
 import org.dodgybits.shuffle.android.core.model.Context;
@@ -23,24 +31,14 @@ import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.view.Progress;
 import org.dodgybits.shuffle.dto.ShuffleProtos.Catalogue;
 import org.dodgybits.shuffle.dto.ShuffleProtos.Catalogue.Builder;
-
 import roboguice.inject.InjectView;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnClickListener;
-import android.database.Cursor;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Environment;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.google.inject.Inject;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class PreferencesCreateBackupActivity extends FlurryEnabledActivity 
 	implements View.OnClickListener {
@@ -51,8 +49,8 @@ public class PreferencesCreateBackupActivity extends FlurryEnabledActivity
     
     private State mState = State.EDITING;
     @InjectView(R.id.filename) EditText mFilenameWidget;
-    @InjectView(R.id.saveButton) Button mSaveButton;
-    @InjectView(R.id.discardButton) Button mCancelButton;
+    @InjectView(R.id.action_done) Button mSaveButton;
+    @InjectView(R.id.action_cancel) Button mCancelButton;
     @InjectView(R.id.progress_horizontal) ProgressBar mProgressBar;
     @InjectView(R.id.progress_label) TextView mProgressText;
     
@@ -84,12 +82,12 @@ public class PreferencesCreateBackupActivity extends FlurryEnabledActivity
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.saveButton:
+            case R.id.action_done:
             	setState(State.IN_PROGRESS);
             	createBackup();
                 break;
 
-            case R.id.discardButton:
+            case R.id.action_cancel:
             	finish();
                 break;
         }
