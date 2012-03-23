@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (C) 2009 Android Shuffle Open Source Project
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 Android Shuffle Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,7 +16,8 @@
 -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-	<!--  Activity titles -->
+
+    <!-- Activity titles -->
     <string name="app_name">Shuffle</string>
     <string name="title_inbox">Eingang</string>
     <string name="title_project">Projekte</string>
@@ -25,6 +27,9 @@
     <string name="title_due_today">Heute fällig</string>
     <string name="title_due_next_week">Nächste Woche fällig</string>
     <string name="title_due_next_month">Nächsten Monat fällig</string>
+    <string name="title_tickler">Zur Erinnerung</string>
+    <string name="title_trash">Müll</string>
+    <string name="title_all">Alle</string>
     <string name="title_new_task">Neu</string>
     <string name="title_edit_task">Bearbeiten</string>
     <string name="title_view_task">Ansehen</string>
@@ -34,91 +39,203 @@
     <string name="title_edit_context">Kategorie bearbeiten</string>
     <string name="title_task_extras">Handlungen: Extras</string>
     <string name="title_preferences">Einstellungen</string>
-    <string name="title_preferences_appearance">Einstellungen &gt; Darstellung d. Handlungen</string>
-    <string name="title_preferences_clean">Einstellungen &gt; Aufräumen</string>
-    <string name="title_preferences_create_backup">Einstellungen &gt; Backup erstellen</string>
-    <string name="title_preferences_restore_backup">Einstellungen &gt; Aus Backup wiederherstellen</string>
+    <string name="title_preferences_appearance">Einstellungen > Darstellung d. Handlungen</string>
+    <string name="title_preferences_clean">Einstellungen > Aufräumen</string>
+    <string name="title_preferences_create_backup">Einstellungen > Backup erstellen</string>
+    <string name="title_preferences_restore_backup">Einstellungen > Aus Backup wiederherstellen</string>
     <string name="title_help">Hilfe</string>
     <string name="title_icon_picker">Icon wählen</string>
     <string name="title_colour_picker">Farbe wählen</string>
     <string name="title_calendar">Fällige Handlungen</string>
-    <string name="title_project_tasks">Projekte &gt; %s</string>
-    <string name="title_context_tasks">Kategorien &gt; %s</string>
+    <string name="title_project_tasks">Projekte > %s</string>
+    <string name="title_context_tasks">Kategorien > %s</string>
     <string name="title_shortcut_picker">Bildschirm für Verknüpfung wählen</string>
     <string name="title_widget_picker">Bildschirm für Widget wählen</string>
+    <string name="title_context_picker">Kategorie wählen</string>
+    <string name="title_project_picker">Projekt wählen</string>
+    <string name="title_custom">Benutzerdefiniert</string>
 
-	<!--  Option menu -->
+    <!-- Option menu -->
     <string name="menu_save">Speichern</string>
     <string name="menu_save_and_add">Speichern und Neu</string>
-    <string name="menu_delete">Löschen</string>
-    <string name="menu_complete">"Erledigt" umschalten</string>
+    <string name="menu_complete">Als erledigt markieren</string>
+    <string name="menu_incomplete">Als nicht erledigt markieren</string>
     <string name="menu_move_up">Aufwärts bewegen</string>
     <string name="menu_move_down">Abwärts bewegen</string>
     <string name="menu_insert">%s hinzufügen</string>
+    <string name="menu_delete">Löschen</string>
+    <string name="menu_undelete">Wiederherstellen</string>
     <string name="menu_revert">Umkehren</string>
     <string name="menu_discard">Verwerfen</string>
     <string name="menu_view">Ansichten</string>
     <string name="menu_preferences">Einstellungen</string>
     <string name="menu_sync">Synchronisierung</string>
     <string name="menu_search">Suche</string>
+    <string name="menu_view_settings">Ansichtseinstellungen</string>
     <string name="menu_help">Hilfe</string>
+    <string name="menu_edit">%s bearbeiten</string>
+    <string name="menu_delete_entity">Lösche %s</string>
+    <string name="menu_undelete_entity">Stelle %s wieder her</string>
 
-    <!--  general purpose -->
+    <!-- general purpose -->
     <string name="project_title">Projekt</string>
     <string name="context_title">Kategorie</string>
     <string name="details_title">Details</string>
-    <string name="set_button_title">Übernehmen</string>
-    <string name="clear_button_title">Löschen</string>
+    <string name="set_button_title">Setzen</string>
+    <string name="clear_button_title">Aufräumen</string>
     <string name="edit_button_title">Bearbeiten</string>
-    <string name="extras_button_title">Extra Details...</string>
+    <string name="extras_button_title">Details...</string>
     <string name="save_button_title">Speichern</string>
     <string name="ok_button_title">OK</string>
     <string name="cancel_button_title">Abbrechen</string>
     <string name="replace_button_title">Ersetzen</string>
-	<string name="warning_title">Warnung</string>
-	<string name="info_title">Information</string>
+    <string name="warning_title">Warnung</string>
+    <string name="info_title">Information</string>
     <string name="task_name">Handlung</string>
     <string name="project_name">Projekt</string>
     <string name="context_name">Kategorie</string>
-    <string name="nothing"/>
-    <string name="none_empty">Nichts</string>
-    <string name="undefined">Nichts</string>
+    <string name="nothing"></string>
+    <string name="deleted">Gelöscht</string>
+    <string name="active">Aktiv</string>
+    <string name="inactive">Inaktiv</string>
+    <string name="from_context">(via Kategorie)</string>
+    <string name="from_project">(via Projekt)</string>
+    <string name="complete">Abgeschlossen</string>
+    <string name="completed">Abgeschlossen</string>
+    <string name="incomplete">Unvollständig</string>
+    <string name="none_empty">-</string>
+    <string name="undefined">-</string>
     <string name="today">Heute</string>
     <string name="yesterday">Gestern</string>
-    <string name="previous_button_title">Zurück</string>
-    <string name="next_button_title">Weiter</string>
-    
-    <!--  search -->
+    <string name="previous_button_title">Vorhergehendes</string>
+    <string name="next_button_title">Nächstes</string>
+    <string name="pager_display">%1$d von %2$d</string>
+
+    <!-- search -->
     <string name="search_label">Shuffle</string>
     <string name="search_hint">Beschreibung oder Details durchsuchen</string>
-    <string name="search_settings_description">Beschreibung und Details von Handlungen</string>
-    
-    <!--  Welcome screen -->
+    <string name="search_settings_description_action">Beschreibungen und Details von Handlungen</string>
+    <string name="search_label_context">Shuffle-Kategorien</string>
+    <string name="search_hint_context">Suche Kategorie durch Name</string>
+    <string name="search_settings_description">Beschreibung und Details von Handlungen</string> <!-- TODO Check for correct translation -->
+    <string name="search_label_action">Shuffle-Handlungen</string>
+    <string name="search_hint_action">Handlungen suchen</string>
+    <string name="search_settings_description_context">Kategorienamen</string>
+    <string name="search_label_project">Shuffle-Projekte</string>
+    <string name="search_hint_project">Projekt m.H. von Name suchen</string>
+    <string name="search_settings_description_project">Projektnamen</string>
+
+    <!-- Welcome screen -->
     <string name="sample_data_title">Beispieleinträge</string>
     <string name="clean_slate_title">Ohne Einträge</string>
 
-	<!--  edit screens -->
+    <!-- What's new dialog -->
+    <string name="whats_new_dialog_title">Shuffle</string>
+    <string name="whats_new_dialog_message">Danke, dass Sie Shuffle heruntergeladen haben.\n\n<b>Neu in dieser Version:</b>\t• gesamte Oberfläche neu gestaltet\n
+\t• Vollständige ICS-Unterstützung\n
+\t• Wischen, um zwischen Ansichten umzuschalten\n
+\t• Widgets und Shortcuts für Kategorien und Projekte\n
+\t• Neues Widget Design (scrollbar ab ICS)\n
+\t• Mehrfachauswahl in Handlungslisten\n
+\t• Standardkategorie wird nun konsistenter angewendet\n
+\t• Mehr Kategorie-Icons in besserer Auflösung\n
+\t• "Schnellzugriff" für Handlungen, Kategorien und Projekte\n
+\t• Möglichkeit, jede Ansicht nach Kategorie und Projekt zu filtern\n
+\t• Anpassbare Handlungsansicht\n
+\t• Changelog auf Deutsch
+
+\n<b>Neu in Version 1.7.2:</b>\n
+
+\t• Fehler bei Datumseinträgen behoben\n
+\t• Verbesserte Japanische Übersetzung\n
+\t• Niederländische Übersetzung\n
+
+\n<b>Neu in Version 1.7.1:</b>\n
+
+\t• Absturz in spanischer Version beim Erstellen von Handlungen behoben\n 
+\t• gelöschte Elemente werden in "Nächste Handlungen" nun ausgeblendet\n	
+
+\n<b>Neu in Version 1.7.0:</b>\n
+
+\t• Anpassbare Filter in jeder Ansicht\n
+\t• Kategorien und Projekte können nun aktiv bzw inaktiv sein\n
+\t• Gelöschte Elemente können wiederhergestellt werden\n
+\t• Toolbar zu den Listen-Ansichten hinzugefügt\n
+\t• Neues 4x4 Widget.\n
+\t• Erinnerungsansicht für inaktive Handlungen \n
+\t• Unterstützung für Tracks-Seiten mit selbstsignierten Zertifikaten\n
+\t• Fehler mit Kalendern auf Android 2.2 behoben\n
+\t• Fehler beim Umordnen von Handlungen in Projekten behoben\n
+\t• Eigene Ansicht um Handlungen anzusehen hinzugefügt\n
+\t• Spanische, Portugiesische und Japanische Übersetzung\n
+
+\n<b>Neu in Version 1.6.3:</b>\n
+
+\t• Fehler bei Bearbeiten von Handlungen unter Android 1.5 behoben\n
+
+\n<b>Neu in Version 1.6.2:</b>\n
+
+\t• Behoben: Bei manchen Handlunegn könnten Kategorie und Projekt nicht gelöscht werden\n
+
+\n<b>Neu in Version 1.6.1:</b>\n
+
+\t• Trackssynchronisationsfehler behoben\n
+\t• Verhalten des Eingangs "umgekehrt"\n
+
+\n<b>Neu in Version 1.6.0:</b>\n
+\t• <b>Widget</b> für ausgewählte Liste.\n
+\t• Fehler beim Erstellen eines Google Kalenders unter Android 2.2 behoben\n
+\t• Code-Restrukturierung um die Zuverlässigkeit zu verbessern, und um einfacher neue Features hinzuzufügen\n
+
+\n<b>Neu in Version 1.5.1:</b>\n
+
+\t• Patch für mehrere Trackssynchronisationsfehler\n
+
+\n<b>Neu in Version 1.5.0:</b>\n
+\t• Handlungen können nun gesucht werden\n
+\t• Handlungen werden aus dem Eingang entfernt, sobald Projekt oder Kategorie gesetzt wurde\n
+\t• Handlungen ohne Projekt werden unter Nächste Handlungen angezeigt\n
+\t• Parallele Ausführung von Handlungen in einem Projekt ist nun möglich\n
+\t• Fehler in der Trakssynchronisation behoben\n
+\t• Zeige Start- und Endtermin in Handlungslisten\n
+\t• Die Hilfe wurde erweitert\n
+\n
+\n
+Bitte beachten Sie: diese Anwendung sendet anonyme Nutzungsstatistiken an einen Server. Falls Sie dies 
+lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</string>
+
+    <!-- task view screen -->
+    <string name="complete_toggle_button">Mark %s</string> <!-- TODO -->
+    <string name="status_title">Status</string>
+    <string name="created_title">Erstellt</string>
+    <string name="modified_title">zuletzt geändert</string>
+    <string name="view_calendar_entry">Kalendereintrag ansehen</string>
+
+    <!-- edit screens -->
     <string name="menu_done">Speichern</string>
     <string name="menu_doNotSave">Abbrechen</string>
 
-	<!--  task edit screen -->
+    <!-- task edit screen -->
     <string name="description_title">Beschreibung</string>
     <string name="scheduling_title">Terminplanung</string>
     <string name="scheduling_collapsed">Optionen anzeigen</string>
     <string name="scheduling_expanded">Optionen verstecken</string>
     <string name="start_title">Beginn</string>
+    <string name="show_from_title">Zeige ab</string>
     <string name="due_title">Frist</string>
     <string name="all_day_title">Ganztägig</string>
     <string name="reminders_title">Erinnerung</string>
     <string name="add_to_gcal_title">Zum Kalender hinzufügen</string>
-    <string name="add_to_gcal_detail_disabled">Termine hinzufügen, um diese Option anzuzeigen</string>
+    <string name="add_to_gcal_detail_disabled">Terminplanung hinzufügen, um diese Option anzuzeigen</string>
     <string name="add_to_gcal_detail">Neuer Eintrag wird nach dem Speichern geladen</string>
     <string name="update_gcal_title">Kalender aktualisieren</string>
     <string name="update_gcal_detail">Aktualisierter Eintrag wird nach dem Speichern geladen</string>
     <string name="completed_title">Erledigt</string>
+    <string name="active_title">Aktiv</string>
+    <string name="deleted_title">Gelöscht</string>
     <string name="clear_title">Beginn und Frist löschen</string>
 
-	<!--  project & context edit screens -->
+    <!-- project & context edit screens -->
     <string name="colour_title">Farbe</string>
     <string name="archived_title">Archiviert</string>
     <string name="icon_title">Icon</string>
@@ -128,98 +245,84 @@
     <string name="default_context_title">Standardkategorie</string>
     <string name="preview_title">Vorschau</string>
     <string name="context_errands">Besorgungen</string>
-	<string name="context_online">Online</string>
+    <string name="context_online">Online</string>
     <string name="context_athome">Zu Hause</string>
     <string name="context_atwork">Auf der Arbeit</string>
-	<string name="context_contact">Kontakte</string>
-	<string name="context_read">Zu Lesen</string>
+    <string name="context_contact">Kontakte</string>
+    <string name="context_read">Zu Lesen</string>
 
-	<!--  Calendar screen -->
+    <!-- Calendar screen -->
     <string name="day_button_title">Heute</string>
     <string name="week_button_title">Woche</string>
     <string name="month_button_title">Monat</string>
 
-	<!--  preferences screen -->
+    <!-- preferences screen -->
     <string name="display_task_list_title">In Handlungsliste anzeigen</string>
     <string name="context_icon_title">Kategorieicon</string>
     <string name="context_name_title">Kategoriename</string>
     <string name="due_date_title">Frist</string>
-
-
-    <string name="general_preferences">Allgemeine Einstellungen</string>
-
+    <string name="general_preferences">Google-Einstellungen</string>
     <string name="title_calendar_preference">Kalender auswählen</string>
     <string name="summary_calendar_preference">für neue Kalendereinträge</string>
-
     <string name="title_send_analytics_preference">Nutzungsdaten senden</string>
     <string name="summary_send_analytics_preference">Anonymisierte Nutzungsdaten werden für die Fehlersuche und das Priorisieren neuer Features erhoben.</string>
-
-	<string name="layout_preferences">Layout</string>
-
-	<string name="title_project_view_preference">Projektansicht</string>
-	<string name="summary_project_view_preference">Handlungen auf eigenem Bildschirm</string>
-
-	<string name="title_context_view_preference">Kategorieansicht</string>
-	<string name="summary_context_view_preference">Handlungen auf eigenem Bildschirm</string>
-
-	<string name="title_action_appearance_preference">Handlungsansicht</string>
-	<string name="summary_action_appearance_preference">Aussehen der Handlungen anpassen</string>
-
-
+    <string name="layout_preferences">Layout-Einstellungen</string>
+    <string name="title_project_view_preference">Projektansicht</string>
+    <string name="summary_project_view_preference">Handlungen auf eigenem Bildschirm</string>
+    <string name="title_context_view_preference">Kategorieansicht</string>
+    <string name="summary_context_view_preference">Handlungen auf eigenem Bildschirm</string>
+    <string name="title_action_appearance_preference">Handlungsansicht</string>
+    <string name="summary_action_appearance_preference">Aussehen der Handlungen anpassen</string>
     <string name="sync_preferences">Synchronisierungseinstellungen</string>
-
     <string name="changeSynchronizationSettings">Tracks-Einstellungen</string>
-
-
-	<string name="backup_preferences">Backup</string>
-
-	<string name="title_create_backup_preference">Backup auf SD Card</string>
-	<string name="summary_create_backup_preference">Alle Handlungen, Projekte und Kategorien speichern</string>
-
-    <string name="filename_title">Backupdatei</string>
-	<string name="backup_progress">Schreibe <xliff:g id="type">%s</xliff:g> <xliff:g id="name">%s</xliff:g>.</string>
-	<string name="toast_backup_saved">Backup erfolgreich in <xliff:g id="filename">%s</xliff:g> gespeichert.</string>
-
-	<string name="title_restore_backup_preference">Wiederherstellung</string>
-	<string name="summary_restore_backup_preference">Daten aus Backup wiederherstellen</string>
-	<string name="toast_backup_restored">Die Daten wurden erfolgreich aus <xliff:g id="filename">%s</xliff:g> wiederhergestellt.</string>
-	<string name="restore_progress">Lese <xliff:g id="type">%s</xliff:g> <xliff:g id="name">%s</xliff:g>.</string>
-	<string name="restore_button_title">Wiederherstellen</string>
-
-    <string name="warning_filename_empty">Es muss ein Datename angegeben werden.</string>
-	<string name="warning_filename_exists"><xliff:g id="filename">%s</xliff:g> existiert bereits.</string>
-	<string name="warning_media_not_mounted">SD-Karte ist nicht eingebunden: <xliff:g id="error">%s</xliff:g></string>
-	<string name="warning_backup_failed">Backup fehlgeschlagen: <xliff:g id="error">%s</xliff:g></string>
+    <string name="backup_preferences">Backup</string>
+    <string name="title_create_backup_preference">Sicherung auf SD Card</string>
+    <string name="summary_create_backup_preference">Alle Handlungen, Projekte und Kategorien speichern</string>
+    <string name="filename_title">Sicherungsdatei</string>
+    <string name="backup_progress">Schreibe %1$s %2$s.</string>
+    <string name="toast_backup_saved">Sicherung erfolgreich in %1$S gespeichert.</string>
+    <string name="title_restore_backup_preference">Wiederherstellung</string>
+    <string name="summary_restore_backup_preference">Daten aus Sicherung wiederherstellen</string>
+    <string name="toast_backup_restored">Die Daten wurden erfolgreich aus %1$s wiederhergestellt.</string>
+    <string name="restore_progress">Lese %1$s %2$s.</string>
+    <string name="restore_button_title">Wiederherstellen</string>
+    <string name="warning_filename_empty">Es muss ein Dateiname angegeben werden.</string>
+    <string name="warning_filename_exists">%1$s existiert bereits.</string>
+    <string name="warning_media_not_mounted">SD-Karte ist nicht eingebunden: %1$s</string>
+    <string name="warning_backup_failed">Sicherung fehlgeschlagen: %1$s</string>
     <string name="warning_no_files">Keine Dateien vorhanden.</string>
-	<string name="warning_restore_failed">Wiederherstellung fehlgeschlagen: <xliff:g id="error">%s</xliff:g></string>
+    <string name="warning_restore_failed">Wiederherstellung fehlgeschlagen: %1$s</string>
     <string name="status_checking_media">Überprüfe den Status der SD-Karte.</string>
-    <string name="status_creating_backup">Erzeuge Backup-Datei.</string>
-    <string name="status_backup_complete">Backup wurde erstellt.</string>
-    <string name="status_reading_backup">Lese Backup ein.</string>
+    <string name="status_creating_backup">Erzeuge Sicherungsdatei.</string>
+    <string name="status_backup_complete">Sicherung wurde erstellt.</string>
+    <string name="status_reading_backup">Lese Sicherung ein.</string>
     <string name="status_restore_complete">Wiederherstellung beendet.</string>
-
-	<string name="cleanup_preferences">Aufräumen</string>
-
-	<string name="dialog_title_cleanup_preference">Erledigte Handlungen löschen</string>
-
-	<string name="title_delete_completed_preference">Erledigte löschen</string>
-
-	<string name="title_delete_all_preference">Alles löschen!</string>
-	<string name="summary_delete_all_preference">Alle Handlungen, Projekte und selbsterstellten Kategorien werden entfernt.</string>
-
+    <string name="cleanup_preferences">Aufräumen</string>
+    <string name="dialog_title_cleanup_preference">Erledigte Handlungen löschen</string>
+    <string name="title_delete_completed_preference">Erledigte löschen</string>
+    <string name="title_permanently_delete_preference">Alles dauerhaft entfernen!</string>
+    <string name="summary_permanently_delete_preference">Entferne alle Handlungen, Projekte und selbsterstellte Kategorien.</string>
+    <string name="title_delete_all_preference">Alles Löschen</string>
+    <string name="summary_delete_all_preference">Entferne alle Handlungen, Projekte und selbsterstellte Kategorien.</string>
     <string name="delete_completed_button_title">Löschen</string>
     <string name="clean_slate_button_title">Löschen</string>
+    <string name="permanently_delete_button_title">Dauerhaft löschen</string>
+    <string name="quick_add_title">Schnellzugriff</string>
+    <string name="show_all">Zeige alle</string>
 
     <!-- Toast displayed when an item is created -->
-    <string name="itemCreatedToast"><xliff:g id="itemName">%s</xliff:g> wurde erstellt.</string>
+    <string name="itemCreatedToast">%1$s wurde erstellt.</string>
+    <string name="warning_empty_trash">Alle gelöschten Einträge dauerhaft löschen?</string>
+    <string name="toast_empty_trash">%1$s Handlung(en), %2$s Kategorie(n) und %3$s Projekt(e) dauerhaft gelöscht.</string>
 
     <!-- Toast displayed when an item is saved -->
-    <string name="itemSavedToast"><xliff:g id="itemName">%s</xliff:g> wurde gespeichert.</string>
+    <string name="itemSavedToast">%1$s wurde gespeichert.</string>
 
     <!-- Toast displayed when an item is saved -->
-    <string name="itemDeletedToast"><xliff:g id="itemName">%s</xliff:g> wurde gelöscht.</string>
+    <string name="itemDeletedToast">%1$s wurde gelöscht.</string>
+    <string name="itemUndeletedToast">%1$s wieder hergestellt.</string>
 
-       <!-- synchronization-->
+    <!-- Tracks synchronization -->
     <string name="synchronizing">Synchronisierung mit Hilfe von Tracks</string>
     <string name="tracksUser">Benutzer</string>
     <string name="tracksInstallation">Zielinstallation</string>
@@ -249,7 +352,63 @@
     <string name="sync_interval_2h">2 Stunden</string>
     <string name="sync_interval_3h">3 Stunden</string>
 
-	<!--  messages -->
+    <!-- App Engine synchronization -->
+
+    <string name="appengine_synchronization_settings">AppEngine settings</string>
+    <!-- Menu item text -->
+    <string name="accounts">Accounts</string>
+    <!-- Dialog button -->
+    <string name="add_account">Account hinzufügen...</string>
+    <!-- Dialog title text -->
+    <string name="attention">Achtung</string>
+    <!-- Button text -->
+    <string name="connect">Verbinden</string>
+    <!-- Message text for "Connect" screen -->
+    <string name="connect_text">Shuffle möchte ihr mobiles Gerät zur Cloud verbinden.</string>
+    <!-- Header text for "Connect" screen -->
+    <string name="connect_to_the_cloud">Zur Cloud verbinden</string>
+    <!-- Header text for "Connected" screen -->
+    <string name="connected_to_the_cloud">Zur Cloud verbunden</string>
+    <!-- Message text -->
+    <string name="contacting_server">Kontaktiere Server...</string>
+    <!-- Button text -->
+    <string name="disconnect">Trennen</string>
+    <!-- Informational text for "Connected" screen with placeholder for account name -->
+    <string name="disconnect_text">Dieses Gerät ist unter dem Namen %1$s mit der Cloud verbunden. Drücken Sie den Button weiter unten, um die Verbindung zu trennen.</string>
+    <!-- Footer text for "Connect" screen -->
+    <string name="do_you_want_to_connect">Verbindung herstellen?</string>
+    <!-- Button text -->
+    <string name="exit">Schließen</string>
+    <!-- Initial "hello, world" informational message -->
+    <string name="hello_world_info_text">Drücken Sie den \"Hallo!\"-Button, um eine Nachricht vom App Engine Server zu erhalten.</string>
+    <!-- Initial "hello, world" response message -->
+    <string name="hello_world_text">Hallo!</string>
+    <!-- Dialog message text -->
+    <string name="needs_account">Um Benachrichtigungen über diese App zu erhalten, müssen Sie zuerst einen Account erstellen.</string>
+    <!-- Notification message -->
+    <string name="registration_error">Registrierung/Abmeldung von %1$s fehlgeschlagen.</string>
+    <!-- Notification message -->
+    <string name="registration_succeeded">%1$s für C2DM-Nachrichten angemeldet.</string>
+    <!-- Button text -->
+    <string name="say_hello">Hallo sagen</string>
+    <!-- List view header text -->
+    <string name="select_account">Wählen Sie den Acvcount, den Sie berechtigen wollen:</string>
+    <!-- Dialog button text -->
+    <string name="skip">Überspringen</string>
+    <!-- App Engine synchronization -->
+
+
+    <!-- Notification message -->
+    <string name="unregistration_succeeded">%1$s für C2DM-Nachrichten abgemeldet.</string>
+
+    <!-- list filter preferences -->
+    <string name="list_settings_title">Ansichtseinstellungen</string>
+    <string name="active_items_title">Aktive Elemente</string>
+    <string name="deleted_items_title">Gelöschte Elemente</string>
+    <string name="pending_items_title">Bevorstehende Handlungen</string>
+    <string name="completed_items_title">Abgeschlossene Handlungen</string>
+
+    <!-- messages -->
     <string name="no_due_date">Keine Frist</string>
     <string name="no_icon">Kein Icon</string>
     <string name="no_tasks">Es wurden noch keine Handlungen erstellt. Erzeugen Sie neue Handlungen über \"Handlung hinzufügen\" im Menü.</string>
@@ -261,118 +420,254 @@
     <string name="clean_slate_warning">Wirklich <i>alle</i> Handlungen, Projekte und selbsterstellten Kategorien entfernen?</string>
     <string name="clean_task_message">%d erledigte Aufgaben wurden gelöscht.</string>
     <string name="clean_slate_message">Alle Handlungen, Projekte und selbsterstellten Kategorien wurden entfernt.</string>
-   	<string name="error_title">Fehler</string>
-	<string name="error_message">Fehler beim Laden der Handlung</string>
-
-	<string name="web_error_message">Konnte keine Verbindung zu Tracks aufbauen.</string>
-    
-    <string name="welcome1">
-Willkommen in Shuffle, einem Organisationsprogramm, das von \"Getting Things Done\" inspiriert wurde.
-Wenn Sie erfahren wollen, wie Sie Shuffle am besten benutzen, wählen Sie \"Beispieleinträge\". Es werden dann einige Beispiele geladen.
-Später können Sie noch einmal neu anfangen, indem Sie \"Alles Löschen!\" im Einstellungsmenü wählen.     
-    </string>
-    <string name="welcome2">
-Natürlich können Sie auch direkt ohne Beispiele beginnen. Es werden nur die Standardkategorien erstellt.
-    </string>
-    <string name="welcome3">
-Sehen Sie sich die Hilfe an, um weitere Anweisungen und Tipps zu erhalten.
-    </string>
-    <string name="help0">
-Shuffle ist ein Organisationsprogramm, das von \"Getting Things Done\" inspiriert wurde.
-Man kann schnell \'Handlungen\' erstellen, und diese sofort kategorisieren. Mit 5 verschiedenen Ansichten können Sie Ihre Handlungen so angehen, wie Sie es wollen.
-\n
-Ein einfacher Arbeitsablauf ermutigt Sie dazu, ihre Handlungen in Projekten zusammenzufassen und optional auch einer Kategorie zuzuweisen.
-Durch dieses Vorgehen können schwierige Projekte in kleine, machbare Aufgaben geteilt werden.\n
-Wenn das Projekt fortschreitet, können erledigte Handlungen entfernt werden, anfallende Handlungen neu erzeugt werden und Ihre verbleibenden Handlungen nach Ihren Prioritäten angeordnet werden.
-    </string>
+    <string name="error_title">Fehler</string>
+    <string name="error_message">Fehler beim Laden der Handlung</string>
+    <string name="web_error_message">Konnte keine Verbindung zu Tracks aufbauen.</string>
+    <string name="welcome1">        Willkommen in Shuffle, einem Organisationsprogramm, das von \"Getting 
+        Things Done\" inspiriert wurde. Wenn Sie erfahren wollen, wie Sie 
+        Shuffle am besten benutzen, wählen Sie \"Beispieleinträge\". Es werden 
+        dann einige Beispiele geladen.\n
+        
+        Später können Sie noch einmal neu anfangen, indem Sie \"Alles Löschen!\"
+        im Einstellungsmenü wählen.</string>
+    <string name="welcome2">        Natürlich können Sie auch direkt ohne Beispiele beginnen. Es werden nur 
+        die Standardkategorien erstellt.</string>
+    <string name="welcome3">        Sehen Sie sich die Hilfe an, um weitere Anweisungen und Tipps zu erhalten.</string>
+    <string name="help0">        
+        <p>Shuffle ist ein Organisationsprogramm, das von \"Getting Things Done\" 
+        inspiriert wurde. Man kann schnell \'Handlungen\' erstellen, und diese 
+        sofort kategorisieren. Mit 5 verschiedenen Ansichten können Sie Ihre 
+        Handlungen so angehen, wie Sie es wollen.\n
+        </p>
+    	  <p>    
+        Ein einfacher Arbeitsablauf ermutigt Sie dazu, ihre Handlungen in 
+        Projekten zusammenzufassen und optional auch einer Kategorie zuzuweisen.
+        Durch dieses Vorgehen können schwierige Projekte in kleine, machbare 
+        Aufgaben geteilt werden.\n
+        </p>
+    	  <p>
+	      Wenn das Projekt fortschreitet, können erledigte Handlungen entfernt 
+        werden, anfallende Handlungen neu erzeugt werden und Ihre verbleibenden 
+        Handlungen nach Ihren Prioritäten angeordnet werden.
+        </p>
+        </string>
     <string name="help1">
-Hier ist der beste Platz, um neue Handlungen zu erstellen.
-Der <b>Eingang</b> sammelt alle Handlungen, bevor sie weiterverarbeitet werden.
-Sie sollten Ihren Eingang regelmäßig durchgehen, jede Handlung überprüfen, und diese dann verwerfen bzw. löschen, erledigen oder einem Projekt zuweisen.\n
+        <p>
+        Hier ist der beste Platz, um neue Handlungen zu erstellen. Der 
+        <b>Eingang</b> sammelt alle Handlungen, bevor sie weiterverarbeitet
+        werden. Sie sollten Ihren Eingang regelmäßig durchgehen, jede Handlung 
+        überprüfen, und diese dann löschen, erledigen, delegieren, einem Projekt
+        oder einer Kategorie zuweisen.\n
+        </p>
+        <p>
+        Sollten Sie einer Handlung ein Projekt, eine Kategorie, oder beides 
+        zuweisen, wird sie automatisch aus dem Eingang entfernt.
+        </p>
     </string>
     <string name="help2">
-Die <b>Projektansicht</b> listet alle Ihre Projekte auf und erlaubt Ihnen, die Handlungen eines jeden Projekts anzusehen. Zusätzlich zu den Standardfunktionen \"Hinzufügen\", \"Bearbeiten\" und \"Löschen\" können Sie hier die Handlungen neu anordnen, um diese in der von Ihnen gewünschten Reihenfolge abzuarbeiten.
-\n
-Projekte können genau wie Kategorien mit verschiedenen Ansichten betrachtet werden.
-Bei Einzelansicht öffnet der Klick auf ein Projekt einen neuen Bildschirm, auf dem die Handlungen zu sehen sind.
-In der Erweiterungsansicht werden die Handlungen nach einem Klick auf dem selben Bildschirm gezeigt.
+        <p>
+        Die <b>Projektansicht</b> listet alle Ihre Projekte auf und erlaubt Ihnen,
+        die Handlungen eines Projekts anzusehen. Zusätzlich zu den 
+        Standardfunktionen \"Hinzufügen\", \"Bearbeiten\" \"Löschen\" können Sie
+        hier die Handlungen neu anordnen, um diese in der von Ihnen 
+        geüwnschten Reihenfolge abzuarbeiten.\n
+		</p>
+		<p>
+        Für einige Projekte macht es Sinn, die Handlungen nacheinander 
+        auszuführen; bei anderen können Sie in beliebiger ausgeführt werden. 
+        Dies können Sie auch in Shuffle einstellen. Projekte können genau wie 
+        Kategorien mit verschiedenen Ansichten betrachtet werden. Bei 
+        Einzelansicht öffnet der Klick auf ein Projekt einen neuen Bildschirm, 
+        auf dem die Handlungen zu sehen sind. In der Erweiterungsansicht werden 
+        die Handlungen nach einem Klick auf dem selben Bildschirm gezeigt.
+        </p>
     </string>
     <string name="help3">
-<b>Kategorien</b> sind verschiedene Situationen, in denen Sie Handlungen erledigen können. Shuffle erstellt zu Beginn folgende Standardkategorien:
-<i>Zu Hause</i>, <i>Auf der Arbeit</i>, <i>Online</i>, <i>Besorgungen</i>, <i>Kontakte</i> und <i>Zu Lesen</i>.\n
-Es steht Ihnen frei, die vorhandenen Kategorien zu bearbeiten, zu löschen, oder eigene Kategorien hinzuzufügen, die am besten zu Ihnen passen.\n
-\n
-Wie auch die Projektansicht kann die Kategorieansicht entweder mit Einzelansicht oder mit Erweiterungsansicht betrachtet werden. Dies kann in den Einstellungen geändert werden.
-    </string>
-    <string name="help4">
-Unter <b>Nächste Schritte</b> können Sie am besten feststellen, was als nächstes erledigt werden muss.\n
-Hier werden jeweils die ersten unerledigten Handlungen Ihrer Projekte gezeigt.
-Die Reihenfolge, in der die Handlungen erledigt werden müssen, können Sie in der Prjektansicht selbst festlegen.</string>
-    <string name="help5">
-Unter <b>Fällige Handlungen</b> können Sie feststellen, welchen Handlungen Sie einen bestimmten Fälligkeitstermin zugewiesen haben.
-Es gibt hier 3 Ansichten - <i>Heute</i>, <i>Woche</i> und
-<i>Monat</i> -, welche Ihnen fällige Aufgaben für den entsprechenden Zeitraum zeigen.
-Unerledigte Aufgaben, die bereits fällig waren, werden in jeder Ansicht gezeigt.
-    </string>
+        <p>
+        <b>Kategorien</b> sind verschiedene Situationen, in denen Sie Handlungen 
+        erledigen können. Shuffle erstellt zu Beginn folgende Standardkategorien
+        :<i>Zu Hause</i>, <i>Auf der Arbeit</i>, <i>Online</i>, 
+        <i>Besorgungen</i>, <i>Kontakte</i> und <i>Zu Lesen</i>.\n
+		</p>
+		<p>
+		Beispielweise können Sie in der Stadt unterwegs sein. Deshalb überprüfen
+		Sie "Besorgungen" und sehen, dass sie noch frische Milche besorgen 
+		müssen.\n
+		</p>
+		<p>
+        Es steht Ihnen frei, die vorhandenen Kategorien zu bearbeiten, zu 
+        löschen, oder eigene Kategorien hinzuzufügen, die am besten zu Ihnen 
+        passen.\n
+		</p>
+		<p>
+        Wie auch die Projektansicht kann die Kategorieansicht entweder mit 
+        Einzelansicht oder mit Erweiterungsansicht betrachtet werden. Dies kann 
+        in den Einstellungen geändert werden.
+        </p>
+        </string>
+    <string name="help4">        
+		<p>
+		Unter <b>Nächste Schritte</b> können Sie am besten feststellen, was als 
+        nächstes erledigt werden muss.\n
+        </p>
+		<p>
+        Hier werden jeweils gezeigt:\n
+        - Handlungen ohne Projekt\n
+        - die ersten unerledigten Handlungen Ihrer sequentiellen Projekte\n
+        - alle Handlungen in "parallenen" Projekten\n\n
+		</p>        
+		<p>
+        Die Reihenfolge, in der die Handlungen eines Projekts erledigt 
+        werden müssen, können Sie in der Projektansicht selbst festlegen.
+        </p>
+        </string>
+    <string name="help5">        
+		<p>
+	    Unter <b>Fällige Handlungen</b> können Sie feststellen, welchen 
+        Handlungen Sie einen bestimmten Fälligkeitstermin zugewiesen haben. Es 
+        gibt hier 3 Ansichten - <i>Heute</i>, <i>Woche</i> und <i>Monat</i>, 
+        welche Ihnen fällige Aufgaben für den entsprechenden Zeitraum zeigen. 
+        Unerledigte Aufgaben, die bereits fällig waren, werden in jeder Ansicht 
+        gezeigt.
+        </p>
+        </string>
     <string name="help6">
-Viele Teile von Shuffle sind an den Benutzer anpassbar. Die <b>Einstellungen</b> sind von überall über das Menü zu erreichen.\n
-<b>Listenansicht</b>  - Projekte und Kategorien können auf zwei verschiedene Weisen angezeigt werden: Einzelansicht oder Erweiterungsansicht.\n
-<b>Handlungsansicht</b> - Hier können Sie anpassen, welche Informationen über jede Handlung angezeigt werden. Diese Einstellung betrifft jede Ansicht.\n
-<b>Aufräumen</b> - Löscht entweder alle erledigten Handlungen oder alles. \n
+		<p>
+		Viele Teile von Shuffle sind an den Benutzer anpassbar. Die 
+		<b>Einstellungen</b> sind von überall über das Menü zu erreichen.\n
+		<b>Kalender</b> - Wählen Sie den Kalender, den Shuffle benutzen soll\n
+		<b>Listenansicht</b> - Projekte und Kategorien können auf zwei 
+        verschiedene Weisen angezeigt werden: Einzelansicht oder 
+        Erweiterungsansicht.\n
+        <b>Handlungsansicht</b> Hier können Sie anpassen, welche Informationen
+        über jede Handlung angezeigt werden. Diese Einstellung betrifft jede 
+        Ansicht.\n
+        <b>Aufräumen</b> Löscht entweder alle erledigten Handlungen oder 
+        alles.\n
+        <b>Synchronisierungseinstellungen</b> - Setzen Sie eine website, mit 
+        der sich Shuffle synchronisieren soll\n
+        <b>Sicherung auf SD-Karte</b> - Speichern Sie alle ihre Handlungen,
+        Kategorien und Projekte auf die SD-Karte. Sie können Sie dann auf ihrem
+        Computer sichern.\n
+        <b>Von SD-Karte wiederherstellen</b> - Alle daten werden aus einer 
+        Sicherung wiederhergestellt. Shufflen kann keine Duplikate erkennen;
+        sie sollten also vor einer Wiederherstellung alle Daten aus Shuffle 
+        löschen.\n
+        <b>Abgeschlossene handlungen löschen</b> - Alle abgeschlossenen 
+        Handlungen dauerhaft löschen\n
+        <b>Alles löschen!</b> - Dauerhaft alle Handlungen, Projekte und 
+        Kategorien löschen\n
+    	</p>    
     </string>
     <string name="help7">
-Einige nützliche Tipps für Sie:\n
-1) In jeder Liste können Sie lange auf einen Eintrag drücken, um ein Menü anzuzeigen.\n
-2) Wenn Sie die Zurück-Taste betätigen, wird automatisch gespeichert.\n
-3) Benutzen Sie <i>Speichern und Neu</i> um viele Handlungen auf einmal hinzuzufügen.\n
-4) Um eine Handlung als erledigt anzuzeigen, können Sie diese mit Ihrem Finger "durchstreichen".\n
-5) Sie können eine Verknüpfung auf ihrem Bildschirm einfügen, mit der Sie neue Handlungen erstellen können.\n
-    </string>
+        <p>
+       Einige nützliche Tipps für Sie:\n
+
+       1) In fast allen Ansichten können sie nach rechts oder links wischen, um zu ähnlichen Ansichten zu wechseln.\n
+
+	   2) Alle Listen haben Ansichtseinstellungen, so dass sie auswählen können, was genau Sie sehen wollen - beispielweise können inaktive Handlungen ausgeblendet werden.\n
+
+       3) Aktivieren sie <i>Schnellzugriff</i> in den Ansichtseinstellungen um von überall Handlungen, Projekte und Kategorien erstellen zu können.\n
+
+       4) Der Zurück-Button speichert, bevor die Ansicht geschlossen wird.\n
+
+       5) Erstellen Sie Icons auf ihrem Homescreen, um direkt auf verschiedene Ansichten und Handlungen zugreifen zu können.\n
+
+       6) Fügen Sie Widgets zu ihrem Homescreen hinzu, um einen schnellen Überblick über bestimmte Listen zu bekommen.\n
+
+       7) Unter Einstellungen > Suche, können Sie wählen, ob Shuffle-Handlungen in der Android-Schnellsuche angezeigt werden sollen.\n
+        </p>
+</string>
     <string name="help8">
-Danke an das Team vom Tango Desktop Project, welches eine Open-Source-Sammlung an Icons bereitstellt, die in Shuffle verwendet wird.
-Danke auch an David Gibb, der mir tolles Feedback bezüglich des Designs gegeben hat, und an Gudrun, die es toleriert hat, dass ich meine Nächte und Wochenenden mit Android verbracht habe.\n
-Ebenfalls Danke an Jan Lippert, der Shuffle ins Deutsche übersetzt hat.\n
-\n
-Um Feedback oder einen Bugreport einzureichen, besuchen Sie bitte http://code.google.com/p/android-shuffle/issues/list oder schicken Sie eine Mail an andy@dodgybits.org (nur Englisch).</string>
+        <p>
+        Danke an das Team vom Tango Desktop Project, welches eine 
+        Open-Source-Sammlung an Icons bereitstellt, die in Shuffle verwendet 
+        wird. Danke auch an David Gibb, der mir tolles Feedback bezüglich des 
+        Designs gegeben hat, und an Gudrun, die es toleriert hat, dass ich meine 
+        Nächte und Wochenenden mit Android verbracht habe.\n\n
+        </p>
+        <p>        
+        Um Feedback oder einen Bugreport einzureichen, besuchen Sie bitte 
+        http://code.google.com/p/android-shuffle/issues/list oder schicken Sie 
+        eine Mail an andy@dodgybits.org (nur Englisch).
+        </p>
+    </string>
+    <string name="help9">
+        <p>
+        <b>Benutzerdefiniert</b> - standardmäßig werden alle Handlungen gezeigt. Passen 
+        Sie die Ansichtseinstellungen an, um das anzuzeigen, was Sie wirklich
+        sehen wollen. 
+        </p>
+    </string>
+    <string name="help10">
+        <p><b>Erinnerungen</b> zeigt Handlungen, die Sie pausiert haben.
+	Standardmäßig werden auch Handlungen angezeigt, die in der Zukunft 
+	starten. Die können Sie jedoch - über die Ansichteneinstellung - 
+	ändern. Beispielsweise können sie alle inaktiven Handlungen - 
+	Handlungen, deren Projekt oder Kategorie inaktiv sind - anzeigen. 
+        </p>
+    </string>
+    <string name="help_swipe_hint">Wischen Sie, um in der Hilfe zu navigieren</string>
 
     <!-- Reminder format strings -->
     <plurals name="Nminutes">
+
         <!-- This is the label for a 1-minute reminder. -->
         <item quantity="one">Eine Minute</item>
-        <!-- This is the label for 2 or more minutes. The actual number of
-             minutes is a parameter. -->
-        <item quantity="other"><xliff:g id="count">%d</xliff:g> Minuten</item>
+        <!--
+             This is the label for 2 or more minutes. The actual number of
+             minutes is a parameter.
+        -->
+        <item quantity="other">%1$d Minuten</item>
     </plurals>
-    <!-- We use the abbreviation "mins" instead of "minutes" to keep the string short.
-         This is the number of minutes displayed for a calendar reminder.  For example,
-         a reminder of 10 minutes would be displayed as '10 mins'.  The translation
-         should use the shortest acceptable abbreviation to save space. -->
-    <plurals name="Nmins">
-        <!-- This is the label for a 1-minute reminder. -->
-        <item quantity="one">1 Min</item>
-        <!-- This is the label for 2 or more minutes. The actual number of
-             minutes is a parameter. -->
-        <item quantity="other"><xliff:g id="count">%d</xliff:g> Min</item>
-    </plurals>
-    <!-- This is the number of hours displayed for a calendar reminder.  For example,
+    <!--
+         This is the number of hours displayed for a calendar reminder.  For example,
          a reminder of 1 hour would be displayed as '1 hour'.  The translation
-         should use the shortest acceptable abbreviation of 'hour' to save space. -->
+         should use the shortest acceptable abbreviation of 'hour' to save space.
+    -->
     <plurals name="Nhours">
+
         <!-- This is the label for a 1-hour reminder. -->
         <item quantity="one">1 Stunde</item>
-        <!-- This is the label for a reminder of 2 or more hours. The actual number of
-             hours is a parameter. -->
-        <item quantity="other"><xliff:g id="count">%d</xliff:g> Stunden</item>
+        <!--
+             This is the label for a reminder of 2 or more hours. The actual number of
+             hours is a parameter.
+        -->
+        <item quantity="other">%1$d Stunden</item>
     </plurals>
-    <!-- This is the number of days displayed for a calendar reminder.  For example,
+    <!--
+         This is the number of days displayed for a calendar reminder.  For example,
          a reminder of 2 days would be displayed as '2 days'.  The translation
-         should use the shortest acceptable abbreviation of 'day' to save space. -->
+         should use the shortest acceptable abbreviation of 'day' to save space.
+    -->
     <plurals name="Ndays">
+
         <!-- This is the label for a reminder of 1 day. -->
         <item quantity="one">1 Tag</item>
-        <!-- This is the label for a reminder of 2 or more days. The actual number of
-             days is a parameter. -->
-        <item quantity="other"><xliff:g id="count">%d</xliff:g> Tage</item>
+        <!--
+             This is the label for a reminder of 2 or more days. The actual number of
+             days is a parameter.
+        -->
+        <item quantity="other">%1$d Tage</item>
     </plurals>
-    
+    <!--
+         This is the number of hours displayed for a calendar reminder.  For example,
+         a reminder of 1 hour would be displayed as '1 hour'.  The translation
+         should use the shortest acceptable abbreviation of 'hour' to save space.
+    -->
+
+
+    <!-- new task list -->
+
+    <plurals name="task_view_selected_message_count">
+        <item quantity="one"><xliff:g id="message_count" example="1">%d</xliff:g> ausgewählt</item>
+        <item quantity="other"><xliff:g id="message_count" example="9">%d</xliff:g> ausgewählt</item>
+    </plurals>
+
+    <string name="quick_add_hint">Schnellzugriff: %1$s</string>
+
+    <!-- widget -->
+    <string name="more_than_999">"999+"</string>
+    <string name="widget_loading">Lade\u2026</string>
+
 </resources>

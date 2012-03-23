@@ -412,7 +412,7 @@ allow that, you can turn it off under Settings.</string>
          Used only in layout computation, and never actually exposed to the user. -->
     <string name="long_string" translatable="false">looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong</string>
 
-    <string name="task_list_contents_snippet_divider"> - </string>
+    <string name="task_list_contents_snippet_divider" translatable="false"> - </string>
 
     <plurals name="task_view_selected_message_count">
         <item quantity="one"  ><xliff:g id="message_count" example="1">%d</xliff:g> selected</item>

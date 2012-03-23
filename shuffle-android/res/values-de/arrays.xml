@@ -13,18 +13,17 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
 <resources>
+
     <array name="perspectives">
         <item>Eingang</item>
         <item>Fällige Handlungen</item>
         <item>Nächste Schritte</item>
         <item>Projekte</item>
         <item>Kategorien</item>
-        <item>Brauch</item>
-        <item>Erinnerung</item>
+        <item>Benutzerdefiniert</item>
+        <item>Zur Erinnerung</item>
     </array>
-
     <array name="help_screens">
         <item>Einführung</item>
         <item>Eingang</item>
@@ -35,11 +34,12 @@
         <item>Einstellungen</item>
         <item>Tipps und Tricks</item>
         <item>Danksagungen</item>
-        <item>Brauch</item>
-        <item>Erinnerung</item>
+        <item>Benutzerdefiniert</item>
+        <item>Zur Erinnerung</item>
     </array>
 
-    <!-- Choices for the "Reminder Minuten" spinner.
+    <!--
+         Choices for the "Reminder Minuten" spinner.
          These must be kept in sync with the reminder_Minuten_values array.
     -->
     <string-array name="reminder_Minuten_labels">
@@ -58,7 +58,7 @@
         <item>2 Tage</item>
         <item>1 Woche</item>
     </string-array>
-
+    
     <string-array name="preferences_default_reminder_labels">
         <item>Keine</item>
         <item>5 Minuten</item>
@@ -77,5 +77,28 @@
         <item>1 Woche</item>
     </string-array>
 
+    <string-array name="list_preferences_active_labels">
+        <item>Zeige Alle</item>
+        <item>Zeige nur aktive</item>
+        <item>Verstecke aktive</item>
+    </string-array>
+   
+    <string-array name="list_preferences_deleted_labels">
+        <item>Zeige Alle</item>
+        <item>Zeige nur gelöschte</item>
+        <item>Verstecke gelöschte</item>
+    </string-array>
     
+    <string-array name="list_preferences_pending_labels">
+        <item>Zeige Alle</item>
+        <item>Zeige nur zukünftige</item>
+        <item>Verstecke zukünftige</item>
+    </string-array>
+    
+    <string-array name="list_preferences_completed_labels">
+        <item>Zeige Alle</item>
+        <item>Zeige nur abgeschlossene</item>
+        <item>Verstecke abgeschlossene</item>
+    </string-array>
+
 </resources>
