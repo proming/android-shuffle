@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (C) 2009 Android Shuffle Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,11 +36,11 @@
     <string name="title_preferences_restore_backup">Préférences Générales > Restaurer depuis une sauvegarde</string>
     <string name="title_help">Aide</string>
     <string name="title_icon_picker">Choisir icône</string>
-    <string name="title_colour_picker">Choisir coleur</string>
+    <string name="title_colour_picker">Choisir couleur</string>
     <string name="title_calendar">Tâches dues %s</string>
     <string name="title_project_tasks">Projets > %s</string>
     <string name="title_context_tasks">Contextes > %s</string>
-    <string name="title_shortcut_picker">Pick shortcut screen</string> <!--  TODO -->
+    <string name="title_shortcut_picker">Choisir le raccourci</string>
 
 	<!--  Option menu -->
     <string name="menu_save">Enregistrer</string>
@@ -132,10 +131,10 @@
     <string name="due_date_title">Echéance</string>
 
 
-    <string name="general_preferences">General settings</string> <!--  TODO -->
+    <string name="general_preferences">Préférences Générales</string>  
     
-    <string name="title_calendar_preference">Select calendar</string> <!--  TODO -->
-    <string name="summary_calendar_preference">For new Google Calendar entries</string> <!--  TODO -->
+    <string name="title_calendar_preference">Selectionner un calendrier</string>
+    <string name="summary_calendar_preference">Pour les nouvelles tâches à écheance</string>
 
 
 	<string name="layout_preferences">Layout</string>
@@ -198,39 +197,37 @@
     <!-- Toast displayed when an item is saved -->
     <string name="itemDeletedToast"><xliff:g id="itemName">%s</xliff:g> supprimé.</string>
 
-           <!-- synchronization-->
-    <!--TODO start-->
-    <string name="synchronizing">Synchronizing with Tracks</string>
-    <string name="tracksUser">User</string>
-    <string name="tracksInstallation">Target installation</string>
-    <string name="sync_preferences">Synchronization options</string>
-    <string name="changeSynchronizationSettings">Change synchronization settings</string>
-    <string name="tracks_url">Tracks installation</string>
+    <!-- synchronization-->
+    <string name="synchronizing">Synchroniser avec Tracks</string>
+    <string name="tracksUser">Utilisateur</string>
+    <string name="tracksInstallation">Cible d'installation</string>
+    <string name="sync_preferences">Options de synchronisation</string>
+    <string name="changeSynchronizationSettings">Modifier les paramètres de synchronisation</string>
+    <string name="tracks_url">Url Tracks</string><string name="synchronizing">Synchronizing with Tracks</string>
     <string name="tracks_url_settings">http://my.gtdify.com</string>
     <string name="self_signed_cert">Certificat https Auto-signé (trou de sécurité)</string>
-    <string name="tracks_user">User</string>
-    <string name="tracks_pass">Password</string>
-    <string name="readingRemoteTasks">Reading remote tasks</string>
-    <string name="processingTasks">Processing tasks</string>
-    <string name="readingLocalTasks">Reading local tasks</string>
-    <string name="doneWithTasks">Done with tasks</string>
-    <string name="cannotSyncTasksWithoutContext">Cannot synchronize tasks without a context to Tracks</string>
-    <string name="readingRemoteContexts">Reading remote Contexts</string>
-    <string name="processingContexts">Processing Contexts</string>
-    <string name="readingLocalContexts">Reading local Contexts</string>
-    <string name="doneWithContexts">Done with Contexts</string>
-    <string name="readingRemoteProjects">Reading remote Projects</string>
-    <string name="processingProjects">Processing Projects</string>
-    <string name="readingLocalProjects">Reading local Projects</string>
-    <string name="doneWithProjects">Done with Projects</string>
-    <string name="tracks_failed_to_check_url">Could not load contexts using these settings, something is wrong with them</string>
-    <string name="tracks_background_sync">Background synchronization interval</string>
-    <string name="sync_interval_none">No background synchronizer</string>
-    <string name="sync_interval_30min">30 minutes</string>
-    <string name="sync_interval_1h">1 hour</string>
-    <string name="sync_interval_2h">2 hours</string>
-    <string name="sync_interval_3h">3 hours</string>
-    <!--TODO end-->
+    <string name="tracks_user">Utilisateur</string>
+    <string name="tracks_pass">Mot de passe</string>
+    <string name="readingRemoteTasks">Lecture des tâches distantes</string>
+    <string name="processingTasks">Traitement des tâches</string>
+    <string name="readingLocalTasks">Lecture des tâches locales</string>
+    <string name="doneWithTasks">Tratement des tâches terminé</string>
+    <string name="cannotSyncTasksWithoutContext">Impossible de synchroniser les tâches sans contexte</string>
+    <string name="readingRemoteContexts">Lecture des contextes distants</string>
+    <string name="processingContexts">Traitement des contextes</string>
+    <string name="readingLocalContexts">Lecture des contextes locaux</string>
+    <string name="doneWithContexts">Traitement des contextes terminés</string>
+    <string name="readingRemoteProjects">Lecture des projets distants</string>
+    <string name="processingProjects">Traitement des projets</string>
+    <string name="readingLocalProjects">Lecture des projets locaux</string>
+    <string name="doneWithProjects">Traitement des projets terminés</string>
+    <string name="tracks_failed_to_check_url">Impossible de charger des contextes en utilisant ces paramètres</string>
+    <string name="tracks_background_sync">Fréquence de synchronisation</string>
+    <string name="sync_interval_none">Pas de synchronisation automatique</string>
+    <string name="sync_interval_30min">30 min</string>
+    <string name="sync_interval_1h">1 heure</string>
+    <string name="sync_interval_2h">2 heures</string>
+    <string name="sync_interval_3h">3 heures</string>
 
 	<!--  messages -->
     <string name="no_due_date">Aucune échéance</string>
@@ -246,8 +243,8 @@
     <string name="clean_slate_message">Tous les projets, tâches et contextes personnels ont été supprimés.</string>
    	<string name="error_title">Erreur</string>
 	<string name="error_message">Erreur lors du chargement d\'une tâche</string>
-    <!--TODO-->
-	<string name="web_error_message">Unable to connect to Tracks</string>
+
+	<string name="web_error_message">Impossible de se connecter à Tracks</string>
     <string name="welcome1">
 Bienvenu à Shuffle, un outil d\'organisation personnelle inspiré de la méthode \"Getting Things Done\".
 Si vous voulez voir comment bien utiliser Shuffle, clicker \"Démonstration\" pour 
