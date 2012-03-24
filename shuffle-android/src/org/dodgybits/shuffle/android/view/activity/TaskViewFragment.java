@@ -210,7 +210,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         updateDescription(task.getDescription());
         updateContext(context);
         updateDetails(task.getDetails());
-        updateScheduling(task.getStartDate(), task.getDueDate());
+        updateScheduling(task.getStartDate(), task.getDueDate(), task.isAllDay());
         updateCalendar(task.getCalendarEventId());
         updateExtras(task, context, project);
         updatePageDisplay();
@@ -276,7 +276,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         }
     }
 
-    private void updateScheduling(long showFromMillis, long dueMillis) {
+    private void updateScheduling(long showFromMillis, long dueMillis, boolean allDay) {
         if (showFromMillis == 0L && dueMillis == 0L) {
             mSchedulingEntry.setVisibility(View.GONE);
         } else {

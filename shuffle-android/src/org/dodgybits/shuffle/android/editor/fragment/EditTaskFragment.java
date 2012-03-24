@@ -309,28 +309,29 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
             // the timezone to UTC, as required for all-day events.
             if (mShowFromDateVisible) {
                 timezone = Time.TIMEZONE_UTC;
+                mShowFromTime.timezone = timezone;
                 mShowFromTime.hour = 0;
                 mShowFromTime.minute = 0;
                 mShowFromTime.second = 0;
-                mShowFromTime.timezone = timezone;
-                showFromMillis = mShowFromTime.normalize(true);
+                showFromMillis = mShowFromTime.toMillis(true);
             }
 
             if (mDueDateVisible) {
                 timezone = Time.TIMEZONE_UTC;
+                mDueTime.timezone = timezone;
                 mDueTime.hour = 0;
                 mDueTime.minute = 0;
                 mDueTime.second = 0;
-                mDueTime.monthDay++;
-                mDueTime.timezone = timezone;
-                dueMillis = mDueTime.normalize(true);
+                dueMillis = mDueTime.toMillis(true);
             }
         } else {
             if (mShowFromDateVisible && !Time.isEpoch(mShowFromTime)) {
+                mShowFromTime.timezone = timezone;
                 showFromMillis = mShowFromTime.toMillis(true);
             }
 
             if (mDueDateVisible && !Time.isEpoch(mDueTime)) {
+                mDueTime.timezone = timezone;
                 dueMillis = mDueTime.toMillis(true);
             }
         }
@@ -354,16 +355,30 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
         Id eventId = mOriginalItem == null ? Id.NONE : mOriginalItem.getCalendarEventId();
         final boolean updateCalendar = mUpdateCalendarCheckBox.isChecked();
 
-        if (updateCalendar) {
+        if (commitValues && updateCalendar) {
+            long startMillis = showFromMillis > 0L ? showFromMillis : dueMillis;
+            long endMillis = dueMillis > 0L ? dueMillis : showFromMillis;
+
+            if (allDay) {
+                if (endMillis < startMillis) {
+                    endMillis = startMillis;
+                }
+                endMillis += DateUtils.DAY_IN_MILLIS;
+            } else {
+                if (endMillis < startMillis + DateUtils.HOUR_IN_MILLIS) {
+                    endMillis = startMillis + DateUtils.HOUR_IN_MILLIS;
+                }
+            }
+
             Uri calEntryUri = addOrUpdateCalendarEvent(
                     eventId, description, details,
-                    projectId, contextId, timezone, showFromMillis,
-                    dueMillis, allDay);
+                    projectId, contextId, timezone, startMillis,
+                    endMillis, allDay);
             if (calEntryUri != null) {
                 eventId = Id.create(ContentUris.parseId(calEntryUri));
                 mNextIntent = new Intent(Intent.ACTION_EDIT, calEntryUri);
-                mNextIntent.putExtra("beginTime", showFromMillis);
-                mNextIntent.putExtra("endTime", dueMillis);
+                mNextIntent.putExtra("beginTime", startMillis);
+                mNextIntent.putExtra("endTime", endMillis);
             }
             Log.i(TAG, "Updated calendar event " + eventId);
         }
@@ -375,7 +390,7 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
     private Uri addOrUpdateCalendarEvent(
             Id calEventId, String title, String description,
             Id projectId, Id contextId,
-            String timezone, long start, long end, boolean allDay) {
+            String timezone, long startMillis, long endMillis, boolean allDay) {
         if (projectId.isInitialised()) {
             String projectName = getProjectName(projectId);
             title = projectName + " - " + title;
@@ -385,20 +400,17 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
         }
 
         ContentValues values = new ContentValues();
-        if (!TextUtils.isEmpty(timezone)) {
-            values.put("eventTimezone", timezone);
-        }
+        values.put("eventTimezone", timezone);
         values.put("calendar_id", Preferences.getCalendarId(getActivity()));
         values.put("title", title);
         values.put("allDay", allDay ? 1 : 0);
-        if (start > 0L) {
-            values.put("dtstart", start); // long (start date in ms)
-        }
-        if (end > 0L) {
-            values.put("dtend", end);     // long (end date in ms)
-        }
+
+
+        values.put("dtstart", startMillis); // long (start date in ms)
+        values.put("dtend", endMillis);     // long (end date in ms)
+        values.put("duration", (String) null);
+
         values.put("description", description);
-        values.put("hasAlarm", 0);
 
         if (!OSUtils.atLeastICS()) {
             values.put("transparency", 0);
@@ -431,8 +443,26 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
         }
         if (updateCount == 0) {
             eventUri = cr.insert(baseUri, values);
+
+            addReminder(eventUri);
         }
         return eventUri;
+    }
+
+    private Uri addReminder(Uri eventUri) {
+        Uri uri = null;
+        try {
+            ContentResolver cr = getActivity().getContentResolver();
+            ContentValues values = new ContentValues();
+            long id = ContentUris.parseId(eventUri);
+            values.put("minutes", 15);
+            values.put("event_id", id);
+            values.put("method", 1 /* alert */);
+            uri = cr.insert(Uri.parse("content://com.android.calendar/reminders"), values);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to add reminder " + e);
+        }
+        return uri;
     }
 
     /**
