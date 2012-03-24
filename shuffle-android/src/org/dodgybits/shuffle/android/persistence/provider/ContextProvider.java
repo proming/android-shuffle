@@ -32,7 +32,8 @@ public class ContextProvider extends AbstractCollectionProvider {
 				ShuffleTable.DELETED,
 				ShuffleTable.ACTIVE
 				);
-		
+
+        makeSearchable(Contexts._ID, Contexts.NAME, Contexts.NAME, Contexts.NAME);
 		uriMatcher.addURI(AUTHORITY, "contextTasks", CONTEXT_TASKS);
 		restrictionBuilders.put(CONTEXT_TASKS, 
 		        new CustomElementFilterRestrictionBuilder(

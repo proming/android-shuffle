@@ -21,5 +21,5 @@
     android:searchSettingsDescription="@string/search_settings_description_action"
     android:includeInGlobalSearch="true"
     android:searchSuggestAuthority="org.dodgybits.android.shuffle.provider.taskprovider"
-    android:searchSuggestIntentAction="android.intent.action.EDIT"
+    android:searchSuggestIntentAction="android.intent.action.VIEW"
     android:searchSuggestIntentData="content://org.dodgybits.android.shuffle.provider.taskprovider/tasks" />
