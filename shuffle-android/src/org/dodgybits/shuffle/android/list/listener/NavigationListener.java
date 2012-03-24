@@ -7,6 +7,8 @@ import android.net.Uri;
 import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.core.activity.HelpActivity;
 import org.dodgybits.shuffle.android.core.util.IntentUtils;
+import org.dodgybits.shuffle.android.list.activity.ContextTaskListsActivity;
+import org.dodgybits.shuffle.android.list.activity.ProjectTaskListsActivity;
 import org.dodgybits.shuffle.android.list.event.*;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
@@ -49,6 +51,18 @@ public class NavigationListener {
 
     public void onNewContext(@Observes EditNewContextEvent event) {
         Intent intent = new Intent(Intent.ACTION_INSERT, ContextProvider.Contexts.CONTENT_URI);
+        mActivity.startActivity(intent);
+    }
+
+    public void onViewContext(@Observes ViewContextEvent event) {
+        Intent intent = IntentUtils.createContextViewIntent(event.getContextId());
+        intent.putExtra(ContextTaskListsActivity.INITIAL_POSITION, event.getPosition());
+        mActivity.startActivity(intent);
+    }
+
+    public void onViewProject(@Observes ViewProjectEvent event) {
+        Intent intent = IntentUtils.createProjectViewIntent(event.getProjectId());
+        intent.putExtra(ProjectTaskListsActivity.INITIAL_POSITION, event.getPosition());
         mActivity.startActivity(intent);
     }
 

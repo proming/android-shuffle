@@ -60,7 +60,7 @@ public class TaskViewActivity extends ActionBarFragmentActivity {
         super.onCreate(icicle);
 
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
-        setContentView(R.layout.fragment_container);
+        setContentView(R.layout.fragment_container_with_cab);
 
         getActionBarHelper().setDisplayOptions(ActionBarHelper.DISPLAY_HOME_AS_UP |
                 ActionBarHelper.DISPLAY_SHOW_HOME |
@@ -84,7 +84,7 @@ public class TaskViewActivity extends ActionBarFragmentActivity {
 
         TaskViewFragment viewFragment = TaskViewFragment.newInstance(args);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment_container, viewFragment);
+        ft.replace(R.id.fragment_container, viewFragment);
         ft.commit();
     }
 

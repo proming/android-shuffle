@@ -1,11 +1,8 @@
 package org.dodgybits.shuffle.android.list.view.context;
 
-import android.app.Activity;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
@@ -22,7 +19,6 @@ import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
-import org.dodgybits.shuffle.android.list.activity.ContextTaskListsActivity;
 import org.dodgybits.shuffle.android.list.content.ContextCursorLoader;
 import org.dodgybits.shuffle.android.list.event.*;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
@@ -122,25 +118,11 @@ public class ContextListFragment extends RoboListFragment {
     }
 
     /**
-     * Called when a message is clicked.
+     * Called when a context is clicked.
      */
     @Override
     public void onListItemClick(ListView parent, View view, int position, long id) {
-
-        String action = getActivity().getIntent().getAction();
-        if (Intent.ACTION_PICK.equals(action)
-                || Intent.ACTION_GET_CONTENT.equals(action)) {
-            // The caller is waiting for us to return a task selected by
-            // the user. They have clicked on one, so return it now.
-            Uri url = ContentUris.withAppendedId(ContextProvider.Contexts.CONTENT_URI, id);
-            Intent intent = new Intent();
-            intent.putExtra(SELECTED_ITEM, url.toString());
-            getActivity().setResult(Activity.RESULT_OK, intent);
-        } else {
-            Intent intent = new Intent(getActivity(), ContextTaskListsActivity.class);
-            intent.putExtra(ContextTaskListsActivity.INITIAL_POSITION, position);
-            startActivity(intent);
-        }
+        mEventManager.fire(new ViewContextEvent(Id.create(id), position));
     }
 
     @Override

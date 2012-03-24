@@ -39,8 +39,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     public static final String INDEX = "TaskViewFragment.index";
     public static final String COUNT = "TaskViewFragment.count";
 
-    private View mMainView;
-    
     private TextView mProjectView;
     private TextView mDescriptionView;
     private LabelView mContextView;
@@ -90,7 +88,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragmentx
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.task_view, container, false);
     }
 
@@ -121,20 +119,14 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.task_view_menu, menu);
+        updateMenuVisibility(menu);
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        if (mTask != null) {
-            final boolean isComplete = getTask().isComplete();
-            menu.findItem(R.id.action_mark_complete).setVisible(!isComplete);
-            menu.findItem(R.id.action_mark_incomplete).setVisible(isComplete);
-            final boolean isDeleted = getTask().isDeleted();
-            menu.findItem(R.id.action_delete).setVisible(!isDeleted);
-            menu.findItem(R.id.action_undelete).setVisible(isDeleted);
-        }
+        updateMenuVisibility(menu);
     }
-
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -181,8 +173,18 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         return mTask;
     }
 
+    private void updateMenuVisibility(Menu menu) {
+        if (getTask() != null) {
+            final boolean isComplete = getTask().isComplete();
+            menu.findItem(R.id.action_mark_complete).setVisible(!isComplete);
+            menu.findItem(R.id.action_mark_incomplete).setVisible(isComplete);
+            final boolean isDeleted = getTask().isDeleted();
+            menu.findItem(R.id.action_delete).setVisible(!isDeleted);
+            menu.findItem(R.id.action_undelete).setVisible(isDeleted);
+        }
+    }
+
     private void findViews() {
-        mMainView = getView().findViewById(R.id.main);
         mProjectView = (TextView) getView().findViewById(R.id.project);
         mDescriptionView = (TextView) getView().findViewById(R.id.description);
         mContextView = (LabelView) getView().findViewById(R.id.context);

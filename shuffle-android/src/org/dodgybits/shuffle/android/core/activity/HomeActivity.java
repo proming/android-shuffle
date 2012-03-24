@@ -46,7 +46,7 @@ public class HomeActivity extends ActionBarFragmentActivity {
                 ActionBarHelper.DISPLAY_SHOW_TITLE);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment_container, mFragment);
+        ft.replace(R.id.fragment_container, mFragment);
         ft.commit();
 
         addVersionToTitle();

@@ -1,7 +1,9 @@
 package org.dodgybits.shuffle.android.list.activity;
 
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -94,7 +96,19 @@ public class ProjectTaskListsActivity extends ActionBarFragmentActivity {
     private void startLoading() {
         Log.d(TAG, "Creating project list cursor");
         final LoaderManager lm = getSupportLoaderManager();
-        lm.initLoader(LOADER_ID_CONTEXT_LIST_LOADER, getIntent().getExtras(), LOADER_CALLBACKS);
+        final Bundle args = createLoaderArgs(getIntent());
+        lm.initLoader(LOADER_ID_CONTEXT_LIST_LOADER, args, LOADER_CALLBACKS);
+    }
+
+    private Bundle createLoaderArgs(Intent intent) {
+        Uri data = intent.getData();
+        long contextId = ContentUris.parseId(data);
+
+        Bundle args = new Bundle();
+        args.putLong(INITIAL_ID, contextId);
+        args.putInt(INITIAL_POSITION, intent.getIntExtra(INITIAL_POSITION, -1));
+
+        return args;
     }
 
     /**
@@ -108,7 +122,7 @@ public class ProjectTaskListsActivity extends ActionBarFragmentActivity {
                 
                 @Override
                 public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-                    mInitialPosition = args.getInt(INITIAL_POSITION, 0);
+                    mInitialPosition = args.getInt(INITIAL_POSITION, -1);
                     mInitialId = args.getLong(INITIAL_ID, -1L);
                     return new ProjectCursorLoader(ProjectTaskListsActivity.this);
                 }
@@ -117,10 +131,10 @@ public class ProjectTaskListsActivity extends ActionBarFragmentActivity {
                 public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
                     mAdapter = new MyAdapter(getSupportFragmentManager(), c);
                     mPager.setAdapter(mAdapter);
-                    if (mInitialId > -1L) {
-                        int position = mPersister.getPositionOfItemWithId(c, mInitialId);
-                        if (position > -1) {
-                            mInitialPosition = position;
+                    if (mInitialPosition == -1) {
+                        mInitialPosition = mPersister.getPositionOfItemWithId(c, mInitialId);
+                        if (mInitialPosition == -1) {
+                            mInitialPosition = 0;
                         }
                     }
                     

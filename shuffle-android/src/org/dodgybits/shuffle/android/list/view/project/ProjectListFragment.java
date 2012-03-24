@@ -1,11 +1,8 @@
 package org.dodgybits.shuffle.android.list.view.project;
 
-import android.app.Activity;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
@@ -23,7 +20,6 @@ import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
-import org.dodgybits.shuffle.android.list.activity.ProjectTaskListsActivity;
 import org.dodgybits.shuffle.android.list.content.ProjectCursorLoader;
 import org.dodgybits.shuffle.android.list.event.*;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
@@ -127,21 +123,7 @@ public class ProjectListFragment extends RoboListFragment {
      */
     @Override
     public void onListItemClick(ListView parent, View view, int position, long id) {
-
-        String action = getActivity().getIntent().getAction();
-        if (Intent.ACTION_PICK.equals(action)
-                || Intent.ACTION_GET_CONTENT.equals(action)) {
-            // The caller is waiting for us to return a task selected by
-            // the user. They have clicked on one, so return it now.
-            Uri url = ContentUris.withAppendedId(ProjectProvider.Projects.CONTENT_URI, id);
-            Intent intent = new Intent();
-            intent.putExtra(SELECTED_ITEM, url.toString());
-            getActivity().setResult(Activity.RESULT_OK, intent);
-        } else {
-            Intent intent = new Intent(getActivity(), ProjectTaskListsActivity.class);
-            intent.putExtra(ProjectTaskListsActivity.INITIAL_POSITION, position);
-            startActivity(intent);
-        }
+        mEventManager.fire(new ViewProjectEvent(Id.create(id), position));
     }
 
     @Override

@@ -14,7 +14,6 @@ import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.util.IntentUtils;
 import org.dodgybits.shuffle.android.core.view.EntityPickerDialogHelper;
-import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import roboguice.activity.RoboFragmentActivity;
 
 public class LauncherShortcutActivity extends RoboFragmentActivity {
@@ -67,8 +66,7 @@ public class LauncherShortcutActivity extends RoboFragmentActivity {
                 listener = new EntityPickerDialogHelper.OnEntitySelected() {
                     public void onSelected(long id) {
                         Id contextId = Id.create(id);
-                        TaskListContext listContext = TaskListContext.createForContext(contextId);
-                        Intent shortcutIntent = IntentUtils.createTaskListIntent(LauncherShortcutActivity.this, listContext);
+                        Intent shortcutIntent = IntentUtils.createContextViewIntent(contextId);
                         String name = mContextCache.findById(contextId).getName();
                         returnShortcut(shortcutIntent, name, iconResource);
                     }
@@ -79,8 +77,7 @@ public class LauncherShortcutActivity extends RoboFragmentActivity {
                 listener = new EntityPickerDialogHelper.OnEntitySelected() {
                     public void onSelected(long id) {
                         Id projectId = Id.create(id);
-                        TaskListContext listContext = TaskListContext.createForProject(projectId);
-                        Intent shortcutIntent = IntentUtils.createTaskListIntent(LauncherShortcutActivity.this, listContext);
+                        Intent shortcutIntent = IntentUtils.createProjectViewIntent(projectId);
                         String name = mProjectCache.findById(projectId).getName();
                         returnShortcut(shortcutIntent, name, iconResource);
                     }
