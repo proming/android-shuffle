@@ -70,7 +70,7 @@
         <flurry-sdk.version>2.2.1</flurry-sdk.version>
 		<validation-api.version>1.0.0.GA</validation-api.version>
         <android.version>4.0.1.2</android.version>
-        <android-compatibility-v4.version>r6</android-compatibility-v4.version>
+        <android-compatibility-v4.version>r7</android-compatibility-v4.version>
 		<hibernate-validator.version>4.0.2.GA</hibernate-validator.version>
         <commons-io.version>2.0.1</commons-io.version>
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
