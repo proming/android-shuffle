@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.dodgybits.shuffle.android.core.util;
+package org.dodgybits.shuffle.android.core.view;
 
 import org.dodgybits.android.shuffle.R;
 

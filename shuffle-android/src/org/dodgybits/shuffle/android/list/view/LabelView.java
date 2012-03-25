@@ -17,7 +17,7 @@
 package org.dodgybits.shuffle.android.list.view;
 
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.util.TextColours;
+import org.dodgybits.shuffle.android.core.view.TextColours;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
 
 import android.content.Context;

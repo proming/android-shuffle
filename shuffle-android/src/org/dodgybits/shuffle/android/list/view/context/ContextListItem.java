@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
-import org.dodgybits.shuffle.android.core.util.TextColours;
+import org.dodgybits.shuffle.android.core.view.TextColours;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
 import org.dodgybits.shuffle.android.list.view.StatusView;

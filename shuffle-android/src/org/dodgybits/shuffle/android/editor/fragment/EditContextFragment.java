@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.*;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
-import org.dodgybits.shuffle.android.core.util.TextColours;
+import org.dodgybits.shuffle.android.core.view.TextColours;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
 import org.dodgybits.shuffle.android.editor.activity.ColourPickerActivity;

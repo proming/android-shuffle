@@ -7,7 +7,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.widget.RelativeLayout;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
-import org.dodgybits.shuffle.android.core.util.TextColours;
+import org.dodgybits.shuffle.android.core.view.TextColours;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
 
 import java.util.HashMap;

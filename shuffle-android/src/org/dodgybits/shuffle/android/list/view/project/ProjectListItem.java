@@ -8,8 +8,7 @@ import android.widget.TextView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Project;
-import org.dodgybits.shuffle.android.core.util.TextColours;
-import org.dodgybits.shuffle.android.list.view.StatusView;
+import org.dodgybits.shuffle.android.core.view.TextColours;
 import org.dodgybits.shuffle.android.list.view.StatusView;
 
 public class ProjectListItem extends LinearLayout {

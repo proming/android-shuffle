@@ -18,7 +18,7 @@ package org.dodgybits.shuffle.android.editor.activity;
 
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
-import org.dodgybits.shuffle.android.core.util.TextColours;
+import org.dodgybits.shuffle.android.core.view.TextColours;
 import org.dodgybits.shuffle.android.list.view.LabelView;
 
 import roboguice.inject.InjectView;
