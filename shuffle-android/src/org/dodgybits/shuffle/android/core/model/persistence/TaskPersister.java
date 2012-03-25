@@ -97,7 +97,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
                     TaskProvider.TaskContexts.TASK_ID);
             List<Id> contextIds = Lists.newArrayList();
             while (contextCursor.moveToNext()) {
-                long id = contextCursor.getLong(TASK_CONTEXTS_TASK_ID_INDEX);
+                long id = contextCursor.getLong(TASK_CONTEXTS_CONTEXT_ID_INDEX);
                 contextIds.add(Id.create(id));
             }
             contextCursor.close();

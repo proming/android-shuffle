@@ -46,6 +46,7 @@ import org.dodgybits.shuffle.android.preference.model.ListSettings;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -159,13 +160,12 @@ public class PreHoneycombWidgetProvider extends RoboAppWidgetProvider {
         for (int taskCount = 1; taskCount <= ENTRIES; taskCount++) {
             Task task = null;
             Project project = null;
-            List<Context> contexts = null;
+            List<Context> contexts = Collections.emptyList();
             if (taskCursor.moveToNext()) {
                 task = mTaskPersister.read(taskCursor);
                 project = mProjectCache.findById(task.getProjectId());
                 contexts = mContextCache.findById(task.getContextIds());
             }
-            
 
             int entryId = updateBackground(androidContext, views, task, taskCount);
             int descriptionViewId = updateDescription(androidContext, views, task, taskCount);
