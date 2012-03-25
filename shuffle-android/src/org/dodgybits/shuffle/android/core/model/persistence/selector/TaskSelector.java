@@ -81,7 +81,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
         addPendingExpression(expressions);
 
         addIdCheckExpression(expressions, TaskProvider.Tasks.PROJECT_ID, mProjectId);
-        addIdCheckExpression(expressions, TaskProvider.TaskContexts.CONTEXT_ID, mContextId);
+        addContextExpression(expressions);
         addFlagExpression(expressions, TaskProvider.Tasks.COMPLETE, mComplete);
         
         return expressions;
@@ -175,6 +175,12 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
         }
     }
 
+    private void addContextExpression(List<String> expressions) {
+        if (mContextId.isInitialised()) {
+            String expression = "(task._id IN (select tc.taskId from taskContext tc where tc.contextId = ?))";
+            expressions.add(expression);
+        }
+    }
 
     private String predefinedSelection(android.content.Context context) {
         String result;
