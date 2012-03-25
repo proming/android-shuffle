@@ -129,17 +129,25 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
 
     private void addActiveExpression(List<String> expressions) {
         if (mActive == yes) {
-            // A task is active if it is active and both project and context are active.
+            // A task is active if it is active and both project and either it has no contexts or at least one context is active.
             String expression = "(task.active = 1 " +
             		"AND (projectId is null OR projectId IN (select p._id from project p where p.active = 1)) " +
-            		//"AND (contextId is null OR contextId IN (select c._id from context c where c.active = 1)) " +
+            		"AND (" +
+                    "     ((select count(*) from taskContext tc where tc.taskId = task._id) = 0) OR " +
+                    "     ((select count(*) from taskContext tc, context c where " +
+                    "         tc.taskId = task._id and tc.contextId = c._id and c.active = 1) > 1)" +
+                    "    )" +
             		")";
             expressions.add(expression);
         } else if (mActive == no) {
-            // task is inactive if it is inactive or project in active or context is inactive
+            // task is inactive if it is inactive or project is inactive or all contexts are inactive
             String expression = "(task.active = 0 " +
                 "OR (projectId is not null AND projectId IN (select p._id from project p where p.active = 0)) " +
-                //"OR (contextId is not null AND contextId IN (select c._id from context c where c.active = 0)) " +
+                    "OR (" +
+                    "     ((select count(*) from taskContext tc where tc.taskId = task._id) > 0) AND " +
+                    "     ((select count(*) from taskContext tc, context c where " +
+                    "         tc.taskId = task._id and tc.contextId = c._id and c.active = 0) = 0)" +
+                    "    )" +
                 ")";
             expressions.add(expression);
         }
@@ -147,18 +155,16 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
     
     private void addDeletedExpression(List<String> expressions) {
         if (mDeleted == yes) {
-            // task is deleted if it is deleted or project is deleted or context is deleted
+            // task is deleted if it is deleted or project is deleted
             String expression = "(task.deleted = 1 " +
                 "OR (projectId is not null AND projectId IN (select p._id from project p where p.deleted = 1)) " +
-              //  "OR (contextId is not null AND contextId IN (select c._id from context c where c.deleted = 1)) " +
                 ")";
             expressions.add(expression);
             
         } else if (mDeleted == no) {
-            // task is not deleted if it is not deleted and project is not deleted and context is not deleted
+            // task is not deleted if it is not deleted and project is not deleted
             String expression = "(task.deleted = 0 " +
                 "AND (projectId is null OR projectId IN (select p._id from project p where p.deleted = 0)) " +
-            //    "AND (contextId is null OR contextId IN (select c._id from context c where c.deleted = 0)) " +
                 ")";
             expressions.add(expression);
         }
