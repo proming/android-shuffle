@@ -50,6 +50,7 @@
     <string name="title_shortcut_picker">Pick shortcut</string>
     <string name="title_widget_picker">Pick widget content</string>
     <string name="title_context_picker">Pick a context</string>
+    <string name="title_contexts_picker">Pick contexts</string>
     <string name="title_project_picker">Pick a project</string>
 
 	<!--  Option menu -->
@@ -467,7 +468,7 @@ add new actions and reorder any remaining actions depending on your current prio
 This is the best place to add your actions. 
 The <b>Inbox</b> is where all actions start off before they are processed.
 Try to regularly scan the Inbox, analyzing each action and either discard it, do it or assign it
-to a project and/or context.\n
+to a project and/or one or more contexts.\n
 Once a project or context is assigned to an action, it will automatically be removed from the Inbox.
     </string>
     <string name="help2">
@@ -479,7 +480,8 @@ For some projects it makes sense for actions to completed one after the other in
 projects, actions can be completed in any order. This is configurable when creating or editing a project.
     </string>
     <string name="help3">
-<b>Contexts</b> are like tags for your actions. They can be locations, categories or whatever makes sense to you.
+You may optionally assign one or more <b>contexts</b> to each of your actions.
+Contexts are like tags for your actions. They can be locations, categories or whatever makes sense to you.
 Shuffle comes with a few standard contexts to get you started:
 <i>At home</i>, <i>At  work</i>, <i>Online</i>, <i>Errands</i>, <i>Contact</i> and <i>Read</i>. \n
 Feel free to modify or delete the existing, or add your own contexts that suit your situation.\n
@@ -535,6 +537,21 @@ For feedback or bug reports, please check http://code.google.com/p/android-shuff
 <b>Tickler</b> shows actions you\'ve decided to delay for whatever reason. By default it includes actions that are set to start in the future.
 You can change this (via View Settings) to whatever you want. For instance, you may change it to show all inactive actions
 (actions assigned to inactive projects or contexts).
+    </string>
+    <string name="help11">
+Actions, projects and contexts all have active and deleted flags. Additionally, actions have a completed flag.\n
+\n
+All entities are <b>active</b> by default. You may wish to make an entity inactive if you don\'t intend to tackle it any time soon.
+It still exists, but by default, you won\'t see it in your views.\n
+\n
+When you <b>delete</b> an entity, it is flagged as deleted internally and by default will not be visible in any views.
+You can undelete an entity by changing your View Settings to show deleted items and editing the value.
+If you wish to permanently delete an entity, you can do so from the Settings menu.\n
+\n
+Actions pick up some of their state from the project and contexts they are assigned to.
+An action is considered active if its project (if any) is active and <i>at least</i> one of its contexts (if any) are active.
+An action is considered deleted if either it is marked as deleted or its project (if any) is deleted.
+When a context is marked as deleted its association with all actions is removed. In other words, deleting a context will never delete an action.
     </string>
 
     <!-- Reminder format strings -->

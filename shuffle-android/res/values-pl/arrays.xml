@@ -37,6 +37,7 @@
         <item>Podziękowania</item>
         <item>Zwyczaj</item>
         <item>Przypomnienie</item>
+        <item>Entity lifecycle</item>
     </array>
 
     <!-- Choices for the "Reminder minutes" spinner.

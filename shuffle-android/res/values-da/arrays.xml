@@ -37,6 +37,7 @@
         <item>Anerkendelser</item>
         <item>Brugerdefineret</item>
         <item>Huskeliste</item>
+        <item>Entity lifecycle</item>
     </array>
 
     <!-- Choices for the "Reminder minutes" spinner.

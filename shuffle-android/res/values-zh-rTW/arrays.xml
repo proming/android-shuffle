@@ -37,6 +37,7 @@
         <item>致謝</item>
         <item>习俗</item>
         <item>提醒</item>
+        <item>Entity lifecycle</item>
     </array>
 
     <!-- Choices for the "Reminder minutes" spinner.

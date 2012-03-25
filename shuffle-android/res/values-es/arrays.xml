@@ -37,6 +37,7 @@
         <item>Agradecimientos</item>
         <item>Costumbre</item>
         <item>Recordatorio</item>
+        <item>Entity lifecycle</item>
     </array>
 
     <!-- Choices for the "Reminder minutes" spinner.
