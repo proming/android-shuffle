@@ -249,7 +249,8 @@ public class EditContextFragment extends AbstractEditFragment<Context>
     private void displayColour() {
         int bgColour = TextColours.getInstance(getActivity()).getBackgroundColour(mColourIndex);
         GradientDrawable drawable = DrawableUtils.createGradient(bgColour, GradientDrawable.Orientation.TL_BR);
-        drawable.setCornerRadius(8.0f);
+        int radius = getResources().getDimensionPixelSize(R.dimen.context_large_corner_radius);
+        drawable.setCornerRadius(radius);
         mColourWidget.setBackgroundDrawable(drawable);
     }
 

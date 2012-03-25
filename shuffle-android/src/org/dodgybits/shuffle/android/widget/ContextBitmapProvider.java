@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.widget.RelativeLayout;
+import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.util.TextColours;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
@@ -28,6 +29,7 @@ public class ContextBitmapProvider {
     public Bitmap getBitmapForContexts(List<Context> contexts) {
         Bitmap gradientBitmap = sEmptyBitmap;
         final int contextCount = contexts.size();
+        int radius = mAndroidContext.getResources().getDimensionPixelSize(R.dimen.context_widget_corner_radius);
         if (contextCount > 0) {
             if (contextCount == 1) {
                 // special case for 1 - show gradient and cache
@@ -36,7 +38,7 @@ public class ContextBitmapProvider {
                 if (gradientBitmap == null) {
                     int colour = mColours.getBackgroundColour(colourIndex);
                     GradientDrawable drawable = DrawableUtils.createGradient(colour, GradientDrawable.Orientation.TOP_BOTTOM);
-                    drawable.setCornerRadius(6.0f);
+                    drawable.setCornerRadius(radius);
                     gradientBitmap = createFromDrawable(drawable);
                     mGradientCache.put(colourIndex, gradientBitmap);
                 }
@@ -47,7 +49,7 @@ public class ContextBitmapProvider {
                     backgroundColors[i] = mColours.getBackgroundColour(colourIndex);
                 }
                 GradientDrawable drawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, backgroundColors);
-                drawable.setCornerRadius(6.0f);
+                drawable.setCornerRadius(radius);
                 gradientBitmap = createFromDrawable(drawable);
             }
         }

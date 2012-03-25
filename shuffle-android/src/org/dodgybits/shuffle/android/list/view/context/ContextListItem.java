@@ -71,7 +71,8 @@ public class ContextListItem extends LinearLayout {
 
             int bgColour = mTextColours.getBackgroundColour(context.getColourIndex());
             GradientDrawable drawable = DrawableUtils.createGradient(bgColour, GradientDrawable.Orientation.TOP_BOTTOM);
-            drawable.setCornerRadius(16.0f);
+            int radius = getResources().getDimensionPixelSize(R.dimen.context_large_corner_radius);
+            drawable.setCornerRadius(radius);
             mIcon.setBackgroundDrawable(drawable);
         } else {
             mIcon.setVisibility(View.INVISIBLE);

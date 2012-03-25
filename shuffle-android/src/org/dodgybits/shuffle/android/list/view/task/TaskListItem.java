@@ -70,7 +70,7 @@ public class TaskListItem extends View {
     private static final Paint sContextBackgroundPaint = new Paint();
 
     private static int sContextPadding;
-    private static int sContextRounding;
+    private static int sContextCornerRadius;
     
     private static Bitmap sSelectedIconOn;
     private static Bitmap sSelectedIconOff;
@@ -141,8 +141,8 @@ public class TaskListItem extends View {
             sContextPaint.setTypeface(Typeface.DEFAULT);
             sContextPaint.setAntiAlias(true);
 
-            sContextPadding = r.getDimensionPixelSize(R.dimen.task_list_context_padding);
-            sContextRounding = r.getDimensionPixelSize(R.dimen.task_list_context_rounding);
+            sContextPadding = r.getDimensionPixelSize(R.dimen.context_small_padding);
+            sContextCornerRadius = r.getDimensionPixelSize(R.dimen.context_small_corner_radius);
             
             sSelectedIconOff =
                     BitmapFactory.decodeResource(r, R.drawable.btn_check_off_normal_holo_light);
@@ -493,7 +493,7 @@ public class TaskListItem extends View {
                         mCoordinates.contextsY + mCoordinates.contextsHeight + sContextPadding);
             }
             sContextBackgroundPaint.setShader(getShader(mContextBackgroundColor, backgroundRectF));
-            canvas.drawRoundRect(backgroundRectF, sContextRounding, sContextRounding, sContextBackgroundPaint);
+            canvas.drawRoundRect(backgroundRectF, sContextCornerRadius, sContextCornerRadius, sContextBackgroundPaint);
 
             if (hasIcon) {
                 Bitmap contextIcon = getContextIcon(context.getIconName());
