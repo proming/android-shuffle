@@ -47,6 +47,7 @@ import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.dodgybits.shuffle.android.core.util.Constants.cIdType;
 import static org.dodgybits.shuffle.android.core.util.Constants.cPackage;
@@ -158,18 +159,18 @@ public class PreHoneycombWidgetProvider extends RoboAppWidgetProvider {
         for (int taskCount = 1; taskCount <= ENTRIES; taskCount++) {
             Task task = null;
             Project project = null;
-            Context context = null;
+            List<Context> contexts = null;
             if (taskCursor.moveToNext()) {
                 task = mTaskPersister.read(taskCursor);
                 project = mProjectCache.findById(task.getProjectId());
-                context = mContextCache.findById(task.getContextId());
+                contexts = mContextCache.findById(task.getContextIds());
             }
             
 
             int entryId = updateBackground(androidContext, views, task, taskCount);
             int descriptionViewId = updateDescription(androidContext, views, task, taskCount);
             int projectViewId = updateProject(androidContext, views, project, taskCount);
-            updateContext(androidContext, views, context, taskCount);
+            updateContexts(androidContext, views, contexts, taskCount);
 
             if (task != null) {
                 Intent intent = IntentUtils.createTaskViewIntent(androidContext, listContext, taskCount - 1);
@@ -251,12 +252,13 @@ public class PreHoneycombWidgetProvider extends RoboAppWidgetProvider {
         return descriptionViewId;
     }
 
-    private void updateContext(android.content.Context androidContext, RemoteViews views, Context context, int taskCount) {
+    private void updateContexts(android.content.Context androidContext,
+                                RemoteViews views, List<Context> contexts, int taskCount) {
         if (mBitmapProvider == null) {
             mBitmapProvider = new ContextBitmapProvider(androidContext);
         }
         int contextViewId = getIdIdentifier(androidContext, "contextColour_" + taskCount);
-        views.setImageViewBitmap(contextViewId, mBitmapProvider.getBitmapForContext(context));
+        views.setImageViewBitmap(contextViewId, mBitmapProvider.getBitmapForContexts(contexts));
     }
 
 

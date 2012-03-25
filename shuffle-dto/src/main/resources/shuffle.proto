@@ -43,6 +43,7 @@ message Task {
   optional int64 tracksId = 15;
   optional bool active = 16;
   optional bool deleted = 17;
+  repeated int64 contextIds = 18;
 }
 
 message Date {

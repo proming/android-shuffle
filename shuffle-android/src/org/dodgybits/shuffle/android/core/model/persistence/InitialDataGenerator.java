@@ -16,9 +16,15 @@
 
 package org.dodgybits.shuffle.android.core.model.persistence;
 
-import java.util.Calendar;
-import java.util.TimeZone;
-
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.res.Resources;
+import android.net.Uri;
+import android.os.Handler;
+import android.text.format.DateUtils;
+import android.util.Log;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Id;
@@ -27,19 +33,12 @@ import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
-
 import roboguice.inject.ContentResolverProvider;
 import roboguice.inject.ResourcesProvider;
 
-import com.google.inject.Inject;
-
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.res.Resources;
-import android.net.Uri;
-import android.os.Handler;
-import android.text.format.DateUtils;
-import android.util.Log;
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
 
 public class InitialDataGenerator {
 	private static final String cTag = "InitialDataGenerator";
@@ -149,7 +148,7 @@ public class InitialDataGenerator {
 						yesterday, yesterday));
 		insertTask( 
 				createTask("Advertise garage sale", "Local paper(s) and on craigslist", 
-						AT_COMPUTER_INDEX, cleanGarage, 
+						new int[] {AT_HOME_INDEX, AT_COMPUTER_INDEX}, cleanGarage,
 						oneWeek, oneWeek + 2 * DateUtils.HOUR_IN_MILLIS));
 		insertTask( 
 				createTask("Contact local charities", "See what they want or maybe just put in charity bins", 
@@ -164,7 +163,7 @@ public class InitialDataGenerator {
 		skiTrip = insertProject(skiTrip);
 		insertTask( 
 				createTask("Send email to determine best week", null, 
-						COMMUNICATION_INDEX, skiTrip, 
+						new int[] {AT_COMPUTER_INDEX, COMMUNICATION_INDEX}, skiTrip, 
 						now, now + 2 * DateUtils.HOUR_IN_MILLIS));
 		insertTask( 
 				createTask("Look up package deals", 
@@ -194,7 +193,7 @@ public class InitialDataGenerator {
 						oneWeek, oneWeek + 2 * DateUtils.HOUR_IN_MILLIS));
 		insertTask( 
 				createTask("Produce report", null, 
-						AT_WORK_INDEX, discussI8n, 
+						new int[] {AT_WORK_INDEX, AT_COMPUTER_INDEX}, discussI8n, 
 						twoWeeks, twoWeeks + 2 * DateUtils.HOUR_IN_MILLIS));
 
 		// a few stand alone tasks
@@ -237,23 +236,25 @@ public class InitialDataGenerator {
             .setColourIndex(colourIndex)
             .setIconName(iconName);
         return builder.build();
-    }	
+    }
 
-	private Task createTask(String description, int contextIndex, Project project, long start) {
-		return createTask(description, null, contextIndex, project, start);
+    private Task createTask(String description, int contextIndex, Project project, long start) {
+        return createTask(description, null, contextIndex, project, start, start);
+    }
+
+	private Task createTask(String description, int[] contextIndices, Project project, long start) {
+		return createTask(description, null, contextIndices, project, start, start);
 	}
-	
-	private Task createTask(String description, String details, 
-			int contextIndex, Project project, long start) {
-		return createTask(description, details, contextIndex, project, start, start);
 
-	}		
-
+    private Task createTask(String description, String details,
+                            int contextIndex, Project project, long start, long due) {
+        return createTask(description, details, new int[] {contextIndex}, project, start, due);
+    }
+    
 	private int ORDER = 1;
 	
 	private Task createTask(String description, String details, 
-			int contextIndex, Project project, long start, long due) {
-		Id contextId = contextIndex > -1 ? mPresetContexts[contextIndex].getLocalId() : Id.NONE;
+			int[] contextIndices, Project project, long start, long due) {
 		long created = System.currentTimeMillis();
         String timezone = TimeZone.getDefault().getID();
 
@@ -261,7 +262,6 @@ public class InitialDataGenerator {
 		builder
 		    .setDescription(description)
 		    .setDetails(details)
-		    .setContextId(contextId)
 		    .setProjectId(project == null ? Id.NONE : project.getLocalId())
 		    .setCreatedDate(created)
 		    .setModifiedDate(created)
@@ -271,6 +271,14 @@ public class InitialDataGenerator {
             .setActive(true)
             .setDeleted(false)
 		    .setOrder(ORDER++);
+
+        List<Id> contextIds = Lists.newArrayList();
+        for (int contextIndex : contextIndices) {
+            Id contextId = mPresetContexts[contextIndex].getLocalId();
+            contextIds.add(contextId);
+        }
+        builder.setContextIds(contextIds);
+        
 		return builder.build();
 	}
 	

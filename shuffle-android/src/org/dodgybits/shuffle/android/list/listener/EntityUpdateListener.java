@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
@@ -16,6 +17,7 @@ import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.list.event.*;
 import roboguice.event.Observes;
 
+import java.util.List;
 import java.util.Set;
 
 public class EntityUpdateListener {
@@ -106,10 +108,14 @@ public class EntityUpdateListener {
         Task.Builder builder = Task.newBuilder();
         builder.setDescription(event.getDescription()).
                 setOrder(mTaskPersister.calculateTaskOrder(null, event.getProjectId(), 0L)).
-                setContextId(contextId).
                 setProjectId(projectId).
                 setCreatedDate(System.currentTimeMillis()).
                 setModifiedDate(System.currentTimeMillis());
+
+        if (contextId.isInitialised()) {
+            List<Id> contextIds = Lists.newArrayList(contextId);
+            builder.setContextIds(contextIds);
+        }
 
         mTaskPersister.insert(builder.build());
         String entityName = mActivity.getString(R.string.task_name);

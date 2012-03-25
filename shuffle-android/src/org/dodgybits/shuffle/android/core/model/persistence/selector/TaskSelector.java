@@ -81,7 +81,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
         addPendingExpression(expressions);
 
         addIdCheckExpression(expressions, TaskProvider.Tasks.PROJECT_ID, mProjectId);
-        addIdCheckExpression(expressions, TaskProvider.Tasks.CONTEXT_ID, mContextId);
+        addIdCheckExpression(expressions, TaskProvider.TaskContexts.CONTEXT_ID, mContextId);
         addFlagExpression(expressions, TaskProvider.Tasks.COMPLETE, mComplete);
         
         return expressions;
@@ -132,14 +132,14 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
             // A task is active if it is active and both project and context are active.
             String expression = "(task.active = 1 " +
             		"AND (projectId is null OR projectId IN (select p._id from project p where p.active = 1)) " +
-            		"AND (contextId is null OR contextId IN (select c._id from context c where c.active = 1)) " +
+            		//"AND (contextId is null OR contextId IN (select c._id from context c where c.active = 1)) " +
             		")";
             expressions.add(expression);
         } else if (mActive == no) {
             // task is inactive if it is inactive or project in active or context is inactive
             String expression = "(task.active = 0 " +
                 "OR (projectId is not null AND projectId IN (select p._id from project p where p.active = 0)) " +
-                "OR (contextId is not null AND contextId IN (select c._id from context c where c.active = 0)) " +
+                //"OR (contextId is not null AND contextId IN (select c._id from context c where c.active = 0)) " +
                 ")";
             expressions.add(expression);
         }
@@ -150,7 +150,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
             // task is deleted if it is deleted or project is deleted or context is deleted
             String expression = "(task.deleted = 1 " +
                 "OR (projectId is not null AND projectId IN (select p._id from project p where p.deleted = 1)) " +
-                "OR (contextId is not null AND contextId IN (select c._id from context c where c.deleted = 1)) " +
+              //  "OR (contextId is not null AND contextId IN (select c._id from context c where c.deleted = 1)) " +
                 ")";
             expressions.add(expression);
             
@@ -158,7 +158,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
             // task is not deleted if it is not deleted and project is not deleted and context is not deleted
             String expression = "(task.deleted = 0 " +
                 "AND (projectId is null OR projectId IN (select p._id from project p where p.deleted = 0)) " +
-                "AND (contextId is null OR contextId IN (select c._id from context c where c.deleted = 0)) " +
+            //    "AND (contextId is null OR contextId IN (select c._id from context c where c.deleted = 0)) " +
                 ")";
             expressions.add(expression);
         }
@@ -193,7 +193,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
                 break;
                 
             case inbox:
-                result = "(projectId is null AND contextId is null)";
+                result = "(projectId is null AND (select count(*) from taskContext tc where tc.taskId = task._id) = 0)";
                 break;
                 
             case tickler:
@@ -280,7 +280,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
     @Override
     public final String toString() {
         return String.format(
-                "[TaskSelector query=%1$s project=%2$s context=%3$s " +
+                "[TaskSelector query=%1$s project=%2$s contexts=%3$s " +
                 "complete=%4$s sortOrder=%5$s active=%6$s deleted=%7$s pending=%8$s]",
                 mListQuery, mProjectId, mContextId, mComplete,
                 mSortOrder, mActive, mDeleted, mPending);

@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
 import android.util.SparseIntArray;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
@@ -30,6 +31,7 @@ import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollect
 import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.MODIFIED_DATE;
 import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.TRACKS_ID;
 import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.*;
+import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.TaskContexts.*;
 
 @ContextSingleton
 public class TaskPersister extends AbstractEntityPersister<Task> {
@@ -39,8 +41,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
     private static final int DESCRIPTION_INDEX = ID_INDEX + 1;
     private static final int DETAILS_INDEX = DESCRIPTION_INDEX + 1;
     private static final int PROJECT_INDEX = DETAILS_INDEX + 1;
-    private static final int CONTEXT_INDEX = PROJECT_INDEX + 1;
-    private static final int CREATED_INDEX = CONTEXT_INDEX + 1;
+    private static final int CREATED_INDEX = PROJECT_INDEX + 1;
     private static final int MODIFIED_INDEX = CREATED_INDEX + 1;
     private static final int START_INDEX = MODIFIED_INDEX + 1;
     private static final int DUE_INDEX = START_INDEX + 1;
@@ -50,37 +51,58 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
     private static final int COMPLETE_INDEX = DISPLAY_ORDER_INDEX + 1;
     private static final int ALL_DAY_INDEX = COMPLETE_INDEX + 1;
     private static final int HAS_ALARM_INDEX = ALL_DAY_INDEX + 1;
-    private static final int TASK_TRACK_INDEX = HAS_ALARM_INDEX  + 1;
-    private static final int DELETED_INDEX = TASK_TRACK_INDEX +1;
-    private static final int ACTIVE_INDEX = DELETED_INDEX +1;
+    private static final int TASK_TRACK_INDEX = HAS_ALARM_INDEX + 1;
+    private static final int DELETED_INDEX = TASK_TRACK_INDEX + 1;
+    private static final int ACTIVE_INDEX = DELETED_INDEX + 1;
+
+    private static final int TASK_CONTEXTS_TASK_ID_INDEX = 0;
+    private static final int TASK_CONTEXTS_CONTEXT_ID_INDEX = 1;
 
     @Inject
     public TaskPersister(ContentResolverProvider provider, Analytics analytics) {
         super(provider.get(), analytics);
     }
-    
+
     @Override
     public Task read(Cursor cursor) {
+        return read(cursor, true);
+    }
+
+    public Task read(Cursor cursor, boolean includeContextIds) {
         Builder builder = Task.newBuilder();
         builder
-            .setLocalId(readId(cursor, ID_INDEX))
-            .setDescription(readString(cursor, DESCRIPTION_INDEX))
-            .setDetails(readString(cursor, DETAILS_INDEX))
-            .setProjectId(readId(cursor, PROJECT_INDEX))
-            .setContextId(readId(cursor, CONTEXT_INDEX))
-            .setCreatedDate(readLong(cursor, CREATED_INDEX))
-            .setModifiedDate(readLong(cursor, MODIFIED_INDEX))
-            .setStartDate(readLong(cursor, START_INDEX))
-            .setDueDate(readLong(cursor, DUE_INDEX))
-            .setTimezone(readString(cursor, TIMEZONE_INDEX))
-            .setCalendarEventId(readId(cursor, CAL_EVENT_INDEX))
-            .setOrder(cursor.getInt(DISPLAY_ORDER_INDEX))
-            .setComplete(readBoolean(cursor, COMPLETE_INDEX))
-            .setAllDay(readBoolean(cursor, ALL_DAY_INDEX))
-            .setHasAlarm(readBoolean(cursor, HAS_ALARM_INDEX))
-            .setTracksId(readId(cursor, TASK_TRACK_INDEX))
-            .setDeleted(readBoolean(cursor, DELETED_INDEX))
-            .setActive(readBoolean(cursor, ACTIVE_INDEX));
+                .setLocalId(readId(cursor, ID_INDEX))
+                .setDescription(readString(cursor, DESCRIPTION_INDEX))
+                .setDetails(readString(cursor, DETAILS_INDEX))
+                .setProjectId(readId(cursor, PROJECT_INDEX))
+                .setCreatedDate(readLong(cursor, CREATED_INDEX))
+                .setModifiedDate(readLong(cursor, MODIFIED_INDEX))
+                .setStartDate(readLong(cursor, START_INDEX))
+                .setDueDate(readLong(cursor, DUE_INDEX))
+                .setTimezone(readString(cursor, TIMEZONE_INDEX))
+                .setCalendarEventId(readId(cursor, CAL_EVENT_INDEX))
+                .setOrder(cursor.getInt(DISPLAY_ORDER_INDEX))
+                .setComplete(readBoolean(cursor, COMPLETE_INDEX))
+                .setAllDay(readBoolean(cursor, ALL_DAY_INDEX))
+                .setHasAlarm(readBoolean(cursor, HAS_ALARM_INDEX))
+                .setTracksId(readId(cursor, TASK_TRACK_INDEX))
+                .setDeleted(readBoolean(cursor, DELETED_INDEX))
+                .setActive(readBoolean(cursor, ACTIVE_INDEX));
+
+        if (includeContextIds) {
+            Cursor contextCursor = mResolver.query(TaskProvider.TaskContexts.CONTENT_URI,
+                    TaskProvider.TaskContexts.FULL_PROJECTION,
+                    TaskProvider.TaskContexts.TASK_ID + "=?",
+                    new String[]{String.valueOf(builder.getLocalId().getId())},
+                    TaskProvider.TaskContexts.TASK_ID);
+            List<Id> contextIds = Lists.newArrayList();
+            while (contextCursor.moveToNext()) {
+                long id = contextCursor.getLong(TASK_CONTEXTS_TASK_ID_INDEX);
+                contextIds.add(Id.create(id));
+            }
+            contextCursor.close();
+            builder.setContextIds(contextIds);
+        }
 
         return builder.build();
     }
@@ -104,7 +126,6 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         writeString(values, DESCRIPTION, task.getDescription());
         writeString(values, DETAILS, task.getDetails());
         writeId(values, PROJECT_ID, task.getProjectId());
-        writeId(values, CONTEXT_ID, task.getContextId());
         values.put(CREATED_DATE, task.getCreatedDate());
         values.put(MODIFIED_DATE, task.getModifiedDate());
         values.put(START_DATE, task.getStartDate());
@@ -113,8 +134,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         writeBoolean(values, ACTIVE, task.isActive());
 
         String timezone = task.getTimezone();
-        if (TextUtils.isEmpty(timezone))
-        {
+        if (TextUtils.isEmpty(timezone)) {
             if (task.isAllDay()) {
                 timezone = Time.TIMEZONE_UTC;
             } else {
@@ -132,15 +152,50 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
     }
 
     @Override
+    public void bulkInsert(Collection<Task> entities) {
+        bulkInsert(entities, true);
+    }
+
+    public void bulkInsert(Collection<Task> entities, boolean includeContextIds) {
+        super.bulkInsert(entities);
+
+        if (includeContextIds) {
+            List<ContentValues> valuesList = Lists.newArrayList();
+            for (Task task : entities) {
+                final long taskId = task.getLocalId().getId();
+                List<Id> contextIds = task.getContextIds();
+                for (Id contextId : contextIds) {
+                    ContentValues values = new ContentValues();
+                    values.put(TASK_ID, taskId);
+                    values.put(CONTEXT_ID, contextId.getId());
+                    valuesList.add(values);
+                }
+            }
+
+            if (!valuesList.isEmpty()) {
+                ContentValues[] valuesArray = new ContentValues[valuesList.size()];
+                valuesList.toArray(valuesArray);
+                mResolver.bulkInsert(TaskProvider.TaskContexts.CONTENT_URI, valuesArray);
+            }
+        }
+    }
+
+    @Override
+    protected void update(Uri uri, Task task) {
+        super.update(uri, task);
+        saveContextIds(uri, task);
+    }
+
+    @Override
     protected String getEntityName() {
         return "task";
     }
-    
+
     @Override
     public Uri getContentUri() {
         return TaskProvider.Tasks.CONTENT_URI;
     }
-    
+
     @Override
     public String[] getFullProjection() {
         return TaskProvider.Tasks.FULL_PROJECTION;
@@ -152,7 +207,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         TaskSelector selector = TaskSelector.newBuilder().setDeleted(Flag.yes).build();
 
         Cursor cursor = mResolver.query(getContentUri(),
-                new String[] {BaseColumns._ID},
+                new String[]{BaseColumns._ID},
                 selector.getSelection(null),
                 selector.getSelectionArgs(),
                 selector.getSortOrder());
@@ -177,14 +232,15 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         return rowsDeleted;
     }
 
+
     public int deleteCompletedTasks() {
         int deletedRows = updateDeletedFlag(TaskProvider.Tasks.COMPLETE + " = 1", null, true);
         Log.d(TAG, "Deleting " + deletedRows + " completed tasks.");
-        
-        Map<String, String> params = new HashMap<String,String>(mFlurryParams);
+
+        Map<String, String> params = new HashMap<String, String>(mFlurryParams);
         params.put(cFlurryCountParam, String.valueOf(deletedRows));
         mAnalytics.onEvent(cFlurryDeleteEntityEvent, params);
-        
+
         return deletedRows;
     }
 
@@ -202,34 +258,34 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
     /**
      * Calculate where this task should appear on the list for the given project.
      * If no project is defined, order is meaningless, so return -1.
-     *
+     * <p/>
      * New tasks go on the end of the list if no due date is defined.
      * If due date is defined, add either to the start, or after the task
      * closest to the end of the list with an earlier due date.
-     *
+     * <p/>
      * For existing tasks, check if the project changed, and if so
      * treat like a new task, otherwise leave the order as is.
      *
      * @param originalTask the task before any changes or null if this is a new task
      * @param newProjectId the project selected for this task
-     * @param dueMillis due date of this task (or 0L if not defined)
+     * @param dueMillis    due date of this task (or 0L if not defined)
      * @return 0-indexed order of task when displayed in the project view
      */
     public int calculateTaskOrder(Task originalTask, Id newProjectId, long dueMillis) {
-    	if (!newProjectId.isInitialised()) return -1;
-    	int order;
-    	if (originalTask == null || !originalTask.getProjectId().equals(newProjectId)) {
-    		// get current highest order value
-    		Cursor cursor =  mResolver.query(
-    				TaskProvider.Tasks.CONTENT_URI,
-    				new String[] {BaseColumns._ID, TaskProvider.Tasks.DISPLAY_ORDER, TaskProvider.Tasks.DUE_DATE},
-    				TaskProvider.Tasks.PROJECT_ID + " = ?",
-    				new String[] {String.valueOf(newProjectId.getId())},
-    				TaskProvider.Tasks.DISPLAY_ORDER + " desc");
-    		if (cursor.moveToFirst()) {
+        if (!newProjectId.isInitialised()) return -1;
+        int order;
+        if (originalTask == null || !originalTask.getProjectId().equals(newProjectId)) {
+            // get current highest order value
+            Cursor cursor = mResolver.query(
+                    TaskProvider.Tasks.CONTENT_URI,
+                    new String[]{BaseColumns._ID, TaskProvider.Tasks.DISPLAY_ORDER, TaskProvider.Tasks.DUE_DATE},
+                    TaskProvider.Tasks.PROJECT_ID + " = ?",
+                    new String[]{String.valueOf(newProjectId.getId())},
+                    TaskProvider.Tasks.DISPLAY_ORDER + " desc");
+            if (cursor.moveToFirst()) {
                 if (dueMillis > 0L) {
                     Log.d(TAG, "Due date defined - finding best place to insert in project task list");
-                    Map<Long,Integer> updateValues = new HashMap<Long,Integer>();
+                    Map<Long, Integer> updateValues = new HashMap<Long, Integer>();
                     do {
                         long previousId = cursor.getLong(0);
                         int previousOrder = cursor.getInt(1);
@@ -246,21 +302,21 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
                 } else {
                     // no due date so put at end of list
                     int highestOrder = cursor.getInt(1);
-                    order =  highestOrder + 1;
+                    order = highestOrder + 1;
                 }
 
-    		} else {
-    			// no tasks in the project yet.
-    			order = 0;
-    		}
-    		cursor.close();
-    	} else {
-    		order = originalTask.getOrder();
-    	}
-    	return order;
+            } else {
+                // no tasks in the project yet.
+                order = 0;
+            }
+            cursor.close();
+        } else {
+            order = originalTask.getOrder();
+        }
+        return order;
     }
 
-    private void moveFollowingTasks(Map<Long,Integer> updateValues) {
+    private void moveFollowingTasks(Map<Long, Integer> updateValues) {
         Set<Long> ids = updateValues.keySet();
         ContentValues values = new ContentValues();
 
@@ -276,7 +332,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         Task firstTask = findById(Id.create(taskIds.iterator().next()));
         Id projectId = firstTask.getProjectId();
 
-        Map<Integer,Integer> positions = Maps.newHashMap();
+        Map<Integer, Integer> positions = Maps.newHashMap();
 
         cursor.moveToPosition(-1);
         int startPosition = -1;
@@ -322,9 +378,9 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
             index++;
         }
 
-        Cursor cursor =  mResolver.query(
+        Cursor cursor = mResolver.query(
                 TaskProvider.Tasks.CONTENT_URI,
-                new String[] {BaseColumns._ID, TaskProvider.Tasks.PROJECT_ID, TaskProvider.Tasks.DISPLAY_ORDER},
+                new String[]{BaseColumns._ID, TaskProvider.Tasks.PROJECT_ID, TaskProvider.Tasks.DISPLAY_ORDER},
                 whereBuilder.toString(),
                 whereArgs,
                 TaskProvider.Tasks.PROJECT_ID + " ASC, " + TaskProvider.Tasks.DISPLAY_ORDER + " ASC");
@@ -352,18 +408,30 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         mAnalytics.onEvent(cFlurryReorderTasksEvent);
     }
 
+    private static final int TASK_COUNT_INDEX = 1;
+
+    public SparseIntArray readCountArray(Cursor cursor) {
+
+        SparseIntArray countMap = new SparseIntArray();
+        while (cursor.moveToNext()) {
+            Integer id = cursor.getInt(ID_INDEX);
+            Integer count = cursor.getInt(TASK_COUNT_INDEX);
+            countMap.put(id, count);
+        }
+        return countMap;
+    }
 
     /**
      * Moves a range of tasks up or down within a project
-     * 
+     *
      * @param cursor
-     * @param pos1 start of range
-     * @param pos2 end of range
+     * @param pos1   start of range
+     * @param pos2   end of range
      * @param moveUp are the tasks moving up the list
      */
     private void moveTask(Cursor cursor, int pos1, int pos2, boolean moveUp) {
         ContentValues values = new ContentValues();
-        cursor.moveToPosition(moveUp ? pos1 - 1: pos2 + 1);
+        cursor.moveToPosition(moveUp ? pos1 - 1 : pos2 + 1);
         Id initialId = readId(cursor, ID_INDEX);
         int newOrder = cursor.getInt(DISPLAY_ORDER_INDEX);
 
@@ -395,35 +463,27 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         mResolver.update(uri, values, null, null);
     }
 
-    /**
-     * Swap the display order of two tasks at the given cursor positions.
-     * The cursor is committed and re-queried after the update.
-     */
-    public void swapTaskPositions(Cursor cursor, int pos1, int pos2) {
-        cursor.moveToPosition(pos1);
-        Id id1 = readId(cursor, ID_INDEX);
-        int order1 = cursor.getInt(DISPLAY_ORDER_INDEX);
-        cursor.moveToPosition(pos2);
-        Id id2 = readId(cursor, ID_INDEX);
-        int order2 = cursor.getInt(DISPLAY_ORDER_INDEX);
+    private void saveContextIds(Uri uri, Task task) {
+        final long taskId = ContentUris.parseId(uri);
+        int deletedRows = mResolver.delete(TaskProvider.TaskContexts.CONTENT_URI,
+                TASK_ID + "=?",
+                new String[]{String.valueOf(taskId)});
+        Log.d(TAG, "Deleted " + deletedRows + " existing context links");
 
-        ContentValues values = new ContentValues();
-        updateOrder(id1.getId(), order2, values);
-        updateOrder(id2.getId(), order1, values);
-        mAnalytics.onEvent(cFlurryReorderTasksEvent);
+
+        final List<Id> contextIds = task.getContextIds();
+        if (!contextIds.isEmpty()) {
+            final int count = contextIds.size();
+            ContentValues[] valuesArray = new ContentValues[count];
+            for (int i = 0; i < count; i++) {
+                ContentValues values = new ContentValues();
+                values.put(TASK_ID, taskId);
+                values.put(CONTEXT_ID, contextIds.get(i).getId());
+                valuesArray[i] = values;
+            }
+            mResolver.bulkInsert(TaskProvider.TaskContexts.CONTENT_URI, valuesArray);
+        }
+
     }
 
-    
-    private static final int TASK_COUNT_INDEX = 1;
-    
-    public SparseIntArray readCountArray(Cursor cursor) {
-        
-        SparseIntArray countMap = new SparseIntArray();
-        while (cursor.moveToNext()) {
-            Integer id = cursor.getInt(ID_INDEX);
-            Integer count = cursor.getInt(TASK_COUNT_INDEX);
-            countMap.put(id, count);
-        }
-        return countMap;
-    }    
 }

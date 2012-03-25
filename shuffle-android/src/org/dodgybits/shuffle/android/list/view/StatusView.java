@@ -1,14 +1,16 @@
 package org.dodgybits.shuffle.android.list.view;
 
-import android.content.Context;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.Task;
+
+import java.util.List;
 
 public class StatusView extends TextView {
 
@@ -26,19 +28,19 @@ public class StatusView extends TextView {
     private SpannableString mInactiveFromContext;
     private SpannableString mInactiveFromProject;
 
-    public StatusView(Context context) {
+    public StatusView(android.content.Context context) {
         super(context);
 
         createStatusStrings();
     }
 
-    public StatusView(Context context, AttributeSet attrs) {
+    public StatusView(android.content.Context context, AttributeSet attrs) {
         super(context, attrs);
 
         createStatusStrings();
     }
 
-    public StatusView(Context context, AttributeSet attrs, int defStyle) {
+    public StatusView(android.content.Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         createStatusStrings();
@@ -61,36 +63,58 @@ public class StatusView extends TextView {
         mInactiveFromProject = new SpannableString(inactive + " " + fromProject);
     }
 
-    public void updateStatus(Task task, org.dodgybits.shuffle.android.core.model.Context context, Project project, boolean showSomething) {
+    public void updateStatus(Task task, List<Context> contexts, Project project, boolean showSomething) {
         updateStatus(
-                activeStatus(task, context, project),
-                deletedStatus(task, context, project),
+                activeStatus(task, contexts, project),
+                deletedStatus(task, contexts, project),
                 showSomething);
     }
 
-    private Status activeStatus(Task task, org.dodgybits.shuffle.android.core.model.Context context, Project project) {
-        Status status = Status.no;
+    private Status activeStatus(Task task, List<Context> contexts, Project project) {
+        Status status;
         if (task.isActive()) {
-            if (context != null && !context.isActive()) {
-                status = Status.fromContext;
-            } else if (project != null && !project.isActive()) {
+            status = Status.yes;
+            if (project != null && !project.isActive()) {
                 status = Status.fromProject;
-            } else {
-                status = Status.yes;
+            } else if (!contexts.isEmpty()) {
+                // task is inactive if all contexts are inactive
+                boolean foundActive = false;
+                for (Context context : contexts) {
+                    if (context.isActive()) {
+                        foundActive = true;
+                        break;
+                    }
+                }
+                if (!foundActive) {
+                    status = Status.fromContext;
+                }
             }
+        } else {
+            status = Status.no;
         }
         return status;
     }
 
-    private Status deletedStatus(Task task, org.dodgybits.shuffle.android.core.model.Context context, Project project) {
-        Status status = Status.yes;
-        if (!task.isDeleted()) {
-            if (context != null && context.isDeleted()) {
-                status = Status.fromContext;
-            } else if (project != null && project.isDeleted()) {
+    private Status deletedStatus(Task task, List<Context> contexts, Project project) {
+        Status status;
+        if (task.isDeleted()) {
+            status = Status.yes;
+        } else {
+            status = Status.no;
+            if (project != null && project.isDeleted()) {
                 status = Status.fromProject;
-            } else {
-                status = Status.no;
+            } else if (!contexts.isEmpty()) {
+                // task is deleted if all contexts are deleted
+                boolean foundNotDeleted = false;
+                for (Context context : contexts) {
+                    if (!context.isDeleted()) {
+                        foundNotDeleted = true;
+                        break;
+                    }
+                }
+                if (!foundNotDeleted) {
+                    status = Status.fromContext;
+                }
             }
         }
         return status;

@@ -3,16 +3,15 @@
  */
 package org.dodgybits.shuffle.android.persistence.provider;
 
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import org.dodgybits.shuffle.android.persistence.migrations.*;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import org.dodgybits.shuffle.android.persistence.migrations.*;
+
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 class DatabaseHelper extends SQLiteOpenHelper {
 	private static final SortedMap<Integer, Migration> ALL_MIGRATIONS = new TreeMap<Integer, Migration>();
@@ -27,6 +26,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 		ALL_MIGRATIONS.put(14, new V14Migration());
 		ALL_MIGRATIONS.put(15, new V15Migration());
 		ALL_MIGRATIONS.put(16, new V16Migration());
+		ALL_MIGRATIONS.put(17, new V17Migration());
 	}
 
 	DatabaseHelper(Context context) {
@@ -35,14 +35,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		Log.i(AbstractCollectionProvider.cTag, "Creating shuffle DB");
+		Log.i(AbstractCollectionProvider.TAG, "Creating shuffle DB");
 		executeMigrations(db, ALL_MIGRATIONS.keySet());
 	}
 
 	private void executeMigrations(SQLiteDatabase db,
 			Set<Integer> migrationVersions) {
 		for (Integer version : migrationVersions) {
-			Log.i(AbstractCollectionProvider.cTag, "Migrating to version " + version);
+			Log.i(AbstractCollectionProvider.TAG, "Migrating to version " + version);
 
 			ALL_MIGRATIONS.get(version).migrate(db);
 		}
@@ -50,7 +50,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.i(AbstractCollectionProvider.cTag, 
+		Log.i(AbstractCollectionProvider.TAG,
 		        "Upgrading database from version " + oldVersion + " to " + newVersion);
 		SortedMap<Integer, Migration> migrations = ALL_MIGRATIONS.subMap(oldVersion, newVersion);
 		executeMigrations(db, migrations.keySet());

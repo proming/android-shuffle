@@ -24,7 +24,7 @@ public class IntentUtils {
     public static Intent createNewTaskIntent(String description, Id contextId, Id projectId) {
         Intent intent = new Intent(Intent.ACTION_INSERT, TaskProvider.Tasks.CONTENT_URI);
         if (contextId.isInitialised()) {
-            intent.putExtra(TaskProvider.Tasks.CONTEXT_ID, contextId.getId());
+            intent.putExtra(TaskProvider.TaskContexts.CONTEXT_ID, contextId.getId());
         }
         if (projectId.isInitialised()) {
             intent.putExtra(TaskProvider.Tasks.PROJECT_ID, projectId.getId());

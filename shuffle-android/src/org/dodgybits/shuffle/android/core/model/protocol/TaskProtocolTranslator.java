@@ -1,10 +1,13 @@
 package org.dodgybits.shuffle.android.core.model.protocol;
 
+import com.google.common.collect.Lists;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.dto.ShuffleProtos.Task.Builder;
+
+import java.util.List;
 
 public class TaskProtocolTranslator implements EntityProtocolTranslator<Task, org.dodgybits.shuffle.dto.ShuffleProtos.Task> {
 
@@ -38,11 +41,17 @@ public class TaskProtocolTranslator implements EntityProtocolTranslator<Task, or
             builder.setDetails(details);
         }
 
-        final Id contextId = task.getContextId();
-        if (contextId.isInitialised()) {
-            builder.setContextId(contextId.getId());
+        boolean first = true;
+        for (Id contextId : task.getContextIds()) {
+            long id = contextId.getId();
+            if (first) {
+                // add first as contextId for backward compatibility
+                builder.setContextId(id);
+                first = false;
+            }
+            builder.addContextIds(id);
         }
-
+        
         final Id projectId = task.getProjectId();
         if (projectId.isInitialised()) {
             builder.setProjectId(projectId.getId());
@@ -95,11 +104,23 @@ public class TaskProtocolTranslator implements EntityProtocolTranslator<Task, or
             builder.setDeleted(false);
         }
 
-        if (dto.hasContextId()) {
+        List<Id> contextIds = Lists.newArrayList();
+        if (dto.getContextIdsCount() > 0) {
+            for (long id : dto.getContextIdsList()) {
+                Id contextId = Id.create(id);
+                Context context = mContextDirectory.findById(contextId);
+                if (context != null) {
+                    contextIds.add(contextId);
+                }
+            }
+        } else if (dto.hasContextId()) {
             Id contextId = Id.create(dto.getContextId());
             Context context = mContextDirectory.findById(contextId);
-            builder.setContextId(context == null ? Id.NONE : context.getLocalId());
+            if (context != null) {
+                contextIds.add(contextId);
+            }
         }
+        builder.setContextIds(contextIds);
 
         if (dto.hasProjectId()) {
             Id projectId = Id.create(dto.getProjectId());

@@ -3,7 +3,7 @@ package org.dodgybits.shuffle.android.persistence.provider;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class ContextProvider extends AbstractCollectionProvider {
+public class  ContextProvider extends AbstractCollectionProvider {
 	public static final String CONTEXT_TABLE_NAME = "context";
 
     public static final String UPDATE_INTENT = "org.dodgybits.shuffle.android.CONTEXT_UPDATE";
@@ -37,7 +37,9 @@ public class ContextProvider extends AbstractCollectionProvider {
 		uriMatcher.addURI(AUTHORITY, "contextTasks", CONTEXT_TASKS);
 		restrictionBuilders.put(CONTEXT_TASKS, 
 		        new CustomElementFilterRestrictionBuilder(
-		                "context, task", "task.contextId = context._id", "context._id"));
+		                "context, task, taskContext",
+                        "task._id = taskContext.taskId AND context._id = taskContext.contextId",
+                        "context._id"));
         groupByBuilders.put(CONTEXT_TASKS, 
                 new StandardGroupByBuilder("context._id"));
         elementInserters.put(COLLECTION_MATCH_ID, new ContextInserter());
@@ -56,9 +58,6 @@ public class ContextProvider extends AbstractCollectionProvider {
 				+ "/contexts");
 		public static final Uri CONTEXT_TASKS_CONTENT_URI = Uri
 				.parse("content://" + AUTHORITY + "/contextTasks");
-
-		public static final Uri ACTIVE_CONTEXTS = Uri
-		.parse("content://" + AUTHORITY + "/activeContexts");
 
 		/**
 		 * The default sort order for this table

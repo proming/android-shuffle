@@ -21,7 +21,7 @@ public class V10Migration implements Migration {
 	private void createTaskContextIdIndex(SQLiteDatabase db) {
         db.execSQL("DROP INDEX IF EXISTS taskContextIdIndex");
 		db.execSQL("CREATE INDEX taskContextIdIndex ON " + TaskProvider.TASK_TABLE_NAME
-				+ " (" + TaskProvider.Tasks.CONTEXT_ID + ");");
+				+ " (contextId);");
 	}
 
 }

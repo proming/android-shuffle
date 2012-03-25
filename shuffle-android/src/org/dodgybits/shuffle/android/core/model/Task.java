@@ -16,15 +16,17 @@
 
 package org.dodgybits.shuffle.android.core.model;
 
+import android.text.TextUtils;
+import com.google.common.collect.Lists;
 import org.dodgybits.shuffle.android.synchronisation.tracks.model.TracksEntity;
 
-import android.text.TextUtils;
+import java.util.List;
 
 public final class Task implements TracksEntity {
     private Id mLocalId = Id.NONE;
     private String mDescription;
     private String mDetails;
-    private Id mContextId = Id.NONE;
+    private List mContextIds = Lists.newArrayList();
     private Id mProjectId = Id.NONE;
     private long mCreatedDate;
     private long mModifiedDate;
@@ -57,8 +59,8 @@ public final class Task implements TracksEntity {
         return mDetails;
     }
 
-    public final Id getContextId() {
-        return mContextId;
+    public final List<Id> getContextIds() {
+        return mContextIds;
     }
 
     public final Id getProjectId() {
@@ -142,7 +144,7 @@ public final class Task implements TracksEntity {
         return String.format(
                 "[Task id=%8$s description='%1$s' detail='%2$s' contextId=%3$s projectId=%4$s " +
                 "order=%5$s complete=%6$s tracksId='%7$s' deleted=%9$s active=%10$s]",
-                mDescription, mDetails, mContextId, mProjectId,
+                mDescription, mDetails, mContextIds, mProjectId,
                 mOrder, mComplete, mTracksId, mLocalId, mDeleted, mActive);
     }
     
@@ -192,13 +194,13 @@ public final class Task implements TracksEntity {
             return this;
         }
 
-        public Id getContextId() {
-            return result.mContextId;
+        public List<Id> getContextIds() {
+            return result.mContextIds;
         }
 
-        public Builder setContextId(Id value) {
+        public Builder setContextIds(List<Id> value) {
             assert value != null;
-            result.mContextId = value;
+            result.mContextIds = value;
             return this;
         }
 
@@ -351,7 +353,7 @@ public final class Task implements TracksEntity {
             setLocalId(task.mLocalId);
             setDescription(task.mDescription);
             setDetails(task.mDetails);
-            setContextId(task.mContextId);
+            setContextIds(task.mContextIds);
             setProjectId(task.mProjectId);
             setCreatedDate(task.mCreatedDate);
             setModifiedDate(task.mModifiedDate);

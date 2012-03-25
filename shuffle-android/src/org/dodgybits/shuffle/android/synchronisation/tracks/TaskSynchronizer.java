@@ -1,11 +1,8 @@
 package org.dodgybits.shuffle.android.synchronisation.tracks;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.LinkedList;
-import java.util.Map;
-
+import android.content.Context;
+import android.util.Log;
+import android.util.Xml;
 import org.apache.http.HttpStatus;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
@@ -21,9 +18,11 @@ import org.dodgybits.shuffle.android.synchronisation.tracks.parsing.TaskParser;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlSerializer;
 
-import android.content.Context;
-import android.util.Log;
-import android.util.Xml;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * @author Morten Nielsen
@@ -60,7 +59,7 @@ public final class TaskSynchronizer extends Synchronizer<Task> {
 
         LinkedList<Id> tasksWithoutContext = new LinkedList<Id>();
         for(Task t : localEntities.values()) {
-            if(!t.getContextId().isInitialised()) {
+            if(t.getContextIds().isEmpty()) {
                 tasksWithoutContext.add(t.getLocalId());
             }
         }
@@ -99,7 +98,7 @@ public final class TaskSynchronizer extends Synchronizer<Task> {
         builder
             .setDescription(newTask.getDescription())
             .setDetails(newTask.getDetails())
-            .setContextId(newTask.getContextId())
+            .setContextIds(newTask.getContextIds())
             .setProjectId(newTask.getProjectId())
             .setModifiedDate(newTask.getModifiedDate())
             .setStartDate(newTask.getStartDate())
@@ -124,8 +123,13 @@ public final class TaskSynchronizer extends Synchronizer<Task> {
                 String completedDateStr = DateUtils.formatIso8601Date(task.getModifiedDate());
                 serializer.startTag("", "completed-at").attribute("", "type", "datetime").text(completedDateStr).endTag("", "completed-at");
             }
+
+            Id contextId = Id.NONE;
+            if (!task.getContextIds().isEmpty()) {
+                // TODO who knows
+                contextId = findTracksIdByContextId(task.getContextIds().get(0));
+            }
             
-            Id contextId = findTracksIdByContextId(task.getContextId());
             if (contextId.isInitialised()) {
                 serializer.startTag("", "context-id").attribute("", "type", "integer").text(contextId.toString()).endTag("", "context-id");
             }

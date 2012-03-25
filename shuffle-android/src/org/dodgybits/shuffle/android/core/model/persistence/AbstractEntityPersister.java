@@ -162,13 +162,12 @@ public abstract class AbstractEntityPersister<E extends Entity> implements Entit
         return ContentUris.appendId(
                 getContentUri().buildUpon(), localId.getId()).build();
     }
-    
-    private void update(Uri uri, E e) {
+
+    protected void update(Uri uri, E e) {
         ContentValues values = new ContentValues();
         writeContentValues(values, e);
         mResolver.update(uri, values, null, null);
     }
-    
     
     protected static Id readId(Cursor cursor, int index) {
         Id result = Id.NONE;

@@ -1,14 +1,15 @@
 package org.dodgybits.shuffle.android.core.model.persistence;
 
+import android.util.Log;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.core.model.Entity;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.util.ItemCache;
 import org.dodgybits.shuffle.android.core.util.ItemCache.ValueBuilder;
-
 import roboguice.inject.ContextSingleton;
-import android.util.Log;
 
-import com.google.inject.Inject;
+import java.util.List;
 
 @ContextSingleton
 public class DefaultEntityCache<E extends Entity> implements EntityCache<E> {
@@ -34,6 +35,18 @@ public class DefaultEntityCache<E extends Entity> implements EntityCache<E> {
             entity = mCache.get(localId); 
         }
         return entity;
+    }
+
+    @Override
+    public List<E> findById(List<Id> localIds) {
+        List<E> entities = Lists.newArrayList();
+        for (Id localId : localIds) {
+            E entity = findById(localId);
+            if (entity != null) {
+                entities.add(entity);
+            }
+        }
+        return entities;
     }
 
     @Override

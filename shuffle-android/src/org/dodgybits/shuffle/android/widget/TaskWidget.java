@@ -420,9 +420,9 @@ public class TaskWidget implements RemoteViewsService.RemoteViewsFactory,
         views.setViewVisibility(R.id.widget_deleted, task.isDeleted() ? View.VISIBLE : View.GONE);
 
         // Add context graphic
-        org.dodgybits.shuffle.android.core.model.Context context = mContextCache.findById(task.getContextId());
-        Bitmap bitmap = mBitmapProvider.getBitmapForContext(context);
-        views.setImageViewBitmap(R.id.widget_context, mBitmapProvider.getBitmapForContext(context));
+        List<org.dodgybits.shuffle.android.core.model.Context> contexts = mContextCache.findById(task.getContextIds());
+        Bitmap bitmap = mBitmapProvider.getBitmapForContexts(contexts);
+        views.setImageViewBitmap(R.id.widget_context, bitmap);
 
         TaskSelector selector = mListContext.createSelectorWithPreferences(mContext);
         String queryName = selector.getListQuery().name();

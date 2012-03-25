@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Id;
@@ -32,6 +33,7 @@ import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
+import java.util.List;
 import java.util.TimeZone;
 
 public class EditTaskFragment extends AbstractEditFragment<Task>
@@ -140,7 +142,7 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
     @Override
     protected void updateUIFromExtras(Bundle extras) {
         if (extras != null) {
-            long contextId = extras.getLong(TaskProvider.Tasks.CONTEXT_ID, 0L);
+            long contextId = extras.getLong(TaskProvider.TaskContexts.CONTEXT_ID, 0L);
             setSpinnerSelection(mContextSpinner, mContextIds, contextId);
 
             long projectId = extras.getLong(TaskProvider.Tasks.PROJECT_ID, 0L);
@@ -198,9 +200,9 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
 
         mDescriptionWidget.setTextKeepState(task.getDescription());
 
-        final Id contextId = task.getContextId();
-        if (contextId.isInitialised()) {
-            setSpinnerSelection(mContextSpinner, mContextIds, contextId.getId());
+        List<Id> contextIds = task.getContextIds();
+        if (!contextIds.isEmpty()) {
+            setSpinnerSelection(mContextSpinner, mContextIds, contextIds.get(0).getId());
         }
 
         final Id projectId = task.getProjectId();
@@ -268,17 +270,23 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
         final boolean deleted = mDeletedCheckBox.isChecked();
         final boolean active = true;
 
+        
+        
         builder
                 .setDescription(description)
                 .setModifiedDate(modified)
                 .setDetails(details)
-                .setContextId(contextId)
                 .setProjectId(projectId)
                 .setAllDay(allDay)
                 .setComplete(complete)
                 .setDeleted(deleted)
                 .setActive(active);
 
+        if (contextId.isInitialised()) {
+            List<Id> contextIds = Lists.newArrayList(contextId);
+            builder.setContextIds(contextIds);
+        }
+        
         // If we are creating a new task, set the creation date
         if (mIsNewEntity) {
             builder.setCreatedDate(modified);

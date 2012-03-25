@@ -24,6 +24,7 @@ import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.core.util.TextColours;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -100,7 +101,7 @@ public class TaskListItem extends View {
     private boolean mIsCompleted;
     private boolean mIsActive = true;
     private boolean mIsDeleted = false;
-    private org.dodgybits.shuffle.android.core.model.Context mContext;
+    private List<org.dodgybits.shuffle.android.core.model.Context> mContexts;
     private String mContextName;
     private int mContextTextColor;
     private int mContextBackgroundColor;
@@ -197,11 +198,11 @@ public class TaskListItem extends View {
         mTaskId = task.getLocalId().getId();
         mIsCompleted = task.isComplete();
         setProject(task.getProjectId());
-        mIsActive = task.isActive() && (mProject == null || mProject.isActive()) && (mContext == null || mContext.isActive());
-        mIsDeleted = task.isDeleted() || (mProject != null && mProject.isDeleted()) || (mContext != null && mContext.isDeleted());
+        mIsActive = task.isActive() && (mProject == null || mProject.isActive()); // TODO && (mContext == null || mContext.isActive());
+        mIsDeleted = task.isDeleted() || (mProject != null && mProject.isDeleted()); // TODO || (mContext != null && mContext.isDeleted());
         setTimestamp(task.getDueDate());
 
-        boolean changed = setContext(task.getContextId());
+        boolean changed = setContexts(task.getContextIds());
         changed |= setText(task.getDescription(), task.getDetails());
         
         if (changed) {
@@ -213,16 +214,19 @@ public class TaskListItem extends View {
         mProject = mProjectCache.findById(projectId);
     }
     
-    private boolean setContext(Id contextId) {
+    private boolean setContexts(List<Id> contextIds) {
         boolean changed = false;
 
-        mContext = mContextCache.findById(contextId);
-        if (mContext != null) {
-            mContextTextColor = sTextColours.getTextColour(mContext.getColourIndex());
-            mContextBackgroundColor = sTextColours.getBackgroundColour(mContext.getColourIndex());
+        // TODO use all contexts
+        mContexts = mContextCache.findById(contextIds);
+        org.dodgybits.shuffle.android.core.model.Context context = null;
+        if (!mContexts.isEmpty()) {
+            context = mContexts.get(0);
+            mContextTextColor = sTextColours.getTextColour(context.getColourIndex());
+            mContextBackgroundColor = sTextColours.getBackgroundColour(context.getColourIndex());
         }
 
-        String contextName = mContext == null ? "" : mContext.getName();
+        String contextName = context == null ? "" : context.getName();
         if (!Objects.equal(mContextName, contextName)) {
             mContextName = contextName;
             changed = true;
@@ -465,14 +469,16 @@ public class TaskListItem extends View {
                 dateX, mCoordinates.dateY - mCoordinates.dateAscent, sDatePaint);
 
         // Draw the context
-        if (mContext != null) {
+        if (!mContexts.isEmpty()) {
             sContextPaint.setTextSize(mCoordinates.contextsFontSize);
             sContextPaint.setColor(mContextTextColor);
             int contextTextWidth = (int)sContextPaint.measureText(mFormattedContext, 0, mFormattedContext.length());
             int contextsX = dateX - (contextTextWidth + sContextPadding * 4);
 
+            // TODO use them all
+            org.dodgybits.shuffle.android.core.model.Context context = mContexts.get(0);
 
-            boolean hasIcon = !TextUtils.isEmpty(mContext.getIconName());
+            boolean hasIcon = !TextUtils.isEmpty(context.getIconName());
             int contextIconX = contextsX - (mCoordinates.contextIconWidth + sContextPadding);
             
             RectF backgroundRectF;
@@ -490,7 +496,7 @@ public class TaskListItem extends View {
             canvas.drawRoundRect(backgroundRectF, sContextRounding, sContextRounding, sContextBackgroundPaint);
 
             if (hasIcon) {
-                Bitmap contextIcon = getContextIcon(mContext.getIconName());
+                Bitmap contextIcon = getContextIcon(context.getIconName());
                 canvas.drawBitmap(contextIcon, contextIconX, mCoordinates.contextsY, null);
             }
 

@@ -1,22 +1,21 @@
 package org.dodgybits.shuffle.android.synchronisation.tracks.parsing;
 
-import java.text.ParseException;
-
-
+import android.text.TextUtils;
+import com.google.common.collect.Lists;
 import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
 import org.dodgybits.shuffle.android.core.model.EntityBuilder;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.Task.Builder;
-
 import org.dodgybits.shuffle.android.core.util.DateUtils;
-
-import android.text.TextUtils;
 import roboguice.util.Ln;
+
+import java.text.ParseException;
+import java.util.List;
 
 public class TaskParser extends Parser<Task> {
 
-	private Builder specificBuilder;
+	private Builder mTaskBuilder;
 	protected IContextLookup mContextLookup;
 	protected IProjectLookup mProjectLookup;
 
@@ -31,7 +30,7 @@ public class TaskParser extends Parser<Task> {
                 Ln.d("Got status %s", value);
 
 				if( value.equals("completed")) {
-				    specificBuilder.setComplete(true);
+                    mTaskBuilder.setComplete(true);
                 }
 				return true;
 			}
@@ -41,8 +40,8 @@ public class TaskParser extends Parser<Task> {
 				new Applier(){
 					@Override
 					public boolean apply(String value) {
-						
-						specificBuilder.setDescription(value);
+
+                        mTaskBuilder.setDescription(value);
 						return true;
 					}
 			
@@ -52,7 +51,7 @@ public class TaskParser extends Parser<Task> {
 					@Override
 					public boolean apply(String value) {
 						
-						specificBuilder.setDetails(value);
+						mTaskBuilder.setDetails(value);
 						return true;
 					}
 			
@@ -62,7 +61,7 @@ public class TaskParser extends Parser<Task> {
 					@Override
 					public boolean apply(String value) {
 				        Id tracksId = Id.create(Long.parseLong(value));
-				        specificBuilder.setTracksId(tracksId);
+				        mTaskBuilder.setTracksId(tracksId);
                         return true;
 					}
 			
@@ -74,8 +73,8 @@ public class TaskParser extends Parser<Task> {
 						 
                          long date;
 							try {
-								date = DateUtils.parseIso8601Date(value);
-								specificBuilder.setModifiedDate(date);
+                                date = DateUtils.parseIso8601Date(value);
+								mTaskBuilder.setModifiedDate(date);
 							    
 							    return true;
 							} catch (ParseException e) {
@@ -90,9 +89,10 @@ public class TaskParser extends Parser<Task> {
 					public boolean apply(String value) {
                         if (!TextUtils.isEmpty(value)) {
                             Id tracksId = Id.create(Long.parseLong(value));
-                            Id context = mContextLookup.findContextIdByTracksId(tracksId);
-                            if (context.isInitialised()) {
-                                specificBuilder.setContextId(context);
+                            Id contextId = mContextLookup.findContextIdByTracksId(tracksId);
+                            if (contextId.isInitialised()) {
+                                List<Id> contextIds = Lists.newArrayList(contextId);
+                                mTaskBuilder.setContextIds(contextIds);
                             }
                         }
                         return true;
@@ -106,7 +106,7 @@ public class TaskParser extends Parser<Task> {
                             Id tracksId = Id.create(Long.parseLong(value));
                             Id project = mProjectLookup.findProjectIdByTracksId(tracksId);
                             if (project.isInitialised()) {
-                                specificBuilder.setProjectId(project);
+                                mTaskBuilder.setProjectId(project);
                             }
                         }
                         return true;
@@ -120,7 +120,7 @@ public class TaskParser extends Parser<Task> {
                          if (!TextUtils.isEmpty(value)) {
 							try {
 								long created = DateUtils.parseIso8601Date(value);
-								specificBuilder.setCreatedDate(created);
+								mTaskBuilder.setCreatedDate(created);
 							} catch (ParseException e) {
 								// TODO Auto-generated catch block
 								return false;
@@ -134,11 +134,11 @@ public class TaskParser extends Parser<Task> {
 				new Applier(){
 			@Override
 			public boolean apply(String value) {
-				 
-                 if (!TextUtils.isEmpty(value)) {
+
+                if (!TextUtils.isEmpty(value)) {
 					try {
 						long due = DateUtils.parseIso8601Date(value);
-						specificBuilder.setDueDate(due);
+						mTaskBuilder.setDueDate(due);
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						return false;
@@ -152,11 +152,11 @@ public class TaskParser extends Parser<Task> {
 				new Applier(){
 					@Override
 					public boolean apply(String value) {
-						 
-                         if (!TextUtils.isEmpty(value)) {
+
+                        if (!TextUtils.isEmpty(value)) {
 							try {
 								long showFrom = DateUtils.parseIso8601Date(value);
-								specificBuilder.setStartDate(showFrom);
+								mTaskBuilder.setStartDate(showFrom);
 							} catch (ParseException e) {
 								// TODO Auto-generated catch block
 								return false;
@@ -170,7 +170,7 @@ public class TaskParser extends Parser<Task> {
 
 	@Override
 	protected EntityBuilder<Task> createBuilder() {
-		return specificBuilder = Task.newBuilder();
+		return mTaskBuilder = Task.newBuilder();
 	}
 
 }

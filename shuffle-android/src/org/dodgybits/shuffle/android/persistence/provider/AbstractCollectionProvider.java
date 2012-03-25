@@ -1,15 +1,7 @@
 package org.dodgybits.shuffle.android.persistence.provider;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.SearchManager;
-import android.content.ContentProvider;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.content.UriMatcher;
+import android.content.*;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,10 +11,14 @@ import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class AbstractCollectionProvider extends ContentProvider {
 	public static final String cDatabaseName = "shuffle.db";
-	static final int cDatabaseVersion = 17;
-	public static final String cTag = "ShuffleProvider";
+	static final int cDatabaseVersion = 18;
+	public static final String TAG = "ShuffleProvider";
 	
 	public static interface ShuffleTable extends BaseColumns {
 		static final String CONTENT_TYPE_PATH = "vnd.dodgybits";
@@ -111,7 +107,7 @@ public abstract class AbstractCollectionProvider extends ContentProvider {
 		@Override
 		public void addRestrictions(Uri uri, SQLiteQueryBuilder qb) {
 			qb.setTables(getTableName());
-			qb.appendWhere("_id=" + uri.getPathSegments().get(1));			
+			qb.appendWhere("_id=" + ContentUris.parseId(uri));
 		}
 	}
 	
@@ -277,7 +273,7 @@ public abstract class AbstractCollectionProvider extends ContentProvider {
 	
 	@Override
 	public boolean onCreate() {
-		Log.i(cTag, "+onCreate");
+		Log.i(TAG, "+onCreate");
 		mOpenHelper = new DatabaseHelper(getContext());
 		return true;
 	}
@@ -301,9 +297,9 @@ public abstract class AbstractCollectionProvider extends ContentProvider {
 		String orderBy = getSortOrder(uri, sort);
 		String groupBy = getGroupBy(uri);
 		
-		if (Log.isLoggable(cTag, Log.DEBUG)) {
-			Log.d(cTag, "Executing " + selection + " with args "
-					+ Arrays.toString(selectionArgs) + " ORDER BY " + orderBy);
+		if (true || Log.isLoggable(TAG, Log.DEBUG)) {
+			Log.d(TAG, "Executing " + selection + " with args "
+					+ Arrays.toString(selectionArgs) + " ORDER BY " + orderBy + " (sort=" + sort + ")");
 		}
 
 		Cursor c = qb.query(db, projection, selection, selectionArgs, groupBy,
@@ -451,7 +447,7 @@ public abstract class AbstractCollectionProvider extends ContentProvider {
 			return rowsUpdated;
 		}
 	}
-	
+
     private class EntireCollectionDeleter implements ElementDeleter {
         @Override
         public int delete(Uri uri, String where, String[] whereArgs,

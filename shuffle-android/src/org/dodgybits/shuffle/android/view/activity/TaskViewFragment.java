@@ -30,6 +30,8 @@ import org.dodgybits.shuffle.android.list.view.StatusView;
 import roboguice.event.EventManager;
 import roboguice.fragment.RoboFragment;
 
+import java.util.List;
+
 public class TaskViewFragment extends RoboFragment implements View.OnClickListener {
     private static final String TAG = "TaskViewFragment";
 
@@ -39,9 +41,10 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     public static final String INDEX = "TaskViewFragment.index";
     public static final String COUNT = "TaskViewFragment.count";
 
+    private ViewGroup mContextContainer;
+
     private TextView mProjectView;
     private TextView mDescriptionView;
-    private LabelView mContextView;
 
     private TextView mDetailsView;
 
@@ -187,7 +190,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     private void findViews() {
         mProjectView = (TextView) getView().findViewById(R.id.project);
         mDescriptionView = (TextView) getView().findViewById(R.id.description);
-        mContextView = (LabelView) getView().findViewById(R.id.context);
+        mContextContainer = (ViewGroup) getView().findViewById(R.id.context_container);
         mDetailsView = (TextView) getView().findViewById(R.id.details);
         mSchedulingEntry = getView().findViewById(R.id.scheduling_entry);
         mShowFromView = (TextView) getView().findViewById(R.id.show_from);
@@ -203,16 +206,16 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     }
 
     private void updateUIFromItem(Task task) {
-        Context context = mContextCache.findById(task.getContextId());
+        List<Context> contexts = mContextCache.findById(task.getContextIds());
         Project project = mProjectCache.findById(task.getProjectId());
 
         updateProject(project);
         updateDescription(task.getDescription());
-        updateContext(context);
+        updateContexts(contexts);
         updateDetails(task.getDetails());
         updateScheduling(task.getStartDate(), task.getDueDate(), task.isAllDay());
         updateCalendar(task.getCalendarEventId());
-        updateExtras(task, context, project);
+        updateExtras(task, contexts, project);
         updatePageDisplay();
     }
 
@@ -250,20 +253,50 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         mDescriptionView.setTextKeepState(description);
     }
 
-    private void updateContext(Context context) {
-        if (context != null) {
-            mContextView.setVisibility(View.VISIBLE);
-            mContextView.setText(context.getName());
-            mContextView.setColourIndex(context.getColourIndex());
-            ContextIcon icon = ContextIcon.createIcon(context.getIconName(), getResources());
-            int id = icon.smallIconId;
-            if (id > 0) {
-                mContextView.setIcon(getResources().getDrawable(id));
-            } else {
-                mContextView.setIcon(null);
-            }
+    private void updateContexts(List<Context> contexts) {
+        if (contexts.isEmpty()) {
+            mContextContainer.setVisibility(View.INVISIBLE);
         } else {
-            mContextView.setVisibility(View.INVISIBLE);
+            // reuse existing views if present
+            int viewCount = mContextContainer.getChildCount();
+            int contextCount = contexts.size();
+            while (viewCount < contextCount) {
+                LabelView contextView = new LabelView(getActivity());
+                mContextContainer.addView(contextView);
+                viewCount++;
+            }
+            if (viewCount > contextCount) {
+                mContextContainer.removeViews(contextCount, viewCount - contextCount);
+                viewCount = contextCount;
+            }
+            
+            for (int i = 0; i < contextCount; i++) {
+                LabelView contextView = (LabelView) mContextContainer.getChildAt(i);
+                Context context = contexts.get(i);
+                contextView.setText(context.getName());
+                contextView.setColourIndex(context.getColourIndex());
+                ContextIcon icon = ContextIcon.createIcon(context.getIconName(), getResources());
+                int id = icon.smallIconId;
+                if (id > 0) {
+                    contextView.setIcon(getResources().getDrawable(id));
+                } else {
+                    contextView.setIcon(null);
+                }
+            }
+//
+//            <org.dodgybits.shuffle.android.list.view.LabelView
+//            android:id="@+id/context"
+//            android:layout_width="wrap_content"
+//            android:layout_height="wrap_content"
+//            android:layout_alignParentRight="true"
+//            android:drawablePadding="2dip"
+//            android:paddingLeft="3dip"
+//            android:paddingRight="3dip"
+//            android:layout_marginRight="5dip"
+//            android:layout_marginBottom="4dip"
+//            android:hint="@string/none_empty"
+//                    />
+//
         }
     }
 
@@ -305,8 +338,8 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         return value;
     }
 
-    private void updateExtras(Task task, Context context, Project project) {
-        mStatusView.updateStatus(task, context, project, true);
+    private void updateExtras(Task task, List<Context> contexts, Project project) {
+        mStatusView.updateStatus(task, contexts, project, true);
         mStatusView.setVisibility(task.isComplete() ? View.INVISIBLE : View.VISIBLE);
         mCompletedView.setText(task.isComplete() ? getString(R.string.completed) : "");
 

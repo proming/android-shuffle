@@ -15,7 +15,7 @@ public class V1Migration implements Migration {
 		createTaskTable(db);
 	}
 	private void createProjectTable(SQLiteDatabase db) {
-		Log.w(AbstractCollectionProvider.cTag, "Destroying all old data");
+		Log.w(AbstractCollectionProvider.TAG, "Destroying all old data");
 		db.execSQL("DROP TABLE IF EXISTS " + ProjectProvider.PROJECT_TABLE_NAME);
 		db.execSQL("CREATE TABLE " 
 		        + ProjectProvider.PROJECT_TABLE_NAME 
