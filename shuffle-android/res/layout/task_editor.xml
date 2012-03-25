@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dip"
                 android:paddingRight="5dip"
-                android:text="@string/context_title"
+                android:text="@string/title_context"
                 style="@style/LabelTextViewStyle"
                 />
 
@@ -101,12 +101,19 @@
                          android:background="@drawable/blank"
                     />
 
-            <Spinner android:id="@+id/context"
-                     android:layout_width="wrap_content"
-                     android:layout_height="48dip"
-                     android:layout_alignParentLeft="true"
-                     android:layout_toLeftOf="@+id/context_add"
-                     android:drawSelectorOnTop="true"
+            <org.dodgybits.shuffle.android.core.view.RowLayout
+                    android:id="@+id/context_items_container"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/context_add"
+                    android:background="@drawable/list_selector_background"
+                    android:padding="8dp"
+                    android:horizontalSpacing="6dp"
+                    android:verticalSpacing="12dp"
+                    android:focusable="true"
+                    android:clickable="true"
                     />
 
         </RelativeLayout>

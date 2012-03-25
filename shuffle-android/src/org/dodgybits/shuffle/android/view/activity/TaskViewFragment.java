@@ -276,27 +276,8 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
                 contextView.setText(context.getName());
                 contextView.setColourIndex(context.getColourIndex());
                 ContextIcon icon = ContextIcon.createIcon(context.getIconName(), getResources());
-                int id = icon.smallIconId;
-                if (id > 0) {
-                    contextView.setIcon(getResources().getDrawable(id));
-                } else {
-                    contextView.setIcon(null);
-                }
+                contextView.setIcon(getResources().getDrawable(icon.smallIconId));
             }
-//
-//            <org.dodgybits.shuffle.android.list.view.LabelView
-//            android:id="@+id/context"
-//            android:layout_width="wrap_content"
-//            android:layout_height="wrap_content"
-//            android:layout_alignParentRight="true"
-//            android:drawablePadding="2dip"
-//            android:paddingLeft="3dip"
-//            android:paddingRight="3dip"
-//            android:layout_marginRight="5dip"
-//            android:layout_marginBottom="4dip"
-//            android:hint="@string/none_empty"
-//                    />
-//
         }
     }
 

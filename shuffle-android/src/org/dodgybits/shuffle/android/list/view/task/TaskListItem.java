@@ -69,7 +69,8 @@ public class TaskListItem extends View {
     private static final TextPaint sContextPaint = new TextPaint();
     private static final Paint sContextBackgroundPaint = new Paint();
 
-    private static int sContextPadding;
+    private static int sContextHorizontalPadding;
+    private static int sContextVerticalPadding;
     private static int sContextCornerRadius;
     
     private static Bitmap sSelectedIconOn;
@@ -141,7 +142,8 @@ public class TaskListItem extends View {
             sContextPaint.setTypeface(Typeface.DEFAULT);
             sContextPaint.setAntiAlias(true);
 
-            sContextPadding = r.getDimensionPixelSize(R.dimen.context_small_padding);
+            sContextHorizontalPadding = r.getDimensionPixelSize(R.dimen.context_small_horizontal_padding);
+            sContextVerticalPadding = r.getDimensionPixelSize(R.dimen.context_small_vertical_padding);
             sContextCornerRadius = r.getDimensionPixelSize(R.dimen.context_small_corner_radius);
             
             sSelectedIconOff =
@@ -473,24 +475,28 @@ public class TaskListItem extends View {
             sContextPaint.setTextSize(mCoordinates.contextsFontSize);
             sContextPaint.setColor(mContextTextColor);
             int contextTextWidth = (int)sContextPaint.measureText(mFormattedContext, 0, mFormattedContext.length());
-            int contextsX = dateX - (contextTextWidth + sContextPadding * 4);
+            int contextsX = dateX - (contextTextWidth + sContextHorizontalPadding * 2);
 
             // TODO use them all
             org.dodgybits.shuffle.android.core.model.Context context = mContexts.get(0);
 
             boolean hasIcon = !TextUtils.isEmpty(context.getIconName());
-            int contextIconX = contextsX - (mCoordinates.contextIconWidth + sContextPadding);
+            int contextIconX = contextsX - (mCoordinates.contextIconWidth + sContextHorizontalPadding);
             
             RectF backgroundRectF;
             if (hasIcon)
             {
-                backgroundRectF = new RectF(contextIconX - sContextPadding, mCoordinates.contextsY - sContextPadding,
-                        contextsX + contextTextWidth + sContextPadding * 2,
-                        mCoordinates.contextsY + mCoordinates.contextsHeight + sContextPadding);
+                backgroundRectF = new RectF(
+                        contextIconX - sContextHorizontalPadding,
+                        mCoordinates.contextsY - sContextVerticalPadding,
+                        contextsX + contextTextWidth + sContextHorizontalPadding,
+                        mCoordinates.contextsY + mCoordinates.contextsHeight + sContextVerticalPadding);
             } else {
-                backgroundRectF = new RectF(contextsX - sContextPadding, mCoordinates.contextsY - sContextPadding,
-                        contextsX + contextTextWidth + sContextPadding * 2,
-                        mCoordinates.contextsY + mCoordinates.contextsHeight + sContextPadding);
+                backgroundRectF = new RectF(
+                        contextsX - sContextHorizontalPadding,
+                        mCoordinates.contextsY - sContextVerticalPadding,
+                        contextsX + contextTextWidth + sContextHorizontalPadding,
+                        mCoordinates.contextsY + mCoordinates.contextsHeight + sContextVerticalPadding);
             }
             sContextBackgroundPaint.setShader(getShader(mContextBackgroundColor, backgroundRectF));
             canvas.drawRoundRect(backgroundRectF, sContextCornerRadius, sContextCornerRadius, sContextBackgroundPaint);

@@ -29,4 +29,8 @@
         <attr name="borderDrawable" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="RowLayout">
+        <attr name="android:verticalSpacing" />
+        <attr name="android:horizontalSpacing" />
+    </declare-styleable>
 </resources>

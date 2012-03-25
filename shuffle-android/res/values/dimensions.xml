@@ -26,8 +26,9 @@
 
     <dimen name="list_section_divider_min_height">32dip</dimen>
 
-    <dimen name="context_small_padding">2dip</dimen>
-    <dimen name="context_small_corner_radius">2dip</dimen>
+    <dimen name="context_small_vertical_padding">2dip</dimen>
+    <dimen name="context_small_horizontal_padding">4dip</dimen>
+    <dimen name="context_small_corner_radius">3dip</dimen>
 
     <dimen name="context_large_corner_radius">8dip</dimen>
 

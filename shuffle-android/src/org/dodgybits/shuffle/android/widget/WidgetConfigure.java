@@ -79,7 +79,7 @@ public class WidgetConfigure extends RoboFragmentActivity {
                         confirmSelection();
                     }
                 };
-                dialog = EntityPickerDialogHelper.createContentPickerDialog(WidgetConfigure.this, listener);
+                dialog = EntityPickerDialogHelper.createSingleSelectContentPickerDialog(WidgetConfigure.this, listener);
                 break;
             case PROJECT_PICKER_DIALOG:
                 listener = new EntityPickerDialogHelper.OnEntitySelected() {
@@ -93,7 +93,7 @@ public class WidgetConfigure extends RoboFragmentActivity {
                         confirmSelection();
                     }
                 };
-                dialog = EntityPickerDialogHelper.createProjectPickerDialog(WidgetConfigure.this, listener);
+                dialog = EntityPickerDialogHelper.createSingleSelectProjectPickerDialog(WidgetConfigure.this, listener);
                 break;
         }
         return dialog;
