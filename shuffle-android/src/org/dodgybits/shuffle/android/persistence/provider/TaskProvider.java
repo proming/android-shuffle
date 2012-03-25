@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import java.util.Map;
 
@@ -91,7 +92,9 @@ public class TaskProvider extends AbstractCollectionProvider {
             if (rowId <= 0L) {
                 throw new SQLException("Failed to insert row into " + url);
             }
-
+            if (Log.isLoggable(TAG, Log.DEBUG)) {
+                Log.d(TAG, "Added taskContext " + rowId + " for values " + values);
+            }
             Uri uri = ContentUris.withAppendedId(TaskContexts.CONTENT_URI, rowId);
             return uri;
         }

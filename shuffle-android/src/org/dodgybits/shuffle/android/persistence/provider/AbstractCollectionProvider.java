@@ -18,7 +18,7 @@ import java.util.Map;
 public abstract class AbstractCollectionProvider extends ContentProvider {
 	public static final String cDatabaseName = "shuffle.db";
 	static final int cDatabaseVersion = 18;
-	public static final String TAG = "ShuffleProvider";
+	public static final String TAG = "AbstractColProvider";
 	
 	public static interface ShuffleTable extends BaseColumns {
 		static final String CONTENT_TYPE_PATH = "vnd.dodgybits";
@@ -297,7 +297,7 @@ public abstract class AbstractCollectionProvider extends ContentProvider {
 		String orderBy = getSortOrder(uri, sort);
 		String groupBy = getGroupBy(uri);
 		
-		if (true || Log.isLoggable(TAG, Log.DEBUG)) {
+		if (Log.isLoggable(TAG, Log.DEBUG)) {
 			Log.d(TAG, "Executing " + selection + " with args "
 					+ Arrays.toString(selectionArgs) + " ORDER BY " + orderBy + " (sort=" + sort + ")");
 		}

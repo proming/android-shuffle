@@ -158,12 +158,13 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
     }
 
     public void bulkInsert(Collection<Task> entities, boolean includeContextIds) {
-        super.bulkInsert(entities);
-
         if (includeContextIds) {
+            // we can't bulk insert if we're adding context ids as we need the newly generated task ids
             List<ContentValues> valuesList = Lists.newArrayList();
             for (Task task : entities) {
-                final long taskId = task.getLocalId().getId();
+                Uri uri = mResolver.insert(getContentUri(), null);
+                super.update(uri, task);
+                final long taskId = ContentUris.parseId(uri);
                 List<Id> contextIds = task.getContextIds();
                 for (Id contextId : contextIds) {
                     ContentValues values = new ContentValues();
@@ -176,8 +177,13 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
             if (!valuesList.isEmpty()) {
                 ContentValues[] valuesArray = new ContentValues[valuesList.size()];
                 valuesList.toArray(valuesArray);
-                mResolver.bulkInsert(TaskProvider.TaskContexts.CONTENT_URI, valuesArray);
+                int created = mResolver.bulkInsert(TaskProvider.TaskContexts.CONTENT_URI, valuesArray);
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    Log.d(TAG, "Created " + created + " rows from " + valuesArray.length + " entries");
+                }
             }
+        } else {
+            super.bulkInsert(entities);
         }
     }
 
