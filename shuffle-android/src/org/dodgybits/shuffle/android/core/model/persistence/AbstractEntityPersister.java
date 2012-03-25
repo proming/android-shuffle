@@ -100,15 +100,7 @@ public abstract class AbstractEntityPersister<E extends Entity> implements Entit
         values.put(ShuffleTable.MODIFIED_DATE, System.currentTimeMillis());
         return (mResolver.update(getUri(id), values, null, null) == 1);
     }
-    
-    @Override
-    public int updateDeletedFlag(String selection, String[] selectionArgs, boolean isDeleted) {
-        ContentValues values = new ContentValues();
-        writeBoolean(values, ShuffleTable.DELETED, isDeleted);
-        values.put(ShuffleTable.MODIFIED_DATE, System.currentTimeMillis());
-        return mResolver.update(getContentUri(), values, selection, selectionArgs);
-    }
-    
+
     @Override
     public int emptyTrash() {
         int rowsDeleted = mResolver.delete(getContentUri(), "deleted = 1", null);

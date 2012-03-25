@@ -34,16 +34,6 @@ public interface EntityPersister<E extends Entity> {
 
 
     /**
-     * Set deleted flag for entities that match the criteria to isDeleted.
-     *
-     * @param selection where clause
-     * @param selectionArgs parameter values from where clause
-     * @param isDeleted flag to set deleted flag to
-     * @return number of entities updates
-     */
-    int updateDeletedFlag(String selection, String[] selectionArgs, boolean isDeleted);
-
-    /**
      * Permanently delete all items that currently flagged as deleted.
      *
      * @return number of entities removed

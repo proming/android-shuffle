@@ -1,29 +1,25 @@
 package org.dodgybits.shuffle.android.synchronisation.tracks;
 
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryTracksSyncCompletedEvent;
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryTracksSyncError;
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryTracksSyncStartedEvent;
-
-import java.util.LinkedList;
-
-import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
-import org.dodgybits.shuffle.android.core.model.Project;
-import org.dodgybits.shuffle.android.core.model.Task;
-import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
-import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
-import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
-import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
-import org.dodgybits.shuffle.android.preference.model.Preferences;
-import org.dodgybits.shuffle.android.preference.view.Progress;
-
-import roboguice.inject.ContentResolverProvider;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
+import org.dodgybits.shuffle.android.core.model.Project;
+import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
+import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
+import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
+import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
+import org.dodgybits.shuffle.android.preference.view.Progress;
+import roboguice.inject.ContentResolverProvider;
+
+import java.util.LinkedList;
+
+import static org.dodgybits.shuffle.android.core.util.Constants.*;
 
 
 /**
@@ -84,9 +80,10 @@ public class TracksSynchronizer extends AsyncTask<String, Progress, Void> {
         };
         
         mAnalytics = analytics;
-        
-        EntityPersister<Task> taskPersister = new TaskPersister(provider, analytics);
-        EntityPersister<org.dodgybits.shuffle.android.core.model.Context> contextPersister = new ContextPersister(provider, analytics);
+
+        TaskPersister taskPersister = new TaskPersister(provider, analytics);
+        EntityPersister<org.dodgybits.shuffle.android.core.model.Context> contextPersister =
+                new ContextPersister(provider, taskPersister, analytics);
         EntityPersister<Project> projectPersister = new ProjectPersister(provider, analytics);
         
         mContextSynchronizer = new ContextSynchronizer(contextPersister, this, client, context, mAnalytics, 0, tracksUrl);

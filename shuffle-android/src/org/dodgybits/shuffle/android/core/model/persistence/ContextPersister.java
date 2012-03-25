@@ -1,25 +1,22 @@
 package org.dodgybits.shuffle.android.core.model.persistence;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
+import com.google.inject.Inject;
+import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
+import org.dodgybits.shuffle.android.core.model.Context;
+import org.dodgybits.shuffle.android.core.model.Context.Builder;
+import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
+import roboguice.inject.ContentResolverProvider;
+import roboguice.inject.ContextSingleton;
+
 import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.ACTIVE;
 import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.DELETED;
 import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.MODIFIED_DATE;
 import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.TRACKS_ID;
-import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.COLOUR;
-import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.ICON;
-import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.NAME;
-
-import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
-import org.dodgybits.shuffle.android.core.model.Context;
-import org.dodgybits.shuffle.android.core.model.Context.Builder;
-import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
-
-import roboguice.inject.ContentResolverProvider;
-import roboguice.inject.ContextSingleton;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
-
-import com.google.inject.Inject;
+import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.*;
 
 @ContextSingleton
 public class ContextPersister extends AbstractEntityPersister<Context> {
@@ -33,9 +30,13 @@ public class ContextPersister extends AbstractEntityPersister<Context> {
     private static final int DELETED_INDEX = 6;
     private static final int ACTIVE_INDEX = 7;
 
+    private final TaskPersister mTaskPersister;
+            
+    
     @Inject
-    public ContextPersister(ContentResolverProvider provider, Analytics analytics) {
+    public ContextPersister(ContentResolverProvider provider, TaskPersister taskPersister, Analytics analytics) {
         super(provider.get(), analytics);
+        mTaskPersister = taskPersister;
     }
 
     @Override
@@ -65,7 +66,27 @@ public class ContextPersister extends AbstractEntityPersister<Context> {
         writeBoolean(values, DELETED, context.isDeleted());
         writeBoolean(values, ACTIVE, context.isActive());
     }
-    
+
+    @Override
+    public boolean updateDeletedFlag(Id id, boolean isDeleted) {
+        boolean result = super.updateDeletedFlag(id, isDeleted);
+        
+        if (isDeleted) {
+            mTaskPersister.removeTasksForContext(id);
+        }
+
+        return result;
+    }
+
+    @Override
+    protected void update(Uri uri, Context context) {
+        super.update(uri, context);
+
+        if (context.isDeleted()) {
+            mTaskPersister.removeTasksForContext(context.getLocalId());
+        }
+    }
+
     @Override
     protected String getEntityName() {
         return "context";

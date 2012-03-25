@@ -19,6 +19,7 @@ import org.dodgybits.shuffle.android.core.model.Task.Builder;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.Flag;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
 import org.dodgybits.shuffle.android.core.util.StringUtils;
+import org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import roboguice.inject.ContentResolverProvider;
 import roboguice.inject.ContextSingleton;
@@ -203,7 +204,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
 
     @Override
     public int emptyTrash() {
-        // find tasks that are deleted or who's context or project is deleted
+        // find tasks that are deleted or who's project is deleted
         TaskSelector selector = TaskSelector.newBuilder().setDeleted(Flag.yes).build();
 
         Cursor cursor = mResolver.query(getContentUri(),
@@ -253,6 +254,21 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         if (isComplete) {
             mAnalytics.onEvent(cFlurryCompleteTaskEvent);
         }
+    }
+
+    /**
+     * Set deleted flag for entities that match the criteria to isDeleted.
+     *
+     * @param selection where clause
+     * @param selectionArgs parameter values from where clause
+     * @param isDeleted flag to set deleted flag to
+     * @return number of entities updates
+     */
+    public int updateDeletedFlag(String selection, String[] selectionArgs, boolean isDeleted) {
+        ContentValues values = new ContentValues();
+        writeBoolean(values, AbstractCollectionProvider.ShuffleTable.DELETED, isDeleted);
+        values.put(AbstractCollectionProvider.ShuffleTable.MODIFIED_DATE, System.currentTimeMillis());
+        return mResolver.update(getContentUri(), values, selection, selectionArgs);
     }
 
     /**
@@ -421,6 +437,15 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         return countMap;
     }
 
+    /* package */ int removeTasksForContext(Id contextId) {
+        int deletedRows = mResolver.delete(TaskProvider.TaskContexts.CONTENT_URI,
+                CONTEXT_ID + "=?",
+                new String[]{String.valueOf(contextId.getId())});
+        Log.d(TAG, "Deleted " + deletedRows + " existing task links for context " + contextId);
+
+        return deletedRows;
+    }
+
     /**
      * Moves a range of tasks up or down within a project
      *
@@ -468,8 +493,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         int deletedRows = mResolver.delete(TaskProvider.TaskContexts.CONTENT_URI,
                 TASK_ID + "=?",
                 new String[]{String.valueOf(taskId)});
-        Log.d(TAG, "Deleted " + deletedRows + " existing context links");
-
+        Log.d(TAG, "Deleted " + deletedRows + " existing context links for task " + taskId);
 
         final List<Id> contextIds = task.getContextIds();
         if (!contextIds.isEmpty()) {
