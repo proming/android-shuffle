@@ -19,9 +19,14 @@ public class ContextIcon {
         this.largeIconId = largeIconId;
         this.smallIconId = smallIconId;
     }
+
     
     public static ContextIcon createIcon(String iconName, Resources res) {
-        if (TextUtils.isEmpty(iconName)) return NONE;
+        return createIcon(iconName, res, false);
+    }
+
+    public static ContextIcon createIcon(String iconName, Resources res, boolean nullForEmpty) {
+        if (TextUtils.isEmpty(iconName)) return nullForEmpty ? null : NONE;
         int largeId = res.getIdentifier(iconName, cType, cPackage);
         int smallId = res.getIdentifier(iconName + "_small", cType, cPackage);
         return new ContextIcon(iconName, largeId, smallId);

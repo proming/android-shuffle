@@ -8,6 +8,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -60,7 +61,8 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
 
     private ViewGroup mContextContainer;
     private List<Id> mSelectedContextIds;
-
+    private TextView mNoContexts;
+    
     private Spinner mProjectSpinner;
     private String[] mProjectNames;
     private long[] mProjectIds;
@@ -609,6 +611,7 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
 
         mContextContainer = (ViewGroup) getView().findViewById(R.id.context_items_container);
         mContextContainer.setOnClickListener(this);
+        mNoContexts = (TextView) getView().findViewById(R.id.no_contexts);
 
         View addContextButton = getView().findViewById(R.id.context_add);
         addContextButton.setOnClickListener(this);
@@ -684,11 +687,17 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
     }
 
     private void updateContextPanel() {
+        int viewCount = mContextContainer.getChildCount();
         if (mSelectedContextIds.isEmpty()) {
-            mContextContainer.setVisibility(View.INVISIBLE);
+            mNoContexts.setVisibility(View.VISIBLE);
+            if (viewCount > 1) {
+                mContextContainer.removeViews(1, viewCount - 1);
+
+            }
         } else {
+            mNoContexts.setVisibility(View.GONE);
+            viewCount--; // ignore no contexts view
             // reuse existing views if present
-            int viewCount = mContextContainer.getChildCount();
             int contextCount = mSelectedContextIds.size();
             while (viewCount < contextCount) {
                 LabelView contextView = new LabelView(getActivity());
@@ -697,18 +706,18 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
                 viewCount++;
             }
             if (viewCount > contextCount) {
-                mContextContainer.removeViews(contextCount, viewCount - contextCount);
-                viewCount = contextCount;
+                mContextContainer.removeViews(contextCount + 1, viewCount - contextCount);
             }
 
             for (int i = 0; i < contextCount; i++) {
-                LabelView contextView = (LabelView) mContextContainer.getChildAt(i);
+                LabelView contextView = (LabelView) mContextContainer.getChildAt(i + 1); // skip no contexts view
                 Id contextId = mSelectedContextIds.get(i);
                 Context context = mContextCache.findById(contextId);
                 contextView.setText(context.getName());
                 contextView.setColourIndex(context.getColourIndex());
-                ContextIcon icon = ContextIcon.createIcon(context.getIconName(), getResources());
-                contextView.setIcon(getResources().getDrawable(icon.smallIconId));
+                ContextIcon contextIcon = ContextIcon.createIcon(context.getIconName(), getResources(), true);
+                Drawable icon = contextIcon == null ? null : getResources().getDrawable(contextIcon.smallIconId);
+                contextView.setIcon(icon);
             }
         }
     }   

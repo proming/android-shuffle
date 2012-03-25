@@ -110,11 +110,24 @@
                     android:layout_toLeftOf="@+id/context_add"
                     android:background="@drawable/list_selector_background"
                     android:padding="8dp"
-                    android:horizontalSpacing="6dp"
-                    android:verticalSpacing="12dp"
+                    android:horizontalSpacing="@dimen/context_small_horizontal_spacing"
+                    android:verticalSpacing="@dimen/context_small_vertical_spacing"
                     android:focusable="true"
                     android:clickable="true"
-                    />
+                    >
+
+                <TextView
+                    android:id="@+id/no_contexts"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textSize="18sp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:gravity="left"
+                    android:duplicateParentState="true"
+                    android:hint="@string/title_contexts_picker"
+                        />
+
+            </org.dodgybits.shuffle.android.core.view.RowLayout>
 
         </RelativeLayout>
 

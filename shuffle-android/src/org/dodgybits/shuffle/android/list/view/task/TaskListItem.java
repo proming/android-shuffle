@@ -1,6 +1,5 @@
 package org.dodgybits.shuffle.android.list.view.task;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.*;
@@ -14,18 +13,23 @@ import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
-import org.dodgybits.shuffle.android.core.view.TextColours;
+import org.dodgybits.shuffle.android.core.util.TaskLifecycleState;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
+import org.dodgybits.shuffle.android.core.view.TextColours;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This custom View is the list item for the MessageList activity, and serves two purposes:
@@ -35,25 +39,35 @@ import java.util.Map;
 public class TaskListItem extends View {
     private static final String TAG = "TaskListItem";
 
-    // Note: messagesAdapter directly fiddles with these fields.
+    // Note: adapter directly fiddles with these fields.
     /* package */ long mTaskId;
 
     
-    private Task mTask;
-
     private TaskListAdaptor mAdapter;
     private TaskListItemCoordinates mCoordinates;
-    private Context mAndroidContext;
+    private android.content.Context mAndroidContext;
 
-    private final EntityCache<org.dodgybits.shuffle.android.core.model.Context> mContextCache;
+    private final EntityCache<Context> mContextCache;
     private final EntityCache<Project> mProjectCache;
-    
+
+    private Project mProject;
+    private SpannableStringBuilder mText;
+    private String mSnippet;
+    private String mDescription;
+    private StaticLayout mContentsLayout;
+    private boolean mIsCompleted;
+    private boolean mIsActive = true;
+    private boolean mIsDeleted = false;
+
+    private List<Context> mContexts = Collections.emptyList();
+    private boolean mShowContextText;
+
     private boolean mDownEvent;
 
     @Inject
     public TaskListItem(
             android.content.Context androidContext,
-            EntityCache<org.dodgybits.shuffle.android.core.model.Context> contextCache,
+            EntityCache<Context> contextCache,
             EntityCache<Project> projectCache) {
         super(androidContext);
         mContextCache = contextCache;
@@ -70,6 +84,7 @@ public class TaskListItem extends View {
     private static final Paint sContextBackgroundPaint = new Paint();
 
     private static int sContextHorizontalPadding;
+    private static int sContextHorizontalSpacing;
     private static int sContextVerticalPadding;
     private static int sContextCornerRadius;
     
@@ -94,19 +109,6 @@ public class TaskListItem extends View {
     private static int DATE_TEXT_COLOR_COMPLETE;
 
     private static int DATE_TEXT_COLOR_INCOMPLETE;
-    private Project mProject;
-    private SpannableStringBuilder mText;
-    private String mSnippet;
-    private String mDescription;
-    private StaticLayout mContentsLayout;
-    private boolean mIsCompleted;
-    private boolean mIsActive = true;
-    private boolean mIsDeleted = false;
-    private List<org.dodgybits.shuffle.android.core.model.Context> mContexts;
-    private String mContextName;
-    private int mContextTextColor;
-    private int mContextBackgroundColor;
-    private CharSequence mFormattedContext;
 
     private int mViewWidth = 0;
     private int mViewHeight = 0;
@@ -122,7 +124,7 @@ public class TaskListItem extends View {
     // should be very rare); this is otherwise set in setTimestamp
     private CharSequence mFormattedDate = "";
 
-    private void init(Context context) {
+    private void init(android.content.Context context) {
         mAndroidContext = context;
         
         if (!sInit) {
@@ -143,6 +145,7 @@ public class TaskListItem extends View {
             sContextPaint.setAntiAlias(true);
 
             sContextHorizontalPadding = r.getDimensionPixelSize(R.dimen.context_small_horizontal_padding);
+            sContextHorizontalSpacing = r.getDimensionPixelSize(R.dimen.context_small_horizontal_spacing);
             sContextVerticalPadding = r.getDimensionPixelSize(R.dimen.context_small_vertical_padding);
             sContextCornerRadius = r.getDimensionPixelSize(R.dimen.context_small_corner_radius);
             
@@ -195,16 +198,16 @@ public class TaskListItem extends View {
     }
 
     public void setTask(Task task) {
-        mTask = task;
-
         mTaskId = task.getLocalId().getId();
         mIsCompleted = task.isComplete();
-        setProject(task.getProjectId());
-        mIsActive = task.isActive() && (mProject == null || mProject.isActive()); // TODO && (mContext == null || mContext.isActive());
-        mIsDeleted = task.isDeleted() || (mProject != null && mProject.isDeleted()); // TODO || (mContext != null && mContext.isDeleted());
+        mProject = mProjectCache.findById(task.getProjectId());
+        List<Context> contexts = mContextCache.findById(task.getContextIds());
+        mIsActive = TaskLifecycleState.getActiveStatus(task, contexts, mProject) == TaskLifecycleState.Status.yes;
+        mIsDeleted = TaskLifecycleState.getDeletedStatus(task, mProject) != TaskLifecycleState.Status.no;
+        
         setTimestamp(task.getDueDate());
 
-        boolean changed = setContexts(task.getContextIds());
+        boolean changed = setContexts(contexts);
         changed |= setText(task.getDescription(), task.getDetails());
         
         if (changed) {
@@ -212,28 +215,24 @@ public class TaskListItem extends View {
         }
     }
 
-    private void setProject(Id projectId) {
-        mProject = mProjectCache.findById(projectId);
-    }
-    
-    private boolean setContexts(List<Id> contextIds) {
-        boolean changed = false;
+    private boolean setContexts(List<Context> contexts) {
+        boolean changed = true;
 
-        // TODO use all contexts
-        mContexts = mContextCache.findById(contextIds);
-        org.dodgybits.shuffle.android.core.model.Context context = null;
-        if (!mContexts.isEmpty()) {
-            context = mContexts.get(0);
-            mContextTextColor = sTextColours.getTextColour(context.getColourIndex());
-            mContextBackgroundColor = sTextColours.getBackgroundColour(context.getColourIndex());
-        }
+        if (contexts.size() == mContexts.size()) {
+            Set<Id> currentIds = Sets.newHashSet();
+            for (Context context : mContexts) {
+                currentIds.add(context.getLocalId());
+            }
+            
+            Set<Id> newIds = Sets.newHashSet();
+            for (Context context : contexts) {
+                newIds.add(context.getLocalId());
+            }
 
-        String contextName = context == null ? "" : context.getName();
-        if (!Objects.equal(mContextName, contextName)) {
-            mContextName = contextName;
-            changed = true;
+            changed = !currentIds.equals(newIds);
         }
-        
+        mContexts = contexts;
+
         return changed;
     }
     
@@ -275,12 +274,12 @@ public class TaskListItem extends View {
         return changed;
     }
 
-    long mTimeFormatted = 0L;
+    long mDueMillis = 0L;
     private void setTimestamp(long timestamp) {
-        if (mTimeFormatted != timestamp) {
+        if (mDueMillis != timestamp) {
             mFormattedDate = timestamp == 0L ? "" :
                     DateUtils.getRelativeTimeSpanString(mAndroidContext, timestamp).toString();
-            mTimeFormatted = timestamp;
+            mDueMillis = timestamp;
         }
     }
 
@@ -343,11 +342,29 @@ public class TaskListItem extends View {
                     sDefaultPaint, mCoordinates.contentsWidth, Layout.Alignment.ALIGN_NORMAL, 1, 0, true);
         }
 
+        // Date width first
+        TextPaint datePaint = sDatePaint;
+        datePaint.setTextSize(mCoordinates.dateFontSize);
+        int dateWidth = (int)datePaint.measureText(mFormattedDate, 0, mFormattedDate.length()) +
+                sContextHorizontalPadding;
+
         // Calculate the size the context wants to be
+
+        // Mash together all the names to get an idea how big the text wants to be
+        StringBuilder builder = new StringBuilder();
+        for (Context context : mContexts) {
+            builder.append(context.getName());
+        }
         TextPaint contextPaint = sContextPaint;
         contextPaint.setTextSize(mCoordinates.contextsFontSize);
-        contextPaint.setColor(mContextTextColor);
-        int contextTextWidth = (int)sContextPaint.measureText(mContextName, 0, mContextName.length());
+        int contextTextWidth = (int)contextPaint.measureText(builder.toString(), 0, builder.length());
+
+        final int count = mContexts.size();
+        int desiredContextWidth = contextTextWidth + // all the text
+                count * mCoordinates.contextIconWidth + // each icon
+                (count - 1) * sContextHorizontalSpacing + // between contexts
+                2 * count * sContextHorizontalPadding +  // at each end of context
+                count * sContextVerticalPadding; // between icon and text
 
         // And the project...
         TextPaint projectPaint = isDone() ? sDefaultPaint : sBoldPaint;
@@ -357,15 +374,21 @@ public class TaskListItem extends View {
                 : PROJECT_TEXT_COLOR_INCOMPLETE));
         int projectTextWidth = (int)projectPaint.measureText(projectName, 0, projectName.length());
         
-        // if project needs less that it's given, give that to the context...
-        int spareWidth = Math.max(0, mCoordinates.projectWidth - projectTextWidth);
-        int contextWidth = mCoordinates.contextsWidth + spareWidth;
-        mFormattedContext = TextUtils.ellipsize(mContextName, contextPaint, contextWidth,
-                TextUtils.TruncateAt.END);
+        // if project and/or date needs less that it's given, give that to the context...
+        int spareWidth = Math.max(0, mCoordinates.projectWidth - projectTextWidth) +
+                Math.max(0, mCoordinates.dateWidth - dateWidth);
+        int availableContextWidth = mCoordinates.contextsWidth + spareWidth;
 
-        // and visa versa
-        spareWidth = Math.max(0, mCoordinates.contextsWidth - contextTextWidth);
-        int projectWidth = mCoordinates.projectWidth + spareWidth;
+        // if it fits, show context text
+        mShowContextText = (availableContextWidth > desiredContextWidth);
+
+        if (!mShowContextText) {
+            desiredContextWidth = count * mCoordinates.contextIconWidth + // each icon
+                    2 * count * sContextHorizontalPadding;  // at each end of icon
+        }
+
+        // give or take the difference in space from the project
+        int projectWidth = mCoordinates.projectWidth + (availableContextWidth - desiredContextWidth);
         mFormattedProject = TextUtils.ellipsize(projectName, projectPaint, projectWidth,
                 TextUtils.TruncateAt.END);
     }
@@ -470,45 +493,55 @@ public class TaskListItem extends View {
         canvas.drawText(mFormattedDate, 0, mFormattedDate.length(),
                 dateX, mCoordinates.dateY - mCoordinates.dateAscent, sDatePaint);
 
-        // Draw the context
+        // Draw the contexts
+        final int top = mCoordinates.contextsY - sContextVerticalPadding;
+        final int bottom = mCoordinates.contextsY + mCoordinates.contextsHeight + sContextVerticalPadding;
         if (!mContexts.isEmpty()) {
             sContextPaint.setTextSize(mCoordinates.contextsFontSize);
-            sContextPaint.setColor(mContextTextColor);
-            int contextTextWidth = (int)sContextPaint.measureText(mFormattedContext, 0, mFormattedContext.length());
-            int contextsX = dateX - (contextTextWidth + sContextHorizontalPadding * 2);
+            int right = dateX - sContextHorizontalSpacing;
+            if (mShowContextText) {
+                for (Context context : mContexts) {
+                    sContextPaint.setColor(sTextColours.getTextColour(context.getColourIndex()));
+                    final String name = context.getName();
+                    int contextTextWidth = (int)sContextPaint.measureText(name, 0, name.length());
+                    int textX = right - (sContextHorizontalPadding + contextTextWidth);
+                    boolean hasIcon = !TextUtils.isEmpty(context.getIconName());
+                    int left = textX - sContextHorizontalPadding;
+                    if (hasIcon) {
+                        left -= mCoordinates.contextIconWidth + sContextVerticalPadding;
+                    }
+                    RectF bgRect = new RectF(left, top, right, bottom);
+                    int bgColor = sTextColours.getBackgroundColour(context.getColourIndex());
+                    sContextBackgroundPaint.setShader(getShader(bgColor, bgRect));
+                    canvas.drawRoundRect(bgRect, sContextCornerRadius, sContextCornerRadius, sContextBackgroundPaint);
 
-            // TODO use them all
-            org.dodgybits.shuffle.android.core.model.Context context = mContexts.get(0);
+                    if (hasIcon) {
+                        Bitmap contextIcon = getContextIcon(context.getIconName());
+                        canvas.drawBitmap(contextIcon, left + sContextHorizontalPadding, mCoordinates.contextsY, null);
+                    }
 
-            boolean hasIcon = !TextUtils.isEmpty(context.getIconName());
-            int contextIconX = contextsX - (mCoordinates.contextIconWidth + sContextHorizontalPadding);
-            
-            RectF backgroundRectF;
-            if (hasIcon)
-            {
-                backgroundRectF = new RectF(
-                        contextIconX - sContextHorizontalPadding,
-                        mCoordinates.contextsY - sContextVerticalPadding,
-                        contextsX + contextTextWidth + sContextHorizontalPadding,
-                        mCoordinates.contextsY + mCoordinates.contextsHeight + sContextVerticalPadding);
+                    canvas.drawText(name, 0, name.length(),
+                            textX, mCoordinates.contextsY - mCoordinates.contextsAscent,
+                            sContextPaint);
+
+                    right = left - sContextHorizontalSpacing;
+                }
             } else {
-                backgroundRectF = new RectF(
-                        contextsX - sContextHorizontalPadding,
-                        mCoordinates.contextsY - sContextVerticalPadding,
-                        contextsX + contextTextWidth + sContextHorizontalPadding,
-                        mCoordinates.contextsY + mCoordinates.contextsHeight + sContextVerticalPadding);
-            }
-            sContextBackgroundPaint.setShader(getShader(mContextBackgroundColor, backgroundRectF));
-            canvas.drawRoundRect(backgroundRectF, sContextCornerRadius, sContextCornerRadius, sContextBackgroundPaint);
+                for (Context context : mContexts) {
+                    int iconX = right - sContextHorizontalPadding - mCoordinates.contextIconWidth;
+                    int left = iconX - sContextHorizontalPadding;
 
-            if (hasIcon) {
-                Bitmap contextIcon = getContextIcon(context.getIconName());
-                canvas.drawBitmap(contextIcon, contextIconX, mCoordinates.contextsY, null);
-            }
+                    RectF bgRect = new RectF(left, top, right, bottom);
+                    int bgColor = sTextColours.getBackgroundColour(context.getColourIndex());
+                    sContextBackgroundPaint.setShader(getShader(bgColor, bgRect));
+                    canvas.drawRect(bgRect, sContextBackgroundPaint);
 
-            canvas.drawText(mFormattedContext, 0, mFormattedContext.length(),
-                    contextsX, mCoordinates.contextsY - mCoordinates.contextsAscent,
-                    sContextPaint);
+                    Bitmap contextIcon = getContextIcon(context.getIconName());
+                    canvas.drawBitmap(contextIcon, iconX, mCoordinates.contextsY, null);
+
+                    right = left;
+                }
+            }
         }
     }
     
@@ -543,7 +576,7 @@ public class TaskListItem extends View {
     private static final int TOUCH_SLOP = 24;
     private static int sScaledTouchSlop = -1;
 
-    private void initializeSlop(Context context) {
+    private void initializeSlop(android.content.Context context) {
         if (sScaledTouchSlop == -1) {
             final Resources res = context.getResources();
             final Configuration config = res.getConfiguration();

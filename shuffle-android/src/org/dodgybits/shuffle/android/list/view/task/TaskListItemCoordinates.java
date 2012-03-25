@@ -60,6 +60,7 @@ public class TaskListItemCoordinates {
     int dateX;
     int dateXEnd;
     int dateY;
+    int dateWidth;
     int dateFontSize;
     int dateAscent;
 
@@ -141,7 +142,6 @@ public class TaskListItemCoordinates {
         if (coordinates == null) {
             coordinates = new TaskListItemCoordinates();
             mCache.put(width, coordinates);
-            // TODO: make the field computation done inside of the constructor and mark fields final
 
             // Layout the appropriate view.
             int height = getHeight(context);
@@ -193,6 +193,7 @@ public class TaskListItemCoordinates {
             coordinates.dateX = UiUtilities.getX(date);
             coordinates.dateXEnd = UiUtilities.getX(date) + date.getWidth();
             coordinates.dateY = UiUtilities.getY(date);
+            coordinates.dateWidth = getWidth(date, false);
             coordinates.dateFontSize = (int) date.getTextSize();
             coordinates.dateAscent = Math.round(date.getPaint().ascent());
         }

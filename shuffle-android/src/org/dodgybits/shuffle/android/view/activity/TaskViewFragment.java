@@ -2,6 +2,7 @@ package org.dodgybits.shuffle.android.view.activity;
 
 import android.content.ContentUris;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -275,8 +276,9 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
                 Context context = contexts.get(i);
                 contextView.setText(context.getName());
                 contextView.setColourIndex(context.getColourIndex());
-                ContextIcon icon = ContextIcon.createIcon(context.getIconName(), getResources());
-                contextView.setIcon(getResources().getDrawable(icon.smallIconId));
+                ContextIcon contextIcon = ContextIcon.createIcon(context.getIconName(), getResources(), true);
+                Drawable icon = contextIcon == null ? null : getResources().getDrawable(contextIcon.smallIconId);
+                contextView.setIcon(icon);
             }
         }
     }

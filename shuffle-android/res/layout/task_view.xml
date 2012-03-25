@@ -121,8 +121,8 @@
                     android:paddingBottom="8dip"
                     android:paddingLeft="8dip"
                     android:paddingRight="?android:attr/scrollbarSize"
-                    android:horizontalSpacing="6dp"
-                    android:verticalSpacing="12dp"
+                    android:horizontalSpacing="@dimen/context_small_horizontal_spacing"
+                    android:verticalSpacing="@dimen/context_small_vertical_spacing"
                     />
 
             <TextView
