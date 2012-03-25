@@ -36,21 +36,6 @@
                 android:layout_height="match_parent"
                 android:scrollbars="vertical">
 
-            <org.dodgybits.shuffle.android.core.view.RowLayout
-                    android:id="@+id/context_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@+id/context_add"
-                    android:paddingTop="8dip"
-                    android:paddingBottom="8dip"
-                    android:paddingLeft="8dip"
-                    android:paddingRight="?android:attr/scrollbarSize"
-                    android:horizontalSpacing="6dp"
-                    android:verticalSpacing="12dp"
-                    />
-
             <RelativeLayout
                     android:id="@+id/title_entry"
                     android:layout_width="match_parent"
@@ -124,6 +109,21 @@
                         />
 
             </RelativeLayout>
+
+            <org.dodgybits.shuffle.android.core.view.RowLayout
+                    android:id="@+id/context_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/context_add"
+                    android:paddingTop="8dip"
+                    android:paddingBottom="8dip"
+                    android:paddingLeft="8dip"
+                    android:paddingRight="?android:attr/scrollbarSize"
+                    android:horizontalSpacing="6dp"
+                    android:verticalSpacing="12dp"
+                    />
 
             <TextView
                     android:id="@+id/details"
