@@ -60,7 +60,7 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
     private EditText mDetailsWidget;
 
     private ViewGroup mContextContainer;
-    private List<Id> mSelectedContextIds;
+    private List<Id> mSelectedContextIds = Lists.newArrayList();
     private TextView mNoContexts;
     
     private Spinner mProjectSpinner;
