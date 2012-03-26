@@ -130,15 +130,21 @@
 <b>New in this version:</b>\n
 \t• Complete UI rewrite\n
 \t• Full ICS compatibility\n
-\t• Swipe to navigate between views\n
+\t• Support for multiple contexts per action\n
 \t• Context and project specific widgets and shortcuts\n
+\t• Swipe to navigate between views\n
 \t• New widget look (scrollable on ICS)\n
 \t• Multi-select operations on action lists\n
-\t• Default context applied more consistently\n
-\t• More and higher resolution context icons\n
 \t• Quick add bar for actions, contexts and projects\n
+\t• Default context applied more consistently\n
+\t• Updated help screens\n
+\t• Fixed issues with search\n
 \t• Ability to filter by project or context on any view\n
+\t• More and higher resolution context icons\n
 \t• New Custom action view (set it up however you want)\n
+\n
+<b>New in version 1.7.3:</b>\n
+\t• Fixed restore from backup bug\n
 \n
 <b>New in version 1.7.2:</b>\n
 \t• Fixed dates when viewing Google calendar entries\n
@@ -161,34 +167,6 @@
 \t• Fixed action reordering in projects and Next Actions.\n
 \t• Action view screen added.\n
 \t• Spanish, Portugese and Japanese translations.\n
-\n
-<b>New in version 1.6.3:</b>\n
-\t• Fix task editing compatibility with Android 1.5.\n
-\n
-<b>New in version 1.6.2:</b>\n
-\t• Fix bug where can\'t remove context or project from action.\n
-\n
-<b>New in version 1.6.1:</b>\n
-\t• Fixed Tracks sync bug.\n
-\t• Reverted Inbox behavior.\n
-\n
-<b>New in version 1.6.0:</b>\n
-\t• <b>Widget</b> for your favorite list.\n
-\t• Fixed Google Calendar creation on Android 2.2.\n
-\t• Big code rewrite to improve reliability and simplify addition of new features.\n
-\n
-<b>New in version 1.5.1:</b>\n
-\t• Patch for Tracks synch bugs.\n
-\n
-<b>New in version 1.5.0:</b>\n
-\t• Search actions (including in quick search box)\n
-\t• Enable removable of action scheduling\n
-\t• Remove actions from Inbox if project or context set\n
-\t• Add actions without projects to Next actions\n
-\t• Enable parallel execute of actions within a project\n
-\t• For Tracks synch, don\'t set all day flag unless a date is set\n
-\t• Show both start and due date in task lists\n
-\t• Updated Help screens\n
 \n
 \n
 Also note that this application sends anonymous usage statistics back to a server.  If you\'d rather not
