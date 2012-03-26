@@ -401,7 +401,7 @@
     <!-- Notification message -->
     <string name="registration_error"> %1$sの登録/登録削除に失敗しました</string>
     <!-- Notification message -->
-    <string name="registration_succeeded">%1$sをC2DMメッセージに登録しました。< /string>
+    <string name="registration_succeeded">%1$sをC2DMメッセージに登録しました。</string>
     <!-- Button text -->
     <string name="say_hello">こんにちは</string>
     <!-- List view header text -->
