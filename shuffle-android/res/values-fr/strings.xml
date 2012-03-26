@@ -200,10 +200,10 @@
     <!-- synchronization-->
     <string name="synchronizing">Synchroniser avec Tracks</string>
     <string name="tracksUser">Utilisateur</string>
-    <string name="tracksInstallation">Cible d\'installation</string>
+    <string name="tracksInstallation">Cible d'installation</string>
     <string name="sync_preferences">Options de synchronisation</string>
     <string name="changeSynchronizationSettings">Modifier les paramètres de synchronisation</string>
-    <string name="tracks_url">Url Tracks</string>
+    <string name="tracks_url">Url Tracks</string><string name="synchronizing">Synchronizing with Tracks</string>
     <string name="tracks_url_settings">http://my.gtdify.com</string>
     <string name="self_signed_cert">Certificat https Auto-signé (trou de sécurité)</string>
     <string name="tracks_user">Utilisateur</string>
