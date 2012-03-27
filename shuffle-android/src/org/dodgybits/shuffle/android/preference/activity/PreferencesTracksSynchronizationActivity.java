@@ -2,6 +2,7 @@ package org.dodgybits.shuffle.android.preference.activity;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,6 +32,8 @@ public class PreferencesTracksSynchronizationActivity extends FlurryEnabledActiv
     @InjectView(R.id.sync_interval) Spinner mInterval;
     @InjectView(R.id.tracks_self_signed_cert) CheckBox mSelfSignedCertCheckBox;
 
+    private AsyncTask<Void, Void, Boolean> mCheckTask;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,21 +71,7 @@ public class PreferencesTracksSynchronizationActivity extends FlurryEnabledActiv
 			
 			@Override
 			public void onClick(View view) {
-				if(checkSettings()){
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            R.string.tracks_settings_valid, duration);
-                    toast.show();					
-				} else {
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            R.string.tracks_failed_to_check_url, duration);
-                    toast.show();
-				}
-				
-				
+                mCheckTask = new CheckSettings().execute();
 			}
 		};
         
@@ -156,28 +145,43 @@ public class PreferencesTracksSynchronizationActivity extends FlurryEnabledActiv
             ed.commit();
             return true;
     }
+    
+    private class CheckSettings extends AsyncTask<Void, Void, Boolean> {
 
-	private boolean checkSettings() {
-		URI uri = null;
-        try {
-            uri = new URI(mUrlTextbox.getText().toString());
-        } catch (URISyntaxException ignored) {
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            
+            URI uri = null;
+            try {
+                uri = new URI(mUrlTextbox.getText().toString());
+            } catch (URISyntaxException ignored) {
 
-        }
-
-        try {
-            WebClient client = new WebClient(this, mUserTextbox.getText()
-                    .toString(), mPassTextbox.getText().toString(), mSelfSignedCertCheckBox.isChecked());
-
-            if (uri != null && uri.isAbsolute()) {
-                WebResult result = client.getUrlContent(uri.toString() + "/contexts.xml");
-                if(result.getStatus().getStatusCode() != HttpStatus.SC_OK)
-                	return false;
             }
-        } catch (ApiException e) {
-            return false;
+
+            try {
+                WebClient client = new WebClient(PreferencesTracksSynchronizationActivity.this, 
+                        mUserTextbox.getText().toString(), 
+                        mPassTextbox.getText().toString(), 
+                        mSelfSignedCertCheckBox.isChecked());
+
+                if (uri != null && uri.isAbsolute()) {
+                    WebResult result = client.getUrlContent(uri.toString() + "/contexts.xml");
+                    if(result.getStatus().getStatusCode() != HttpStatus.SC_OK)
+                        return false;
+                }
+            } catch (ApiException e) {
+                return false;
+            }
+            return true;
         }
-		return true;
-	}
+
+        @Override
+        protected void onPostExecute(Boolean isGood) {
+            int messageId = isGood ? R.string.tracks_settings_valid : R.string.tracks_failed_to_check_url;
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    messageId, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
 
 }

@@ -17,4 +17,11 @@
           android:title="@string/menu_help"
           android:showAsAction="ifRoom"
             />
+
+    <item android:id="@+id/action_synchronize"
+          android:icon="@drawable/ic_menu_refresh_holo_light"
+          android:title="@string/menu_sync"
+          android:showAsAction="ifRoom"
+            />
+
 </menu>

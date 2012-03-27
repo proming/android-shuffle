@@ -16,6 +16,7 @@ import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.actionbarcompat.ActionBarHelper;
 import org.dodgybits.shuffle.android.core.fragment.HomeListFragment;
 import org.dodgybits.shuffle.android.core.util.Constants;
+import org.dodgybits.shuffle.android.list.event.StartSynchEvent;
 import org.dodgybits.shuffle.android.list.event.ViewHelpEvent;
 import org.dodgybits.shuffle.android.list.event.ViewPreferencesEvent;
 import org.dodgybits.shuffle.android.list.listener.NavigationListener;
@@ -54,9 +55,27 @@ public class HomeActivity extends ActionBarFragmentActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        // check if tracks settings have changed
+        supportInvalidateOptionsMenu();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_synchronize);
+        if (item != null) {
+            item.setVisible(Preferences.validateTracksSettings(this));
+        }
+        
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -74,6 +93,11 @@ public class HomeActivity extends ActionBarFragmentActivity {
                 Log.d(TAG, "Bringing up search");
                 onSearchRequested();
                 return true;
+            case R.id.action_synchronize:
+                Log.d(TAG, "Synch Tracks");
+                mEventManager.fire(new StartSynchEvent());
+                return true;
+
         }
         return false;
     }
