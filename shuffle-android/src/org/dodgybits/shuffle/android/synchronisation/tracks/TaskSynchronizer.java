@@ -214,7 +214,7 @@ public final class TaskSynchronizer extends Synchronizer<Task> {
         
 		
 		if(parseResult.isSuccess() && parseResult.getResult().isComplete()){
-			Task task = Task.newBuilder().mergeFrom(t).mergeFrom(parseResult.getResult()).build();
+			Task task = Task.newBuilder().mergeFrom(t).mergeFrom(parseResult.getResult()).setLocalId(t.getLocalId()).build();
 			mPersister.update(task);
 			return true;
 		}
