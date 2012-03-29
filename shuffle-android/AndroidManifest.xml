@@ -24,22 +24,22 @@
 	<uses-permission android:name="android.permission.INTERNET" />
 	
     <!-- Only this application can receive the messages and registration result -->
-    <permission android:name="org.dodgybits.android.shuffle.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-        
-    <uses-permission android:name="org.dodgybits.android.shuffle.permission.C2D_MESSAGE" />
+    <!--<permission android:name="org.dodgybits.android.shuffle.permission.C2D_MESSAGE"-->
+        <!--android:protectionLevel="signature" />-->
+        <!---->
+    <!--<uses-permission android:name="org.dodgybits.android.shuffle.permission.C2D_MESSAGE" />-->
 
-    <!-- Permission to register and receive data messages -->
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <!--&lt;!&ndash; Permission to register and receive data messages &ndash;&gt;-->
+    <!--<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />-->
 
-    <!-- Permission to keep the processor from sleeping -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--&lt;!&ndash; Permission to keep the processor from sleeping &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.WAKE_LOCK" />-->
 
-    <!-- Permission to retrieve the list of accounts in the Accounts Service -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!--&lt;!&ndash; Permission to retrieve the list of accounts in the Accounts Service &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
 
-    <!-- Permission to request authtokens from the AccountManager -->
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <!--&lt;!&ndash; Permission to request authtokens from the AccountManager &ndash;&gt;-->
+    <!--<uses-permission android:name="android.permission.USE_CREDENTIALS" />-->
 
 	<supports-screens android:largeScreens="true"
 		android:normalScreens="true" android:anyDensity="true"/>
