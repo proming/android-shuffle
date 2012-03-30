@@ -86,6 +86,7 @@ public class TaskListItem extends View {
     private static int sContextHorizontalPadding;
     private static int sContextHorizontalSpacing;
     private static int sContextVerticalPadding;
+    private static int sContextIconPadding;
     private static int sContextCornerRadius;
     
     private static Bitmap sSelectedIconOn;
@@ -147,6 +148,7 @@ public class TaskListItem extends View {
             sContextHorizontalPadding = r.getDimensionPixelSize(R.dimen.context_small_horizontal_padding);
             sContextHorizontalSpacing = r.getDimensionPixelSize(R.dimen.context_small_horizontal_spacing);
             sContextVerticalPadding = r.getDimensionPixelSize(R.dimen.context_small_vertical_padding);
+            sContextIconPadding = r.getDimensionPixelSize(R.dimen.context_small_icon_padding);
             sContextCornerRadius = r.getDimensionPixelSize(R.dimen.context_small_corner_radius);
             
             sSelectedIconOff =
@@ -364,7 +366,7 @@ public class TaskListItem extends View {
                 count * mCoordinates.contextIconWidth + // each icon
                 (count - 1) * sContextHorizontalSpacing + // between contexts
                 2 * count * sContextHorizontalPadding +  // at each end of context
-                count * sContextVerticalPadding; // between icon and text
+                count * sContextIconPadding; // between icon and text
 
         // And the project...
         TextPaint projectPaint = isDone() ? sDefaultPaint : sBoldPaint;
@@ -508,7 +510,7 @@ public class TaskListItem extends View {
                     boolean hasIcon = !TextUtils.isEmpty(context.getIconName());
                     int left = textX - sContextHorizontalPadding;
                     if (hasIcon) {
-                        left -= mCoordinates.contextIconWidth + sContextVerticalPadding;
+                        left -= mCoordinates.contextIconWidth + sContextIconPadding;
                     }
                     RectF bgRect = new RectF(left, top, right, bottom);
                     int bgColor = sTextColours.getBackgroundColour(context.getColourIndex());
@@ -517,7 +519,7 @@ public class TaskListItem extends View {
 
                     if (hasIcon) {
                         Bitmap contextIcon = getContextIcon(context.getIconName());
-                        canvas.drawBitmap(contextIcon, left + sContextHorizontalPadding, mCoordinates.contextsY, null);
+                        canvas.drawBitmap(contextIcon, left + sContextIconPadding, mCoordinates.contextsY, null);
                     }
 
                     canvas.drawText(name, 0, name.length(),

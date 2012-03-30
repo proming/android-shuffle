@@ -91,7 +91,7 @@ public class IconPickerActivity extends FlurryEnabledActivity implements OnItemC
     			R.drawable.system_file_manager,    			
     			R.drawable.system_search,    			
     			R.drawable.system_users,    			
-    			R.drawable.utilities_terminal,    			
+    			R.drawable.phone,
     			R.drawable.video_x_generic,    			
     			R.drawable.weather_showers_scattered,    			
     			R.drawable.x_office_address_book,

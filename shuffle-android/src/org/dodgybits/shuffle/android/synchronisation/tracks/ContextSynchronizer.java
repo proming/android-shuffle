@@ -1,22 +1,21 @@
 package org.dodgybits.shuffle.android.synchronisation.tracks;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.Map;
-
+import android.util.Xml;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.flurry.Analytics;
 import org.dodgybits.shuffle.android.core.model.Context;
+import org.dodgybits.shuffle.android.core.model.Context.Builder;
 import org.dodgybits.shuffle.android.core.model.EntityBuilder;
 import org.dodgybits.shuffle.android.core.model.Id;
-import org.dodgybits.shuffle.android.core.model.Context.Builder;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityPersister;
 import org.dodgybits.shuffle.android.core.util.DateUtils;
 import org.dodgybits.shuffle.android.synchronisation.tracks.parsing.ContextParser;
 import org.dodgybits.shuffle.android.synchronisation.tracks.parsing.Parser;
 import org.xmlpull.v1.XmlSerializer;
 
-import android.util.Xml;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.Map;
 
 /**
  * @author Morten Nielsen
@@ -95,7 +94,8 @@ public class ContextSynchronizer extends Synchronizer<Context> {
             serializer.startTag("", "hide").attribute("", "type", "boolean").text(String.valueOf(!localContext.isActive())).endTag("", "hide");
             serializer.startTag("", "name").text(localContext.getName()).endTag("", "name");
             serializer.startTag("", "position").attribute("", "type", "integer").text("12").endTag("", "position");
-            serializer.startTag("", "state").text(localContext.isDeleted() ? "hidden" : "active").endTag("", "state");
+            // NB: Tracks 2.0 Rest API doesn't accept state field for contexts
+            //serializer.startTag("", "state").text(localContext.isDeleted() ? "hidden" : "active").endTag("", "state");
             serializer.startTag("", "updated-at").attribute("", "type", "datetime").text(now).endTag("", "updated-at");
             serializer.endTag("", "context");
             // serializer.endDocument();

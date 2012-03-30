@@ -15,6 +15,7 @@ import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.activity.PreferencesActivity;
+import org.dodgybits.shuffle.android.synchronisation.tracks.activity.SynchronizeActivity;
 import roboguice.event.Observes;
 
 public class NavigationListener {
@@ -92,4 +93,9 @@ public class NavigationListener {
         event.getFragment().startActivityForResult(intent, event.getRequestCode());
     }
 
+    public void onStartSync(@Observes StartSynchEvent event) {
+        Intent intent = new Intent(mActivity, SynchronizeActivity.class);
+        mActivity.startActivity(intent);
+
+    }
 }

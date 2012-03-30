@@ -122,7 +122,6 @@ public class TaskParser extends Parser<Task> {
 								long created = DateUtils.parseIso8601Date(value);
 								mTaskBuilder.setCreatedDate(created);
 							} catch (ParseException e) {
-								// TODO Auto-generated catch block
 								return false;
 							}
                              
@@ -140,7 +139,6 @@ public class TaskParser extends Parser<Task> {
 						long due = DateUtils.parseIso8601Date(value);
 						mTaskBuilder.setDueDate(due);
 					} catch (ParseException e) {
-						// TODO Auto-generated catch block
 						return false;
 					}
                      
@@ -158,7 +156,6 @@ public class TaskParser extends Parser<Task> {
 								long showFrom = DateUtils.parseIso8601Date(value);
 								mTaskBuilder.setStartDate(showFrom);
 							} catch (ParseException e) {
-								// TODO Auto-generated catch block
 								return false;
 							}
                              

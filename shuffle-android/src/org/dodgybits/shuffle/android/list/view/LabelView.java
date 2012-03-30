@@ -55,8 +55,9 @@ public class LabelView extends TextView {
 		mTextColours = TextColours.getInstance(context);
         int horizontalPadding = getResources().getDimensionPixelSize(R.dimen.context_small_horizontal_padding);
         int verticalPadding = getResources().getDimensionPixelSize(R.dimen.context_small_vertical_padding);
+        int iconPadding = getResources().getDimensionPixelSize(R.dimen.context_small_icon_padding);
         setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding);
-        setCompoundDrawablePadding(verticalPadding);
+        setCompoundDrawablePadding(iconPadding);
     }
     
     public void setColourIndex(int colourIndex) {
