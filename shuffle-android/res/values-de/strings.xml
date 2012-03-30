@@ -39,7 +39,6 @@
     <string name="title_edit_context">Kategorie bearbeiten</string>
     <string name="title_task_extras">Handlungen: Extras</string>
     <string name="title_preferences">Einstellungen</string>
-    <string name="title_preferences_appearance">Einstellungen > Darstellung d. Handlungen</string>
     <string name="title_preferences_clean">Einstellungen > Aufräumen</string>
     <string name="title_preferences_create_backup">Einstellungen > Backup erstellen</string>
     <string name="title_preferences_restore_backup">Einstellungen > Aus Backup wiederherstellen</string>
@@ -67,7 +66,6 @@
     <string name="menu_undelete">Wiederherstellen</string>
     <string name="menu_revert">Umkehren</string>
     <string name="menu_discard">Verwerfen</string>
-    <string name="menu_view">Ansichten</string>
     <string name="menu_preferences">Einstellungen</string>
     <string name="menu_sync">Synchronisierung</string>
     <string name="menu_search">Suche</string>
@@ -112,12 +110,9 @@
     <string name="pager_display">%1$d von %2$d</string>
 
     <!-- search -->
-    <string name="search_label">Shuffle</string>
-    <string name="search_hint">Beschreibung oder Details durchsuchen</string>
     <string name="search_settings_description_action">Beschreibungen und Details von Handlungen</string>
     <string name="search_label_context">Shuffle-Kategorien</string>
     <string name="search_hint_context">Suche Kategorie durch Name</string>
-    <string name="search_settings_description">Beschreibung und Details von Handlungen</string> <!-- TODO Check for correct translation -->
     <string name="search_label_action">Shuffle-Handlungen</string>
     <string name="search_hint_action">Handlungen suchen</string>
     <string name="search_settings_description_context">Kategorienamen</string>
@@ -235,8 +230,6 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.
     <string name="month_button_title">Monat</string>
 
     <!-- preferences screen -->
-    <string name="display_task_list_title">In Handlungsliste anzeigen</string>
-    <string name="context_icon_title">Kategorieicon</string>
     <string name="context_name_title">Kategoriename</string>
     <string name="due_date_title">Frist</string>
     <string name="general_preferences">Google-Einstellungen</string>
@@ -244,13 +237,6 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.
     <string name="summary_calendar_preference">für neue Kalendereinträge</string>
     <string name="title_send_analytics_preference">Nutzungsdaten senden</string>
     <string name="summary_send_analytics_preference">Anonymisierte Nutzungsdaten werden für die Fehlersuche und das Priorisieren neuer Features erhoben.</string>
-    <string name="layout_preferences">Layout-Einstellungen</string>
-    <string name="title_project_view_preference">Projektansicht</string>
-    <string name="summary_project_view_preference">Handlungen auf eigenem Bildschirm</string>
-    <string name="title_context_view_preference">Kategorieansicht</string>
-    <string name="summary_context_view_preference">Handlungen auf eigenem Bildschirm</string>
-    <string name="title_action_appearance_preference">Handlungsansicht</string>
-    <string name="summary_action_appearance_preference">Aussehen der Handlungen anpassen</string>
     <string name="sync_preferences">Synchronisierungseinstellungen</string>
     <string name="changeSynchronizationSettings">Tracks-Einstellungen</string>
     <string name="backup_preferences">Backup</string>

@@ -421,8 +421,6 @@
 
     <!-- new task list -->
 
-    <string name="task_list_contents_snippet_divider"> - </string>
-
     <plurals name="task_view_selected_message_count">
         <item quantity="other"><xliff:g id="message_count" example="9">%d</xliff:g>個選択</item>
     </plurals>

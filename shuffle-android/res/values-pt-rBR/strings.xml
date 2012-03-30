@@ -36,7 +36,6 @@
     <string name="title_edit_context">Editar contexto</string>
     <string name="title_task_extras">Ações: extras</string>
     <string name="title_preferences">Preferências Gerais</string>
-    <string name="title_preferences_appearance">Preferências Gerais > Aparência ações</string>
     <string name="title_preferences_clean">Preferências Gerais > Limpeza</string>
     <string name="title_preferences_create_backup">Criar backup</string>
     <string name="title_preferences_restore_backup">Restaurar backup</string>
@@ -61,7 +60,6 @@
     <string name="menu_insert">Incluir %s</string>
     <string name="menu_revert">Reverter</string>
     <string name="menu_discard">Descartar</string>
-    <string name="menu_view">Perspectivas</string>
     <string name="menu_preferences">Preferências</string>
     <string name="menu_sync">Sincronizar</string>
     <string name="menu_search">Pesquisar</string>
@@ -215,8 +213,6 @@ esse comportamento, poderá desligá-lo nas Preferências.</string>
     <string name="month_button_title">Próximo mês</string>
 	
 	<!--  preferences screen -->    
-    <string name="display_task_list_title">Mostrar nas listas de ações:</string>
-    <string name="context_icon_title">Ícone do Contexto</string>
     <string name="context_name_title">Nome do Contexto</string>
     <string name="due_date_title">Data de Vencimento</string>
 
@@ -229,16 +225,6 @@ esse comportamento, poderá desligá-lo nas Preferências.</string>
     <string name="title_send_analytics_preference">Enviar dados de uso</string>
     <string name="summary_send_analytics_preference">Dados anônimos são enviados para detecção de bugs e priorização de funcionalidades.</string>
 
-	<string name="layout_preferences">Preferências de Layout</string>
-
-	<string name="title_project_view_preference">Tela de Projetos</string>
-	<string name="summary_project_view_preference">Mostrar ações de projeto em uma tela separada</string>
-
-	<string name="title_context_view_preference">Tela de Contextos</string>
-	<string name="summary_context_view_preference">Mostrar ações de contexto em uma tela separada</string>
-
-	<string name="title_action_appearance_preference">Aparência das ações</string>
-	<string name="summary_action_appearance_preference">Personalizar exibição das ações em listas</string>
 
 
     <string name="sync_preferences">Preferências de Sincronização</string>
