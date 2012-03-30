@@ -131,10 +131,15 @@
 
     <!-- What's new dialog -->
     <string name="whats_new_dialog_title">Shuffle</string>
-    <string name="whats_new_dialog_message">Danke, dass Sie Shuffle heruntergeladen haben.\n\n<b>Neu in dieser Version:</b>\t• gesamte Oberfläche neu gestaltet\n
+    <string name="whats_new_dialog_message">
+Danke, dass Sie Shuffle heruntergeladen haben.
+\n
+\n
+<b>Neu in dieser Version:</b>\t• gesamte Oberfläche neu gestaltet\n
 \t• Vollständige ICS-Unterstützung\n
-\t• Wischen, um zwischen Ansichten umzuschalten\n
+\t• Handlungen können nun mehrere Kategorien haben\n
 \t• Widgets und Shortcuts für Kategorien und Projekte\n
+\t• Wischen, um zwischen Ansichten umzuschalten\
 \t• Neues Widget Design (scrollbar ab ICS)\n
 \t• Mehrfachauswahl in Handlungslisten\n
 \t• Standardkategorie wird nun konsistenter angewendet\n
@@ -142,21 +147,24 @@
 \t• "Schnellzugriff" für Handlungen, Kategorien und Projekte\n
 \t• Möglichkeit, jede Ansicht nach Kategorie und Projekt zu filtern\n
 \t• Anpassbare Handlungsansicht\n
-\t• Changelog auf Deutsch
-
-\n<b>Neu in Version 1.7.2:</b>\n
-
+\t• Die Hilfe wurde verbessert\n
+\t• Fehler in der Suche behoben\n
+\t• Kleinere Fehler wurden behoben\n
+\t• Changelog auf Deutsch\n
+\n
+<b>Neu in Version 1.7.3:</b>\n
+\t• Fehler bei der Wiederherstellung von Backups behoben\n
+\n
+<b>Neu in Version 1.7.2:</b>\n
 \t• Fehler bei Datumseinträgen behoben\n
 \t• Verbesserte Japanische Übersetzung\n
 \t• Niederländische Übersetzung\n
-
+\n
 \n<b>Neu in Version 1.7.1:</b>\n
-
 \t• Absturz in spanischer Version beim Erstellen von Handlungen behoben\n 
 \t• gelöschte Elemente werden in "Nächste Handlungen" nun ausgeblendet\n	
-
+\n
 \n<b>Neu in Version 1.7.0:</b>\n
-
 \t• Anpassbare Filter in jeder Ansicht\n
 \t• Kategorien und Projekte können nun aktiv bzw inaktiv sein\n
 \t• Gelöschte Elemente können wiederhergestellt werden\n
@@ -168,41 +176,11 @@
 \t• Fehler beim Umordnen von Handlungen in Projekten behoben\n
 \t• Eigene Ansicht um Handlungen anzusehen hinzugefügt\n
 \t• Spanische, Portugiesische und Japanische Übersetzung\n
-
-\n<b>Neu in Version 1.6.3:</b>\n
-
-\t• Fehler bei Bearbeiten von Handlungen unter Android 1.5 behoben\n
-
-\n<b>Neu in Version 1.6.2:</b>\n
-
-\t• Behoben: Bei manchen Handlunegn könnten Kategorie und Projekt nicht gelöscht werden\n
-
-\n<b>Neu in Version 1.6.1:</b>\n
-
-\t• Trackssynchronisationsfehler behoben\n
-\t• Verhalten des Eingangs "umgekehrt"\n
-
-\n<b>Neu in Version 1.6.0:</b>\n
-\t• <b>Widget</b> für ausgewählte Liste.\n
-\t• Fehler beim Erstellen eines Google Kalenders unter Android 2.2 behoben\n
-\t• Code-Restrukturierung um die Zuverlässigkeit zu verbessern, und um einfacher neue Features hinzuzufügen\n
-
-\n<b>Neu in Version 1.5.1:</b>\n
-
-\t• Patch für mehrere Trackssynchronisationsfehler\n
-
-\n<b>Neu in Version 1.5.0:</b>\n
-\t• Handlungen können nun gesucht werden\n
-\t• Handlungen werden aus dem Eingang entfernt, sobald Projekt oder Kategorie gesetzt wurde\n
-\t• Handlungen ohne Projekt werden unter Nächste Handlungen angezeigt\n
-\t• Parallele Ausführung von Handlungen in einem Projekt ist nun möglich\n
-\t• Fehler in der Trakssynchronisation behoben\n
-\t• Zeige Start- und Endtermin in Handlungslisten\n
-\t• Die Hilfe wurde erweitert\n
 \n
 \n
 Bitte beachten Sie: diese Anwendung sendet anonyme Nutzungsstatistiken an einen Server. Falls Sie dies 
-lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</string>
+lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.
+</string>
 
     <!-- task view screen -->
     <string name="complete_toggle_button">Mark %s</string> <!-- TODO -->
