@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
@@ -81,6 +82,9 @@ public class EntityListsActivity extends ActionBarFragmentActivity {
 
         int position = getRequestedPosition(getIntent());
         mPager.setCurrentItem(position);
+
+        // don't show soft keyboard unless user clicks on quick add box
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     @Override

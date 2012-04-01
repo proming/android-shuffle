@@ -128,6 +128,10 @@
 <string name="whats_new_dialog_title">Shuffle</string>
 <string name="whats_new_dialog_message">Thanks for downloading Shuffle.\n\n
 <b>New in this version:</b>\n
+\t• Prevent soft keyboard popping up\n
+\t• Android 2.1 compatibility\n
+\n
+<b>New in version 2.0.0:</b>\n
 \t• Complete UI rewrite\n
 \t• Full ICS compatibility\n
 \t• Support for multiple contexts per action\n

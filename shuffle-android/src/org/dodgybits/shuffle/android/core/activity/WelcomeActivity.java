@@ -23,17 +23,16 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.activity.flurry.FlurryEnabledActivity;
+import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.core.model.persistence.InitialDataGenerator;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 import roboguice.inject.InjectView;
 
-public class WelcomeActivity extends FlurryEnabledActivity {
-    private static final String cTag = "WelcomeActivity";
+public class WelcomeActivity extends ActionBarFragmentActivity {
+    private static final String TAG = "WelcomeActivity";
 	
     @InjectView(R.id.sample_data_button) Button mSampleDataButton;
     @InjectView(R.id.clean_slate_button) Button mCleanSlateButton;
@@ -44,24 +43,20 @@ public class WelcomeActivity extends FlurryEnabledActivity {
     @Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		Log.d(cTag, "onCreate");
-		
+		Log.d(TAG, "onCreate");
 		
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.welcome);
         
         mSampleDataButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	disableButtons();
-            	startProgressAnimation();
             	performCreateSampleData();
             }
         });
         mCleanSlateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	disableButtons();
-            	startProgressAnimation();
             	performCleanSlate();
             }
         });
@@ -69,11 +64,6 @@ public class WelcomeActivity extends FlurryEnabledActivity {
             @Override
             public void handleMessage(Message msg) {
             	updateFirstTimePref(false);
-            	
-                // Stop the spinner
-                getWindow().setFeatureInt(Window.FEATURE_INDETERMINATE_PROGRESS,
-                        Window.PROGRESS_VISIBILITY_OFF);
-                
                 startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
             	finish();
             }
@@ -84,15 +74,9 @@ public class WelcomeActivity extends FlurryEnabledActivity {
     	mCleanSlateButton.setEnabled(false);
     	mSampleDataButton.setEnabled(false);
     }
-    
-    private void startProgressAnimation() {
-        // Start the spinner
-        getWindow().setFeatureInt(Window.FEATURE_INDETERMINATE_PROGRESS,
-                Window.PROGRESS_VISIBILITY_ON);
-    }
-    
+
     private void performCreateSampleData() {
-    	Log.i(cTag, "Adding sample data");
+    	Log.i(TAG, "Adding sample data");
         setProgressBarVisibility(true);
     	new Thread() {
     		public void run() {
@@ -102,7 +86,7 @@ public class WelcomeActivity extends FlurryEnabledActivity {
     }
         
     private void performCleanSlate() {
-    	Log.i(cTag, "Cleaning the slate");
+    	Log.i(TAG, "Cleaning the slate");
         setProgressBarVisibility(true);
     	new Thread() {
     		public void run() {

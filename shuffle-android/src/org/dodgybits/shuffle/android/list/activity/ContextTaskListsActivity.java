@@ -13,6 +13,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
@@ -68,6 +69,9 @@ public class ContextTaskListsActivity extends ActionBarFragmentActivity {
         mPager = (ViewPager)findViewById(R.id.pager);
 
         startLoading();
+
+        // don't show soft keyboard unless user clicks on quick add box
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     @Override
