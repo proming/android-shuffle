@@ -34,7 +34,6 @@
     <string name="title_edit_context">Edytuj kontekst</string>
     <string name="title_task_extras">Dodatki</string>
     <string name="title_preferences">Ustawienia ogólne</string>
-    <string name="title_preferences_appearance">Ustawienia ogólne > Wygląd zadań</string>
     <string name="title_preferences_clean">Ustawienia ogólne > Czyszczenie</string>
     <string name="title_preferences_create_backup">Utwórz kopię zapasową</string>
     <string name="title_preferences_restore_backup">Przywróć z kopii zapasowej</string>
@@ -57,7 +56,6 @@
     <string name="menu_insert">Dodaj %s</string>
     <string name="menu_revert">Przywróć</string>
     <string name="menu_discard">Odrzuć</string>
-    <string name="menu_view">Perspektywy</string>
     <string name="menu_preferences">Ustawienia</string>
     <string name="menu_sync">Synchronizuj</string>
     <string name="menu_search">Szukaj</string>
@@ -87,11 +85,6 @@
     <string name="yesterday">Wczoraj</string>
     <string name="previous_button_title">Wcześniejsze</string>
     <string name="next_button_title">Następne</string>
-    
-    <!--  search -->
-    <string name="search_label">Shuffle</string>
-    <string name="search_hint">Wyszukaj w opisie lub szczegółach</string>
-    <string name="search_settings_description">Opisy i szczegóły zadań</string>
     
     <!--  Welcome screen -->
     <string name="sample_data_title">Pokaz</string>
@@ -140,8 +133,6 @@
     <string name="month_button_title">Następny miesiąc</string>
 	
 	<!--  preferences screen -->    
-    <string name="display_task_list_title">Wyświetl na liście zadań</string>
-    <string name="context_icon_title">Ikona kontekstu</string>
     <string name="context_name_title">Nazwa kontekstu</string>
     <string name="due_date_title">Data ukończenia</string>
 
@@ -152,19 +143,7 @@
     <string name="summary_calendar_preference">Dla nowych wpisów do kalendarza Google</string>
 
 
-	<string name="layout_preferences">Ustawienia układu</string>
-
-	<string name="title_project_view_preference">Widok projektu</string>
-	<string name="summary_project_view_preference">Wyświetlaj zadania projektu na osobnym ekranie</string>
-
-	<string name="title_context_view_preference">Widok kontekstu</string>
-	<string name="summary_context_view_preference">Wyświetlaj zadania kontekstu na osobnym ekranie</string>
-
-	<string name="title_action_appearance_preference">Widok zadania</string>
-	<string name="summary_action_appearance_preference">Dostosuj wyświetlanie zadań w listach</string>
-
-
-    <string name="sync_preferences">Ustawienia synchronizacji</string>
+	<string name="sync_preferences">Ustawienia synchronizacji</string>
 
     <string name="changeSynchronizationSettings">Ustawienia Tracks</string>
 

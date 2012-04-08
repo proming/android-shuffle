@@ -39,7 +39,6 @@
     <string name="title_edit_context">Kategorie bearbeiten</string>
     <string name="title_task_extras">Handlungen: Extras</string>
     <string name="title_preferences">Einstellungen</string>
-    <string name="title_preferences_appearance">Einstellungen > Darstellung d. Handlungen</string>
     <string name="title_preferences_clean">Einstellungen > Aufräumen</string>
     <string name="title_preferences_create_backup">Einstellungen > Backup erstellen</string>
     <string name="title_preferences_restore_backup">Einstellungen > Aus Backup wiederherstellen</string>
@@ -67,7 +66,6 @@
     <string name="menu_undelete">Wiederherstellen</string>
     <string name="menu_revert">Umkehren</string>
     <string name="menu_discard">Verwerfen</string>
-    <string name="menu_view">Ansichten</string>
     <string name="menu_preferences">Einstellungen</string>
     <string name="menu_sync">Synchronisierung</string>
     <string name="menu_search">Suche</string>
@@ -112,12 +110,9 @@
     <string name="pager_display">%1$d von %2$d</string>
 
     <!-- search -->
-    <string name="search_label">Shuffle</string>
-    <string name="search_hint">Beschreibung oder Details durchsuchen</string>
     <string name="search_settings_description_action">Beschreibungen und Details von Handlungen</string>
     <string name="search_label_context">Shuffle-Kategorien</string>
     <string name="search_hint_context">Suche Kategorie durch Name</string>
-    <string name="search_settings_description">Beschreibung und Details von Handlungen</string> <!-- TODO Check for correct translation -->
     <string name="search_label_action">Shuffle-Handlungen</string>
     <string name="search_hint_action">Handlungen suchen</string>
     <string name="search_settings_description_context">Kategorienamen</string>
@@ -131,10 +126,15 @@
 
     <!-- What's new dialog -->
     <string name="whats_new_dialog_title">Shuffle</string>
-    <string name="whats_new_dialog_message">Danke, dass Sie Shuffle heruntergeladen haben.\n\n<b>Neu in dieser Version:</b>\t• gesamte Oberfläche neu gestaltet\n
+    <string name="whats_new_dialog_message">
+Danke, dass Sie Shuffle heruntergeladen haben.
+\n
+\n
+<b>Neu in dieser Version:</b>\t• gesamte Oberfläche neu gestaltet\n
 \t• Vollständige ICS-Unterstützung\n
-\t• Wischen, um zwischen Ansichten umzuschalten\n
+\t• Handlungen können nun mehrere Kategorien haben\n
 \t• Widgets und Shortcuts für Kategorien und Projekte\n
+\t• Wischen, um zwischen Ansichten umzuschalten\
 \t• Neues Widget Design (scrollbar ab ICS)\n
 \t• Mehrfachauswahl in Handlungslisten\n
 \t• Standardkategorie wird nun konsistenter angewendet\n
@@ -142,21 +142,24 @@
 \t• "Schnellzugriff" für Handlungen, Kategorien und Projekte\n
 \t• Möglichkeit, jede Ansicht nach Kategorie und Projekt zu filtern\n
 \t• Anpassbare Handlungsansicht\n
-\t• Changelog auf Deutsch
-
-\n<b>Neu in Version 1.7.2:</b>\n
-
+\t• Die Hilfe wurde verbessert\n
+\t• Fehler in der Suche behoben\n
+\t• Kleinere Fehler - unter anderem in Tracks - wurden behoben\n
+\t• Changelog auf Deutsch\n
+\n
+<b>Neu in Version 1.7.3:</b>\n
+\t• Fehler bei der Wiederherstellung von Backups behoben\n
+\n
+<b>Neu in Version 1.7.2:</b>\n
 \t• Fehler bei Datumseinträgen behoben\n
 \t• Verbesserte Japanische Übersetzung\n
 \t• Niederländische Übersetzung\n
-
+\n
 \n<b>Neu in Version 1.7.1:</b>\n
-
 \t• Absturz in spanischer Version beim Erstellen von Handlungen behoben\n 
 \t• gelöschte Elemente werden in "Nächste Handlungen" nun ausgeblendet\n	
-
+\n
 \n<b>Neu in Version 1.7.0:</b>\n
-
 \t• Anpassbare Filter in jeder Ansicht\n
 \t• Kategorien und Projekte können nun aktiv bzw inaktiv sein\n
 \t• Gelöschte Elemente können wiederhergestellt werden\n
@@ -168,41 +171,11 @@
 \t• Fehler beim Umordnen von Handlungen in Projekten behoben\n
 \t• Eigene Ansicht um Handlungen anzusehen hinzugefügt\n
 \t• Spanische, Portugiesische und Japanische Übersetzung\n
-
-\n<b>Neu in Version 1.6.3:</b>\n
-
-\t• Fehler bei Bearbeiten von Handlungen unter Android 1.5 behoben\n
-
-\n<b>Neu in Version 1.6.2:</b>\n
-
-\t• Behoben: Bei manchen Handlunegn könnten Kategorie und Projekt nicht gelöscht werden\n
-
-\n<b>Neu in Version 1.6.1:</b>\n
-
-\t• Trackssynchronisationsfehler behoben\n
-\t• Verhalten des Eingangs "umgekehrt"\n
-
-\n<b>Neu in Version 1.6.0:</b>\n
-\t• <b>Widget</b> für ausgewählte Liste.\n
-\t• Fehler beim Erstellen eines Google Kalenders unter Android 2.2 behoben\n
-\t• Code-Restrukturierung um die Zuverlässigkeit zu verbessern, und um einfacher neue Features hinzuzufügen\n
-
-\n<b>Neu in Version 1.5.1:</b>\n
-
-\t• Patch für mehrere Trackssynchronisationsfehler\n
-
-\n<b>Neu in Version 1.5.0:</b>\n
-\t• Handlungen können nun gesucht werden\n
-\t• Handlungen werden aus dem Eingang entfernt, sobald Projekt oder Kategorie gesetzt wurde\n
-\t• Handlungen ohne Projekt werden unter Nächste Handlungen angezeigt\n
-\t• Parallele Ausführung von Handlungen in einem Projekt ist nun möglich\n
-\t• Fehler in der Trakssynchronisation behoben\n
-\t• Zeige Start- und Endtermin in Handlungslisten\n
-\t• Die Hilfe wurde erweitert\n
 \n
 \n
 Bitte beachten Sie: diese Anwendung sendet anonyme Nutzungsstatistiken an einen Server. Falls Sie dies 
-lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</string>
+lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.
+</string>
 
     <!-- task view screen -->
     <string name="complete_toggle_button">Mark %s</string> <!-- TODO -->
@@ -257,8 +230,6 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
     <string name="month_button_title">Monat</string>
 
     <!-- preferences screen -->
-    <string name="display_task_list_title">In Handlungsliste anzeigen</string>
-    <string name="context_icon_title">Kategorieicon</string>
     <string name="context_name_title">Kategoriename</string>
     <string name="due_date_title">Frist</string>
     <string name="general_preferences">Google-Einstellungen</string>
@@ -266,13 +237,6 @@ lieber nicht möchten, können Sie dies in den Einstellungen deaktivieren.</stri
     <string name="summary_calendar_preference">für neue Kalendereinträge</string>
     <string name="title_send_analytics_preference">Nutzungsdaten senden</string>
     <string name="summary_send_analytics_preference">Anonymisierte Nutzungsdaten werden für die Fehlersuche und das Priorisieren neuer Features erhoben.</string>
-    <string name="layout_preferences">Layout-Einstellungen</string>
-    <string name="title_project_view_preference">Projektansicht</string>
-    <string name="summary_project_view_preference">Handlungen auf eigenem Bildschirm</string>
-    <string name="title_context_view_preference">Kategorieansicht</string>
-    <string name="summary_context_view_preference">Handlungen auf eigenem Bildschirm</string>
-    <string name="title_action_appearance_preference">Handlungsansicht</string>
-    <string name="summary_action_appearance_preference">Aussehen der Handlungen anpassen</string>
     <string name="sync_preferences">Synchronisierungseinstellungen</string>
     <string name="changeSynchronizationSettings">Tracks-Einstellungen</string>
     <string name="backup_preferences">Backup</string>

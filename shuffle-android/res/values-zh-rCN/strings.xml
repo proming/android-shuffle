@@ -31,7 +31,6 @@
     <string name="title_edit_context">编辑情景</string>
     <string name="title_task_extras">活动额外信息</string>
     <string name="title_preferences">常规设置</string>
-    <string name="title_preferences_appearance">常规设置 > 活动样式</string>
     <string name="title_preferences_clean">常规设置 > 清空</string>
     <string name="title_preferences_create_backup">创建备份</string>
     <string name="title_preferences_restore_backup">从备份恢复</string>
@@ -53,7 +52,6 @@
     <string name="menu_insert">添加 %s</string>
     <string name="menu_revert">反转</string>
     <string name="menu_discard">放弃</string>
-    <string name="menu_view">视图</string>
     <string name="menu_preferences">设置</string>
     <string name="menu_sync">同步</string>
     <string name="menu_search">搜索</string>
@@ -83,11 +81,6 @@
     <string name="yesterday">昨天</string>
     <string name="previous_button_title">上个</string>
     <string name="next_button_title">下个</string>
-    
-    <!--  search -->
-    <string name="search_label">Shuffle</string>
-    <string name="search_hint">按描述或详情搜索</string>
-    <string name="search_settings_description">活动的描述和详情</string>
     
     <!--  Welcome screen -->
     <string name="sample_data_title">演示</string>
@@ -136,8 +129,6 @@
     <string name="month_button_title">下月</string>
 	
 	<!--  preferences screen -->    
-    <string name="display_task_list_title">在活动列表中显示</string>
-    <string name="context_icon_title">情景图标</string>
     <string name="context_name_title">情景名称</string>
     <string name="due_date_title">预订日期</string>
 
@@ -146,19 +137,6 @@
     
     <string name="title_calendar_preference">日历选择</string>
     <string name="summary_calendar_preference">对于新的谷歌日历条目</string>
-
-
-	<string name="layout_preferences">布局设置</string>
-
-	<string name="title_project_view_preference">内容视图</string>
-	<string name="summary_project_view_preference">在独立的屏幕中显示活动内容</string>
-
-	<string name="title_context_view_preference">情景视图</string>
-	<string name="summary_context_view_preference">在独立的屏幕中显示活动情景</string>
-
-	<string name="title_action_appearance_preference">活动外观</string>
-	<string name="summary_action_appearance_preference">自定义列表中活动的显示</string>
-
 
     <string name="sync_preferences">同步设置</string>
 

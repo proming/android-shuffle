@@ -36,7 +36,6 @@
     <string name="title_edit_context">Rediger kontekst</string>
     <string name="title_task_extras">Opgaver: ekstra</string>
     <string name="title_preferences">Generelle Indstillinger</string>
-    <string name="title_preferences_appearance">Generelle indstillinger &gt; Opgaveudseende</string>
     <string name="title_preferences_clean">Generelle indstillinger &gt; Ryd op</string>
     <string name="title_preferences_create_backup">Opret sikkerhedskopi</string>
     <string name="title_preferences_restore_backup">Gendan sikkerhedskopi</string>
@@ -61,7 +60,6 @@
     <string name="menu_insert">Indsæt %s</string>
     <string name="menu_revert">Fortryd ændringer</string>
     <string name="menu_discard">Kassér</string>
-    <string name="menu_view">Perspektiver</string>
     <string name="menu_preferences">Indstillinger</string>
     <string name="menu_sync">Synkroniser</string>
     <string name="menu_search">Søg</string>
@@ -221,8 +219,6 @@ allow that, you can turn it off under Settings.</string>
     <string name="month_button_title">Næste måned</string>
 	
 	<!--  preferences screen -->    
-    <string name="display_task_list_title">Visning i opgavelister</string>
-    <string name="context_icon_title">Kontekst-ikon</string>
     <string name="context_name_title">Kontekst-navn</string>
     <string name="due_date_title">Forfaldsdato</string>
 
@@ -235,17 +231,7 @@ allow that, you can turn it off under Settings.</string>
     <string name="title_send_analytics_preference">Send brugsdata</string>
     <string name="summary_send_analytics_preference">Anonyme data bliver brugt til at finde fejl og prioritere funktioner.</string>
 
-	<string name="layout_preferences">Layout-indstillinger</string>
-
-	<string name="title_project_view_preference">Projekt-visning</string>
-	<string name="summary_project_view_preference">Vis projekthandlinger på separat skærm</string>
-
-	<string name="title_context_view_preference">Kontekst-visning</string>
-	<string name="summary_context_view_preference">Vis konteksthandlinger på separat skærm</string>
-
-	<string name="title_action_appearance_preference">Opgave-visning</string>
-	<string name="summary_action_appearance_preference">Tilpas visning af opgaver i lister</string>
-
+	
 
     <string name="sync_preferences">Synkroniserings-indstillinger</string>
 

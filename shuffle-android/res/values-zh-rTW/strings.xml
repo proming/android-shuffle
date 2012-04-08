@@ -31,7 +31,6 @@
     <string name="title_edit_context">編輯情景</string>
     <string name="title_task_extras">活動額外資訊</string>
     <string name="title_preferences">常規設定</string>
-    <string name="title_preferences_appearance">常規設定 > 活動樣式</string>
     <string name="title_preferences_clean">常規設定 > 清空</string>
     <string name="title_preferences_create_backup">建立備份</string>
     <string name="title_preferences_restore_backup">從備份恢復</string>
@@ -53,7 +52,6 @@
     <string name="menu_insert">新增 %s</string>
     <string name="menu_revert">反轉</string>
     <string name="menu_discard">放棄</string>
-    <string name="menu_view">視圖</string>
     <string name="menu_preferences">設定</string>
     <string name="menu_sync">同步</string>
     <string name="menu_search">搜尋</string>
@@ -83,12 +81,7 @@
     <string name="yesterday">昨天</string>
     <string name="previous_button_title">上個</string>
     <string name="next_button_title">下個</string>
-    
-    <!--  search -->
-    <string name="search_label">Shuffle</string>
-    <string name="search_hint">按描述或詳情搜尋</string>
-    <string name="search_settings_description">活動的描述和詳情</string>
-    
+        
     <!--  Welcome screen -->
     <string name="sample_data_title">演示</string>
     <string name="clean_slate_title">清空</string>
@@ -136,8 +129,6 @@
     <string name="month_button_title">下月</string>
 	
 	<!--  preferences screen -->    
-    <string name="display_task_list_title">在活動清單中顯示</string>
-    <string name="context_icon_title">情景圖示</string>
     <string name="context_name_title">情景名稱</string>
     <string name="due_date_title">預訂日期</string>
 
@@ -146,20 +137,7 @@
     
     <string name="title_calendar_preference">日曆選擇</string>
     <string name="summary_calendar_preference">對於新的谷歌日曆條目</string>
-
-
-	<string name="layout_preferences">佈局設定</string>
-
-	<string name="title_project_view_preference">內容視圖</string>
-	<string name="summary_project_view_preference">在獨立的螢幕中顯示活動內容</string>
-
-	<string name="title_context_view_preference">情景視圖</string>
-	<string name="summary_context_view_preference">在獨立的螢幕中顯示活動情景</string>
-
-	<string name="title_action_appearance_preference">活動外觀</string>
-	<string name="summary_action_appearance_preference">自訂清單中活動的顯示</string>
-
-
+  
     <string name="sync_preferences">同步設定</string>
 
     <string name="changeSynchronizationSettings">Tracks 設定</string>

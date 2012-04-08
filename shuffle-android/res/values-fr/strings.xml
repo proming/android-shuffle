@@ -30,7 +30,6 @@
     <string name="title_edit_context">Editer contexte</string>
     <string name="title_task_extras">Tâches extras</string>
     <string name="title_preferences">Préférences Générales</string>
-    <string name="title_preferences_appearance">Préférences Générales > Apparence d\'une tâche</string>
     <string name="title_preferences_clean">Préférences Générales > Purger</string>
     <string name="title_preferences_create_backup">Préférences Générales > Créer une sauvegarde</string>
     <string name="title_preferences_restore_backup">Préférences Générales > Restaurer depuis une sauvegarde</string>
@@ -52,7 +51,6 @@
     <string name="menu_insert">Ajouter %s</string>
     <string name="menu_revert">Revenir</string>
     <string name="menu_discard">Rejeter</string>
-    <string name="menu_view">Perspectives</string>
     <string name="menu_preferences">Préférences</string>
     <string name="menu_help">Aide</string>
 
@@ -125,8 +123,6 @@
     <string name="month_button_title">Mois prochain</string>
 	
 	<!--  preferences screen -->    
-    <string name="display_task_list_title">Afficher dans la liste des tâches</string>
-    <string name="context_icon_title">Icône du contexte</string>
     <string name="context_name_title">Nom du contexte</string>
     <string name="due_date_title">Echéance</string>
 
@@ -135,18 +131,6 @@
     
     <string name="title_calendar_preference">Selectionner un calendrier</string>
     <string name="summary_calendar_preference">Pour les nouvelles tâches à écheance</string>
-
-
-	<string name="layout_preferences">Layout</string>
-
-	<string name="title_project_view_preference">Vue projet</string>
-	<string name="summary_project_view_preference">Afficher les tâches d\'un projet dans une autre fenêtre</string>
-
-	<string name="title_context_view_preference">Vue contexte</string>
-	<string name="summary_context_view_preference">Afficher les tâches d\'un contexte dans une autre fenêtre</string>
-
-	<string name="title_action_appearance_preference">Apparence d\'une tâche</string>
-	<string name="summary_action_appearance_preference">Personnaliser l\'apparence des tâches dans les listes</string>
 
 
 	<string name="backup_preferences">Sauvegarde</string>

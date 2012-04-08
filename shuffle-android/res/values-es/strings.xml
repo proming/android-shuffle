@@ -36,7 +36,6 @@
     <string name="title_edit_context">Editar contexto</string>
     <string name="title_task_extras">Acciones extras</string>
     <string name="title_preferences">Preferencias</string>
-    <string name="title_preferences_appearance">Preferencias > Apariencia de la acción</string>
     <string name="title_preferences_clean">Preferencias > Limpieza</string>
     <string name="title_preferences_create_backup">Crear backup</string>
     <string name="title_preferences_restore_backup">Restaurar backup</string>
@@ -53,14 +52,12 @@
     <string name="menu_save">Guardar</string>
     <string name="menu_save_and_add">Guardar y nuevo</string>
     <string name="menu_delete">Borrar</string>
-    <string name="menu_put_back">Retrasar</string>
     <string name="menu_complete">Marcar completada</string>
     <string name="menu_move_up">Subir</string>
     <string name="menu_move_down">Bajar</string>
     <string name="menu_insert">Añadir %s</string>
     <string name="menu_revert">Revertir</string>
     <string name="menu_discard">Descartar</string>
-    <string name="menu_view">Perspectiva</string>
     <string name="menu_preferences">Preferencias</string>
     <string name="menu_sync">Sincronizar</string>
     <string name="menu_search">Buscar</string>
@@ -92,13 +89,7 @@
     <string name="yesterday">Ayer</string>
     <string name="previous_button_title">Anterior</string>
     <string name="next_button_title">Siguiente</string>
-
-    
-    <!--  search -->
-    <string name="search_label">Shuffle</string>
-    <string name="search_hint">Buscar por descripción o detalles</string>
-    <string name="search_settings_description">Descripción y detalles de las acciones</string>
-    
+   
     <!--  Welcome screen -->
     <string name="sample_data_title">Demostración</string>
     <string name="clean_slate_title">Borrar datos de demostración</string>
@@ -199,8 +190,6 @@ Ten en cuenta que la aplicación realiza estadísticas anónimas de uso y las ma
     <string name="month_button_title">Siguiente mes</string>
 	
 	<!--  preferences screen -->    
-    <string name="display_task_list_title">Mostrar en la lista de acciones</string>
-    <string name="context_icon_title">Icono de contexto</string>
     <string name="context_name_title">Nombre del contexto</string>
     <string name="due_date_title">Fecha de fin</string>
 
@@ -212,17 +201,6 @@ Ten en cuenta que la aplicación realiza estadísticas anónimas de uso y las ma
     
     <string name="title_send_analytics_preference">Mandar estadísticas de uso</string>
     <string name="summary_send_analytics_preference">Se transmiten estadísticas anónimas para encontrar errores y priorizar las funciones.</string>
-
-	<string name="layout_preferences">Preferencias</string>
-
-	<string name="title_project_view_preference">Preferencias de la vista de proyecto</string>
-	<string name="summary_project_view_preference">Mostrar las acciones del proyecto en una pantalla separada</string>
-
-	<string name="title_context_view_preference">Preferencias de la vista de contexto</string>
-	<string name="summary_context_view_preference">Mostrar las acciones del contexto en una pantalla separada</string>
-
-	<string name="title_action_appearance_preference">Apariencia de las acciones</string>
-	<string name="summary_action_appearance_preference">Personalizar la apariencia de las acciones en las vistas</string>
 
 
     <string name="sync_preferences">Preferencias de sincronización</string>
@@ -274,9 +252,6 @@ Ten en cuenta que la aplicación realiza estadísticas anónimas de uso y las ma
     <!-- Toast displayed when an item is created -->
     <string name="itemCreatedToast">Se ha creado %1$s.</string>
 
-    <string name="emptyTrashWarning">¿Vaciar todos los elementos de la papelera?</string>
-    <string name="emptyTrashToast">Borrado permanente de las acciones %1$s, proyectos y contextos.</string>
-    
     <!-- Toast displayed when an item is saved -->
     <string name="itemSavedToast">Se ha guardado %1$s.</string>
 
