@@ -147,32 +147,20 @@ public class WidgetManager {
         String queryKey = Preferences.getWidgetQueryKey(appWidgetId);
         String queryName = Preferences.getWidgetQuery(context, queryKey);
         if (queryName != null) {
-            queryName = convertOldKeys(context, appWidgetId, queryKey, queryName);
-            ListQuery query = ListQuery.valueOf(queryName);
-            listContext = TaskListContext.create(query, contextId, projectId);
+            ListQuery query;
+            try {
+                query = ListQuery.valueOf(queryName);
+                listContext = TaskListContext.create(query, contextId, projectId);
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to parse key " + queryName);
+                // default to next tasks when can't parse key
+                query = ListQuery.nextTasks;
+                contextId = projectId = Id.NONE;
+                listContext = TaskListContext.create(query, contextId, projectId);
+                saveWidgetPrefs(context, appWidgetId, listContext);
+            }
         }
         return listContext;
-    }
-
-    /**
-     * Convert old keys from previous versions of Shuffle.
-     */
-    private static String convertOldKeys(Context context, int appWidgetId, String queryKey, String queryName) {
-        String newKey = null;
-
-        if ("due_today".equals(queryName)) {
-            newKey = ListQuery.dueToday.name();
-        } else if ("next_tasks".equals(queryName)) {
-            newKey = ListQuery.nextTasks.name();
-        }
-
-        if (newKey == null) {
-            newKey = queryName;
-        } else {
-            Preferences.getEditor(context).putString(queryKey, newKey).commit();
-        }
-
-        return newKey;
     }
 
 }
