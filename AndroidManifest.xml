@@ -361,9 +361,6 @@
         <activity
             android:name="org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity" />
 
-		<activity
-			android:name="org.dodgybits.shuffle.android.preference.activity.PreferencesTracksSynchronizationActivity" />
-
         <activity android:name="org.dodgybits.shuffle.android.list.activity.ListSettingsEditorActivity"/>
 
         <!--  App Engine synchronisation -->
@@ -380,33 +377,25 @@
         <!-- In order to use the C2DM library, an application must declare a class 
              with the name C2DMReceiver, extending com.google.android.c2dm.C2DMBaseReceiver.
              It must also include this section in the manifest. -->
-        <service android:name="org.dodgybits.shuffle.android.synchronisation.gae.C2DMReceiver"
-                 android:enabled="false"/>
+        <!--<service android:name="org.dodgybits.shuffle.android.synchronisation.gae.C2DMReceiver"-->
+                 <!--android:enabled="false"/>-->
 
         <!-- Only Google services can send data messages for the app. If permission
              is not set - any other app can generate it -->
-        <receiver android:name="com.google.android.c2dm.C2DMBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND"
-            android:enabled="false">
-            <!-- Receive the actual message -->
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="org.dodgybits.android.shuffle" />
-            </intent-filter>
-            <!-- Receive the registration id -->
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="org.dodgybits.android.shuffle" />
-            </intent-filter>
-        </receiver>
-
-		<!--  Tracks synchronisation -->
-
-		<activity
-			android:name="org.dodgybits.shuffle.android.synchronisation.tracks.activity.SynchronizeActivity" />
-
-		<service
-			android:name="org.dodgybits.shuffle.android.synchronisation.tracks.service.SynchronizationService" />
+        <!--<receiver android:name="com.google.android.c2dm.C2DMBroadcastReceiver"-->
+            <!--android:permission="com.google.android.c2dm.permission.SEND"-->
+            <!--android:enabled="false">-->
+            <!--&lt;!&ndash; Receive the actual message &ndash;&gt;-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.android.c2dm.intent.RECEIVE" />-->
+                <!--<category android:name="org.dodgybits.android.shuffle" />-->
+            <!--</intent-filter>-->
+            <!--&lt;!&ndash; Receive the registration id &ndash;&gt;-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.android.c2dm.intent.REGISTRATION" />-->
+                <!--<category android:name="org.dodgybits.android.shuffle" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
 		<!--  app widget -->
 
