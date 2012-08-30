@@ -195,35 +195,6 @@
 
     <!-- Toast displayed when an item is saved -->
     <string name="itemDeletedToast"><xliff:g id="itemName">%s</xliff:g> usunięty.</string>
-    
-   <!-- synchronization-->
-    <string name="synchronizing">Synchronizowanie z Tracks</string>
-    <string name="tracksUser">Użytkownik</string>
-    <string name="tracksInstallation">Docelowa instalacja</string>
-    <string name="tracks_url">Instalacja Tracks</string>
-    <string name="tracks_url_settings">http://my.gtdify.com</string>
-    <string name="tracks_user">Użytkownik</string>
-    <string name="tracks_pass">Hasło</string>
-    <string name="readingRemoteTasks">Czytanie zdalnych zadań</string>
-    <string name="processingTasks">Przetwarzanie zadań</string>
-    <string name="readingLocalTasks">Czytanie lokalnych zadań</string>
-    <string name="doneWithTasks">Zadania gotowe</string>
-    <string name="cannotSyncTasksWithoutContext">Nie można synchronizować zadań bez kontekstu</string>
-    <string name="readingRemoteContexts">Czytanie zdalnych kontekstów</string>
-    <string name="processingContexts">Przetwarzanie kontekstów</string>
-    <string name="readingLocalContexts">Czytanie lokalnych kontekstów</string>
-    <string name="doneWithContexts">Konteksty gotowe</string>
-    <string name="readingRemoteProjects">Czytanie zdalnych projektów</string>
-    <string name="processingProjects">Przetwarzanie projektów</string>
-    <string name="readingLocalProjects">Czytanie lokalnych projektów</string>
-    <string name="doneWithProjects">Projekty gotowe</string>
-    <string name="tracks_failed_to_check_url">Nie można załadować kontekstów z tymi ustawieniami. Być może wystąpił błąd</string>
-    <string name="tracks_background_sync">Interwał synchronizacji w tle</string>
-    <string name="sync_interval_none">Nigdy</string>
-    <string name="sync_interval_30min">30 minut</string>
-    <string name="sync_interval_1h">1 godzina</string>
-    <string name="sync_interval_2h">2 godziny</string>
-    <string name="sync_interval_3h">3 godziny</string>
 
 	<!--  messages -->
     <string name="no_due_date">Brak daty wykonania</string>

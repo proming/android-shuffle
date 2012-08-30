@@ -288,37 +288,6 @@ esse comportamento, poderá desligá-lo nas Preferências.</string>
     <!-- Toast displayed when an item is saved -->
     <string name="itemDeletedToast">%1$s excluído.</string>
 
-    
-   <!-- synchronization-->
-    <string name="synchronizing">Sincronizando com Tracks</string>
-    <string name="tracksUser">Usuário</string>
-    <string name="tracksInstallation">Instalação alvo</string>
-    <string name="tracks_url">Instalação do Tracks</string>
-    <string name="tracks_url_settings">http://my.gtdify.com</string>
-    <string name="self_signed_cert">Certificado https autoassinado (atenção: furo de segurança)</string>
-    <string name="tracks_user">Usuário</string>
-    <string name="tracks_pass">Senha</string>
-    <string name="readingRemoteTasks">Lendo tarefas remotas</string>
-    <string name="processingTasks">Processando tarefas</string>
-    <string name="readingLocalTasks">Lendo tarefas locais</string>
-    <string name="doneWithTasks">Tarefas: concluído</string>
-    <string name="cannotSyncTasksWithoutContext">Ações sem contexto não aparecerão no Tracks</string>
-    <string name="readingRemoteContexts">Lendo Contextos remotos</string>
-    <string name="processingContexts">Processando Contextos</string>
-    <string name="readingLocalContexts">Lendo Contextos locais</string>
-    <string name="doneWithContexts">Contextos: concluído</string>
-    <string name="readingRemoteProjects">Lendo Projetos remotos</string>
-    <string name="processingProjects">Processando Projetos</string>
-    <string name="readingLocalProjects">Lendo Projetos locais</string>
-    <string name="doneWithProjects">Projetos: concluído</string>
-    <string name="tracks_failed_to_check_url">Não foi possível carregar os contextos usando estas preferências, há algo errado com elas</string>
-    <string name="tracks_background_sync">Intervalo de sincronização em segundo plano</string>
-    <string name="tracks_check_settings">Verificar preferências</string><string name="tracks_settings_valid">As preferências são válidas</string><string name="sync_interval_none">Nunca</string>
-    <string name="sync_interval_30min">30 minutos</string>
-    <string name="sync_interval_1h">1 hora</string>
-    <string name="sync_interval_2h">2 horas</string>
-    <string name="sync_interval_3h">3 horas</string>
-
     <!-- list filter preferences -->
     <string name="list_settings_title">Preferências</string>
     <string name="active_items_title">Itens ativos</string>

@@ -294,38 +294,7 @@ allow that, you can turn it off under Settings.</string>
     <!-- Toast displayed when an item is deleted -->
     <string name="itemDeletedToast">%1$s slettet.</string>
 
-    
-   <!-- synchronization-->
-    <string name="synchronizing">Synkroniserer med Tracks</string>
-    <string name="tracksUser">Brugernavn</string>
-    <string name="tracksInstallation">Mål-installation</string>
-    <string name="tracks_url">Tracks installation</string>
-    <string name="tracks_url_settings">http://my.gtdify.com</string>
-    <string name="self_signed_cert">Self-signed https certifikat (sikkerhedshul)</string>
-    <string name="tracks_user">Brugernavn</string>
-    <string name="tracks_pass">Kodeord</string>
-    <string name="readingRemoteTasks">Læser opgaver på server</string>
-    <string name="processingTasks">Behandler opgaver</string>
-    <string name="readingLocalTasks">Læser lokale opgaver</string>
-    <string name="doneWithTasks">Færdig med opgaver</string>
-    <string name="cannotSyncTasksWithoutContext">opgaver uden kontekst vil ikke fremkomme i Tracks</string>
-    <string name="readingRemoteContexts">Læser kontekster på server</string>
-    <string name="processingContexts">Behandler kontekster</string>
-    <string name="readingLocalContexts">Læser lokale kontekster</string>
-    <string name="doneWithContexts">Færdig med kontekster</string>
-    <string name="readingRemoteProjects">Læser projekter på server</string>
-    <string name="processingProjects">Behandler projekter</string>
-    <string name="readingLocalProjects">Læser lokale projekter</string>
-    <string name="doneWithProjects">Færdig meed projekter</string>
-    <string name="tracks_failed_to_check_url">Kunne ikke hente kontekster med disse indstillinger, noget er galt med dem</string>
-    <string name="tracks_background_sync">Interval for baggrundssynkronisering</string>
-    <string name="tracks_check_settings">Tjek indstillinger</string>
-    <string name="tracks_settings_valid">Indstillinger er valide</string>
-    <string name="sync_interval_none">Aldrig</string>
-    <string name="sync_interval_30min">30 minutter</string>
-    <string name="sync_interval_1h">1 time</string>
-    <string name="sync_interval_2h">2 timer</string>
-    <string name="sync_interval_3h">3 timer</string>
+
 
     <!-- list filter preferences -->
     <string name="list_settings_title">Indstillinger</string>

@@ -21,6 +21,7 @@
         <roboguice.version>2.0</roboguice.version>
         <android.version>4.0.3_r3</android.version>
         <android-compatibility-v4.version>r10</android-compatibility-v4.version>
+        <gcm.version>r3</gcm.version>
         <junit.version>4.8.1</junit.version>
 
         <guava.version>10.0.1</guava.version>
@@ -56,6 +57,12 @@
             <artifactId>compatibility-v4</artifactId>
             <version>${android-compatibility-v4.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.android.gcm</groupId>
+            <artifactId>gcm-client</artifactId>
+            <version>${gcm.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>

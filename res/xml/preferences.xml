@@ -20,6 +20,16 @@
     <PreferenceCategory
             android:title="@string/general_preferences">
 
+        <PreferenceScreen
+                android:title="@string/title_gae_sync_preferences"
+                android:summary="@string/summary_gae_sync_preferences"
+                >
+
+            <intent android:action="android.intent.action.MAIN"
+                    android:targetPackage="org.dodgybits.android.shuffle"
+                    android:targetClass="org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity" />
+        </PreferenceScreen>
+
         <ListPreference
             android:key="calendar_id"
             android:title="@string/title_calendar_preference"
@@ -32,29 +42,6 @@
                 android:summary="@string/summary_send_analytics_preference" 
                 android:defaultValue="true"                
                 />
-
-    </PreferenceCategory>
-
-     <PreferenceCategory
-        android:title="@string/sync_preferences">
-
-         <!--
-        <PreferenceScreen
-                android:title="@string/appengine_synchronization_settings">
-
-            <intent android:action="android.intent.action.MAIN"
-                android:targetPackage="org.dodgybits.android.shuffle"
-                android:targetClass="org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity" />
-        </PreferenceScreen>
--->
-         
-        <PreferenceScreen
-                android:title="@string/changeSynchronizationSettings">
-
-            <intent android:action="android.intent.action.MAIN"
-                android:targetPackage="org.dodgybits.android.shuffle"
-            	android:targetClass="org.dodgybits.shuffle.android.preference.activity.PreferencesTracksSynchronizationActivity" />
-        </PreferenceScreen>
 
     </PreferenceCategory>
 

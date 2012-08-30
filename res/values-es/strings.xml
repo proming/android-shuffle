@@ -258,37 +258,6 @@ Ten en cuenta que la aplicación realiza estadísticas anónimas de uso y las ma
     <!-- Toast displayed when an item is saved -->
     <string name="itemDeletedToast">Se ha eliminado %1$s.</string>
 
-    
-   <!-- synchronization-->
-    <string name="synchronizing">Configuración con Tracks</string>
-    <string name="tracksUser">Usuario</string>
-    <string name="tracksInstallation">Instalación</string>
-    <string name="tracks_url">URL de Tracks</string>
-    <string name="tracks_url_settings">http://my.gtdify.com</string>
-    <string name="tracks_user">Usuario</string>
-    <string name="tracks_pass">Password</string>
-    <string name="readingRemoteTasks">Leyendo tareas remotas</string>
-    <string name="processingTasks">Procesando tareas</string>
-    <string name="readingLocalTasks">Leyendo tareas locales</string>
-    <string name="doneWithTasks">Tareas finalizadas</string>
-    <string name="cannotSyncTasksWithoutContext">Las acciones sin contexto no aparecerán en Tracks</string>
-    <string name="readingRemoteContexts">Leyendo contextos remotos</string>
-    <string name="processingContexts">Procesando contextos</string>
-    <string name="readingLocalContexts">Leyendo contextos locales</string>
-    <string name="doneWithContexts">Contextos finalizados</string>
-    <string name="readingRemoteProjects">Leyendo proyectos remotos</string>
-    <string name="processingProjects">Procesando proyectos</string>
-    <string name="readingLocalProjects">Leyendo proyectos locales</string>
-    <string name="doneWithProjects">Proyectos finalizados</string>
-    <string name="tracks_failed_to_check_url">No se han podido cargar los contextos con la configuración actual, algo está mal en la configuración.</string>
-    <string name="tracks_background_sync">Intervalo de sincronización en segundo plano</string>
-    <string name="tracks_check_settings">Comprobar configuración</string>
-	<string name="tracks_settings_valid">La configuración es válida</string>
-	<string name="sync_interval_none">Nunca</string>
-    <string name="sync_interval_30min">30 minutos</string>
-    <string name="sync_interval_1h">1 hora</string>
-    <string name="sync_interval_2h">2 horas</string>
-    <string name="sync_interval_3h">3 horas</string>
 
     <!-- list filter preferences -->
     <string name="list_settings_title">Configuración</string>

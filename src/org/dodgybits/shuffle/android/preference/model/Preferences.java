@@ -33,43 +33,24 @@ public class Preferences {
 
 	public static final String TOP_LEVEL_COUNTS_KEY = "top_level_counts";
 	public static final String CALENDAR_ID_KEY = "calendar_id";
-	public static final String DEFAULT_REMINDER_KEY = "default_reminder";
 
-    public static final String TRACKS_URL = "tracks_url";
-    public static final String TRACKS_USER = "tracks_user";
-    public static final String TRACKS_PASSWORD = "tracks_password";
-    public static final String TRACKS_SELF_SIGNED_CERT = "tracks_self_signed_cert";
-    public static final String TRACKS_INTERVAL = "tracks_interval";
+    public static final String SYNC_ENABLED = "sync_enabled";
+    public static final String SYNC_ACCOUNT = "sync_account";
+    public static final String SYNC_AUTH_TOKEN = "sync_auth_token";
+    public static final String SYNC_LAST_SYNC_SERVER_TIME = "sync_last_sync_server_time";
+    public static final String SYNC_LAST_SYNC_LOCAL_TIME = "sync_last_sync_local_time";
+    public static final String SYNC_LAST_SYNC_UUID = "sync_last_sync_uuid";
+    public static final String SYNC_CLIENT_UUID = "sync_client_uuid";
+    public static final String SYNC_COUNT = "sync_count";
 
-    public static final String GOOGLE_AUTH_COOKIE = "authCookie";
-    public static final String GOOGLE_ACCOUNT_NAME = "accountName";
-    public static final String GOOGLE_DEVICE_REGISTRATION_ID = "deviceRegistrationID";
-    public static final String NOTIFICATION_ID = "notificationId";
-    
     public static final String WIDGET_QUERY_PREFIX = "widget_query_";
     public static final String WIDGET_PROJECT_ID_PREFIX = "widget_projectId_";
     public static final String WIDGET_CONTEXT_ID_PREFIX = "widget_contextId_";
     
-
-    public static boolean validateTracksSettings(Context context) {
-        String url = getTracksUrl(context);
-        String password = getTracksPassword(context);
-        String user = getTracksUser(context);
-        return user.length() != 0 && password.length() != 0 && url.length() != 0;
-    }
-
-    public static int getTracksInterval(Context context) {
-        return getSharedPreferences(context).getInt(TRACKS_INTERVAL, 0);
-    }
-
     public static int getLastVersion(Context context) {
         return getSharedPreferences(context).getInt(LAST_VERSION, 0);
     }
-    
-    public enum DeleteCompletedPeriod {
-		hourly, daily, weekly, never
-	}
-	
+
 	private static SharedPreferences getSharedPreferences(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context);
 	}
@@ -81,55 +62,20 @@ public class Preferences {
     public static boolean isAnalyticsEnabled(Context context) {
         return getSharedPreferences(context).getBoolean(ANALYTICS_ENABLED, true);
     }
-	
-    public static String getTracksUrl(Context context) {
-        return getSharedPreferences(context).getString(TRACKS_URL,
-                context.getString(org.dodgybits.android.shuffle.R.string.tracks_url_settings));
+
+    public static boolean isSyncEnabled(Context context) {
+        return getSharedPreferences(context).getBoolean(SYNC_ENABLED, true);
     }
 
-   public static String getTracksUser(Context context) {
-        return getSharedPreferences(context).getString(TRACKS_USER, "");
+    public static String getSyncAccount(Context context) {
+        return getSharedPreferences(context).getString(SYNC_ACCOUNT, "");
     }
 
-    public static String getTracksPassword(Context context) {
-        return getSharedPreferences(context).getString(TRACKS_PASSWORD, "");
-    }
-    
-    public static int getNotificationId(Context context) {
-        return getSharedPreferences(context).getInt(NOTIFICATION_ID, 0);
+    public static boolean validateSyncSettings(Context context) {
+        return getSharedPreferences(context).getString(SYNC_AUTH_TOKEN, null) != null;
     }
 
-    public static void incrementNotificationId(Context context) {
-        int notificationId = getNotificationId(context);
-        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putInt(NOTIFICATION_ID, ++notificationId % 32);
-        editor.commit();
-    }
-    
-    public static String getGoogleAuthCookie(Context context) {
-        return getSharedPreferences(context).getString(GOOGLE_AUTH_COOKIE, null);
-    }
-
-    public static String getGoogleAccountName(Context context) {
-        return getSharedPreferences(context).getString(GOOGLE_ACCOUNT_NAME, null);
-    }
-    
-    public static String getGooglDeviceRegistrationId(Context context) {
-        return getSharedPreferences(context).getString(GOOGLE_DEVICE_REGISTRATION_ID, null);
-    }
-    
-	public static Boolean isTracksSelfSignedCert(Context context) {
-		return getSharedPreferences(context).getBoolean(TRACKS_SELF_SIGNED_CERT, false);
-	}
-	
-	public static int getDefaultReminderMinutes(Context context) {
-        String durationString =
-        	getSharedPreferences(context).getString(Preferences.DEFAULT_REMINDER_KEY, "0");
-		return Integer.parseInt(durationString);
-	}
-	
-
-	public static int[] getTopLevelCounts(Context context) {
+    public static int[] getTopLevelCounts(Context context) {
 		String countString = getSharedPreferences(context).getString(Preferences.TOP_LEVEL_COUNTS_KEY, null);
 		int[] result = null;
 		if (countString != null) {

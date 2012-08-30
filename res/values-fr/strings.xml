@@ -181,38 +181,6 @@
     <!-- Toast displayed when an item is saved -->
     <string name="itemDeletedToast"><xliff:g id="itemName">%s</xliff:g> supprimé.</string>
 
-    <!-- synchronization-->
-    <string name="synchronizing">Synchroniser avec Tracks</string>
-    <string name="tracksUser">Utilisateur</string>
-    <string name="tracksInstallation">Cible d\'installation</string>
-    <string name="sync_preferences">Options de synchronisation</string>
-    <string name="changeSynchronizationSettings">Modifier les paramètres de synchronisation</string>
-    <string name="tracks_url">Url Tracks</string>
-    <string name="tracks_url_settings">http://my.gtdify.com</string>
-    <string name="self_signed_cert">Certificat https Auto-signé (trou de sécurité)</string>
-    <string name="tracks_user">Utilisateur</string>
-    <string name="tracks_pass">Mot de passe</string>
-    <string name="readingRemoteTasks">Lecture des tâches distantes</string>
-    <string name="processingTasks">Traitement des tâches</string>
-    <string name="readingLocalTasks">Lecture des tâches locales</string>
-    <string name="doneWithTasks">Tratement des tâches terminé</string>
-    <string name="cannotSyncTasksWithoutContext">Impossible de synchroniser les tâches sans contexte</string>
-    <string name="readingRemoteContexts">Lecture des contextes distants</string>
-    <string name="processingContexts">Traitement des contextes</string>
-    <string name="readingLocalContexts">Lecture des contextes locaux</string>
-    <string name="doneWithContexts">Traitement des contextes terminés</string>
-    <string name="readingRemoteProjects">Lecture des projets distants</string>
-    <string name="processingProjects">Traitement des projets</string>
-    <string name="readingLocalProjects">Lecture des projets locaux</string>
-    <string name="doneWithProjects">Traitement des projets terminés</string>
-    <string name="tracks_failed_to_check_url">Impossible de charger des contextes en utilisant ces paramètres</string>
-    <string name="tracks_background_sync">Fréquence de synchronisation</string>
-    <string name="sync_interval_none">Pas de synchronisation automatique</string>
-    <string name="sync_interval_30min">30 min</string>
-    <string name="sync_interval_1h">1 heure</string>
-    <string name="sync_interval_2h">2 heures</string>
-    <string name="sync_interval_3h">3 heures</string>
-
 	<!--  messages -->
     <string name="no_due_date">Aucune échéance</string>
     <string name="no_icon">Pas d\'icône</string>

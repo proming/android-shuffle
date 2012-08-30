@@ -190,35 +190,6 @@
 
     <!-- Toast displayed when an item is saved -->
     <string name="itemDeletedToast"><xliff:g id="itemName">%s</xliff:g> 已移除。</string>
-    
-   <!-- synchronization-->
-    <string name="synchronizing">使用 Tracks 同步</string>
-    <string name="tracksUser">使用者</string>
-    <string name="tracksInstallation">目的裝置</string>
-    <string name="tracks_url">Tracks 裝置</string>
-    <string name="tracks_url_settings">http://my.gtdify.com</string>
-    <string name="tracks_user">使用者</string>
-    <string name="tracks_pass">密碼</string>
-    <string name="readingRemoteTasks">正在讀取遠端工作</string>
-    <string name="processingTasks">正在處理工作</string>
-    <string name="readingLocalTasks">正在讀取本機工作</string>
-    <string name="doneWithTasks">完成工作</string>
-    <string name="cannotSyncTasksWithoutContext">無法同步帶有情景的工作到 Tracks</string>
-    <string name="readingRemoteContexts">正在讀取遠端情景</string>
-    <string name="processingContexts">正在處理情景</string>
-    <string name="readingLocalContexts">正在讀取本機情景</string>
-    <string name="doneWithContexts">完成情景</string>
-    <string name="readingRemoteProjects">正在讀取遠端內容</string>
-    <string name="processingProjects">正在處理內容</string>
-    <string name="readingLocalProjects">正在讀取本機內容</string>
-    <string name="doneWithProjects">完成內容</string>
-    <string name="tracks_failed_to_check_url">無法使用這些設定載入情景, 發生了一些錯誤</string>
-    <string name="tracks_background_sync">後台同步間隔</string>
-    <string name="sync_interval_none">從不</string>
-    <string name="sync_interval_30min">30 分鐘</string>
-    <string name="sync_interval_1h">1 小時</string>
-    <string name="sync_interval_2h">2 小時</string>
-    <string name="sync_interval_3h">3 小時</string>
 
 	<!--  messages -->
     <string name="no_due_date">無預定日期</string>

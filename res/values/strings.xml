@@ -307,83 +307,15 @@ allow that, you can turn it off under Settings.</string>
     <string name="itemDeletedToast">%1$s deleted.</string>
     <string name="itemUndeletedToast">%1$s undeleted.</string>
 
-    
-    <!--Tracks synchronization-->
-    <string name="synchronizing">Synchronizing with Tracks</string>
-    <string name="tracksUser">User</string>
-    <string name="tracksInstallation">Target installation</string>
-    <string name="tracks_url">Tracks installation</string>
-    <string name="tracks_url_settings">http://my.gtdify.com</string>
-    <string name="self_signed_cert">Self-signed https certificate (security hole)</string>
-    <string name="tracks_user">User</string>
-    <string name="tracks_pass">Password</string>
-    <string name="readingRemoteTasks">Reading remote tasks</string>
-    <string name="processingTasks">Processing tasks</string>
-    <string name="readingLocalTasks">Reading local tasks</string>
-    <string name="doneWithTasks">Done with tasks</string>
-    <string name="cannotSyncTasksWithoutContext">Any actions without contexts will not appear in Tracks</string>
-    <string name="readingRemoteContexts">Reading remote Contexts</string>
-    <string name="processingContexts">Processing Contexts</string>
-    <string name="readingLocalContexts">Reading local Contexts</string>
-    <string name="doneWithContexts">Done with Contexts</string>
-    <string name="readingRemoteProjects">Reading remote Projects</string>
-    <string name="processingProjects">Processing Projects</string>
-    <string name="readingLocalProjects">Reading local Projects</string>
-    <string name="doneWithProjects">Done with Projects</string>
-    <string name="tracks_failed_to_check_url">Could not load contexts using these settings, something is wrong with them</string>
-    <string name="tracks_background_sync">Background synchronization interval</string>
-    <string name="tracks_check_settings">Check settings</string><string name="tracks_settings_valid">Settings are valid</string><string name="sync_interval_none">Never</string>
-    <string name="sync_interval_30min">30 minutes</string>
-    <string name="sync_interval_1h">1 hour</string>
-    <string name="sync_interval_2h">2 hours</string>
-    <string name="sync_interval_3h">3 hours</string>
+    <!-- App engine sync -->
+    <string name="title_gae_sync_preferences">Server settings</string>
+    <string name="summary_gae_sync_preferences">Enable android-shuffle.appspot.com updates</string>
+    <string name="enable_sync_button_title">Enable</string>
+    <string name="select_account_button_title">Select account</string>
+    <string name="change_account_button_title">Change account</string>
+    <string name="last_sync_title">Last successful update %1$s</string>
+    <string name="sync_selected_account">Selected account</string>
 
-    <!-- App Engine synchronization -->
-
-    <string name="appengine_synchronization_settings">AppEngine settings</string>
-    <!-- Menu item text -->
-    <string name="accounts">Accounts</string>
-    <!-- Dialog button -->
-    <string name="add_account">Add account...</string>
-    <!-- Dialog title text -->
-    <string name="attention">Attention</string>
-    <!-- Button text -->
-    <string name="connect">Connect</string>
-    <!-- Message text for "Connect" screen -->
-    <string name="connect_text">Shuffle requests permission to connect your mobile device to the cloud.</string>
-    <!-- Header text for "Connect" screen -->
-    <string name="connect_to_the_cloud">Connect To The Cloud</string>
-    <!-- Header text for "Connected" screen -->
-    <string name="connected_to_the_cloud">Connected To The Cloud</string>
-    <!-- Message text -->
-    <string name="contacting_server">Contacting server...</string>
-    <!-- Button text -->
-    <string name="disconnect">Disconnect</string>
-    <!-- Informational text for "Connected" screen with placeholder for account name -->
-    <string name="disconnect_text">This device is currently connected to the cloud as %1$s.  To disconnect, press the button below.</string>
-    <!-- Footer text for "Connect" screen -->
-    <string name="do_you_want_to_connect">Do you want to connect?</string>
-    <!-- Button text -->
-    <string name="exit">Close</string>
-    <!-- Initial "hello, world" informational message -->
-    <string name="hello_world_info_text">Press the \"Say Hello\" button to receive a message from the App Engine server.</string>
-    <!-- Initial "hello, world" response message -->
-    <string name="hello_world_text"></string>
-    <!-- Dialog message text -->
-    <string name="needs_account">To receive notifications from this app, you must first create an account.</string>
-    <!-- Notification message -->
-    <string name="registration_error">Failed to register/unregister %1$s.</string>
-    <!-- Notification message -->
-    <string name="registration_succeeded">Registered %1$s for C2DM messaging.</string>
-    <!-- Button text -->
-    <string name="say_hello">Say Hello</string>
-    <!-- List view header text -->
-    <string name="select_account">Select the account you wish to authorize:</string>
-    <!-- Dialog button text -->
-    <string name="skip">Skip</string>
-
-    <!-- Notification message -->
-    <string name="unregistration_succeeded">Unregistered %1$s for C2DM messaging.</string>
 
     <!-- list filter preferences -->
     <string name="list_settings_title">Settings</string>
@@ -579,7 +511,12 @@ When a context is marked as deleted its association with all actions is removed.
              days is a parameter. -->
         <item quantity="other">%1$d days</item>
     </plurals>
-    
 
+
+    <string name="aerc_authentication_failed">Authentication failed</string>
+    <string name="aerc_failed">failed</string>
+    <string name="aerc_no_auth_token">Couldn\'t get auth token</string>
+    <string name="aerc_no_cookie">App engine provided no cookie</string>
+    <string name="aerc_no_network">No network connection</string>
 
 </resources>

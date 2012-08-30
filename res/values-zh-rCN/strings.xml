@@ -190,35 +190,6 @@
 
     <!-- Toast displayed when an item is saved -->
     <string name="itemDeletedToast"><xliff:g id="itemName">%s</xliff:g> 已删除。</string>
-    
-   <!-- synchronization-->
-    <string name="synchronizing">使用 Tracks 同步</string>
-    <string name="tracksUser">用户</string>
-    <string name="tracksInstallation">目标设备</string>
-    <string name="tracks_url">Tracks 设备</string>
-    <string name="tracks_url_settings">http://my.gtdify.com</string>
-    <string name="tracks_user">用户</string>
-    <string name="tracks_pass">密码</string>
-    <string name="readingRemoteTasks">正在读取远程任务</string>
-    <string name="processingTasks">正在处理任务</string>
-    <string name="readingLocalTasks">正在读取本地任务</string>
-    <string name="doneWithTasks">完成任务</string>
-    <string name="cannotSyncTasksWithoutContext">无法同步带有情景的任务到 Tracks</string>
-    <string name="readingRemoteContexts">正在读取远程情景</string>
-    <string name="processingContexts">正在处理情景</string>
-    <string name="readingLocalContexts">正在读取本地情景</string>
-    <string name="doneWithContexts">完成情景</string>
-    <string name="readingRemoteProjects">正在读取远程内容</string>
-    <string name="processingProjects">正在处理内容</string>
-    <string name="readingLocalProjects">正在读取本地内容</string>
-    <string name="doneWithProjects">完成内容</string>
-    <string name="tracks_failed_to_check_url">无法使用这些设置载入情景, 发生了一些错误</string>
-    <string name="tracks_background_sync">后台同步间隔</string>
-    <string name="sync_interval_none">从不</string>
-    <string name="sync_interval_30min">30 分钟</string>
-    <string name="sync_interval_1h">1 小时</string>
-    <string name="sync_interval_2h">2 小时</string>
-    <string name="sync_interval_3h">3 小时</string>
 
 	<!--  messages -->
     <string name="no_due_date">无预定日期</string>

@@ -1,4 +1,4 @@
-package org.dodgybits.shuffle.android.list.event;
+package org.dodgybits.shuffle.android.server.sync.event;
 
 public class StartSynchEvent {
 

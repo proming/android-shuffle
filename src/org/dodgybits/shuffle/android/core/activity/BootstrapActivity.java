@@ -20,13 +20,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
+import org.dodgybits.shuffle.android.server.gcm.GCMInitializer;
 import roboguice.activity.RoboActivity;
 
 public class BootstrapActivity extends RoboActivity {
 	private static final String cTag = "BootstrapActivity";
 
-	
+
+    @Inject
+    GCMInitializer mGCMInitializer;
+
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
