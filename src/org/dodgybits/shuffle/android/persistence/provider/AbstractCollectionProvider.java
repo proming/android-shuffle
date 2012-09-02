@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractCollectionProvider extends ContentProvider {
-	public static final String cDatabaseName = "shuffle.db";
-	static final int cDatabaseVersion = 18;
+	public static final String DATABASE_NAME = "shuffle.db";
+	static final int DATABASE_VERSION = 19;
 	public static final String TAG = "AbstractColProvider";
 	
 	public static interface ShuffleTable extends BaseColumns {
@@ -30,6 +30,7 @@ public abstract class AbstractCollectionProvider extends ContentProvider {
         public static final String MODIFIED_DATE = "modified";
         public static final String DELETED = "deleted";
         public static final String ACTIVE = "active";
+        public static final String GAE_ID = "gaeId";
 	}
 
 	protected static final int SEARCH = 3;

@@ -22,6 +22,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import org.dodgybits.shuffle.android.core.model.Id;
 
+import java.util.UUID;
+
 public class Preferences {
     private static final String cTag = "Preferences";
     
@@ -34,13 +36,13 @@ public class Preferences {
 	public static final String TOP_LEVEL_COUNTS_KEY = "top_level_counts";
 	public static final String CALENDAR_ID_KEY = "calendar_id";
 
+    public static final String SYNC_DEVICE_IDENTITY = "sync_device_identity";
     public static final String SYNC_ENABLED = "sync_enabled";
     public static final String SYNC_ACCOUNT = "sync_account";
     public static final String SYNC_AUTH_TOKEN = "sync_auth_token";
-    public static final String SYNC_LAST_SYNC_SERVER_TIME = "sync_last_sync_server_time";
-    public static final String SYNC_LAST_SYNC_LOCAL_TIME = "sync_last_sync_local_time";
-    public static final String SYNC_LAST_SYNC_UUID = "sync_last_sync_uuid";
-    public static final String SYNC_CLIENT_UUID = "sync_client_uuid";
+    public static final String SYNC_LAST_SYNC_GAE_DATE = "sync_last_sync_gae_date";
+    public static final String SYNC_LAST_SYNC_LOCAL_DATE = "sync_last_sync_local_date";
+    public static final String SYNC_LAST_SYNC_ID = "sync_last_sync_id";
     public static final String SYNC_COUNT = "sync_count";
 
     public static final String WIDGET_QUERY_PREFIX = "widget_query_";
@@ -67,12 +69,38 @@ public class Preferences {
         return getSharedPreferences(context).getBoolean(SYNC_ENABLED, true);
     }
 
+    public static String getSyncDeviceIdentity(Context context) {
+        String id = getSharedPreferences(context).getString(SYNC_DEVICE_IDENTITY, null);
+        if (id == null) {
+            id = UUID.randomUUID().toString();
+            getEditor(context).putString(SYNC_DEVICE_IDENTITY, id).commit();
+        }
+        return id;
+    }
+
     public static String getSyncAccount(Context context) {
         return getSharedPreferences(context).getString(SYNC_ACCOUNT, "");
     }
 
+    public static String getLastSyncId(Context context) {
+        return getSharedPreferences(context).getString(SYNC_LAST_SYNC_ID, null);
+    }
+
+    public static long getLastSyncGaeDate(Context context) {
+        return getSharedPreferences(context).getLong(SYNC_LAST_SYNC_GAE_DATE, 0L);
+    }
+
+    public static long getLastSyncLocalDate(Context context) {
+        return getSharedPreferences(context).getLong(SYNC_LAST_SYNC_LOCAL_DATE, 0L);
+    }
+
+
     public static boolean validateSyncSettings(Context context) {
         return getSharedPreferences(context).getString(SYNC_AUTH_TOKEN, null) != null;
+    }
+
+    public static int getSyncCount(Context context) {
+        return getSharedPreferences(context).getInt(SYNC_COUNT, 0);
     }
 
     public static int[] getTopLevelCounts(Context context) {
@@ -124,5 +152,5 @@ public class Preferences {
 	public static SharedPreferences.Editor getEditor(Context context) {
 		return getSharedPreferences(context).edit();
 	}
-	
+
 }

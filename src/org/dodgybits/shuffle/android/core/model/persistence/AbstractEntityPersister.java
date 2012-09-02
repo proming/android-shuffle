@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import org.dodgybits.shuffle.android.core.model.Entity;
 import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider;
 import org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable;
 
 import java.util.Collection;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryCountParam;
 import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryEntityTypeParam;
+import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.GAE_ID;
 
 public abstract class AbstractEntityPersister<E extends Entity> implements EntityPersister<E> {
 
@@ -92,6 +94,13 @@ public abstract class AbstractEntityPersister<E extends Entity> implements Entit
         writeBoolean(values, ShuffleTable.DELETED, isDeleted);
         values.put(ShuffleTable.MODIFIED_DATE, System.currentTimeMillis());
         return (mResolver.update(getUri(id), values, null, null) == 1);
+    }
+
+    public boolean updateGaeId(Id localId, Id gaeId) {
+        ContentValues values = new ContentValues();
+        writeId(values, GAE_ID, gaeId);
+        values.put(AbstractCollectionProvider.ShuffleTable.MODIFIED_DATE, System.currentTimeMillis());
+        return (mResolver.update(getUri(localId), values, null, null) == 1);
     }
 
     @Override

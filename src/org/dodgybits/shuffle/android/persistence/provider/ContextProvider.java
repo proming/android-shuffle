@@ -29,7 +29,8 @@ public class  ContextProvider extends AbstractCollectionProvider {
 				Contexts.ICON,
 				ShuffleTable.MODIFIED_DATE,
 				ShuffleTable.DELETED,
-				ShuffleTable.ACTIVE
+				ShuffleTable.ACTIVE,
+                ShuffleTable.GAE_ID
 				);
 
         makeSearchable(Contexts._ID, Contexts.NAME, Contexts.NAME, Contexts.NAME);
@@ -76,7 +77,8 @@ public class  ContextProvider extends AbstractCollectionProvider {
 		    ICON, 
 		    MODIFIED_DATE,
 		    DELETED, 
-		    ACTIVE 
+		    ACTIVE,
+            GAE_ID
 		    };
 
 		public static final String TASK_COUNT = "count";

@@ -27,10 +27,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
 		ALL_MIGRATIONS.put(15, new V15Migration());
 		ALL_MIGRATIONS.put(16, new V16Migration());
 		ALL_MIGRATIONS.put(17, new V17Migration());
+		ALL_MIGRATIONS.put(18, new V18Migration());
 	}
 
 	DatabaseHelper(Context context) {
-		super(context, AbstractCollectionProvider.cDatabaseName, null, AbstractCollectionProvider.cDatabaseVersion);
+		super(context, AbstractCollectionProvider.DATABASE_NAME, null, AbstractCollectionProvider.DATABASE_VERSION);
 	}
 
 	@Override

@@ -26,6 +26,7 @@ public class ProjectPersister extends AbstractEntityPersister<Project> {
     private static final int ARCHIVED_INDEX = 5;
     private static final int DELETED_INDEX = 6;
     private static final int ACTIVE_INDEX = 7;
+    private static final int GAE_ID_INDEX = 8;
 
     @Inject
     public ProjectPersister(ContentResolverProvider provider) {
@@ -43,7 +44,8 @@ public class ProjectPersister extends AbstractEntityPersister<Project> {
             .setParallel(readBoolean(cursor, PARALLEL_INDEX))
             .setArchived(readBoolean(cursor, ARCHIVED_INDEX))
             .setDeleted(readBoolean(cursor, DELETED_INDEX))
-            .setActive(readBoolean(cursor, ACTIVE_INDEX));
+            .setActive(readBoolean(cursor, ACTIVE_INDEX))
+            .setGaeId(readId(cursor, GAE_ID_INDEX));
 
         return builder.build();
     }
@@ -58,6 +60,7 @@ public class ProjectPersister extends AbstractEntityPersister<Project> {
         writeBoolean(values, ARCHIVED, project.isArchived());
         writeBoolean(values, DELETED, project.isDeleted());
         writeBoolean(values, ACTIVE, project.isActive());
+        writeId(values, GAE_ID, project.getGaeId());
     }
     
     @Override

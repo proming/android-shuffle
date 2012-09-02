@@ -15,6 +15,7 @@ import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollect
 import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.DELETED;
 import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.MODIFIED_DATE;
 import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.*;
+import static org.dodgybits.shuffle.android.persistence.provider.ContextProvider.Contexts.GAE_ID;
 
 @ContextSingleton
 public class ContextPersister extends AbstractEntityPersister<Context> {
@@ -26,6 +27,7 @@ public class ContextPersister extends AbstractEntityPersister<Context> {
     private static final int MODIFIED_INDEX = 4;
     private static final int DELETED_INDEX = 5;
     private static final int ACTIVE_INDEX = 6;
+    private static final int GAE_ID_INDEX = 7;
 
     private final TaskPersister mTaskPersister;
             
@@ -46,7 +48,8 @@ public class ContextPersister extends AbstractEntityPersister<Context> {
             .setColourIndex(cursor.getInt(COLOUR_INDEX))
             .setIconName(readString(cursor, ICON_INDEX))
             .setDeleted(readBoolean(cursor, DELETED_INDEX))
-            .setActive(readBoolean(cursor, ACTIVE_INDEX));
+            .setActive(readBoolean(cursor, ACTIVE_INDEX))
+            .setGaeId(readId(cursor, GAE_ID_INDEX));
 
         return builder.build();
     }
@@ -60,6 +63,7 @@ public class ContextPersister extends AbstractEntityPersister<Context> {
         writeString(values, ICON, context.getIconName());
         writeBoolean(values, DELETED, context.isDeleted());
         writeBoolean(values, ACTIVE, context.isActive());
+        writeId(values, GAE_ID, context.getGaeId());
     }
 
     @Override
@@ -96,7 +100,6 @@ public class ContextPersister extends AbstractEntityPersister<Context> {
     public String[] getFullProjection() {
         return ContextProvider.Contexts.FULL_PROJECTION;
     }
-    
-    
-    
+
+
 }

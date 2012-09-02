@@ -371,7 +371,7 @@
 
         <!--  App Engine synchronisation -->
 
-        <service android:name="org.dodgybits.shuffle.android.server.sync.SyncService" />
+        <service android:name="org.dodgybits.shuffle.android.server.sync.GaeSyncService" />
 
 
         <!--

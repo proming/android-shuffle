@@ -40,6 +40,7 @@ public final class Task implements Entity {
     // 0-indexed order within a project.
     private int mOrder;
     private boolean mComplete;
+    private Id mGaeId = Id.NONE;
 
     private Task() {
     };
@@ -126,6 +127,11 @@ public final class Task implements Entity {
     }
 
     @Override
+    public Id getGaeId() {
+        return mGaeId;
+    }
+
+    @Override
     public final boolean isValid() {
         if (TextUtils.isEmpty(mDescription)) {
             return false;
@@ -137,9 +143,9 @@ public final class Task implements Entity {
     public final String toString() {
         return String.format(
                 "[Task id=%7$s description='%1$s' detail='%2$s' contextId=%3$s projectId=%4$s " +
-                "order=%5$s complete=%6$s deleted=%8$s active=%9$s]",
+                "order=%5$s complete=%6$s deleted=%8$s active=%9$s gaeId=%10$s]",
                 mDescription, mDetails, mContextIds, mProjectId,
-                mOrder, mComplete, mLocalId, mDeleted, mActive);
+                mOrder, mComplete, mLocalId, mDeleted, mActive, mGaeId);
     }
     
     public static Builder newBuilder() {
@@ -318,7 +324,16 @@ public final class Task implements Entity {
             result.mActive = value;
             return this;
         }
-        
+
+        public Builder setGaeId(Id gaeId) {
+            result.mGaeId = gaeId;
+            return this;
+        }
+
+        public Id getGaeId() {
+            return result.mGaeId;
+        }
+
         public final boolean isInitialized() {
             return result.isValid();
         }
@@ -352,6 +367,7 @@ public final class Task implements Entity {
             setComplete(task.mComplete);
             setDeleted(task.mDeleted);
             setActive(task.mActive);
+            setGaeId(task.mGaeId);
             return this;
         }
 

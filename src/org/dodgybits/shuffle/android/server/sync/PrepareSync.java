@@ -35,7 +35,7 @@ public class PrepareSync extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String authToken) {
         // ...
         if (authToken != null) {
-            Intent intent = new Intent(mActivity, SyncService.class);
+            Intent intent = new Intent(mActivity, GaeSyncService.class);
             intent.putExtra("authtoken", authToken);
             mActivity.startService(intent);
         }

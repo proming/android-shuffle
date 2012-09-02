@@ -47,7 +47,8 @@ public class TaskProvider extends AbstractCollectionProvider {
                 Tasks.HAS_ALARM,
                 ShuffleTable.MODIFIED_DATE,
                 ShuffleTable.DELETED,
-                ShuffleTable.ACTIVE
+                ShuffleTable.ACTIVE,
+                ShuffleTable.GAE_ID
                 );
 		
 		makeSearchable(Tasks._ID, 
@@ -160,7 +161,7 @@ public class TaskProvider extends AbstractCollectionProvider {
 		public static final String[] FULL_PROJECTION = new String[] { _ID,
 				DESCRIPTION, DETAILS, PROJECT_ID, CREATED_DATE,
 				MODIFIED_DATE, START_DATE, DUE_DATE, TIMEZONE, CAL_EVENT_ID,
-				DISPLAY_ORDER, COMPLETE, ALL_DAY, HAS_ALARM, DELETED, ACTIVE };
+				DISPLAY_ORDER, COMPLETE, ALL_DAY, HAS_ALARM, DELETED, ACTIVE, GAE_ID };
 
 
 	}

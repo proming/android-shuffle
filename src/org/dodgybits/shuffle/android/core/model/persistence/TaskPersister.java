@@ -53,6 +53,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
     private static final int HAS_ALARM_INDEX = ALL_DAY_INDEX + 1;
     private static final int DELETED_INDEX = HAS_ALARM_INDEX + 1;
     private static final int ACTIVE_INDEX = DELETED_INDEX + 1;
+    private static final int GAE_ID_INDEX = ACTIVE_INDEX + 1;
 
     private static final int TASK_CONTEXTS_TASK_ID_INDEX = 0;
     private static final int TASK_CONTEXTS_CONTEXT_ID_INDEX = 1;
@@ -85,7 +86,8 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
                 .setAllDay(readBoolean(cursor, ALL_DAY_INDEX))
                 .setHasAlarm(readBoolean(cursor, HAS_ALARM_INDEX))
                 .setDeleted(readBoolean(cursor, DELETED_INDEX))
-                .setActive(readBoolean(cursor, ACTIVE_INDEX));
+                .setActive(readBoolean(cursor, ACTIVE_INDEX))
+                .setGaeId(readId(cursor, GAE_ID_INDEX));
 
         if (includeContextIds) {
             Cursor contextCursor = mResolver.query(TaskProvider.TaskContexts.CONTENT_URI,
@@ -146,6 +148,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         writeBoolean(values, COMPLETE, task.isComplete());
         writeBoolean(values, ALL_DAY, task.isAllDay());
         writeBoolean(values, HAS_ALARM, task.hasAlarms());
+        writeId(values, GAE_ID, task.getGaeId());
     }
 
     @Override

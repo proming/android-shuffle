@@ -27,7 +27,7 @@ public class Project implements Entity {
     private boolean mArchived;
 	private boolean mDeleted;
 	private boolean mActive = true;
-	
+	private Id mGaeId = Id.NONE;
 
     private Project() {
     };
@@ -79,12 +79,18 @@ public class Project implements Entity {
     }
 
     @Override
+    public Id getGaeId() {
+        return mGaeId;
+    }
+
+    @Override
     public final String toString() {
         return String.format(
                 "[Project id=%1$s name='%2$s' defaultContextId='%3$s' " +
-                "parallel=%4$s archived=%5$s deleted=%6$s active=%7$s]",
+                "parallel=%4$s archived=%5$s deleted=%6$s active=%7$s gaeId=%8$s]",
                 mLocalId, mName, mDefaultContextId,
-                mParallel, mArchived, mDeleted, mActive);
+                mParallel, mArchived, mDeleted, mActive,
+                mGaeId);
     }
     
     public static Builder newBuilder() {
@@ -182,6 +188,16 @@ public class Project implements Entity {
             return this;
         }
 
+        public Builder setGaeId(Id gaeId) {
+            result.mGaeId = gaeId;
+            return this;
+        }
+
+        public Id getGaeId() {
+            return result.mGaeId;
+        }
+
+
         public final boolean isInitialized() {
             return result.isValid();
         }
@@ -205,6 +221,7 @@ public class Project implements Entity {
             setArchived(project.mArchived);
             setDeleted(project.mDeleted);
             setActive(project.mActive);
+            setGaeId(project.mGaeId);
             return this;
         }
 

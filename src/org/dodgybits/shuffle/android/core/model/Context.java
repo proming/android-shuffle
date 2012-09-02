@@ -27,6 +27,7 @@ public class Context implements Entity {
     private long mModifiedDate;
     private boolean mDeleted;
     private boolean mActive = true;
+    private Id mGaeId = Id.NONE;
 
     private Context() {
     };
@@ -72,14 +73,18 @@ public class Context implements Entity {
         }
         return true;
     }
-    
+
+    public Id getGaeId() {
+        return mGaeId;
+    }
+
     @Override
     public final String toString() {
         return String.format(
                 "[Context id=%1$s name='%2$s' colourIndex='%3$s' " +
-                "iconName=%4$s active=%5$s deleted=%6$s]",
+                "iconName=%4$s active=%5$s deleted=%6$s gaeId=%7$s]",
                 mLocalId, mName, mColourIndex,
-                mIconName, mActive, mDeleted);
+                mIconName, mActive, mDeleted, mGaeId);
     }
     
     public static Builder newBuilder() {
@@ -167,6 +172,14 @@ public class Context implements Entity {
             return this;
         }
 
+        public Builder setGaeId(Id gaeId) {
+            result.mGaeId = gaeId;
+            return this;
+        }
+
+        public Id getGaeId() {
+            return result.mGaeId;
+        }
         
         public final boolean isInitialized() {
             return result.isValid();
@@ -190,6 +203,7 @@ public class Context implements Entity {
             setModifiedDate(context.mModifiedDate);
             setDeleted(context.mDeleted);
             setActive(context.mActive);
+            setGaeId(context.mGaeId);
             return this;
         }
 
