@@ -31,6 +31,7 @@ public class GaeSyncService extends RoboIntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.d(TAG, "Received sync intent");
         mAuthToken = intent.getStringExtra("authtoken");
 
         performSync();
@@ -47,17 +48,19 @@ public class GaeSyncService extends RoboIntentService {
         Response response = client.post(target, null, body);
         if (response == null) {
             error(client.errorMessage());
+            return;
         }
 
         if ((response.status / 100) != 2) {
             error("Upload failed: " + response.status);
-        }
-
-        try {
-            ShuffleProtos.SyncResponse syncResponse = ShuffleProtos.SyncResponse.parseFrom(response.body);
-            mResponseProcessor.process(syncResponse);
-        } catch (InvalidProtocolBufferException e) {
-            error("Response parsing failed : " + e.getMessage());
+        } else {
+            try {
+                ShuffleProtos.SyncResponse syncResponse =
+                        ShuffleProtos.SyncResponse.parseFrom(response.body);
+                mResponseProcessor.process(syncResponse);
+            } catch (InvalidProtocolBufferException e) {
+                error("Response parsing failed : " + e.getMessage());
+            }
         }
     }
 

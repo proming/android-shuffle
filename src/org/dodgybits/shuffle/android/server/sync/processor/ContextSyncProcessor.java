@@ -25,6 +25,7 @@ public class ContextSyncProcessor {
     private ContextPersister mContextPersister;
 
     public EntityDirectory<Context> processContexts(ShuffleProtos.SyncResponse response) {
+        Log.d(TAG, "Parsing context updates");
         ContextProtocolTranslator translator = new ContextProtocolTranslator();
         // build up the locator and list of new contacts
         HashEntityDirectory<Context> contextLocator = new HashEntityDirectory<Context>();

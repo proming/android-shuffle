@@ -33,13 +33,15 @@ public class SyncRequestBuilder {
     public ShuffleProtos.SyncRequest createRequest() {
         ShuffleProtos.SyncRequest.Builder builder = ShuffleProtos.SyncRequest.newBuilder();
         builder.setDeviceIdentity(Preferences.getSyncDeviceIdentity(mContext));
-        builder.setLastSyncId(Preferences.getLastSyncId(mContext));
+        String lastSyncId = Preferences.getLastSyncId(mContext);
+        if (lastSyncId != null) {
+            builder.setLastSyncId(lastSyncId);
+        }
 
         long lastSyncDate = Preferences.getLastSyncLocalDate(mContext);
 
         builder.setLastSyncDeviceDate(lastSyncDate);
         builder.setLastSyncGaeDate(Preferences.getLastSyncGaeDate(mContext));
-
 
         EntityDirectory<Context> contextDirectory = addContexts(builder, lastSyncDate);
         EntityDirectory<Project> projectDirectory = addProjects(builder, lastSyncDate, contextDirectory);
