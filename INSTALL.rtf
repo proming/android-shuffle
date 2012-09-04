@@ -5,7 +5,7 @@
 {\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid101\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}
 {\list\listtemplateid3\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid201\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid3}}
 {\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}}
-\paperw11900\paperh16840\margl1440\margr1440\vieww24760\viewh18600\viewkind0
+\paperw11900\paperh16840\margl1440\margr1440\vieww24480\viewh14600\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
 
 \f0\b\fs48 \cf0 Shuffle Developer Setup Guide\
@@ -27,8 +27,6 @@ Shuffle uses Maven for building and dependency management.\
 \ls1\ilvl0\cf0 {\listtext	1.	}Maven 3.0.x - http://maven.apache.org/download.html\
 {\listtext	2.	}Google Protocol Buffer compiler - http://code.google.com/p/protobuf/downloads/list\
 {\listtext	3.	}Set environment variable PROTOC_HOME to point to the directory holding the protoc executable\
-{\listtext	4.	}Android SDK - http://developer.android.com/sdk/index.html\
-{\listtext	5.	}Set environment variable ANDROID_HOME to the path of your installed Android SDK and add $ANDROID_HOME/tools as well as $ANDROID_HOME/platform-tools to your $PATH. (or on Windows %ANDROID_HOME%\\tools and %ANDROID_HOME%\\platform-tools).\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
 \cf0 \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
@@ -48,6 +46,17 @@ From a shell in your local clone...\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
 
 \f0 \cf0 \
+Clone this repo {\field{\*\fldinst{HYPERLINK "https://github.com/etiennep/injected-requestfactory"}}{\fldrslt https://github.com/etiennep/injected-requestfactory}}\
+\
+This includes the classes required to use Guice with RequestFactory.\
+See {\field{\*\fldinst{HYPERLINK "http://www.wanderingcanadian.ca/guiced-up-gwt-requestfactory"}}{\fldrslt http://www.wanderingcanadian.ca/guiced-up-gwt-requestfactory}} for background.\
+\
+From a shell in your local clone...\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f1 \cf0 mvn clean install
+\f0 \
+\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
 
 \fs36 \cf0 Eclipse integration\
@@ -81,6 +90,8 @@ If you have issues getting the connector going, check this issue out\'85 {\field
 {\listtext	3.	}Import your maven project into eclipse using m2eclipse import wizard.\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
 \cf0 \
+\
+\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
 
 \b \cf0 Troubleshooting
