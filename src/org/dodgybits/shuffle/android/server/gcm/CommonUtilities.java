@@ -28,7 +28,7 @@ public final class CommonUtilities {
      * The AppEngine app name, used to construct the production service URL
      * below.
      */
-    private static final String APP_NAME = "android-shuffle";
+    private static final String APP_NAME = "android-shuffle-hrd";
 
     /**
      * The URL of the production service.
