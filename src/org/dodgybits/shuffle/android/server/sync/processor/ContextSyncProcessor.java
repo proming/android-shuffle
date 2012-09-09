@@ -46,7 +46,7 @@ public class ContextSyncProcessor {
         Set<String> newContextNames = new HashSet<String>();
         for (org.dodgybits.shuffle.dto.ShuffleProtos.Context protoContext : protoContexts) {
             Context context = translator.fromMessage(protoContext);
-            Id contextId = Id.create(protoContext.getGaeId());
+            Id contextId = Id.create(protoContext.getGaeEntityId());
             String contextName = context.getName();
             newContexts.add(context);
             newContextNames.add(contextName);
@@ -71,7 +71,7 @@ public class ContextSyncProcessor {
         List<ShuffleProtos.Context> protoContexts = response.getModifiedContextsList();
         for (org.dodgybits.shuffle.dto.ShuffleProtos.Context protoContext : protoContexts) {
             Context context = translator.fromMessage(protoContext);
-            Id contextId = Id.create(protoContext.getGaeId());
+            Id contextId = Id.create(protoContext.getGaeEntityId());
             String contextName = context.getName();
             contextLocator.addItem(contextId, contextName, context);
             mContextPersister.update(context);
@@ -83,7 +83,7 @@ public class ContextSyncProcessor {
         List<ShuffleProtos.SyncIdPair> pairsList = response.getAddedContextIdPairsList();
         for (ShuffleProtos.SyncIdPair pair : pairsList) {
             Id localId = Id.create(pair.getDeviceId());
-            Id gaeId = Id.create(pair.getGaeId());
+            Id gaeId = Id.create(pair.getGaeEntityId());
             mContextPersister.updateGaeId(localId, gaeId);
         }
         Log.d(TAG, "Added gaeId for " + pairsList.size() + " new contexts");

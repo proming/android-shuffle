@@ -47,7 +47,7 @@ public class ProjectSyncProcessor {
         Set<String> newProjectNames = new HashSet<String>();
         for (ShuffleProtos.Project protoProject : protoProjects) {
             Project project = translator.fromMessage(protoProject);
-            Id projectId = Id.create(protoProject.getGaeId());
+            Id projectId = Id.create(protoProject.getGaeEntityId());
             String projectName = project.getName();
             newProjects.add(project);
             newProjectNames.add(projectName);
@@ -72,7 +72,7 @@ public class ProjectSyncProcessor {
         List<ShuffleProtos.Project> protoProjects = response.getModifiedProjectsList();
         for (ShuffleProtos.Project protoProject : protoProjects) {
             Project project = translator.fromMessage(protoProject);
-            Id projectId = Id.create(protoProject.getGaeId());
+            Id projectId = Id.create(protoProject.getGaeEntityId());
             String projectName = project.getName();
             projectLocator.addItem(projectId, projectName, project);
             mProjectPersister.update(project);
@@ -84,7 +84,7 @@ public class ProjectSyncProcessor {
         List<ShuffleProtos.SyncIdPair> pairsList = response.getAddedProjectIdPairsList();
         for (ShuffleProtos.SyncIdPair pair : pairsList) {
             Id localId = Id.create(pair.getDeviceId());
-            Id gaeId = Id.create(pair.getGaeId());
+            Id gaeId = Id.create(pair.getGaeEntityId());
             mProjectPersister.updateGaeId(localId, gaeId);
         }
         Log.d(TAG, "Added gaeId for " + pairsList.size() + " new projects");

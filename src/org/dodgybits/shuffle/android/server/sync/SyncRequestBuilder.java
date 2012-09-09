@@ -69,7 +69,7 @@ public class SyncRequestBuilder {
             } else {
                 ShuffleProtos.SyncIdPair.Builder pairBuilder = ShuffleProtos.SyncIdPair.newBuilder();
                 pairBuilder.setDeviceId(context.getLocalId().getId());
-                pairBuilder.setGaeId(context.getGaeId().getId());
+                pairBuilder.setGaeEntityId(context.getGaeId().getId());
                 builder.addUnmodifiedContextIdPairs(pairBuilder);
             }
         }
@@ -95,7 +95,7 @@ public class SyncRequestBuilder {
             } else {
                 ShuffleProtos.SyncIdPair.Builder pairBuilder = ShuffleProtos.SyncIdPair.newBuilder();
                 pairBuilder.setDeviceId(project.getLocalId().getId());
-                pairBuilder.setGaeId(project.getGaeId().getId());
+                pairBuilder.setGaeEntityId(project.getGaeId().getId());
                 builder.addUnmodifiedProjectIdPairs(pairBuilder);
             }
         }
@@ -119,7 +119,7 @@ public class SyncRequestBuilder {
             } else {
                 ShuffleProtos.SyncIdPair.Builder pairBuilder = ShuffleProtos.SyncIdPair.newBuilder();
                 pairBuilder.setDeviceId(task.getLocalId().getId());
-                pairBuilder.setGaeId(task.getGaeId().getId());
+                pairBuilder.setGaeEntityId(task.getGaeId().getId());
                 builder.addUnmodifiedTaskIdPairs(pairBuilder);
             }
         }
