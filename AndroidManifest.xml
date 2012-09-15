@@ -366,7 +366,9 @@
 		</activity>
 
         <activity
-            android:name="org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity" />
+            android:name="org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity"
+            android:label="@string/title_gae_sync_preferences"
+                />
 
         <activity android:name="org.dodgybits.shuffle.android.list.activity.ListSettingsEditorActivity"/>
 

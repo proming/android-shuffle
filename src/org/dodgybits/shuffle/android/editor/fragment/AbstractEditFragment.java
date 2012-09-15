@@ -39,8 +39,7 @@ public abstract class AbstractEditFragment<E extends Entity> extends RoboFragmen
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView+");
 
-        View view;
-        view = inflater.inflate(getContentViewResId(), null);
+        View view = inflater.inflate(getContentViewResId(), null);
 
         View actionBarButtons = inflater.inflate(R.layout.edit_custom_actionbar,
                 new LinearLayout(getActivity()), false);

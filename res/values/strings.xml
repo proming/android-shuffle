@@ -308,14 +308,15 @@ allow that, you can turn it off under Settings.</string>
     <string name="itemUndeletedToast">%1$s undeleted.</string>
 
     <!-- App engine sync -->
-    <string name="title_gae_sync_preferences">Server settings</string>
-    <string name="summary_gae_sync_preferences">Enable android-shuffle.appspot.com updates</string>
-    <string name="enable_sync_button_title">Enable</string>
+    <string name="title_gae_sync_preferences">Server sync settings</string>
+    <string name="summary_gae_sync_preferences">Configure synchronization</string>
+    <string name="enable_sync_button_title">Enable sync</string>
     <string name="select_account_button_title">Select account</string>
-    <string name="change_account_button_title">Change account</string>
+    <string name="logout_button_title">Logout</string>
+    <string name="sync_now_button_title">Sync now</string>
     <string name="last_sync_title">Last successful update %1$s</string>
-    <string name="sync_selected_account">Selected account</string>
-
+    <string name="no_previous_sync">No sync yet on this account</string>
+    <string name="sync_selected_account">Logged in as %1$s</string>
 
     <!-- list filter preferences -->
     <string name="list_settings_title">Settings</string>

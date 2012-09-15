@@ -59,7 +59,7 @@ public class TaskSyncProcessor {
     private void updateLocallyNewTasks(ShuffleProtos.SyncResponse response) {
         List<ShuffleProtos.SyncIdPair> pairsList = response.getAddedTaskIdPairsList();
         for (ShuffleProtos.SyncIdPair pair : pairsList) {
-            Id localId = Id.create(pair.getDeviceId());
+            Id localId = Id.create(pair.getDeviceEntityId());
             Id gaeId = Id.create(pair.getGaeEntityId());
             mTaskPersister.updateGaeId(localId, gaeId);
         }

@@ -4,17 +4,18 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
 import com.textuality.aerc.Authenticator;
 
 import static org.dodgybits.shuffle.android.server.gcm.CommonUtilities.APP_URI;
 
-public class PrepareSync extends AsyncTask<Void, Void, String> {
+public class ObtainAuthTokenTask extends AsyncTask<Void, Void, String> {
 
     private Activity mActivity;
     private Account mAccount;
     private String mErrorMessage;
 
-    public PrepareSync(Activity activity, Account account) {
+    public ObtainAuthTokenTask(Activity activity, Account account) {
         mActivity = activity;
         mAccount = account;
     }
@@ -38,6 +39,8 @@ public class PrepareSync extends AsyncTask<Void, Void, String> {
             Intent intent = new Intent(mActivity, GaeSyncService.class);
             intent.putExtra("authtoken", authToken);
             mActivity.startService(intent);
+        } else {
+            Toast.makeText(mActivity.getApplicationContext(), mErrorMessage, Toast.LENGTH_SHORT).show();
         }
 
     }

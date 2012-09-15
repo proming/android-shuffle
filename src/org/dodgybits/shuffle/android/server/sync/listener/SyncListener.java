@@ -2,7 +2,7 @@ package org.dodgybits.shuffle.android.server.sync.listener;
 
 import android.app.Activity;
 import com.google.inject.Inject;
-import org.dodgybits.shuffle.android.server.sync.PrepareSync;
+import org.dodgybits.shuffle.android.server.sync.ObtainAuthTokenTask;
 import org.dodgybits.shuffle.android.server.sync.event.RegisterSyncAccountEvent;
 import roboguice.event.Observes;
 
@@ -18,7 +18,7 @@ public class SyncListener {
 
     public void onRegisterSyncAccount(@Observes RegisterSyncAccountEvent event) {
         if (event.getAccount() != null) {
-            new PrepareSync(mActivity, event.getAccount()).execute();
+            new ObtainAuthTokenTask(mActivity, event.getAccount()).execute();
         }
     }
 

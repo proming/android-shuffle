@@ -83,7 +83,7 @@ public class ProjectSyncProcessor {
     private void updateLocallyNewProjects(ShuffleProtos.SyncResponse response) {
         List<ShuffleProtos.SyncIdPair> pairsList = response.getAddedProjectIdPairsList();
         for (ShuffleProtos.SyncIdPair pair : pairsList) {
-            Id localId = Id.create(pair.getDeviceId());
+            Id localId = Id.create(pair.getDeviceEntityId());
             Id gaeId = Id.create(pair.getGaeEntityId());
             mProjectPersister.updateGaeId(localId, gaeId);
         }

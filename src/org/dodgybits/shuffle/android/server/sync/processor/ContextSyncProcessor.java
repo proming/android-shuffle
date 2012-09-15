@@ -82,7 +82,7 @@ public class ContextSyncProcessor {
     private void updateLocallyNewContexts(ShuffleProtos.SyncResponse response) {
         List<ShuffleProtos.SyncIdPair> pairsList = response.getAddedContextIdPairsList();
         for (ShuffleProtos.SyncIdPair pair : pairsList) {
-            Id localId = Id.create(pair.getDeviceId());
+            Id localId = Id.create(pair.getDeviceEntityId());
             Id gaeId = Id.create(pair.getGaeEntityId());
             mContextPersister.updateGaeId(localId, gaeId);
         }
