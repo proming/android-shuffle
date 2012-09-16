@@ -94,6 +94,9 @@ public class Preferences {
         return getSharedPreferences(context).getLong(SYNC_LAST_SYNC_LOCAL_DATE, 0L);
     }
 
+    public static String getSyncAuthToken(Context context) {
+        return getSharedPreferences(context).getString(SYNC_AUTH_TOKEN, null);
+    }
 
     public static boolean validateSyncSettings(Context context) {
         return getSharedPreferences(context).getString(SYNC_AUTH_TOKEN, null) != null;

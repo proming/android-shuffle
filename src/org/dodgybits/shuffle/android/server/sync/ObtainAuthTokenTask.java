@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 import com.textuality.aerc.Authenticator;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import static org.dodgybits.shuffle.android.server.gcm.CommonUtilities.APP_URI;
 
@@ -35,14 +36,16 @@ public class ObtainAuthTokenTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String authToken) {
         // ...
-        if (authToken != null) {
-            Intent intent = new Intent(mActivity, GaeSyncService.class);
-            intent.putExtra("authtoken", authToken);
-            mActivity.startService(intent);
-        } else {
-            Toast.makeText(mActivity.getApplicationContext(), mErrorMessage, Toast.LENGTH_SHORT).show();
-        }
+        Preferences.getEditor(mActivity)
+                .putString(Preferences.SYNC_AUTH_TOKEN, authToken)
+                .commit();
 
+        if (authToken == null) {
+            Toast.makeText(mActivity.getApplicationContext(), mErrorMessage, Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(mActivity, GaeSyncService.class);
+            mActivity.startService(intent);
+        }
     }
 
 }
