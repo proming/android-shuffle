@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.textuality.aerc.AppEngineClient;
 import com.textuality.aerc.Response;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.dto.ShuffleProtos;
 import roboguice.service.RoboIntentService;
 
@@ -15,7 +16,7 @@ import static org.dodgybits.shuffle.android.server.gcm.CommonUtilities.APP_URI;
 import static org.dodgybits.shuffle.android.server.gcm.CommonUtilities.SYNC_URI;
 
 public class GaeSyncService extends RoboIntentService {
-    private static final String TAG = "SyncService";
+    private static final String TAG = "GaeSyncService";
 
     @Inject
     SyncRequestBuilder mRequestBuilder;
@@ -32,9 +33,11 @@ public class GaeSyncService extends RoboIntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "Received sync intent");
-        mAuthToken = intent.getStringExtra("authtoken");
+        mAuthToken = Preferences.getSyncAuthToken(this);
 
-        performSync();
+        if (mAuthToken != null) {
+            performSync();
+        }
     }
 
     private void performSync() {

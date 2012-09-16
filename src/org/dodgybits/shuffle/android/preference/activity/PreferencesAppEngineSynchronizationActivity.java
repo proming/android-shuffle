@@ -1,28 +1,21 @@
 package org.dodgybits.shuffle.android.preference.activity;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
 import android.support.v4.app.FragmentTransaction;
-import android.text.format.DateUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.TextView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.editor.fragment.AbstractEditFragment;
 import org.dodgybits.shuffle.android.preference.fragment.PreferencesAppEngineSynchronizationFragment;
-import org.dodgybits.shuffle.android.preference.model.Preferences;
-import org.dodgybits.shuffle.android.server.sync.listener.SyncListener;
+import org.dodgybits.shuffle.android.server.sync.GaeSyncService;
 import roboguice.activity.RoboFragmentActivity;
-import roboguice.event.EventManager;
-import roboguice.inject.InjectView;
 
 public class PreferencesAppEngineSynchronizationActivity extends RoboFragmentActivity {
     private static final String TAG = "PrefAppEngSyncAct";
+
+    public static final int ACCOUNTS_DIALOG = 1;
+
 
     @Inject
     private PreferencesAppEngineSynchronizationFragment mFragment;
@@ -45,5 +38,37 @@ public class PreferencesAppEngineSynchronizationActivity extends RoboFragmentAct
             mFragment = currentFragment;
         }
     }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
+
+        switch (id) {
+            case ACCOUNTS_DIALOG:
+                dialog = mFragment.createAccountsDialog();
+                break;
+        }
+
+        return dialog;
+    }
+
+    public void onToggleSyncClicked(View view) {
+        mFragment.onToggleSyncClicked(view);
+    }
+
+    public void onSelectAccountClicked(View view) {
+        mFragment.onSelectAccountClicked(view);
+    }
+
+    public void onLogoutClicked(View view) {
+        mFragment.onLogoutClicked(view);
+    }
+
+    public void onSyncNowClicked(View view) {
+        Intent intent = new Intent(this, GaeSyncService.class);
+        startService(intent);
+
+    }
+
 
 }

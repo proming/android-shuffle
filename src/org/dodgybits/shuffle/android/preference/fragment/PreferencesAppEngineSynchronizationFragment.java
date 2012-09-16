@@ -3,6 +3,7 @@ package org.dodgybits.shuffle.android.preference.fragment;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.format.DateUtils;
@@ -15,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.server.sync.event.RegisterSyncAccountEvent;
 import org.dodgybits.shuffle.android.server.sync.listener.SyncListener;
@@ -49,14 +51,6 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
     @Inject
     private SyncListener mSyncListener;
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView+");
@@ -70,31 +64,21 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
         setupScreen();
     }
 
-
-    public void onFoo() {
-//            mNewActive = Preferences.isSyncEnabled(this);
-//            String accountName = Preferences.getSyncAccount(this);
-//
-//            if (accountName != null && !accountName.equals(mOldAccountName)) {
-//                mNewAccount = null;
-//                for (Account account : mAccounts) {
-//                    if (account.name.equals(accountName)) {
-//                        mNewAccount = account;
-//                        break;
-//                    }
-//                }
-//
-//                mEventManager.fire(new RegisterSyncAccountEvent(mNewAccount));
-//            }
-//
-    }
-
     public void onToggleSyncClicked(View view) {
         Preferences.getEditor(getActivity()).putBoolean(Preferences.SYNC_ENABLED, mEnableSyncToggleButton.isChecked()).commit();
         updateViewsOnToggleEnabled();
     }
 
     public void onSelectAccountClicked(View view) {
+        getActivity().showDialog(PreferencesAppEngineSynchronizationActivity.ACCOUNTS_DIALOG);
+    }
+
+    public void onLogoutClicked(View view) {
+        Preferences.getEditor(getActivity()).putString(Preferences.SYNC_ACCOUNT, "").commit();
+        updateViewsOnSyncAccountSet();
+    }
+
+    public Dialog createAccountsDialog() {
         AccountManager manager = AccountManager.get(getActivity());
         final Account[] accounts = manager.getAccountsByType("com.google");
 
@@ -128,12 +112,9 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
             }
         });
         AlertDialog alert = builder.create();
+        return alert;
     }
 
-    public void onLogoutClicked(View view) {
-        Preferences.getEditor(getActivity()).putString(Preferences.SYNC_ACCOUNT, "").commit();
-        updateViewsOnSyncAccountSet();
-    }
 
     private void setupScreen() {
         mEnableSyncToggleButton.setChecked(Preferences.isSyncEnabled(getActivity()));

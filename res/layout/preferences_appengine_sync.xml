@@ -84,6 +84,7 @@
             android:layout_marginTop="12dp"
             android:drawableLeft="@drawable/ic_menu_refresh_holo_light"
             android:drawablePadding="8dp"
+            android:onClick="onSyncNowClicked"
             android:text="@string/sync_now_button_title"
             />
 
