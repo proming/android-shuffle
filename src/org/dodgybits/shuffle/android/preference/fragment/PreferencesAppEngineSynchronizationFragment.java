@@ -132,7 +132,7 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
 
     private void updateViewsOnSyncAccountSet() {
         String syncAccount = Preferences.getSyncAccount(getActivity());
-        final boolean accountSet = !syncAccount.isEmpty();
+        final boolean accountSet = syncAccount.length() > 0;
         mSelectAccountButton.setVisibility(accountSet ? View.GONE : View.VISIBLE);
         mLoggedInTextView.setVisibility(accountSet ? View.VISIBLE : View.GONE);
         mLoggedInTextView.setText(getString(R.string.sync_selected_account, syncAccount));

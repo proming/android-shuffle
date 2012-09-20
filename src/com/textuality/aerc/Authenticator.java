@@ -144,8 +144,8 @@ public class Authenticator {
             return true;
 
         // TODO - clean up test mode
-        if (mAppURI.toString().startsWith("http://192.168") || mAppURI.toString().startsWith("http://localhost")) {
-            mCookie = "Testing=TRUE";
+        if (isLocalServer(mAppURI)) {
+            mCookie = "dev_appserver_login=test@test.com:false:18580476422013912411";
             mToken = "whatever";
             return true;
         }
@@ -189,9 +189,17 @@ public class Authenticator {
         }
     }
 
+    private boolean isLocalServer(URL uri) {
+        return (uri.toString().startsWith("http://192.168") ||
+                uri.toString().startsWith("http://localhost") ||
+                uri.toString().endsWith(":8888"));
+    }
+
     private boolean getCookie(URL uri) {
         String href = uri.toString();
-        href = "https" + href.substring(href.indexOf(':')); // TLS please 
+        if (!isLocalServer(uri)) {
+            href = "https" + href.substring(href.indexOf(':')); // TLS please
+        }
         if (!href.endsWith("/"))
             href = href + "/";
         href = href + "_ah/login?continue=http://localhost/&auth=" + mToken;
