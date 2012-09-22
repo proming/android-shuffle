@@ -17,6 +17,7 @@ public class ProjectProtocolTranslator implements EntityProtocolTranslator<Proje
         Builder builder = org.dodgybits.shuffle.dto.ShuffleProtos.Project.newBuilder();
         builder
             .setId(project.getLocalId().getId())
+            .setGaeEntityId(project.getGaeId().getId())
             .setName((project.getName()))
             .setModified(ProtocolUtil.toDate(project.getModifiedDate()))
             .setParallel(project.isParallel())
@@ -39,6 +40,10 @@ public class ProjectProtocolTranslator implements EntityProtocolTranslator<Proje
             .setName(dto.getName())
             .setModifiedDate(ProtocolUtil.fromDate(dto.getModified()))
             .setParallel(dto.getParallel());
+
+        if (dto.hasGaeEntityId()) {
+            builder.setGaeId(Id.create(dto.getGaeEntityId()));
+        }
 
         if (dto.hasActive()) {
             builder.setActive(dto.getActive());

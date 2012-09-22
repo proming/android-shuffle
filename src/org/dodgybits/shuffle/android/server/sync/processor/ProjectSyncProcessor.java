@@ -53,7 +53,7 @@ public class ProjectSyncProcessor {
             newProjectNames.add(projectName);
             projectLocator.addItem(projectId, projectName, project);
         }
-        Log.d(TAG, "Added " + newProjects.size() + " new projects");
+        Log.d(TAG, "Added " + newProjects.size() + " new projects from server");
         mProjectPersister.bulkInsert(newProjects);
 
         // we need to fetch all the newly created projects to retrieve their new ids
@@ -87,13 +87,13 @@ public class ProjectSyncProcessor {
             Id gaeId = Id.create(pair.getGaeEntityId());
             mProjectPersister.updateGaeId(localId, gaeId);
         }
-        Log.d(TAG, "Added gaeId for " + pairsList.size() + " new projects");
+        Log.d(TAG, "Added gaeId for " + pairsList.size() + " new projects not previously on server");
     }
 
     private void deleteMissingProjects(ShuffleProtos.SyncResponse response) {
         List<Long> idsList = response.getDeletedProjectGaeIdsList();
         for (long gaeId : idsList) {
-            mProjectPersister.deletePermanently(Id.create(gaeId));
+            mProjectPersister.deletePermanentlyByGaeId(Id.create(gaeId));
         }
         Log.w(TAG, "Permanently deleted " + idsList.size() + " missing projects");
     }

@@ -42,7 +42,7 @@ public class TaskSyncProcessor {
             Task task = translator.fromMessage(protoTask);
             newTasks.add(task);
         }
-        Log.d(TAG, "Added " + newTasks.size() + " new tasks");
+        Log.d(TAG, "Added " + newTasks.size() + " new tasks from server");
         mTaskPersister.bulkInsert(newTasks);
     }
 
@@ -63,13 +63,13 @@ public class TaskSyncProcessor {
             Id gaeId = Id.create(pair.getGaeEntityId());
             mTaskPersister.updateGaeId(localId, gaeId);
         }
-        Log.d(TAG, "Added gaeId for " + pairsList.size() + " new tasks");
+        Log.d(TAG, "Added gaeId for " + pairsList.size() + " tasks not previously on server");
     }
 
     private void deleteMissingTasks(ShuffleProtos.SyncResponse response) {
         List<Long> idsList = response.getDeletedTaskGaeIdsList();
         for (long gaeId : idsList) {
-            mTaskPersister.deletePermanently(Id.create(gaeId));
+            mTaskPersister.deletePermanentlyByGaeId(Id.create(gaeId));
         }
         Log.w(TAG, "Permanently deleted " + idsList.size() + " missing tasks");
     }

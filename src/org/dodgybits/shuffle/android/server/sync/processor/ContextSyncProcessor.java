@@ -52,7 +52,7 @@ public class ContextSyncProcessor {
             newContextNames.add(contextName);
             contextLocator.addItem(contextId, contextName, context);
         }
-        Log.d(TAG, "Added " + newContexts.size() + " new contexts");
+        Log.d(TAG, "Added " + newContexts.size() + " new contexts from server");
         mContextPersister.bulkInsert(newContexts);
 
         // we need to fetch all the newly created contexts to retrieve their new ids
@@ -86,13 +86,13 @@ public class ContextSyncProcessor {
             Id gaeId = Id.create(pair.getGaeEntityId());
             mContextPersister.updateGaeId(localId, gaeId);
         }
-        Log.d(TAG, "Added gaeId for " + pairsList.size() + " new contexts");
+        Log.d(TAG, "Added gaeId for " + pairsList.size() + " new contexts not previously on server");
     }
 
     private void deleteMissingContexts(ShuffleProtos.SyncResponse response) {
         List<Long> idsList = response.getDeletedContextGaeIdsList();
         for (long gaeId : idsList) {
-            mContextPersister.deletePermanently(Id.create(gaeId));
+            mContextPersister.deletePermanentlyByGaeId(Id.create(gaeId));
         }
         Log.w(TAG, "Permanently deleted " + idsList.size() + " missing contexts");
     }

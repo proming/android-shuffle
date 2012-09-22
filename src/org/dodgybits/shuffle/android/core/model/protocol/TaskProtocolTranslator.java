@@ -25,6 +25,7 @@ public class TaskProtocolTranslator implements EntityProtocolTranslator<Task, or
         Builder builder = org.dodgybits.shuffle.dto.ShuffleProtos.Task.newBuilder();
         builder
             .setId(task.getLocalId().getId())
+            .setGaeEntityId(task.getGaeId().getId())
             .setDescription(task.getDescription())
             .setCreated(ProtocolUtil.toDate(task.getCreatedDate()))
             .setModified(ProtocolUtil.toDate(task.getModifiedDate()))
@@ -86,6 +87,10 @@ public class TaskProtocolTranslator implements EntityProtocolTranslator<Task, or
             .setHasAlarm(false)
             .setOrder(dto.getOrder())
             .setComplete(dto.getComplete());
+
+        if (dto.hasGaeEntityId()) {
+            builder.setGaeId(Id.create(dto.getGaeEntityId()));
+        }
 
         if (dto.hasActive()) {
             builder.setActive(dto.getActive());

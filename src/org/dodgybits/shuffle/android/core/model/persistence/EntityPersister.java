@@ -41,19 +41,27 @@ public interface EntityPersister<E extends Entity> {
     int emptyTrash();
 
     /**
-     * Permanently delete entity with the given id.
+     * Permanently delete entity with the given local id.
      *
      * @return whether the operation succeeded
      */
 	boolean deletePermanently(Id id);
 
+
     /**
-     * Find the entity with the given id in the query result.
+     * Permanently delete entity with the given gae id.
      *
-     * @param cursor query result to search
-     * @param id entity id
-     * @return position of entity in cursor or -1 if not found
+     * @return whether the operation succeeded
      */
+    boolean deletePermanentlyByGaeId(Id gaeId);
+
+        /**
+        * Find the entity with the given id in the query result.
+        *
+        * @param cursor query result to search
+        * @param id entity id
+        * @return position of entity in cursor or -1 if not found
+        */
     int getPositionOfItemWithId(Cursor cursor, long id);
 
 }

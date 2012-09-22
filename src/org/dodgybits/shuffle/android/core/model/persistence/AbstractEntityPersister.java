@@ -119,6 +119,17 @@ public abstract class AbstractEntityPersister<E extends Entity> implements Entit
     }
 
     @Override
+    public boolean deletePermanentlyByGaeId(Id gaeId) {
+        boolean success = false;
+        if (gaeId.isInitialised()) {
+            success = (mResolver.delete(getContentUri(),
+                ShuffleTable.GAE_ID + " = ?",
+                    new String[] {String.valueOf(gaeId.getId())}) == 1);
+        }
+        return success;
+    }
+
+    @Override
     public int getPositionOfItemWithId(Cursor cursor, long id) {
         int position = -1;
         cursor.moveToPosition(-1);

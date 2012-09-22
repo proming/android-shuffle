@@ -10,6 +10,7 @@ public class ContextProtocolTranslator  implements EntityProtocolTranslator<Cont
         Builder builder = org.dodgybits.shuffle.dto.ShuffleProtos.Context.newBuilder();
         builder
             .setId(context.getLocalId().getId())
+            .setGaeEntityId(context.getGaeId().getId())
             .setName((context.getName()))
             .setModified(ProtocolUtil.toDate(context.getModifiedDate()))
             .setColourIndex(context.getColourIndex())
@@ -32,6 +33,10 @@ public class ContextProtocolTranslator  implements EntityProtocolTranslator<Cont
             .setName(dto.getName())
             .setModifiedDate(ProtocolUtil.fromDate(dto.getModified()))
             .setColourIndex(dto.getColourIndex());
+
+        if (dto.hasGaeEntityId()) {
+            builder.setGaeId(Id.create(dto.getGaeEntityId()));
+        }
 
         if (dto.hasActive()) {
             builder.setActive(dto.getActive());
