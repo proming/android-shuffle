@@ -74,7 +74,12 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
     }
 
     public void onLogoutClicked(View view) {
-        Preferences.getEditor(getActivity()).putString(Preferences.SYNC_ACCOUNT, "").commit();
+        Preferences.getEditor(getActivity())
+                .putString(Preferences.SYNC_ACCOUNT, "")
+                .remove(Preferences.SYNC_LAST_SYNC_ID)
+                .remove(Preferences.SYNC_LAST_SYNC_GAE_DATE)
+                .remove(Preferences.SYNC_LAST_SYNC_LOCAL_DATE)
+                .commit();
         updateViewsOnSyncAccountSet();
     }
 
@@ -105,7 +110,12 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
                 String oldAccountName = Preferences.getSyncAccount(getActivity());
                 if (!oldAccountName.equals(account.name)) {
                     Log.i(TAG, "Switching from account " + oldAccountName + " to " + account.name);
-                    Preferences.getEditor(getActivity()).putString(Preferences.SYNC_ACCOUNT, account.name).commit();
+                    Preferences.getEditor(getActivity())
+                            .putString(Preferences.SYNC_ACCOUNT, account.name)
+                            .remove(Preferences.SYNC_LAST_SYNC_ID)
+                            .remove(Preferences.SYNC_LAST_SYNC_GAE_DATE)
+                            .remove(Preferences.SYNC_LAST_SYNC_LOCAL_DATE)
+                            .commit();
                     mEventManager.fire(new RegisterSyncAccountEvent(account));
                 }
                 updateViewsOnSyncAccountSet();

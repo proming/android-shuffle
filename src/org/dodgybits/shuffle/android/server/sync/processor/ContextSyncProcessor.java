@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Id;
+import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.core.model.protocol.ContextProtocolTranslator;
 import org.dodgybits.shuffle.android.core.model.protocol.EntityDirectory;
@@ -43,25 +44,18 @@ public class ContextSyncProcessor {
                                 HashEntityDirectory<Context> contextLocator) {
         List<ShuffleProtos.Context> protoContexts = response.getNewContextsList();
         List<Context> newContexts = new ArrayList<Context>();
-        Set<String> newContextNames = new HashSet<String>();
-        for (org.dodgybits.shuffle.dto.ShuffleProtos.Context protoContext : protoContexts) {
+        for (ShuffleProtos.Context protoContext : protoContexts) {
             Context context = translator.fromMessage(protoContext);
-            Id contextId = Id.create(protoContext.getGaeEntityId());
-            String contextName = context.getName();
             newContexts.add(context);
-            newContextNames.add(contextName);
-            contextLocator.addItem(contextId, contextName, context);
         }
         Log.d(TAG, "Added " + newContexts.size() + " new contexts from server");
         mContextPersister.bulkInsert(newContexts);
 
-        // we need to fetch all the newly created contexts to retrieve their new ids
-        // and update the locator accordingly
-        Map<String, Context> savedContexts = fetchContextsByName(newContextNames);
-        for (String contextName : newContextNames) {
-            Context savedContext = savedContexts.get(contextName);
-            Context restoredContext = contextLocator.findByName(contextName);
-            contextLocator.addItem(restoredContext.getLocalId(), contextName, savedContext);
+        // update locator with newly saved contexts now we have local ids
+        for (ShuffleProtos.Context protoContext : protoContexts) {
+            Id contextId = Id.create(protoContext.getGaeEntityId());
+            Context updatedContext = mContextPersister.findByGaeId(contextId);
+            contextLocator.addItem(contextId, updatedContext.getName(), updatedContext);
         }
     }
 

@@ -44,25 +44,18 @@ public class ProjectSyncProcessor {
                                 HashEntityDirectory<Project> projectLocator) {
         List<ShuffleProtos.Project> protoProjects = response.getNewProjectsList();
         List<Project> newProjects = new ArrayList<Project>();
-        Set<String> newProjectNames = new HashSet<String>();
         for (ShuffleProtos.Project protoProject : protoProjects) {
             Project project = translator.fromMessage(protoProject);
-            Id projectId = Id.create(protoProject.getGaeEntityId());
-            String projectName = project.getName();
             newProjects.add(project);
-            newProjectNames.add(projectName);
-            projectLocator.addItem(projectId, projectName, project);
         }
         Log.d(TAG, "Added " + newProjects.size() + " new projects from server");
         mProjectPersister.bulkInsert(newProjects);
 
-        // we need to fetch all the newly created projects to retrieve their new ids
-        // and update the locator accordingly
-        Map<String, Project> savedProjects = fetchProjectsByName(newProjectNames);
-        for (String projectName : newProjectNames) {
-            Project savedProject = savedProjects.get(projectName);
-            Project restoredProject = projectLocator.findByName(projectName);
-            projectLocator.addItem(restoredProject.getLocalId(), projectName, savedProject);
+        // update locator with newly saved projects now we have local ids
+        for (ShuffleProtos.Project protoProject : protoProjects) {
+            Id projectId = Id.create(protoProject.getGaeEntityId());
+            Project updatedProject = mProjectPersister.findByGaeId(projectId);
+            projectLocator.addItem(projectId, updatedProject.getName(), updatedProject);
         }
     }
 

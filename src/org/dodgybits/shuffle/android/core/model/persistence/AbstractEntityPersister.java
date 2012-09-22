@@ -53,7 +53,28 @@ public abstract class AbstractEntityPersister<E extends Entity> implements Entit
         
         return entity;
     }
-    
+
+    public E findByGaeId(Id gaeId) {
+        E entity = null;
+
+        if (gaeId.isInitialised()) {
+            Cursor cursor = mResolver.query(
+                    getContentUri(),
+                    getFullProjection(),
+                    ShuffleTable.GAE_ID + " = ?",
+                    new String[] {gaeId.toString()},
+                    null);
+
+            if (cursor.moveToFirst()) {
+                entity = read(cursor);
+            }
+            cursor.close();
+        }
+
+        return entity;
+    }
+
+
     @Override
     public Uri insert(E e) {
         validate(e);
@@ -75,9 +96,6 @@ public abstract class AbstractEntityPersister<E extends Entity> implements Entit
                 valuesArray[i++] = values;
             }
             int rowsCreated = mResolver.bulkInsert(getContentUri(), valuesArray);
-
-            Map<String, String> params = new HashMap<String, String>(mFlurryParams);
-            params.put(cFlurryCountParam, String.valueOf(rowsCreated));
         }
     }
 

@@ -38,7 +38,7 @@ public final class CommonUtilities {
     /**
      * Local demo service
      */
-    public static final String APP_ADDR = "http://192.168.1.78:8888";
+    public static final String APP_ADDR = "http://192.168.1.81:8888";
 
 
     public static final String SYNC_ADDR = APP_ADDR + "/sync";

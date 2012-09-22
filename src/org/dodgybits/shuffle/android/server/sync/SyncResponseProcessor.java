@@ -38,7 +38,7 @@ public class SyncResponseProcessor {
         long currentGaeDate = response.getCurrentGaeDate();
         int count = Preferences.getSyncCount(mContext);
 
-        Log.d(TAG, "Got sync response " + syncId);
+        Log.d(TAG, "Got sync response " + response);
 
         EntityDirectory<Context> contextLocator = mContextSyncProcessor.processContexts(response);
         EntityDirectory<Project> projectLocator = mProjectSyncProcessor.processProjects(response, contextLocator);

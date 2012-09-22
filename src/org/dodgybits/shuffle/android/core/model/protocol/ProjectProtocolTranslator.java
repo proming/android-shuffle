@@ -8,7 +8,7 @@ import org.dodgybits.shuffle.dto.ShuffleProtos.Project.Builder;
 public class ProjectProtocolTranslator implements EntityProtocolTranslator<Project, org.dodgybits.shuffle.dto.ShuffleProtos.Project> {
 
     private EntityDirectory<Context> mContextDirectory;
-    
+
     public ProjectProtocolTranslator(EntityDirectory<Context> contextDirectory) {
         mContextDirectory = contextDirectory;
     }
@@ -60,6 +60,7 @@ public class ProjectProtocolTranslator implements EntityProtocolTranslator<Proje
         if (dto.hasDefaultContextId()) {
             Id defaultContextId = Id.create(dto.getDefaultContextId());
             Context context = mContextDirectory.findById(defaultContextId);
+
             // it's possible the default context no longer exists so check for it
             builder.setDefaultContextId(context == null ? Id.NONE : context.getLocalId());
         }
