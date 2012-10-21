@@ -36,6 +36,8 @@ public class Preferences {
 	public static final String TOP_LEVEL_COUNTS_KEY = "top_level_counts";
 	public static final String CALENDAR_ID_KEY = "calendar_id";
 
+    public static final String LAST_PERMANENTLY_DELETED_DATE = "last_premanently_deleted_date";
+
     public static final String SYNC_DEVICE_IDENTITY = "sync_device_identity";
     public static final String SYNC_ENABLED = "sync_enabled";
     public static final String SYNC_ACCOUNT = "sync_account";
@@ -92,6 +94,10 @@ public class Preferences {
 
     public static long getLastSyncLocalDate(Context context) {
         return getSharedPreferences(context).getLong(SYNC_LAST_SYNC_LOCAL_DATE, 0L);
+    }
+
+    public static long getLastPermanentlyDeletedDate(Context context) {
+        return getSharedPreferences(context).getLong(LAST_PERMANENTLY_DELETED_DATE, 0L);
     }
 
     public static String getSyncAuthToken(Context context) {

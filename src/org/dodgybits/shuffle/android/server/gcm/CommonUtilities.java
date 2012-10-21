@@ -33,12 +33,12 @@ public final class CommonUtilities {
     /**
      * The URL of the production service.
      */
-//    public static final String APP_ADDR = "https://" + APP_NAME + ".appspot.com";
+    public static final String APP_ADDR = "https://" + APP_NAME + ".appspot.com";
 
     /**
      * Local demo service
      */
-    public static final String APP_ADDR = "http://192.168.1.81:8888";
+//    public static final String APP_ADDR = "http://192.168.1.81:8888";
 
 
     public static final String SYNC_ADDR = APP_ADDR + "/sync";

@@ -16,6 +16,8 @@ import roboguice.inject.ContextSingleton;
 public class SyncResponseProcessor {
     private static final String TAG = "SyncResponseProcessor";
 
+    public static final String INVALID_SYNC_ID = "INVALID_SYNC_ID";
+
     @Inject
     private android.content.Context mContext;
     @Inject
@@ -27,18 +29,13 @@ public class SyncResponseProcessor {
 
     public void process(ShuffleProtos.SyncResponse response) {
         if (response.hasErrorCode()) {
-            // give up for now...
-            String errorCode = response.getErrorCode();
-            String errorMessage = response.getErrorMessage();
-            Log.e(TAG, "Sync failed with error code " + errorCode + " message: " + errorMessage );
+            handleError(response);
             return;
         }
 
         String syncId = response.getSyncId();
         long currentGaeDate = response.getCurrentGaeDate();
         int count = Preferences.getSyncCount(mContext);
-
-        Log.d(TAG, "Got sync response " + response);
 
         EntityDirectory<Context> contextLocator = mContextSyncProcessor.processContexts(response);
         EntityDirectory<Project> projectLocator = mProjectSyncProcessor.processProjects(response, contextLocator);
@@ -50,6 +47,29 @@ public class SyncResponseProcessor {
                 .putLong(Preferences.SYNC_LAST_SYNC_LOCAL_DATE, System.currentTimeMillis())
                 .putInt(Preferences.SYNC_COUNT, count + 1)
                 .commit();
+    }
+
+    private void handleError(ShuffleProtos.SyncResponse response) {
+        // give up for now...
+        String errorCode = response.getErrorCode();
+        String errorMessage = response.getErrorMessage();
+        Log.e(TAG, "Sync failed with error code " + errorCode + " message: " + errorMessage );
+
+        if (INVALID_SYNC_ID.equals(errorCode)) {
+            // device out of sync with server - clear all sync data and request new sync
+            mContextSyncProcessor.clearSyncData();
+            mProjectSyncProcessor.clearSyncData();
+            mTaskSyncProcessor.clearSyncData();
+
+            Preferences.getEditor(mContext)
+                    .putString(Preferences.SYNC_LAST_SYNC_ID, null)
+                    .putLong(Preferences.SYNC_LAST_SYNC_GAE_DATE, 0L)
+                    .putLong(Preferences.SYNC_LAST_SYNC_LOCAL_DATE, 0L)
+                    .putInt(Preferences.SYNC_COUNT, 0)
+                    .commit();
+
+            // TODO request new sync
+        }
     }
 
 }

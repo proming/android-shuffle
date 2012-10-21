@@ -24,6 +24,7 @@ import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 public class PreferencesPermanentlyDeleteActivity extends PreferencesDeleteActivity {
     private static final String TAG = "PrefsPermDelete";
@@ -47,6 +48,11 @@ public class PreferencesPermanentlyDeleteActivity extends PreferencesDeleteActiv
         int taskCount = mTaskPersister.emptyTrash();
         int projectCount = mProjectPersister.emptyTrash();
         int contextCount = mContextPersister.emptyTrash();
+
+        if (taskCount + projectCount + contextCount > 0) {
+            Preferences.getEditor(this).putLong(
+                    Preferences.LAST_PERMANENTLY_DELETED_DATE, System.currentTimeMillis());
+        }
 
         if (Log.isLoggable(TAG, Log.INFO)) {
             String message = String.format("Permanently deleted %s tasks, %s contexts and %s projects",

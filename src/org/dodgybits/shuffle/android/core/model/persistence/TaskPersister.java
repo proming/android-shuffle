@@ -25,13 +25,13 @@ import roboguice.inject.ContextSingleton;
 
 import java.util.*;
 
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryCountParam;
 import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.ACTIVE;
 import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.DELETED;
 import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.MODIFIED_DATE;
 import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.TaskContexts.CONTEXT_ID;
 import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.TaskContexts.TASK_ID;
 import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.*;
+import static org.dodgybits.shuffle.android.persistence.provider.TaskProvider.Tasks.GAE_ID;
 
 @ContextSingleton
 public class TaskPersister extends AbstractEntityPersister<Task> {
@@ -230,8 +230,6 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
             }
             String queryString = "_id IN (" + StringUtils.join(ids, ",") + ")";
             rowsDeleted = mResolver.delete(getContentUri(), queryString, null);
-            Map<String, String> params = new HashMap<String, String>(mFlurryParams);
-            params.put(cFlurryCountParam, String.valueOf(rowsDeleted));
         }
 
         return rowsDeleted;
@@ -241,9 +239,6 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
     public int deleteCompletedTasks() {
         int deletedRows = updateDeletedFlag(TaskProvider.Tasks.COMPLETE + " = 1", null, true);
         Log.d(TAG, "Deleting " + deletedRows + " completed tasks.");
-
-        Map<String, String> params = new HashMap<String, String>(mFlurryParams);
-        params.put(cFlurryCountParam, String.valueOf(deletedRows));
 
         return deletedRows;
     }

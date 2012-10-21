@@ -47,7 +47,7 @@ public class GaeSyncService extends RoboIntentService {
         transmit(body, client, SYNC_URI);
     }
 
-        private void transmit(byte[] body, AppEngineClient client, URL target) {
+    private void transmit(byte[] body, AppEngineClient client, URL target) {
         Response response = client.post(target, null, body);
         if (response == null) {
             error(client.errorMessage());

@@ -12,25 +12,15 @@ import org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProv
 import org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryCountParam;
-import static org.dodgybits.shuffle.android.core.util.Constants.cFlurryEntityTypeParam;
 import static org.dodgybits.shuffle.android.persistence.provider.AbstractCollectionProvider.ShuffleTable.GAE_ID;
 
 public abstract class AbstractEntityPersister<E extends Entity> implements EntityPersister<E> {
 
     protected ContentResolver mResolver;
-    protected Map<String, String> mFlurryParams;
-    
+
     public AbstractEntityPersister(ContentResolver resolver) {
         mResolver = resolver;
-
-        Map<String, String> params = new HashMap<String,String>();
-        params.put(cFlurryEntityTypeParam, getEntityName());
-        mFlurryParams = Collections.unmodifiableMap(params);
     }
     
     @Override
@@ -121,11 +111,15 @@ public abstract class AbstractEntityPersister<E extends Entity> implements Entit
         return (mResolver.update(getUri(localId), values, null, null) == 1);
     }
 
+    public void clearAllGaeIds() {
+        ContentValues values = new ContentValues();
+        writeId(values, GAE_ID, Id.NONE);
+        mResolver.update(getContentUri(), values, null, null);
+    }
+
     @Override
     public int emptyTrash() {
         int rowsDeleted = mResolver.delete(getContentUri(), "deleted = 1", null);
-        Map<String, String> params = new HashMap<String, String>(mFlurryParams);
-        params.put(cFlurryCountParam, String.valueOf(rowsDeleted));
         return rowsDeleted;
     }
     
