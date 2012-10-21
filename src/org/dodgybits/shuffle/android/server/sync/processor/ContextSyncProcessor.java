@@ -39,10 +39,6 @@ public class ContextSyncProcessor {
         return contextLocator;
     }
 
-    public void clearSyncData() {
-        mContextPersister.clearAllGaeIds();
-    }
-
     private void addNewContexts(ShuffleProtos.SyncResponse response,
                                 ContextProtocolTranslator translator,
                                 HashEntityDirectory<Context> contextLocator) {

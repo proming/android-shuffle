@@ -8,8 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.Contacts;
-import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -17,13 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
-import org.dodgybits.shuffle.android.server.sync.event.RegisterSyncAccountEvent;
+import org.dodgybits.shuffle.android.server.sync.ObtainAuthTokenTask;
+import org.dodgybits.shuffle.android.server.sync.event.ResetSyncSettingsEvent;
 import org.dodgybits.shuffle.android.server.sync.listener.SyncListener;
 import roboguice.event.EventManager;
 import roboguice.fragment.RoboFragment;
@@ -131,14 +129,11 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
                         if (!oldAccountName.equals(account.name)) {
                             Log.i(TAG, "Switching from account " + oldAccountName +
                                     " to " + account.name);
-                            editor
-                                .putString(Preferences.SYNC_ACCOUNT, account.name)
-                                .remove(Preferences.SYNC_LAST_SYNC_ID)
-                                .remove(Preferences.SYNC_LAST_SYNC_GAE_DATE)
-                                .remove(Preferences.SYNC_LAST_SYNC_LOCAL_DATE);
+                            editor.putString(Preferences.SYNC_ACCOUNT, account.name);
+                            mEventManager.fire(new ResetSyncSettingsEvent());
                         }
                         editor.commit();
-                        mEventManager.fire(new RegisterSyncAccountEvent(account));
+                        new ObtainAuthTokenTask(getActivity(), account).execute();
                         updateViewsOnSyncAccountSet();
                     }
                 }

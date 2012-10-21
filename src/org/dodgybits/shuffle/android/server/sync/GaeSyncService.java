@@ -7,6 +7,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.textuality.aerc.AppEngineClient;
 import com.textuality.aerc.Response;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
+import org.dodgybits.shuffle.android.server.sync.listener.SyncListener;
 import org.dodgybits.shuffle.dto.ShuffleProtos;
 import roboguice.service.RoboIntentService;
 
@@ -23,6 +24,9 @@ public class GaeSyncService extends RoboIntentService {
 
     @Inject
     SyncResponseProcessor mResponseProcessor;
+
+    @Inject
+    SyncListener mSyncListener;
 
     private String mAuthToken;
 

@@ -39,10 +39,6 @@ public class ProjectSyncProcessor {
         return projectLocator;
     }
 
-    public void clearSyncData() {
-        mProjectPersister.clearAllGaeIds();
-    }
-
     private void addNewProjects(ShuffleProtos.SyncResponse response,
                                 ProjectProtocolTranslator translator,
                                 HashEntityDirectory<Project> projectLocator) {

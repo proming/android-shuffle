@@ -6,10 +6,12 @@ import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.protocol.EntityDirectory;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
+import org.dodgybits.shuffle.android.server.sync.event.ResetSyncSettingsEvent;
 import org.dodgybits.shuffle.android.server.sync.processor.ContextSyncProcessor;
 import org.dodgybits.shuffle.android.server.sync.processor.ProjectSyncProcessor;
 import org.dodgybits.shuffle.android.server.sync.processor.TaskSyncProcessor;
 import org.dodgybits.shuffle.dto.ShuffleProtos;
+import roboguice.event.EventManager;
 import roboguice.inject.ContextSingleton;
 
 @ContextSingleton
@@ -26,6 +28,8 @@ public class SyncResponseProcessor {
     private ProjectSyncProcessor mProjectSyncProcessor;
     @Inject
     private TaskSyncProcessor mTaskSyncProcessor;
+    @Inject
+    private EventManager mEventManager;
 
     public void process(ShuffleProtos.SyncResponse response) {
         if (response.hasErrorCode()) {
@@ -57,15 +61,7 @@ public class SyncResponseProcessor {
 
         if (INVALID_SYNC_ID.equals(errorCode)) {
             // device out of sync with server - clear all sync data and request new sync
-            mContextSyncProcessor.clearSyncData();
-            mProjectSyncProcessor.clearSyncData();
-            mTaskSyncProcessor.clearSyncData();
-
-            Preferences.getEditor(mContext)
-                    .remove(Preferences.SYNC_LAST_SYNC_ID)
-                    .remove(Preferences.SYNC_LAST_SYNC_GAE_DATE)
-                    .remove(Preferences.SYNC_LAST_SYNC_LOCAL_DATE)
-                    .commit();
+            mEventManager.fire(new ResetSyncSettingsEvent());
 
             // TODO request new sync
         }

@@ -34,10 +34,6 @@ public class TaskSyncProcessor {
         deleteMissingTasks(response);
     }
 
-    public void clearSyncData() {
-        mTaskPersister.clearAllGaeIds();
-    }
-
     private void addNewTasks(ShuffleProtos.SyncResponse response,
                                 TaskProtocolTranslator translator) {
         List<ShuffleProtos.Task> protoTasks = response.getNewTasksList();
