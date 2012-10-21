@@ -43,6 +43,9 @@ public class SyncRequestBuilder {
         builder.setLastSyncDeviceDate(lastSyncDate);
         builder.setLastSyncGaeDate(Preferences.getLastSyncGaeDate(mContext));
 
+        long lastDeletedDate = Preferences.getLastPermanentlyDeletedDate(mContext);
+        builder.setEntitiesPermanentlyDeleted(lastDeletedDate > lastSyncDate);
+
         EntityDirectory<Context> contextDirectory = addContexts(builder, lastSyncDate);
         EntityDirectory<Project> projectDirectory = addProjects(builder, lastSyncDate, contextDirectory);
         addTasks(builder, lastSyncDate, contextDirectory, projectDirectory);
