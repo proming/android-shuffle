@@ -33,7 +33,7 @@ public class ProjectSyncProcessor {
 
         addNewProjects(response, translator, projectLocator);
         updateModifiedProjects(response, translator, projectLocator);
-        updateLocallyNewProjects(response);
+        updateLocallyNewProjects(response, projectLocator);
         deleteMissingProjects(response);
 
         return projectLocator;
@@ -73,12 +73,18 @@ public class ProjectSyncProcessor {
         Log.d(TAG, "Updated " + protoProjects.size() + " modified tasks");
     }
 
-    private void updateLocallyNewProjects(ShuffleProtos.SyncResponse response) {
+    private void updateLocallyNewProjects(ShuffleProtos.SyncResponse response,
+                                          HashEntityDirectory<Project> projectLocator) {
         List<ShuffleProtos.SyncIdPair> pairsList = response.getAddedProjectIdPairsList();
         for (ShuffleProtos.SyncIdPair pair : pairsList) {
             Id localId = Id.create(pair.getDeviceEntityId());
             Id gaeId = Id.create(pair.getGaeEntityId());
             mProjectPersister.updateGaeId(localId, gaeId);
+            // need to add project to locator as it's possible server
+            // has returned new tasks referencing this
+            Project updatedProject = mProjectPersister.findById(localId);
+            projectLocator.addItem(gaeId, updatedProject.getName(), updatedProject);
+
         }
         Log.d(TAG, "Added gaeId for " + pairsList.size() + " new projects not previously on server");
     }

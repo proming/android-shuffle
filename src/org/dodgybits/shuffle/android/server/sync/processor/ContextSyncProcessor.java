@@ -33,7 +33,7 @@ public class ContextSyncProcessor {
 
         addNewContexts(response, translator, contextLocator);
         updateModifiedContexts(response, translator, contextLocator);
-        updateLocallyNewContexts(response);
+        updateLocallyNewContexts(response, contextLocator);
         deleteMissingContexts(response);
 
         return contextLocator;
@@ -73,12 +73,17 @@ public class ContextSyncProcessor {
         Log.d(TAG, "Updated " + protoContexts.size() + " modified contexts");
     }
 
-    private void updateLocallyNewContexts(ShuffleProtos.SyncResponse response) {
+    private void updateLocallyNewContexts(ShuffleProtos.SyncResponse response,
+                                          HashEntityDirectory<Context> contextLocator) {
         List<ShuffleProtos.SyncIdPair> pairsList = response.getAddedContextIdPairsList();
         for (ShuffleProtos.SyncIdPair pair : pairsList) {
             Id localId = Id.create(pair.getDeviceEntityId());
             Id gaeId = Id.create(pair.getGaeEntityId());
             mContextPersister.updateGaeId(localId, gaeId);
+            // need to add context to locator as it's possible server
+            // has returned new tasks or projects referencing this
+            Context updatedContext = mContextPersister.findById(localId);
+            contextLocator.addItem(gaeId, updatedContext.getName(), updatedContext);
         }
         Log.d(TAG, "Added gaeId for " + pairsList.size() + " new contexts not previously on server");
     }
