@@ -5,7 +5,11 @@ import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Contacts;
+import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -88,6 +92,11 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
         final Account[] accounts = manager.getAccountsByType("com.google");
 
         final int numAccounts = accounts.length;
+
+        if (numAccounts == 0) {
+            return createNoAccountsDialog();
+        }
+
         final CharSequence[] items = new CharSequence[numAccounts];
 
         String accountName = Preferences.getSyncAccount(getActivity());
@@ -123,6 +132,27 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
         });
         AlertDialog alert = builder.create();
         return alert;
+    }
+
+    private Dialog createNoAccountsDialog() {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(getActivity())
+                        .setMessage(R.string.no_sync_accounts)
+                        .setNegativeButton(R.string.cancel_button_title,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                })
+                        .setPositiveButton(R.string.ok_button_title,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent(Settings.ACTION_SYNC_SETTINGS);
+                                        getActivity().startActivity(intent);
+                                    }
+                                });
+        return builder.create();
     }
 
 

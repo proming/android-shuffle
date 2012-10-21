@@ -248,8 +248,6 @@ allow that, you can turn it off under Settings.</string>
 
     <string name="sync_preferences">Synchronization settings</string>
 
-    <string name="changeSynchronizationSettings">Tracks settings</string>
-
 	<string name="backup_preferences">Backup settings</string>
 	
 	<string name="title_create_backup_preference">Backup to SD Card</string>
@@ -317,6 +315,7 @@ allow that, you can turn it off under Settings.</string>
     <string name="last_sync_title">Last successful update %1$s</string>
     <string name="no_previous_sync">No sync yet on this account</string>
     <string name="sync_selected_account">Logged in as %1$s</string>
+    <string name="no_sync_accounts">No Google accounts setup. Add one?</string>
 
     <!-- list filter preferences -->
     <string name="list_settings_title">Settings</string>
