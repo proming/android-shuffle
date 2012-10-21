@@ -68,7 +68,7 @@ public class Preferences {
     }
 
     public static boolean isSyncEnabled(Context context) {
-        return getSharedPreferences(context).getBoolean(SYNC_ENABLED, true);
+        return getSharedPreferences(context).getBoolean(SYNC_ENABLED, false);
     }
 
     public static String getSyncDeviceIdentity(Context context) {
