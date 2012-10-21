@@ -62,10 +62,9 @@ public class SyncResponseProcessor {
             mTaskSyncProcessor.clearSyncData();
 
             Preferences.getEditor(mContext)
-                    .putString(Preferences.SYNC_LAST_SYNC_ID, null)
-                    .putLong(Preferences.SYNC_LAST_SYNC_GAE_DATE, 0L)
-                    .putLong(Preferences.SYNC_LAST_SYNC_LOCAL_DATE, 0L)
-                    .putInt(Preferences.SYNC_COUNT, 0)
+                    .remove(Preferences.SYNC_LAST_SYNC_ID)
+                    .remove(Preferences.SYNC_LAST_SYNC_GAE_DATE)
+                    .remove(Preferences.SYNC_LAST_SYNC_LOCAL_DATE)
                     .commit();
 
             // TODO request new sync

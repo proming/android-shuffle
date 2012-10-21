@@ -11,37 +11,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent" android:layout_height="match_parent">
 
-
     <TextView
-            android:id="@+id/enable_sync_label"
-            android:layout_width="wrap_content"
+            android:id="@+id/intro_message"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignBaseline="@+id/enable_sync"
-            android:paddingLeft="24dp"
-            android:text="@string/enable_sync_button_title"
-            style="@style/LabelTextViewStyle"
+            android:text="@string/sync_introduction"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             />
 
-    <ToggleButton
-            android:id="@+id/enable_sync"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="12dp"
-            android:onClick="onToggleSyncClicked"
-            style="?android:attr/textAppearanceMedium"
-
-            />
 
     <Button
             android:id="@+id/select_account"
+            android:layout_below="@+id/intro_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/enable_sync"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
             android:text="@string/select_account_button_title"
             android:visibility="invisible"
             android:onClick="onSelectAccountClicked"
@@ -49,10 +37,9 @@
 
     <Button
             android:id="@+id/logout"
-            android:layout_width="wrap_content"
+                android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/enable_sync"
             android:layout_marginRight="8dp"
             android:layout_marginTop="12dp"
             android:onClick="onLogoutClicked"
@@ -81,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/logout"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="24dp"
             android:drawableLeft="@drawable/ic_menu_refresh_holo_light"
             android:drawablePadding="8dp"
             android:onClick="onSyncNowClicked"

@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Contacts;
 import android.provider.ContactsContract;
@@ -31,8 +32,10 @@ import roboguice.inject.InjectView;
 public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
     private static final String TAG = "PrefAppEngSyncAct";
 
-    @InjectView(R.id.enable_sync)
-    private CompoundButton mEnableSyncToggleButton;
+    public static final String GOOGLE_ACCOUNT = "com.google";
+
+    @InjectView(R.id.intro_message)
+    private TextView mIntroTextView;
 
     @InjectView(R.id.select_account)
     private Button mSelectAccountButton;
@@ -55,6 +58,8 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
     @Inject
     private SyncListener mSyncListener;
 
+    private Account mSelectedAccount;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView+");
@@ -68,28 +73,20 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
         setupScreen();
     }
 
-    public void onToggleSyncClicked(View view) {
-        Preferences.getEditor(getActivity()).putBoolean(Preferences.SYNC_ENABLED, mEnableSyncToggleButton.isChecked()).commit();
-        updateViewsOnToggleEnabled();
-    }
-
     public void onSelectAccountClicked(View view) {
         getActivity().showDialog(PreferencesAppEngineSynchronizationActivity.ACCOUNTS_DIALOG);
     }
 
     public void onLogoutClicked(View view) {
         Preferences.getEditor(getActivity())
-                .putString(Preferences.SYNC_ACCOUNT, "")
-                .remove(Preferences.SYNC_LAST_SYNC_ID)
-                .remove(Preferences.SYNC_LAST_SYNC_GAE_DATE)
-                .remove(Preferences.SYNC_LAST_SYNC_LOCAL_DATE)
+                .putBoolean(Preferences.SYNC_ENABLED, false)
                 .commit();
         updateViewsOnSyncAccountSet();
     }
 
     public Dialog createAccountsDialog() {
         AccountManager manager = AccountManager.get(getActivity());
-        final Account[] accounts = manager.getAccountsByType("com.google");
+        final Account[] accounts = manager.getAccountsByType(GOOGLE_ACCOUNT);
 
         final int numAccounts = accounts.length;
 
@@ -102,34 +99,51 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
         String accountName = Preferences.getSyncAccount(getActivity());
 
         int selectedIndex = -1;
+        mSelectedAccount = null;
         for (int i=0; i < numAccounts; i++)
         {
             final String name = accounts[i].name;
             if (name.equals(accountName)) {
                 selectedIndex = i;
+                mSelectedAccount = accounts[i];
             }
             items[i] = name;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.select_account_button_title);
-        builder.setSingleChoiceItems(items, selectedIndex, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                Account account = accounts[item];
-                String oldAccountName = Preferences.getSyncAccount(getActivity());
-                if (!oldAccountName.equals(account.name)) {
-                    Log.i(TAG, "Switching from account " + oldAccountName + " to " + account.name);
-                    Preferences.getEditor(getActivity())
-                            .putString(Preferences.SYNC_ACCOUNT, account.name)
-                            .remove(Preferences.SYNC_LAST_SYNC_ID)
-                            .remove(Preferences.SYNC_LAST_SYNC_GAE_DATE)
-                            .remove(Preferences.SYNC_LAST_SYNC_LOCAL_DATE)
-                            .commit();
-                    mEventManager.fire(new RegisterSyncAccountEvent(account));
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(getActivity())
+            .setTitle(R.string.select_account_button_title)
+            .setSingleChoiceItems(items, selectedIndex,
+                    new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                    mSelectedAccount = accounts[item];
                 }
-                updateViewsOnSyncAccountSet();
-            }
-        });
+            })
+            .setPositiveButton(R.string.ok_button_title,
+                    new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (mSelectedAccount != null) {
+                        final Account account = mSelectedAccount;
+                        String oldAccountName = Preferences.getSyncAccount(getActivity());
+                        SharedPreferences.Editor editor = Preferences.getEditor(getActivity());
+                        editor.putBoolean(Preferences.SYNC_ENABLED, true);
+                        if (!oldAccountName.equals(account.name)) {
+                            Log.i(TAG, "Switching from account " + oldAccountName +
+                                    " to " + account.name);
+                            editor
+                                .putString(Preferences.SYNC_ACCOUNT, account.name)
+                                .remove(Preferences.SYNC_LAST_SYNC_ID)
+                                .remove(Preferences.SYNC_LAST_SYNC_GAE_DATE)
+                                .remove(Preferences.SYNC_LAST_SYNC_LOCAL_DATE);
+                        }
+                        editor.commit();
+                        mEventManager.fire(new RegisterSyncAccountEvent(account));
+                        updateViewsOnSyncAccountSet();
+                    }
+                }
+            });
+
         AlertDialog alert = builder.create();
         return alert;
     }
@@ -148,7 +162,7 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        Intent intent = new Intent(Settings.ACTION_SYNC_SETTINGS);
+                                        Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
                                         getActivity().startActivity(intent);
                                     }
                                 });
@@ -157,28 +171,19 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
 
 
     private void setupScreen() {
-        mEnableSyncToggleButton.setChecked(Preferences.isSyncEnabled(getActivity()));
-        updateViewsOnToggleEnabled();
         updateViewsOnSyncAccountSet();
-    }
-
-    private void updateViewsOnToggleEnabled() {
-        final boolean enabled = Preferences.isSyncEnabled(getActivity());
-
-        mSelectAccountButton.setEnabled(enabled);
-        mLogoutButton.setEnabled(enabled);
-        mSyncNowButton.setEnabled(enabled);
     }
 
     private void updateViewsOnSyncAccountSet() {
         String syncAccount = Preferences.getSyncAccount(getActivity());
-        final boolean accountSet = syncAccount.length() > 0;
-        mSelectAccountButton.setVisibility(accountSet ? View.GONE : View.VISIBLE);
-        mLoggedInTextView.setVisibility(accountSet ? View.VISIBLE : View.GONE);
+        final boolean syncEnabled = Preferences.isSyncEnabled(getActivity());
+        mIntroTextView.setVisibility(syncEnabled ? View.GONE : View.VISIBLE);
+        mSelectAccountButton.setVisibility(syncEnabled ? View.GONE : View.VISIBLE);
+        mLoggedInTextView.setVisibility(syncEnabled ? View.VISIBLE : View.GONE);
         mLoggedInTextView.setText(getString(R.string.sync_selected_account, syncAccount));
-        mLogoutButton.setVisibility(accountSet ? View.VISIBLE : View.GONE);
-        mSyncNowButton.setVisibility(accountSet ? View.VISIBLE : View.GONE);
-        mLastSyncTextView.setVisibility(accountSet ? View.VISIBLE : View.GONE);
+        mLogoutButton.setVisibility(syncEnabled ? View.VISIBLE : View.GONE);
+        mSyncNowButton.setVisibility(syncEnabled ? View.VISIBLE : View.GONE);
+        mLastSyncTextView.setVisibility(syncEnabled ? View.VISIBLE : View.GONE);
         long lastSyncDate = Preferences.getLastSyncLocalDate(getActivity());
         if (lastSyncDate == 0L) {
             mLastSyncTextView.setText(R.string.no_previous_sync);

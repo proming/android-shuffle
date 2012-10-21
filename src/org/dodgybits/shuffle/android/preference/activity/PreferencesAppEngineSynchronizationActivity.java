@@ -52,10 +52,6 @@ public class PreferencesAppEngineSynchronizationActivity extends RoboFragmentAct
         return dialog;
     }
 
-    public void onToggleSyncClicked(View view) {
-        mFragment.onToggleSyncClicked(view);
-    }
-
     public void onSelectAccountClicked(View view) {
         mFragment.onSelectAccountClicked(view);
     }
