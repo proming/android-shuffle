@@ -1,11 +1,11 @@
 package org.dodgybits.shuffle.android.core.model.protocol;
 
+import org.dodgybits.shuffle.android.core.model.Id;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.dodgybits.shuffle.android.core.model.Id;
-
-public class HashEntityDirectory<Entity> implements EntityDirectory<Entity> {
+public class HashEntityDirectory<Entity> implements MutableEntityDirectory<Entity> {
 
 	private Map<String,Entity> mItemsByName;
 	private Map<Id, Entity> mItemsById;
@@ -14,7 +14,8 @@ public class HashEntityDirectory<Entity> implements EntityDirectory<Entity> {
 		mItemsByName = new HashMap<String,Entity>();
 		mItemsById = new HashMap<Id,Entity>();
 	}
-	
+
+    @Override
 	public void addItem(Id id, String name, Entity item) {
 		mItemsById.put(id, item);
 		mItemsByName.put(name, item);

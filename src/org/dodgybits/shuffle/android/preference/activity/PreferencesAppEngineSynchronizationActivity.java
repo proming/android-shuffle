@@ -1,14 +1,12 @@
 package org.dodgybits.shuffle.android.preference.activity;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.preference.fragment.PreferencesAppEngineSynchronizationFragment;
-import org.dodgybits.shuffle.android.server.sync.GaeSyncService;
 import roboguice.activity.RoboFragmentActivity;
 
 public class PreferencesAppEngineSynchronizationActivity extends RoboFragmentActivity {
@@ -61,9 +59,7 @@ public class PreferencesAppEngineSynchronizationActivity extends RoboFragmentAct
     }
 
     public void onSyncNowClicked(View view) {
-        Intent intent = new Intent(this, GaeSyncService.class);
-        startService(intent);
-
+        mFragment.onSyncNowClicked(view);
     }
 
 

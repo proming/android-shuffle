@@ -9,6 +9,7 @@ import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
 import org.dodgybits.shuffle.android.core.model.protocol.EntityDirectory;
 import org.dodgybits.shuffle.android.core.model.protocol.HashEntityDirectory;
+import org.dodgybits.shuffle.android.core.model.protocol.MutableEntityDirectory;
 import org.dodgybits.shuffle.android.core.model.protocol.ProjectProtocolTranslator;
 import org.dodgybits.shuffle.android.core.util.StringUtils;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
@@ -29,8 +30,9 @@ public class ProjectSyncProcessor {
                                                     EntityDirectory<Context> contextLocator) {
         ProjectProtocolTranslator translator = new ProjectProtocolTranslator(contextLocator);
         // build up the locator and list of new contacts
-        HashEntityDirectory<Project> projectLocator = new HashEntityDirectory<Project>();
+        MutableEntityDirectory<Project> projectLocator = new HashEntityDirectory<Project>();
 
+        addExistingProjects(projectLocator);
         addNewProjects(response, translator, projectLocator);
         updateModifiedProjects(response, translator, projectLocator);
         updateLocallyNewProjects(response, projectLocator);
@@ -39,9 +41,23 @@ public class ProjectSyncProcessor {
         return projectLocator;
     }
 
+    private void addExistingProjects(MutableEntityDirectory<Project> projectLocator) {
+        // preload with existing device projects
+        Cursor cursor = mContext.getContentResolver().query(
+                ProjectProvider.Projects.CONTENT_URI, ProjectProvider.Projects.FULL_PROJECTION,
+                null, null, null);
+        while (cursor.moveToNext()) {
+            org.dodgybits.shuffle.android.core.model.Project project = mProjectPersister.read(cursor);
+            if (project.getGaeId().isInitialised()) {
+                projectLocator.addItem(project.getGaeId(), project.getName(), project);
+            }
+        }
+        cursor.close();
+    }
+
     private void addNewProjects(ShuffleProtos.SyncResponse response,
                                 ProjectProtocolTranslator translator,
-                                HashEntityDirectory<Project> projectLocator) {
+                                MutableEntityDirectory<Project> projectLocator) {
         List<ShuffleProtos.Project> protoProjects = response.getNewProjectsList();
         List<Project> newProjects = new ArrayList<Project>();
         for (ShuffleProtos.Project protoProject : protoProjects) {
@@ -61,7 +77,7 @@ public class ProjectSyncProcessor {
 
     private void updateModifiedProjects(ShuffleProtos.SyncResponse response,
                                         ProjectProtocolTranslator translator,
-                                        HashEntityDirectory<Project> projectLocator) {
+                                        MutableEntityDirectory<Project> projectLocator) {
         List<ShuffleProtos.Project> protoProjects = response.getModifiedProjectsList();
         for (ShuffleProtos.Project protoProject : protoProjects) {
             Project project = translator.fromMessage(protoProject);
@@ -74,7 +90,7 @@ public class ProjectSyncProcessor {
     }
 
     private void updateLocallyNewProjects(ShuffleProtos.SyncResponse response,
-                                          HashEntityDirectory<Project> projectLocator) {
+                                          MutableEntityDirectory<Project> projectLocator) {
         List<ShuffleProtos.SyncIdPair> pairsList = response.getAddedProjectIdPairsList();
         for (ShuffleProtos.SyncIdPair pair : pairsList) {
             Id localId = Id.create(pair.getDeviceEntityId());

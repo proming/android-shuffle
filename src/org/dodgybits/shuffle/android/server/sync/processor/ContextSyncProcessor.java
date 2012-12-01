@@ -5,11 +5,11 @@ import android.util.Log;
 import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Id;
-import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.core.model.protocol.ContextProtocolTranslator;
 import org.dodgybits.shuffle.android.core.model.protocol.EntityDirectory;
 import org.dodgybits.shuffle.android.core.model.protocol.HashEntityDirectory;
+import org.dodgybits.shuffle.android.core.model.protocol.MutableEntityDirectory;
 import org.dodgybits.shuffle.android.core.util.StringUtils;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.dto.ShuffleProtos;
@@ -29,8 +29,10 @@ public class ContextSyncProcessor {
         Log.d(TAG, "Parsing context updates");
         ContextProtocolTranslator translator = new ContextProtocolTranslator();
         // build up the locator and list of new contacts
-        HashEntityDirectory<Context> contextLocator = new HashEntityDirectory<Context>();
+        MutableEntityDirectory<Context> contextLocator = new HashEntityDirectory<Context>();
 
+
+        addExistingContexts(contextLocator);
         addNewContexts(response, translator, contextLocator);
         updateModifiedContexts(response, translator, contextLocator);
         updateLocallyNewContexts(response, contextLocator);
@@ -39,9 +41,23 @@ public class ContextSyncProcessor {
         return contextLocator;
     }
 
+    private void addExistingContexts(MutableEntityDirectory<Context> contextLocator) {
+        // preload with existing device contexts
+        Cursor cursor = mContext.getContentResolver().query(
+                ContextProvider.Contexts.CONTENT_URI, ContextProvider.Contexts.FULL_PROJECTION,
+                null, null, null);
+        while (cursor.moveToNext()) {
+            org.dodgybits.shuffle.android.core.model.Context context = mContextPersister.read(cursor);
+            if (context.getGaeId().isInitialised()) {
+                contextLocator.addItem(context.getGaeId(), context.getName(), context);
+            }
+        }
+        cursor.close();
+    }
+
     private void addNewContexts(ShuffleProtos.SyncResponse response,
                                 ContextProtocolTranslator translator,
-                                HashEntityDirectory<Context> contextLocator) {
+                                MutableEntityDirectory<Context> contextLocator) {
         List<ShuffleProtos.Context> protoContexts = response.getNewContextsList();
         List<Context> newContexts = new ArrayList<Context>();
         for (ShuffleProtos.Context protoContext : protoContexts) {
@@ -61,7 +77,7 @@ public class ContextSyncProcessor {
 
     private void updateModifiedContexts(ShuffleProtos.SyncResponse response,
                                         ContextProtocolTranslator translator,
-                                        HashEntityDirectory<Context> contextLocator) {
+                                        MutableEntityDirectory<Context> contextLocator) {
         List<ShuffleProtos.Context> protoContexts = response.getModifiedContextsList();
         for (org.dodgybits.shuffle.dto.ShuffleProtos.Context protoContext : protoContexts) {
             Context context = translator.fromMessage(protoContext);
@@ -74,7 +90,7 @@ public class ContextSyncProcessor {
     }
 
     private void updateLocallyNewContexts(ShuffleProtos.SyncResponse response,
-                                          HashEntityDirectory<Context> contextLocator) {
+                                          MutableEntityDirectory<Context> contextLocator) {
         List<ShuffleProtos.SyncIdPair> pairsList = response.getAddedContextIdPairsList();
         for (ShuffleProtos.SyncIdPair pair : pairsList) {
             Id localId = Id.create(pair.getDeviceEntityId());
