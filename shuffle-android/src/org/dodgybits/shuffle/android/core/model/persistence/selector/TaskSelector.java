@@ -146,7 +146,7 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
                     "OR (" +
                     "     ((select count(*) from taskContext tc where tc.taskId = task._id) > 0) AND " +
                     "     ((select count(*) from taskContext tc, context c where " +
-                    "         tc.taskId = task._id and tc.contextId = c._id and c.active = 0) = 0)" +
+                    "         tc.taskId = task._id and tc.contextId = c._id and c.active = 1) = 0)" +
                     "    )" +
                 ")";
             expressions.add(expression);
