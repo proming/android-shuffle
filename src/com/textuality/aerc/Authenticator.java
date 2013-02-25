@@ -23,6 +23,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -225,9 +226,11 @@ public class Authenticator {
                     }
                 }
             }
-            if (mCookie == null) 
+            if (mCookie == null) {
                 mErrorMessage = str(R.string.aerc_authentication_failed) + ": " + str(R.string.aerc_no_cookie);
-
+                // failed to get cookie - invalidate the token
+                Preferences.getEditor(mContext).remove(Preferences.SYNC_AUTH_TOKEN).commit();
+            }
         } catch (IOException e) {
             mErrorMessage = str(R.string.aerc_authentication_failed) + ": " + str(R.string.aerc_no_network); 
         } catch (Exception e) {

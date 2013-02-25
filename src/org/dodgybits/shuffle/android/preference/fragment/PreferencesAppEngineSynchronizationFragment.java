@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
+import org.dodgybits.shuffle.android.server.sync.GaeSyncService;
 import org.dodgybits.shuffle.android.server.sync.ObtainAuthTokenTask;
 import org.dodgybits.shuffle.android.server.sync.event.ResetSyncSettingsEvent;
 import org.dodgybits.shuffle.android.server.sync.listener.SyncListener;
@@ -82,7 +83,31 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
         updateViewsOnSyncAccountSet();
     }
 
-    public Dialog createAccountsDialog() {
+    public void onSyncNowClicked(View view) {
+        if (Preferences.getSyncAuthToken(getActivity()) != null) {
+            Intent intent = new Intent(getActivity(), GaeSyncService.class);
+            getActivity().startService(intent);
+        } else {
+            // token was invalidated - fetch a new one
+            String accountName = Preferences.getSyncAccount(getActivity());
+            Account account = null;
+            AccountManager manager = AccountManager.get(getActivity());
+            final Account[] accounts = manager.getAccountsByType(GOOGLE_ACCOUNT);
+            final int numAccounts = accounts.length;
+            for (int i=0; i < numAccounts; i++)
+            {
+                final String name = accounts[i].name;
+                if (name.equals(accountName)) {
+                    account = accounts[i];
+                    break;
+                }
+            }
+
+            new ObtainAuthTokenTask(getActivity(), account).execute();
+        }
+    }
+
+        public Dialog createAccountsDialog() {
         AccountManager manager = AccountManager.get(getActivity());
         final Account[] accounts = manager.getAccountsByType(GOOGLE_ACCOUNT);
 

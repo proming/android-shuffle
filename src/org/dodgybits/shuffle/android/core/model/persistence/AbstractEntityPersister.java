@@ -44,6 +44,7 @@ public abstract class AbstractEntityPersister<E extends Entity> implements Entit
         return entity;
     }
 
+    @Override
     public E findByGaeId(Id gaeId) {
         E entity = null;
 

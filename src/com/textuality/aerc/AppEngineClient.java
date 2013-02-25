@@ -157,7 +157,8 @@ public class AppEngineClient {
         public URL uri;
         public Map<String, List<String>> headers;
         public Request(URL uri, Map<String, List<String>> headers) {
-            this.uri = uri; this.headers = headers;
+            this.uri = uri;
+            this.headers = headers;
         }
     }
     private class POST extends Request {
