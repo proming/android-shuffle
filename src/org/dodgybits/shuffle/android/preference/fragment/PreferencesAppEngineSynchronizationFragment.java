@@ -80,6 +80,7 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
         Preferences.getEditor(getActivity())
                 .putBoolean(Preferences.SYNC_ENABLED, false)
                 .commit();
+        mEventManager.fire(new ResetSyncSettingsEvent());
         updateViewsOnSyncAccountSet();
     }
 
@@ -155,7 +156,6 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
                             Log.i(TAG, "Switching from account " + oldAccountName +
                                     " to " + account.name);
                             editor.putString(Preferences.SYNC_ACCOUNT, account.name);
-                            mEventManager.fire(new ResetSyncSettingsEvent());
                         }
                         editor.commit();
                         new ObtainAuthTokenTask(getActivity(), account).execute();
