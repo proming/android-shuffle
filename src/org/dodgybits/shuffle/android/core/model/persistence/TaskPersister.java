@@ -262,7 +262,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
     public int updateDeletedFlag(String selection, String[] selectionArgs, boolean isDeleted) {
         ContentValues values = new ContentValues();
         writeBoolean(values, AbstractCollectionProvider.ShuffleTable.DELETED, isDeleted);
-        values.put(AbstractCollectionProvider.ShuffleTable.MODIFIED_DATE, System.currentTimeMillis());
+        values.put(MODIFIED_DATE, System.currentTimeMillis());
         return mResolver.update(getContentUri(), values, selection, selectionArgs);
     }
 
@@ -334,6 +334,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         for (long id : ids) {
             values.clear();
             values.put(DISPLAY_ORDER, updateValues.get(id));
+            values.put(MODIFIED_DATE, System.currentTimeMillis());
             Uri uri = ContentUris.withAppendedId(TaskProvider.Tasks.CONTENT_URI, id);
             mResolver.update(uri, values, null, null);
         }
@@ -478,6 +479,7 @@ public class TaskPersister extends AbstractEntityPersister<Task> {
         Uri uri = ContentUris.withAppendedId(getContentUri(), id);
         values.clear();
         values.put(DISPLAY_ORDER, order);
+        values.put(MODIFIED_DATE, System.currentTimeMillis());
         mResolver.update(uri, values, null, null);
     }
 
