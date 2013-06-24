@@ -41,7 +41,7 @@ public final class CommonUtilities {
 //    public static final String APP_ADDR = "http://192.168.1.81:8888";
 
 
-    public static final String SYNC_ADDR = APP_ADDR + "/sync";
+    public static final String SYNC_ADDR = APP_ADDR + "/device/sync";
 
     public static final URL APP_URI;
     public static final URL SYNC_URI;
