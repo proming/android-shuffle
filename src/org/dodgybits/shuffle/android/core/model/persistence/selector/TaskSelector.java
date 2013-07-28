@@ -280,6 +280,9 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
         String sortOrder =  super.getSortOrder();
         if (sortOrder == null && mListQuery == ListQuery.project) {
             sortOrder = TaskProvider.Tasks.DISPLAY_ORDER + " ASC";
+        } else if (mListQuery == ListQuery.nextTasks) {
+            sortOrder = TaskProvider.Tasks.PROJECT_ID + " ASC, " +
+                TaskProvider.Tasks.DISPLAY_ORDER + " ASC";
         }
         return sortOrder;
     }
