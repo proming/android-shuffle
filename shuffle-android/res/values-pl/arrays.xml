@@ -17,12 +17,12 @@
 <resources>
     <array name="perspectives">
         <item>Skrzynka</item>
-        <item>Wymagane działania</item>
-        <item>Natępne działania</item>
+        <item>Zaplanowane działania</item>
+        <item>Natępne zadania</item>
         <item>Projekty</item>
         <item>Konteksty</item>
         <item>Własne</item>
-        <item>Przypomnienie</item>
+        <item>Oczekiwane</item>
     </array>
 
     <array name="help_screens">
@@ -30,14 +30,14 @@
         <item>Skrzynka</item>
         <item>Projekty</item>
         <item>Konteksty</item>
-        <item>Następne działania</item>
-        <item>Wymagane działania</item>
+        <item>Następne zadania</item>
+        <item>Zaplanowane działania</item>
         <item>Ustawienia</item>
         <item>Przydatne porady</item>
         <item>Podziękowania</item>
         <item>Własne</item>
-        <item>Przypomnienie</item>
-        <item>Entity lifecycle</item>
+        <item>Oczekiwane</item>
+        <item>Cykl życia pozycji</item>
     </array>
 
     <!-- Choices for the "Reminder minutes" spinner.
@@ -78,4 +78,27 @@
         <item>1 tydzień</item>
     </string-array>
 
+    <string-array name="list_preferences_active_labels">
+		 <item>Pokaż wszystko</item>
+		 <item>Pokaż tylko aktywne</item>
+        <item>Ukryj aktywne</item>
+    </string-array>
+
+    <string-array name="list_preferences_deleted_labels">
+        <item>Pokaż wszystko</item>
+		  <item>Pokaż tylko usunięte</item>
+        <item>Ukryj usunięte</item>
+    </string-array>
+
+    <string-array name="list_preferences_pending_labels">
+        <item>Pokaż wszystko</item>
+		  <item>Pokaż tylko oczekujące</item>
+        <item>Ukryj oczekujące</item>
+    </string-array>
+
+    <string-array name="list_preferences_completed_labels">
+        <item>Pokaż wszystko</item>
+		  <item>Pokaż tylko zakończone</item>
+        <item>Ukryj zakończone</item>
+    </string-array>
 </resources>
