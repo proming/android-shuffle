@@ -31,6 +31,7 @@ import org.dodgybits.shuffle.android.list.view.StatusView;
 import roboguice.event.EventManager;
 import roboguice.fragment.RoboFragment;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TaskViewFragment extends RoboFragment implements View.OnClickListener {
@@ -258,6 +259,7 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
         if (contexts.isEmpty()) {
             mContextContainer.setVisibility(View.INVISIBLE);
         } else {
+            Collections.sort(contexts);
             // reuse existing views if present
             int viewCount = mContextContainer.getChildCount();
             int contextCount = contexts.size();

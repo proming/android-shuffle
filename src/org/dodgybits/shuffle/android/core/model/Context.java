@@ -19,7 +19,7 @@ package org.dodgybits.shuffle.android.core.model;
 import android.text.TextUtils;
 
 
-public class Context implements Entity {
+public class Context implements Entity, Comparable<Context> {
     private Id mLocalId = Id.NONE;
     private String mName;
     private int mColourIndex;
@@ -86,7 +86,12 @@ public class Context implements Entity {
                 mLocalId, mName, mColourIndex,
                 mIconName, mActive, mDeleted, mGaeId);
     }
-    
+
+    @Override
+    public int compareTo(Context another) {
+        return this.getName().compareToIgnoreCase(another.getName());
+    }
+
     public static Builder newBuilder() {
         return Builder.create();
     }

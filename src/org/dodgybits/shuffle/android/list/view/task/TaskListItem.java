@@ -26,10 +26,7 @@ import org.dodgybits.shuffle.android.core.util.TaskLifecycleState;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.core.view.TextColours;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This custom View is the list item for the MessageList activity, and serves two purposes:
@@ -210,7 +207,7 @@ public class TaskListItem extends View {
         setTimestamp(task.getDueDate());
 
         boolean changed = setContexts(contexts);
-        changed |= setText(task.getDescription(), task.getDetails());
+        changed |= setText(task.getDescription() + " (" + task.getOrder() + ")", task.getDetails());
         
         if (changed) {
             requestLayout();
@@ -233,6 +230,7 @@ public class TaskListItem extends View {
 
             changed = !currentIds.equals(newIds);
         }
+        Collections.sort(contexts, Collections.reverseOrder());
         mContexts = contexts;
 
         return changed;
