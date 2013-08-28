@@ -29,9 +29,9 @@ import org.dodgybits.shuffle.android.core.view.TextColours;
 import java.util.*;
 
 /**
- * This custom View is the list item for the MessageList activity, and serves two purposes:
- * 1.  It's a container to store message metadata (e.g. the ids of the message, mailbox, & account)
- * 2.  It handles internal clicks such as the checkbox or the favorite star
+ * This custom View is the list item for the TaskListFragment, and serves two purposes:
+ * 1.  It's a container to store task details
+ * 2.  It handles internal clicks such as the checkbox
  */
 public class TaskListItem extends View {
     private static final String TAG = "TaskListItem";
@@ -196,10 +196,13 @@ public class TaskListItem extends View {
         sInit = false;
     }
 
+    private int mOrder;
+
     public void setTask(Task task) {
         mTaskId = task.getLocalId().getId();
         mIsCompleted = task.isComplete();
         mProject = mProjectCache.findById(task.getProjectId());
+        mOrder = task.getOrder();
         List<Context> contexts = mContextCache.findById(task.getContextIds());
         mIsActive = TaskLifecycleState.getActiveStatus(task, contexts, mProject) == TaskLifecycleState.Status.yes;
         mIsDeleted = TaskLifecycleState.getDeletedStatus(task, mProject) != TaskLifecycleState.Status.no;
@@ -255,7 +258,7 @@ public class TaskListItem extends View {
             SpannableStringBuilder ssb = new SpannableStringBuilder();
             boolean hasContents = false;
             if (!TextUtils.isEmpty(mDescription)) {
-                SpannableString ss = new SpannableString(mDescription);
+                SpannableString ss = new SpannableString(mDescription + " (" + mOrder + ")");
                 ss.setSpan(new StyleSpan(mIsCompleted ? Typeface.NORMAL : Typeface.BOLD), 0, ss.length(),
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 ssb.append(ss);
