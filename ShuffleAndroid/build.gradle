@@ -1,0 +1,38 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.6.+'
+    }
+}
+apply plugin: 'android'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 18
+    buildToolsVersion "18.1.1"
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 18
+    }
+}
+
+dependencies {
+	compile 'com.android.support:appcompat-v7:18.0.0'
+    compile 'com.android.support:support-v4:18.0.0'
+    compile 'org.dodgybits.shuffle:shuffle-dto:2.0.3-SNAPSHOT'
+
+    compile("org.roboguice:roboguice:2.0") {
+        exclude group: 'android.support', module: 'compatibility-v13'
+    }    
+
+    compile 'com.google.guava:guava:10.0.1'
+	compile 'com.google.inject:guice:3.0.no_aop'
+
+}
