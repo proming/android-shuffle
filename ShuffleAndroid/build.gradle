@@ -14,25 +14,46 @@ repositories {
 }
 
 android {
-    compileSdkVersion 18
-    buildToolsVersion "18.1.1"
+    compileSdkVersion 19
+    buildToolsVersion "19.0.0"
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 18
+        targetSdkVersion 19
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+//    buildTypes {
+//        release {
+//            runProguard true
+//            proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
+//        }
+//    }
+//    productFlavors {
+//        defaultFlavor {
+//            proguardFile 'proguard-rules.txt'
+//        }
+//    }
 }
 
+
 dependencies {
-	compile 'com.android.support:appcompat-v7:18.0.0'
-    compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.android.support:support-v4:19.0.0'
+//    compile 'com.android.support:gridlayout-v7:19.0.0'
+    compile 'com.android.support:appcompat-v7:19.0.0'
+
     compile 'org.dodgybits.shuffle:shuffle-dto:2.0.3-SNAPSHOT'
 
     compile("org.roboguice:roboguice:2.0") {
-        exclude group: 'android.support', module: 'compatibility-v13'
-    }    
+        exclude group: 'android.support'
+//        exclude group: 'com.google.inject', module:'guice'
+    }
 
     compile 'com.google.guava:guava:10.0.1'
-	compile 'com.google.inject:guice:3.0.no_aop'
+//	compile 'com.google.inject:guice:3.0.no_aop'
 
 }
