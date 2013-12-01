@@ -16,19 +16,20 @@
 
 package org.dodgybits.shuffle.android.widget;
 
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.RemoteViewsService;
+import android.os.Build;
+
 import com.google.inject.Inject;
-import com.google.inject.Injector;
+
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
-import roboguice.RoboGuice;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -85,27 +86,12 @@ public class WidgetProvider extends RoboAppWidgetProvider {
      *  2) Catch our command Uri's (i.e. take actions on user clicks) and let TaskWidget
      *     handle them.
      */
-    public static class WidgetService extends RemoteViewsService {
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class WidgetService extends RoboRemoteViewsService {
+
 
         @Inject
         private WidgetManager mWidgetManager;
-
-        @Override
-        public void onCreate() {
-            final Injector injector = RoboGuice.getInjector(this);
-            injector.injectMembers(this);
-
-            super.onCreate();
-        }
-
-        @Override
-        public void onDestroy() {
-            try {
-                RoboGuice.destroyInjector(this);
-            } finally {
-                super.onDestroy();
-            }
-        }
 
         @Override
         public RemoteViewsFactory onGetViewFactory(Intent intent) {

@@ -293,16 +293,22 @@
 
 		<provider
 			android:name="org.dodgybits.shuffle.android.persistence.provider.ContextProvider"
-			android:authorities="org.dodgybits.android.shuffle.provider.contextprovider" />
+			android:authorities="org.dodgybits.android.shuffle.provider.contextprovider"
+            android:exported="true"
+            />
 		<provider
 			android:name="org.dodgybits.shuffle.android.persistence.provider.ProjectProvider"
-			android:authorities="org.dodgybits.android.shuffle.provider.projectprovider" />
+			android:authorities="org.dodgybits.android.shuffle.provider.projectprovider"
+            android:exported="true"
+            />
 		<provider
 			android:name="org.dodgybits.shuffle.android.persistence.provider.ReminderProvider"
 			android:authorities="org.dodgybits.android.shuffle.provider.reminderprovider" />
 		<provider
 			android:name="org.dodgybits.shuffle.android.persistence.provider.TaskProvider"
-			android:authorities="org.dodgybits.android.shuffle.provider.taskprovider" />
+			android:authorities="org.dodgybits.android.shuffle.provider.taskprovider"
+            android:exported="true"
+            />
 
 		<!--  preference -->
 
