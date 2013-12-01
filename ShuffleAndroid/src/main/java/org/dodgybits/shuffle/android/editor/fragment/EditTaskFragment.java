@@ -39,7 +39,6 @@ import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -436,7 +435,7 @@ public class EditTaskFragment extends AbstractEditFragment<Task>
         if (!contexts.isEmpty()) {
             List<String> names = Lists.transform(contexts, new Function<Context, String>() {
                 @Override
-                public String apply(@Nullable Context input) {
+                public String apply(Context input) {
                     return input.getName();
                 }
             });

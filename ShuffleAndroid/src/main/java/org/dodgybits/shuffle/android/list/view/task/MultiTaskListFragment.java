@@ -13,7 +13,6 @@ import org.dodgybits.shuffle.android.list.activity.EntityListsActivity;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListTitles;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public class MultiTaskListFragment extends TaskListFragment {
         List<ListQuery> queries = getMultiTaskListContext().getListQueries();
         List<String> names = Lists.transform(queries, new Function<ListQuery, String>() {
             @Override
-            public String apply(@Nullable ListQuery input) {
+            public String apply(ListQuery input) {
                 return getString(ListTitles.getTitleId(input));
             }
         });

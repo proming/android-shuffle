@@ -7,7 +7,6 @@ import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelecto
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListTitles;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ public class MultiTaskListContext extends TaskListContext {
                     Lists.newArrayList(source.createStringArray());
             List<ListQuery> queries = Lists.transform(queryNames, new Function<String, ListQuery>() {
                 @Override
-                public ListQuery apply(@Nullable String input) {
+                public ListQuery apply(String input) {
                     return ListQuery.valueOf(input);
                 }
             });
@@ -64,7 +63,7 @@ public class MultiTaskListContext extends TaskListContext {
     public void writeToParcel(Parcel dest, int flags) {
         List<String> queryNames = Lists.transform(mQueries, new Function<ListQuery, String>() {
             @Override
-            public String apply(@Nullable ListQuery input) {
+            public String apply(ListQuery input) {
                 return input.name();
             }
         });

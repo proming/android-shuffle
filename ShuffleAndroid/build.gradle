@@ -40,20 +40,12 @@ android {
 //    }
 }
 
-
 dependencies {
     compile 'com.android.support:support-v4:19.0.0'
-//    compile 'com.android.support:gridlayout-v7:19.0.0'
     compile 'com.android.support:appcompat-v7:19.0.0'
-
     compile 'org.dodgybits.shuffle:shuffle-dto:2.0.3-SNAPSHOT'
-
+    compile 'com.google.guava:guava:15.0'
     compile("org.roboguice:roboguice:2.0") {
         exclude group: 'android.support'
-//        exclude group: 'com.google.inject', module:'guice'
     }
-
-    compile 'com.google.guava:guava:10.0.1'
-//	compile 'com.google.inject:guice:3.0.no_aop'
-
 }
