@@ -1,5 +1,6 @@
 package org.dodgybits.shuffle.android.list.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -144,6 +145,7 @@ public class ListSettingsEditorActivity extends RoboPreferenceActivity {
         return listPreference;
     }
 
+    @SuppressLint("NewApi")
     private Preference createQuickAdd() {
         Preference quickAddPref = OSUtils.atLeastICS() ? new SwitchPreference(this) : new CheckBoxPreference(this);
         quickAddPref.setTitle(R.string.quick_add_title);

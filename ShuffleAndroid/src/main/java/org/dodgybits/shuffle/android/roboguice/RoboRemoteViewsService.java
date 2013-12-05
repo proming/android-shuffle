@@ -1,7 +1,6 @@
-package org.dodgybits.shuffle.android.widget;
+package org.dodgybits.shuffle.android.roboguice;
 
 import android.annotation.TargetApi;
-import android.app.Service;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;

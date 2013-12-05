@@ -9,27 +9,41 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.view.ActionMode;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
 import com.google.inject.Inject;
+
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionMode;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.util.IntentUtils;
 import org.dodgybits.shuffle.android.core.util.UiUtilities;
-import org.dodgybits.shuffle.android.list.event.*;
+import org.dodgybits.shuffle.android.list.event.EditListSettingsEvent;
+import org.dodgybits.shuffle.android.list.event.ListSettingsUpdatedEvent;
+import org.dodgybits.shuffle.android.list.event.MoveTasksEvent;
+import org.dodgybits.shuffle.android.list.event.QuickAddEvent;
+import org.dodgybits.shuffle.android.list.event.UpdateTasksCompletedEvent;
+import org.dodgybits.shuffle.android.list.event.UpdateTasksDeletedEvent;
+import org.dodgybits.shuffle.android.list.event.ViewHelpEvent;
 import org.dodgybits.shuffle.android.list.view.QuickAddController;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
+import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
+
+import java.util.Set;
+
 import roboguice.event.EventManager;
 import roboguice.event.Observes;
 import roboguice.fragment.RoboListFragment;
-
-import java.util.Set;
 
 public class TaskListFragment extends RoboListFragment
         implements AdapterView.OnItemLongClickListener, TaskListAdaptor.Callback {
@@ -96,8 +110,8 @@ public class TaskListFragment extends RoboListFragment
         mShowMoveActions = mListContext.showMoveActions();
     }
 
-    protected ActionBarFragmentActivity getActionBarFragmentActivity() {
-        return (ActionBarFragmentActivity)getActivity();
+    protected RoboActionBarActivity getRoboActionBarActivity() {
+        return (RoboActionBarActivity)getActivity();
     }
 
     @Override
@@ -315,7 +329,6 @@ public class TaskListFragment extends RoboListFragment
             flushCaches();
             updateTitle();
             updateQuickAdd();
-            getActionBarFragmentActivity().supportResetOptionsMenu();
         }
         updateSelectionMode();
     }
@@ -502,7 +515,7 @@ public class TaskListFragment extends RoboListFragment
             updateSelectionModeView();
         } else {
             mLastSelectionModeCallback = new SelectionModeCallback();
-            getActionBarFragmentActivity().startSupportedActionMode(mLastSelectionModeCallback);
+            getRoboActionBarActivity().startSupportActionMode(mLastSelectionModeCallback);
         }
     }
 

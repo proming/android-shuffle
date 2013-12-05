@@ -44,6 +44,7 @@ import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
+import org.dodgybits.shuffle.android.roboguice.RoboAppWidgetProvider;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -22,25 +22,28 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.MenuItem;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
+
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarHelper;
 import org.dodgybits.shuffle.android.core.fragment.HelpListFragment;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
-import roboguice.inject.ContextScopedProvider;
+import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
 
 import java.util.List;
 import java.util.Map;
 
+import roboguice.inject.ContextScopedProvider;
+
 import static org.dodgybits.shuffle.android.core.util.Constants.cPackage;
 import static org.dodgybits.shuffle.android.core.util.Constants.cStringType;
 
-public class HelpActivity extends ActionBarFragmentActivity {
+public class HelpActivity extends RoboActionBarActivity {
     private static final String TAG = "HelpActivity";
     
     public static final String QUERY_NAME = "queryName";
@@ -60,9 +63,9 @@ public class HelpActivity extends ActionBarFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager);
 
-        getActionBarHelper().setDisplayOptions(ActionBarHelper.DISPLAY_HOME_AS_UP |
-                ActionBarHelper.DISPLAY_SHOW_HOME |
-                ActionBarHelper.DISPLAY_SHOW_TITLE);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP |
+                ActionBar.DISPLAY_SHOW_HOME |
+                ActionBar.DISPLAY_SHOW_TITLE);
 
         initFragments();
 

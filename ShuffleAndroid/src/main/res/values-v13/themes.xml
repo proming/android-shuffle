@@ -16,7 +16,7 @@
 
 <resources>
 
-    <style name="ShuffleTheme" parent="@android:style/Theme.Holo.Light" >
+    <style name="ShuffleTheme" parent="Theme.AppCompat.Light" >
     </style>
 
     <style name="ActionBarTitle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">

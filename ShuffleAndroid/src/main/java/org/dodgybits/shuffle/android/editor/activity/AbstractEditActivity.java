@@ -2,13 +2,14 @@ package org.dodgybits.shuffle.android.editor.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
-import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarHelper;
-import org.dodgybits.shuffle.android.editor.fragment.AbstractEditFragment;
 
-public abstract class AbstractEditActivity extends ActionBarFragmentActivity {
+import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.editor.fragment.AbstractEditFragment;
+import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
+
+public abstract class AbstractEditActivity extends RoboActionBarActivity {
     private static final String TAG = "EditProjectActivity";
 
     @Override
@@ -18,9 +19,9 @@ public abstract class AbstractEditActivity extends ActionBarFragmentActivity {
 
         setContentView(R.layout.fragment_container);
 
-        getActionBarHelper().setDisplayOptions(ActionBarHelper.DISPLAY_SHOW_CUSTOM,
-                ActionBarHelper.DISPLAY_HOME_AS_UP | ActionBarHelper.DISPLAY_SHOW_HOME|
-                        ActionBarHelper.DISPLAY_SHOW_TITLE | ActionBarHelper.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
+                ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME|
+                        ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
 
         AbstractEditFragment currentFragment = (AbstractEditFragment) getSupportFragmentManager().
                 findFragmentById(R.id.fragment_container);

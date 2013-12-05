@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.persistence.ProjectPersister;
@@ -26,6 +25,8 @@ import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
 import org.dodgybits.shuffle.android.list.view.QuickAddController;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
+import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
+
 import roboguice.event.EventManager;
 import roboguice.event.Observes;
 import roboguice.fragment.RoboListFragment;
@@ -214,8 +215,12 @@ public class ProjectListFragment extends RoboListFragment {
         if (getUserVisibleHint()) {
             updateTitle();
             updateQuickAdd();
-            ((ActionBarFragmentActivity)getActivity()).supportResetOptionsMenu();
+            getRoboActionBarActivity().supportInvalidateOptionsMenu();
         }
+    }
+
+    protected RoboActionBarActivity getRoboActionBarActivity() {
+        return (RoboActionBarActivity) getActivity();
     }
 
     private void updateTitle() {

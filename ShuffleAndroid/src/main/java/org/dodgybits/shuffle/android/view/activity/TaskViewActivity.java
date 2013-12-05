@@ -21,12 +21,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.MenuItem;
+
 import com.google.inject.Inject;
+
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarHelper;
 import org.dodgybits.shuffle.android.core.activity.HomeActivity;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
@@ -34,11 +35,12 @@ import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
 import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
+import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
 
 /**
  * A generic activity for viewing a task.
  */
-public class TaskViewActivity extends ActionBarFragmentActivity {
+public class TaskViewActivity extends RoboActionBarActivity {
     private static final String TAG = "TaskViewActivity";
 
     @Inject private TaskPersister mPersister;
@@ -60,11 +62,11 @@ public class TaskViewActivity extends ActionBarFragmentActivity {
         super.onCreate(icicle);
 
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
-        setContentView(R.layout.fragment_container_with_cab);
+        setContentView(R.layout.fragment_container);
 
-        getActionBarHelper().setDisplayOptions(ActionBarHelper.DISPLAY_HOME_AS_UP |
-                ActionBarHelper.DISPLAY_SHOW_HOME |
-                ActionBarHelper.DISPLAY_SHOW_TITLE);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP |
+                ActionBar.DISPLAY_SHOW_HOME |
+                ActionBar.DISPLAY_SHOW_TITLE);
 
         mUri = getIntent().getData();
         loadCursor();

@@ -1,4 +1,4 @@
-package org.dodgybits.shuffle.android.widget;
+package org.dodgybits.shuffle.android.roboguice;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;

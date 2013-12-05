@@ -8,12 +8,18 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.google.inject.Inject;
+
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.core.model.Context;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
@@ -28,11 +34,12 @@ import org.dodgybits.shuffle.android.list.event.UpdateTasksCompletedEvent;
 import org.dodgybits.shuffle.android.list.event.UpdateTasksDeletedEvent;
 import org.dodgybits.shuffle.android.list.view.LabelView;
 import org.dodgybits.shuffle.android.list.view.StatusView;
-import roboguice.event.EventManager;
-import roboguice.fragment.RoboFragment;
 
 import java.util.Collections;
 import java.util.List;
+
+import roboguice.event.EventManager;
+import roboguice.fragment.RoboFragment;
 
 public class TaskViewFragment extends RoboFragment implements View.OnClickListener {
     private static final String TAG = "TaskViewFragment";
@@ -159,7 +166,6 @@ public class TaskViewFragment extends RoboFragment implements View.OnClickListen
     private void onVisibilityChange() {
         if (mEncoder != null && getUserVisibleHint()) {
             updateTitle();
-            ((ActionBarFragmentActivity)getActivity()).supportResetOptionsMenu();
         }
     }
 

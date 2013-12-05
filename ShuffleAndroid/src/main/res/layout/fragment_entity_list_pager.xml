@@ -21,12 +21,4 @@
             >
     </android.support.v4.view.ViewPager>
 
-    <ViewStub
-            android:id="@+id/actionbar_split_compat_stub"
-            android:inflatedId="@+id/actionbar_split_compat"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/actionbar_compat_height"
-            android:layout="@layout/actionbar_split_compat"
-            />
-
 </LinearLayout>

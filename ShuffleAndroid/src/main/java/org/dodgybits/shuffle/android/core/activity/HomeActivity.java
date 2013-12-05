@@ -6,23 +6,24 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.util.AndroidException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarHelper;
 import org.dodgybits.shuffle.android.core.fragment.HomeListFragment;
 import org.dodgybits.shuffle.android.core.util.Constants;
 import org.dodgybits.shuffle.android.list.event.ViewHelpEvent;
 import org.dodgybits.shuffle.android.list.event.ViewPreferencesEvent;
 import org.dodgybits.shuffle.android.list.listener.NavigationListener;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
+import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
+
 import roboguice.event.EventManager;
 
-public class HomeActivity extends ActionBarFragmentActivity {
+public class HomeActivity extends RoboActionBarActivity {
     private static final String TAG = "HomeActivity";
 
     private static final int WHATS_NEW_DIALOG = 0;
@@ -41,9 +42,9 @@ public class HomeActivity extends ActionBarFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
 
-        getActionBarHelper().setDisplayOptions(
-                ActionBarHelper.DISPLAY_SHOW_HOME |
-                ActionBarHelper.DISPLAY_SHOW_TITLE);
+        getSupportActionBar().setDisplayOptions(
+                ActionBar.DISPLAY_SHOW_HOME |
+                ActionBar.DISPLAY_SHOW_TITLE);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, mFragment);

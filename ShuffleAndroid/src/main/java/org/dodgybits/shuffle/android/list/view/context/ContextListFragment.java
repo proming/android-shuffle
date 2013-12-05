@@ -9,22 +9,36 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.*;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
 import com.google.inject.Inject;
+
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.actionbarcompat.ActionBarFragmentActivity;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
 import org.dodgybits.shuffle.android.list.content.ContextCursorLoader;
-import org.dodgybits.shuffle.android.list.event.*;
+import org.dodgybits.shuffle.android.list.event.EditContextEvent;
+import org.dodgybits.shuffle.android.list.event.EditListSettingsEvent;
+import org.dodgybits.shuffle.android.list.event.EditNewContextEvent;
+import org.dodgybits.shuffle.android.list.event.NewContextEvent;
+import org.dodgybits.shuffle.android.list.event.QuickAddEvent;
+import org.dodgybits.shuffle.android.list.event.UpdateContextDeletedEvent;
+import org.dodgybits.shuffle.android.list.event.ViewContextEvent;
+import org.dodgybits.shuffle.android.list.event.ViewHelpEvent;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.model.ListSettingsCache;
 import org.dodgybits.shuffle.android.list.view.QuickAddController;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
+import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
+
 import roboguice.event.EventManager;
 import roboguice.event.Observes;
 import roboguice.fragment.RoboListFragment;
@@ -213,8 +227,12 @@ public class ContextListFragment extends RoboListFragment {
         if (getUserVisibleHint()) {
             updateTitle();
             updateQuickAdd();
-            ((ActionBarFragmentActivity)getActivity()).supportResetOptionsMenu();
+            getRoboActionBarActivity().supportInvalidateOptionsMenu();
         }
+    }
+
+    protected RoboActionBarActivity getRoboActionBarActivity() {
+        return (RoboActionBarActivity) getActivity();
     }
 
     private void updateTitle() {

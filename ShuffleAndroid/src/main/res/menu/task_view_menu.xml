@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:shuffle="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_mark_complete"
           android:icon="@drawable/ic_menu_mark"
           android:title="@string/complete"
-          android:showAsAction="ifRoom|withText" />
+        shuffle:showAsAction="ifRoom|withText" />
     <item android:id="@+id/action_mark_incomplete"
           android:icon="@drawable/ic_menu_mark"
           android:title="@string/incomplete"
-          android:showAsAction="ifRoom|withText" />
+        shuffle:showAsAction="ifRoom|withText" />
     <item android:id="@+id/action_edit"
           android:icon="@drawable/ic_menu_compose_holo_light"
           android:title="@string/edit_button_title"
-          android:showAsAction="ifRoom" />
+        shuffle:showAsAction="ifRoom" />
     <item android:id="@+id/action_delete"
           android:icon="@drawable/ic_menu_trash_holo_light"
           android:title="@string/menu_delete"
-          android:showAsAction="ifRoom" />
+        shuffle:showAsAction="ifRoom" />
     <item android:id="@+id/action_undelete"
           android:icon="@drawable/ic_menu_trash_holo_light"
           android:title="@string/menu_undelete"
-          android:showAsAction="ifRoom" />
+        shuffle:showAsAction="ifRoom" />
 </menu>
