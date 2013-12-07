@@ -79,6 +79,10 @@
             android:label="@string/app_name" />
 
         <activity
+            android:name="org.dodgybits.shuffle.android.core.activity.MainActivity"
+            android:label="@string/app_name" />
+
+        <activity
                 android:name="org.dodgybits.shuffle.android.list.activity.EntityListsActivity"
                 android:label="@string/app_name"
                 android:uiOptions="splitActionBarWhenNarrow"
@@ -400,17 +404,17 @@
           The com.google.android.c2dm.permission.SEND permission is necessary
           so only GCM services can send data messages for the app.
         -->
-        <receiver
-                android:name="com.google.android.gcm.GCMBroadcastReceiver"
-                android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <!-- Receives the actual messages. -->
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <!-- Receives the registration id. -->
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="org.dodgybits.android.shuffle" />
-            </intent-filter>
-        </receiver>
+        <!--<receiver-->
+                <!--android:name="com.google.android.gcm.GCMBroadcastReceiver"-->
+                <!--android:permission="com.google.android.c2dm.permission.SEND" >-->
+            <!--<intent-filter>-->
+                <!--&lt;!&ndash; Receives the actual messages. &ndash;&gt;-->
+                <!--<action android:name="com.google.android.c2dm.intent.RECEIVE" />-->
+                <!--&lt;!&ndash; Receives the registration id. &ndash;&gt;-->
+                <!--<action android:name="com.google.android.c2dm.intent.REGISTRATION" />-->
+                <!--<category android:name="org.dodgybits.android.shuffle" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <!--
           Application-specific subclass of GCMBaseIntentService that will
@@ -419,7 +423,7 @@
           By default, it must be named .GCMIntentService, unless the
           application uses a custom BroadcastReceiver that redefines its name.
         -->
-        <service android:name=".GCMIntentService" />
+        <!--<service android:name=".GCMIntentService" />-->
 
 
 		<!--  app widget -->

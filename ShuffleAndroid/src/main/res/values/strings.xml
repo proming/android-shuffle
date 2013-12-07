@@ -520,4 +520,8 @@ When a context is marked as deleted its association with all actions is removed.
     <string name="aerc_no_cookie">App engine provided no cookie</string>
     <string name="aerc_no_network">No network connection</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
 </resources>

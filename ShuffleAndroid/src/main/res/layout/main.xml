@@ -8,16 +8,32 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <FrameLayout
-        android:id="@+id/container"
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/quick_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/quick_add"
+            />
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
     <fragment android:id="@+id/navigation_drawer"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
-        android:name="com.bob.myapplication.NavigationDrawerFragment" />
+        android:name="org.dodgybits.shuffle.android.core.view.NavigationDrawerFragment"
+        />
 
 </android.support.v4.widget.DrawerLayout>
