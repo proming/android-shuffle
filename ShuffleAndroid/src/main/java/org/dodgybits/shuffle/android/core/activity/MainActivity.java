@@ -82,11 +82,6 @@ public class MainActivity extends RoboActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-//        getSupportActionBar().setDisplayOptions(
-//                ActionBar.DISPLAY_HOME_AS_UP |
-//                ActionBar.DISPLAY_SHOW_HOME |
-//                ActionBar.DISPLAY_SHOW_TITLE);
-
         // don't show soft keyboard unless user clicks on quick add box
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -94,10 +89,6 @@ public class MainActivity extends RoboActionBarActivity
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         initFragments();
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.navigation_drawer, mNavigationDrawerFragment);
-        ft.commit();
 
         mTitle = getTitle();
 

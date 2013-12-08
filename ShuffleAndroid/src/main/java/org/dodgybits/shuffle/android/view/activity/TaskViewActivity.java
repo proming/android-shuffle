@@ -28,7 +28,7 @@ import android.view.MenuItem;
 import com.google.inject.Inject;
 
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.activity.HomeActivity;
+import org.dodgybits.shuffle.android.core.activity.MainActivity;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
@@ -95,7 +95,7 @@ public class TaskViewActivity extends RoboActionBarActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 // app icon in action bar clicked; go home
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();

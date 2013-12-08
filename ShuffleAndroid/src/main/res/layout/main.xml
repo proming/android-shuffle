@@ -33,6 +33,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
+        android:background="#fff"
         android:name="org.dodgybits.shuffle.android.core.view.NavigationDrawerFragment"
         />
 

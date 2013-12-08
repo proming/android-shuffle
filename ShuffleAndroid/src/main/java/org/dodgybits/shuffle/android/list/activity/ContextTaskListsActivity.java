@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import com.google.inject.Inject;
 
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.activity.MainActivity;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.persistence.ContextPersister;
 import org.dodgybits.shuffle.android.list.content.ContextCursorLoader;
@@ -81,9 +82,9 @@ public class ContextTaskListsActivity extends RoboActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, EntityListsActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(EntityListsActivity.QUERY_NAME, ListQuery.context.name());
+                intent.putExtra(MainActivity.QUERY_NAME, ListQuery.context.name());
                 startActivity(intent);
                 finish();
                 return true;

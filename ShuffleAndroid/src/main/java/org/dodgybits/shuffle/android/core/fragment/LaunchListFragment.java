@@ -6,15 +6,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.LauncherShortcutActivity;
+import org.dodgybits.shuffle.android.core.activity.MainActivity;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.util.IntentUtils;
 import org.dodgybits.shuffle.android.core.view.IconNameCountListAdaptor;
 import org.dodgybits.shuffle.android.core.view.IconNameCountListAdaptor.ListItem;
 import org.dodgybits.shuffle.android.core.view.ListIcons;
-import org.dodgybits.shuffle.android.list.activity.EntityListsActivity;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
+
 import roboguice.fragment.RoboListFragment;
 
 public class LaunchListFragment extends RoboListFragment {
@@ -125,8 +127,8 @@ public class LaunchListFragment extends RoboListFragment {
         }
 
         private Intent getIntent(Activity activity) {
-            Intent intent = new Intent(activity, EntityListsActivity.class);
-            intent.putExtra(EntityListsActivity.QUERY_NAME, mListQuery.name());
+            Intent intent = new Intent(activity, MainActivity.class);
+            intent.putExtra(MainActivity.QUERY_NAME, mListQuery.name());
             return intent;
         }
 
