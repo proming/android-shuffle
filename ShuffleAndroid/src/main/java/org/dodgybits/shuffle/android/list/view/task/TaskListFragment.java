@@ -339,7 +339,8 @@ public class TaskListFragment extends RoboListFragment
     }
 
     private void updateTitle() {
-        getActivity().setTitle(getListContext().createTitle(getActivity(), mContextCache, mProjectCache));
+        String title = getListContext().createTitle(getActivity(), mContextCache, mProjectCache);
+        getActivity().setTitle(title);
     }
 
     public void onQuickAddEvent(@Observes QuickAddEvent event) {

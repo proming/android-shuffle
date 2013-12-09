@@ -1,12 +1,17 @@
 package org.dodgybits.shuffle.android.core.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.util.AndroidException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +22,7 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 
 import org.dodgybits.android.shuffle.R;
+import org.dodgybits.shuffle.android.core.util.Constants;
 import org.dodgybits.shuffle.android.core.view.NavigationDrawerFragment;
 import org.dodgybits.shuffle.android.list.event.ViewPreferencesEvent;
 import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
@@ -28,6 +34,7 @@ import org.dodgybits.shuffle.android.list.view.task.MultiTaskListContext;
 import org.dodgybits.shuffle.android.list.view.task.MultiTaskListFragment;
 import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.list.view.task.TaskListFragment;
+import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
 
 import java.util.List;
@@ -41,6 +48,7 @@ public class MainActivity extends RoboActionBarActivity
     private static final String TAG = "MainActivity";
 
     public static final String QUERY_NAME = "queryName";
+    private static final int WHATS_NEW_DIALOG = 0;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -51,7 +59,6 @@ public class MainActivity extends RoboActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-
 
     private List<Fragment> mFragments;
     private Map<ListQuery,Integer> mQueryIndex;
@@ -90,13 +97,14 @@ public class MainActivity extends RoboActionBarActivity
 
         initFragments();
 
-        mTitle = getTitle();
+        checkLastVersion();
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
+
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -140,6 +148,42 @@ public class MainActivity extends RoboActionBarActivity
         }
 
         return position;
+    }
+
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        super.setTitle(title);
+    }
+
+    private void checkLastVersion() {
+        final int lastVersion = Preferences.getLastVersion(this);
+        if (Math.abs(lastVersion) < Math.abs(Constants.cVersion)) {
+            // This is a new install or an upgrade.
+
+            // show what's new message
+            SharedPreferences.Editor editor = Preferences.getEditor(this);
+            editor.putInt(Preferences.LAST_VERSION, Constants.cVersion);
+            editor.commit();
+
+            showDialog(WHATS_NEW_DIALOG);
+        }
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog;
+        if (id == WHATS_NEW_DIALOG) {
+            dialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.whats_new_dialog_title)
+                    .setPositiveButton(R.string.ok_button_title, null)
+                    .setMessage(R.string.whats_new_dialog_message)
+                    .create();
+        } else {
+            dialog = super.onCreateDialog(id);
+        }
+        return dialog;
     }
 
     private void initFragments() {
@@ -200,7 +244,9 @@ public class MainActivity extends RoboActionBarActivity
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        if (mTitle != null) {
+            actionBar.setTitle(mTitle);
+        }
     }
 
 
