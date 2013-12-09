@@ -210,7 +210,7 @@ public class TaskListItem extends View {
         setTimestamp(task.getDueDate());
 
         boolean changed = setContexts(contexts);
-        changed |= setText(task.getDescription() + " (" + task.getOrder() + ")", task.getDetails());
+        changed |= setText(task.getDescription(), task.getDetails());
         
         if (changed) {
             requestLayout();
