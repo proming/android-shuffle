@@ -20,7 +20,7 @@
         <item>Due actions</item>
         <item>Next actions</item>
         <item>Projects</item>
-        <item>Contexts</item>
+        <item>Tags</item>
         <item>Custom</item>
         <item>Tickler</item>
     </array>
@@ -30,7 +30,7 @@
         <item>Introduction</item>
         <item>Inbox</item>
         <item>Projects</item>
-        <item>Contexts</item>
+        <item>Tags</item>
         <item>Next actions</item>
         <item>Due actions</item>
         <item>Settings</item>

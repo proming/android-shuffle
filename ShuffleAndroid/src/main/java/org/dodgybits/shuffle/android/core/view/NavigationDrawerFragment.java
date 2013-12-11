@@ -109,7 +109,7 @@ public class NavigationDrawerFragment extends Fragment {
     private IconNameCountListAdaptor.ListItem<HomeEntry> createListItem(int iconResId, String name, String initialCount,
                                                                         ListQuery query, EntitySelector selector) {
         HomeEntry entry = new HomeEntry(query, selector);
-        IconNameCountListAdaptor.ListItem<HomeEntry> listItem = new IconNameCountListAdaptor.ListItem<HomeEntry>(iconResId, name, entry);
+        IconNameCountListAdaptor.ListItem<HomeEntry> listItem = new IconNameCountListAdaptor.ListItem<>(iconResId, name, entry);
         listItem.setCount(initialCount);
         return listItem;
     }
