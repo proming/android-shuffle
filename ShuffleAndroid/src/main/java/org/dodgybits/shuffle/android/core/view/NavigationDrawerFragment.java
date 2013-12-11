@@ -3,6 +3,7 @@ package org.dodgybits.shuffle.android.core.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -14,6 +15,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.AndroidException;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -322,8 +325,20 @@ public class NavigationDrawerFragment extends Fragment {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
+        actionBar.setTitle(getVersionedTitle());
     }
+
+    private String getVersionedTitle() {
+        String title = getString(R.string.app_name);
+        try {
+            PackageInfo info = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+            title += " " + info.versionName;
+        } catch (AndroidException e) {
+            Log.e(TAG, "Failed to add version to title: " + e.getMessage());
+        }
+        return title;
+    }
+
 
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();

@@ -341,7 +341,6 @@ public class TaskListFragment extends RoboListFragment
 
     private void updateTitle() {
         getListContext().updateTitle(((ActionBarActivity)getActivity()), mContextCache, mProjectCache);
-
     }
 
     public void onQuickAddEvent(@Observes QuickAddEvent event) {
