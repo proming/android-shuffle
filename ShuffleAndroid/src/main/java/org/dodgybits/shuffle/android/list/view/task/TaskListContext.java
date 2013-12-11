@@ -3,6 +3,9 @@ package org.dodgybits.shuffle.android.list.view.task;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
@@ -97,10 +100,10 @@ public class TaskListContext implements Parcelable {
         ListSettings settings = ListSettingsCache.findSettings(mSelector.getListQuery());
         return mSelector.builderFrom().applyListPreferences(context, settings).build();
     }
-    
+
     public String createTitle(Context androidContext,
-                              EntityCache<org.dodgybits.shuffle.android.core.model.Context> contextCache, 
-                              EntityCache<Project> projectCache) {
+                            EntityCache<org.dodgybits.shuffle.android.core.model.Context> contextCache,
+                            EntityCache<Project> projectCache) {
         String title;
         String name;
         if (mSelector.getContextId().isInitialised()) {
@@ -116,8 +119,31 @@ public class TaskListContext implements Parcelable {
         } else {
             title = androidContext.getString(mTitleId);
         }
-        
+
         return title;
+    }
+
+    public void updateTitle(ActionBarActivity androidContext,
+                              EntityCache<org.dodgybits.shuffle.android.core.model.Context> contextCache,
+                              EntityCache<Project> projectCache) {
+        String name;
+        ActionBar actionBar = androidContext.getSupportActionBar();
+        if (mSelector.getContextId().isInitialised()) {
+            // it's possible the context no longer exists at this point
+            org.dodgybits.shuffle.android.core.model.Context context = contextCache.findById(mSelector.getContextId());
+            name = context == null ? "?" : context.getName();
+            actionBar.setTitle(name);
+            actionBar.setSubtitle(mTitleId);
+        } else if (mSelector.getProjectId().isInitialised()) {
+            // it's possible the project no longer exists at this point
+            Project project = projectCache.findById(mSelector.getProjectId());
+            name = project == null ? "?" : project.getName();
+            actionBar.setTitle(name);
+            actionBar.setSubtitle(mTitleId);
+        } else {
+            actionBar.setTitle(mTitleId);
+            actionBar.setSubtitle("");
+        }
     }
 
     public EditNewTaskEvent createEditNewTaskEvent() {

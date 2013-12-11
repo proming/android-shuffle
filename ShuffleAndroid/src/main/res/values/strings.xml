@@ -19,7 +19,7 @@
     <string name="app_name">Shuffle</string>
     <string name="title_inbox">Inbox</string>
     <string name="title_project">Projects</string>
-    <string name="title_context">Contexts</string>
+    <string name="title_context">Tags</string>
     <string name="title_next_tasks">Next Actions</string>
     <string name="title_due_tasks">Due Actions</string>
     <string name="title_due_today">Due Today</string>
@@ -34,8 +34,8 @@
     <string name="title_view_task">View action</string>
     <string name="title_new_project">New project</string>
     <string name="title_edit_project">Edit project</string>
-    <string name="title_new_context">New context</string>
-    <string name="title_edit_context">Edit context</string>
+    <string name="title_new_context">New tag</string>
+    <string name="title_edit_context">Edit tag</string>
     <string name="title_task_extras">Action extras</string>
     <string name="title_preferences">General Settings</string>
     <string name="title_preferences_clean">General Settings > Clean up</string>
@@ -45,12 +45,10 @@
     <string name="title_icon_picker">Choose icon</string>
     <string name="title_colour_picker">Choose color</string>
     <string name="title_calendar">Actions due %s</string>
-    <string name="title_project_tasks">Projects > %s</string>
-    <string name="title_context_tasks">Contexts > %s</string>
     <string name="title_shortcut_picker">Pick shortcut</string>
     <string name="title_widget_picker">Pick widget content</string>
-    <string name="title_context_picker">Pick a context</string>
-    <string name="title_contexts_picker">Pick contexts</string>
+    <string name="title_context_picker">Pick a tag</string>
+    <string name="title_contexts_picker">Pick tags</string>
     <string name="title_project_picker">Pick a project</string>
 
 	<!--  Option menu -->
@@ -63,9 +61,9 @@
     <string name="menu_insert">Add %s</string>
     <string name="menu_edit">Edit %s</string>
     <string name="menu_delete">Delete</string>
-    <string name="menu_undelete">Undelete</string>
+    <string name="menu_undelete">Restore</string>
     <string name="menu_delete_entity">Delete %s</string>
-    <string name="menu_undelete_entity">Undelete %s</string>
+    <string name="menu_undelete_entity">Restore %s</string>
     <string name="menu_revert">Revert</string>
     <string name="menu_discard">Discard</string>
     <string name="menu_preferences">Settings</string>
@@ -76,7 +74,7 @@
 
     <!--  general purpose -->
     <string name="project_title">Project</string>
-    <string name="context_title">Context</string>
+    <string name="context_title">Tag</string>
     <string name="details_title">Details</string>
     <string name="set_button_title">Set</string>
     <string name="clear_button_title">Clear</string>
@@ -90,12 +88,12 @@
 	<string name="info_title">Information</string>
     <string name="task_name">Action</string>
     <string name="project_name">Project</string>
-    <string name="context_name">Context</string>
+    <string name="context_name">Tag</string>
     <string name="nothing"></string>
     <string name="deleted">Deleted</string>
     <string name="active">Active</string>
     <string name="inactive">Inactive</string>
-    <string name="from_context">(via context)</string>
+    <string name="from_context">(via tag)</string>
     <string name="from_project">(via project)</string>
     <string name="complete">Complete</string>
     <string name="completed">Completed</string>
@@ -112,9 +110,9 @@
     <string name="search_label_action">Shuffle actions</string>
     <string name="search_hint_action">Search actions by description or details</string>
     <string name="search_settings_description_action">Descriptions and details of actions</string>
-    <string name="search_label_context">Shuffle contexts</string>
-    <string name="search_hint_context">Search context by name</string>
-    <string name="search_settings_description_context">Names of contexts</string>
+    <string name="search_label_context">Shuffle tags</string>
+    <string name="search_hint_context">Search tag by name</string>
+    <string name="search_settings_description_context">Names of tags</string>
     <string name="search_label_project">Shuffle projects</string>
     <string name="search_hint_project">Search project by name</string>
     <string name="search_settings_description_project">Names of projects</string>
@@ -129,6 +127,11 @@
 <string name="whats_new_dialog_message">Thanks for downloading Shuffle.\n\n
 <b>New in this version:</b>\n
 \t• Translation fixes\n
+\n
+<b>New in version 3.0.0:</b>\n
+\t• Push sync with brand new Shuffle website\n
+\t• Tablet support\n
+\n
 \n
 <b>New in version 2.0.1:</b>\n
 \t• Prevent soft keyboard popping up\n
@@ -303,7 +306,7 @@ allow that, you can turn it off under Settings.</string>
 
     <!-- Toast displayed when an item is saved -->
     <string name="itemDeletedToast">%1$s deleted.</string>
-    <string name="itemUndeletedToast">%1$s undeleted.</string>
+    <string name="itemUndeletedToast">%1$s restored.</string>
 
     <!-- App engine sync -->
     <string name="title_gae_sync_preferences">Server sync settings</string>
@@ -464,7 +467,7 @@ All entities are <b>active</b> by default. You may wish to make an entity inacti
 It still exists, but by default, you won\'t see it in your views.\n
 \n
 When you <b>delete</b> an entity, it is flagged as deleted internally and by default will not be visible in any views.
-You can undelete an entity by changing your View Settings to show deleted items and editing the value.
+You can restore an entity by changing your View Settings to show deleted items and editing the value.
 If you wish to permanently delete an entity, you can do so from the Settings menu.\n
 \n
 Actions pick up some of their state from the project and contexts they are assigned to.

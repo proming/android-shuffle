@@ -11,8 +11,8 @@ public class ListTitles {
 
     static {
         TITLE_ID_MAP.put(ListQuery.all, R.string.title_all);
-        TITLE_ID_MAP.put(ListQuery.context, R.string.title_context_tasks);
-        TITLE_ID_MAP.put(ListQuery.project, R.string.title_project_tasks);
+        TITLE_ID_MAP.put(ListQuery.context, R.string.context_title);
+        TITLE_ID_MAP.put(ListQuery.project, R.string.project_title);
         TITLE_ID_MAP.put(ListQuery.inbox, R.string.title_inbox);
         TITLE_ID_MAP.put(ListQuery.custom, R.string.title_custom);
         TITLE_ID_MAP.put(ListQuery.nextTasks, R.string.title_next_tasks);

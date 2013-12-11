@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -339,7 +340,8 @@ public class TaskListFragment extends RoboListFragment
     }
 
     private void updateTitle() {
-        getActivity().setTitle(getListContext().createTitle(getActivity(), mContextCache, mProjectCache));
+        getListContext().updateTitle(((ActionBarActivity)getActivity()), mContextCache, mProjectCache);
+
     }
 
     public void onQuickAddEvent(@Observes QuickAddEvent event) {
