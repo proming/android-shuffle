@@ -4,14 +4,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.util.AndroidException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +19,7 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.util.Constants;
+import org.dodgybits.shuffle.android.core.util.PackageUtils;
 import org.dodgybits.shuffle.android.core.view.NavigationDrawerFragment;
 import org.dodgybits.shuffle.android.list.event.ViewPreferencesEvent;
 import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
@@ -159,12 +156,15 @@ public class MainActivity extends RoboActionBarActivity
 
     private void checkLastVersion() {
         final int lastVersion = Preferences.getLastVersion(this);
-        if (Math.abs(lastVersion) < Math.abs(Constants.cVersion)) {
+        final int currentVersion = PackageUtils.getAppVersion(this);
+        if (Math.abs(lastVersion) < Math.abs(currentVersion)) {
             // This is a new install or an upgrade.
 
             // show what's new message
             SharedPreferences.Editor editor = Preferences.getEditor(this);
-            editor.putInt(Preferences.LAST_VERSION, Constants.cVersion);
+            editor.putInt(Preferences.LAST_VERSION, currentVersion);
+            // clear out GCM Registration ID after an upgrade
+            editor.putString(Preferences.GCM_REGISTRATION_ID, "");
             editor.commit();
 
             showDialog(WHATS_NEW_DIALOG);

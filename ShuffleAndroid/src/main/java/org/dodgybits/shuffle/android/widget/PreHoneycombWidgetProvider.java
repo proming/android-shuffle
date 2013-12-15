@@ -51,9 +51,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.dodgybits.shuffle.android.core.util.Constants.cIdType;
-import static org.dodgybits.shuffle.android.core.util.Constants.cPackage;
-
 /**
  * A widget provider.  We have a string that we pull from a preference in order to show
  * the configuration settings and the current time when the widget was updated.  We also
@@ -274,7 +271,7 @@ public class PreHoneycombWidgetProvider extends RoboAppWidgetProvider {
     static int getIdIdentifier(android.content.Context context, String name) {
         Integer id = sIdCache.get(name);
         if (id == null) {
-            id = getIdentifier(context, name, cIdType);
+            id = getIdentifier(context, name, "id");
             if (id == 0) return id;
             sIdCache.put(name, id);
         }
@@ -286,7 +283,7 @@ public class PreHoneycombWidgetProvider extends RoboAppWidgetProvider {
 
     static int getIdentifier(android.content.Context context, String name, String type) {
         int id = context.getResources().getIdentifier(
-                name, type, cPackage);
+                name, type, context.getPackageName());
         if (Log.isLoggable(TAG, Log.DEBUG)) {
             Log.d(TAG, "Got id " + id + " for resource " + name);
         }

@@ -7,27 +7,28 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 import com.textuality.aerc.Authenticator;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
-
-import static org.dodgybits.shuffle.android.server.gcm.CommonUtilities.APP_URI;
+import org.dodgybits.shuffle.android.server.IntegrationSettings;
 
 public class ObtainAuthTokenTask extends AsyncTask<Void, Void, String> {
 
-    private Activity mActivity;
-    private Account mAccount;
-    private String mErrorMessage;
+    private Activity activity;
+    private Account account;
+    private String errorMessage;
+    private IntegrationSettings integrationSettings;
 
-    public ObtainAuthTokenTask(Activity activity, Account account) {
-        mActivity = activity;
-        mAccount = account;
+    public ObtainAuthTokenTask(Activity activity, Account account, IntegrationSettings integrationSettings) {
+        this.activity = activity;
+        this.account = account;
+        this.integrationSettings = integrationSettings;
     }
 
     @Override
     protected String doInBackground(Void... params) {
         // ...
-        Authenticator authent = Authenticator.appEngineAuthenticator(mActivity, mAccount, APP_URI);
+        Authenticator authent = Authenticator.appEngineAuthenticator(activity, account, integrationSettings.getAppURL());
         String authToken = authent.token();
         if (authToken == null) {
-            mErrorMessage = authent.errorMessage();
+            errorMessage = authent.errorMessage();
         }
 
         return authToken;
@@ -36,15 +37,15 @@ public class ObtainAuthTokenTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String authToken) {
         // ...
-        Preferences.getEditor(mActivity)
+        Preferences.getEditor(activity)
                 .putString(Preferences.SYNC_AUTH_TOKEN, authToken)
                 .commit();
 
         if (authToken == null) {
-            Toast.makeText(mActivity.getApplicationContext(), mErrorMessage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
         } else {
-            Intent intent = new Intent(mActivity, GaeSyncService.class);
-            mActivity.startService(intent);
+            Intent intent = new Intent(activity, GaeSyncService.class);
+            activity.startService(intent);
         }
     }
 

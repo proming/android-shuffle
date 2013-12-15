@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
+import org.dodgybits.shuffle.android.server.IntegrationSettings;
 import org.dodgybits.shuffle.android.server.sync.GaeSyncService;
 import org.dodgybits.shuffle.android.server.sync.ObtainAuthTokenTask;
 import org.dodgybits.shuffle.android.server.sync.event.ResetSyncSettingsEvent;
@@ -56,6 +57,9 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
 
     @Inject
     private SyncListener mSyncListener;
+
+    @Inject
+    private IntegrationSettings integrationSettings;
 
     private Account mSelectedAccount;
 
@@ -104,7 +108,7 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
                 }
             }
 
-            new ObtainAuthTokenTask(getActivity(), account).execute();
+            new ObtainAuthTokenTask(getActivity(), account, integrationSettings).execute();
         }
     }
 
@@ -158,7 +162,7 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
                             editor.putString(Preferences.SYNC_ACCOUNT, account.name);
                         }
                         editor.commit();
-                        new ObtainAuthTokenTask(getActivity(), account).execute();
+                        new ObtainAuthTokenTask(getActivity(), account, integrationSettings).execute();
                         updateViewsOnSyncAccountSet();
                     }
                 }

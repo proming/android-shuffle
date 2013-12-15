@@ -27,22 +27,23 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 
-//    buildTypes {
-//        release {
-//            runProguard true
-//            proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
-//        }
-//    }
-//    productFlavors {
-//        defaultFlavor {
-//            proguardFile 'proguard-rules.txt'
-//        }
-//    }
+    buildTypes {
+        release {
+            runProguard true
+            proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
+        }
+    }
+    productFlavors {
+        defaultFlavor {
+            proguardFile 'proguard-rules.txt'
+        }
+    }
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.0.0'
-    compile 'com.android.support:appcompat-v7:19.0.0'
+    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:appcompat-v7:+'
+    compile 'com.google.android.gms:play-services:4.0.30'
     compile 'org.dodgybits.shuffle:shuffle-dto:2.0.3-SNAPSHOT'
     compile 'com.google.guava:guava:15.0'
     compile("org.roboguice:roboguice:2.0") {

@@ -7,28 +7,29 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.textuality.aerc.AppEngineClient;
 import com.textuality.aerc.Response;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
+import org.dodgybits.shuffle.android.server.IntegrationSettings;
 import org.dodgybits.shuffle.android.server.sync.listener.SyncListener;
 import org.dodgybits.shuffle.dto.ShuffleProtos;
 import roboguice.service.RoboIntentService;
 
 import java.net.URL;
 
-import static org.dodgybits.shuffle.android.server.gcm.CommonUtilities.APP_URI;
-import static org.dodgybits.shuffle.android.server.gcm.CommonUtilities.SYNC_URI;
-
 public class GaeSyncService extends RoboIntentService {
     private static final String TAG = "GaeSyncService";
 
     @Inject
-    SyncRequestBuilder mRequestBuilder;
+    SyncRequestBuilder requestBuilder;
 
     @Inject
-    SyncResponseProcessor mResponseProcessor;
+    SyncResponseProcessor responseProcessor;
 
     @Inject
-    SyncListener mSyncListener;
+    SyncListener syncListener;
 
-    private String mAuthToken;
+    @Inject
+    IntegrationSettings integrationSettings;
+
+    private String authToken;
 
     public GaeSyncService() {
         super("GaeSyncService");
@@ -37,18 +38,18 @@ public class GaeSyncService extends RoboIntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "Received sync intent");
-        mAuthToken = Preferences.getSyncAuthToken(this);
+        authToken = Preferences.getSyncAuthToken(this);
 
-        if (mAuthToken != null) {
+        if (authToken != null) {
             performSync();
         }
     }
 
     private void performSync() {
-        AppEngineClient client = new AppEngineClient(APP_URI, mAuthToken, this);
-        ShuffleProtos.SyncRequest syncRequest = mRequestBuilder.createRequest();
+        AppEngineClient client = new AppEngineClient(integrationSettings.getAppURL(), authToken, this);
+        ShuffleProtos.SyncRequest syncRequest = requestBuilder.createRequest();
         byte[] body = syncRequest.toByteArray();
-        transmit(body, client, SYNC_URI);
+        transmit(body, client, integrationSettings.getSyncURL());
     }
 
     private void transmit(byte[] body, AppEngineClient client, URL target) {
@@ -64,7 +65,7 @@ public class GaeSyncService extends RoboIntentService {
             try {
                 ShuffleProtos.SyncResponse syncResponse =
                         ShuffleProtos.SyncResponse.parseFrom(response.body);
-                mResponseProcessor.process(syncResponse);
+                responseProcessor.process(syncResponse);
             } catch (InvalidProtocolBufferException e) {
                 error("Response parsing failed : " + e.getMessage());
             }

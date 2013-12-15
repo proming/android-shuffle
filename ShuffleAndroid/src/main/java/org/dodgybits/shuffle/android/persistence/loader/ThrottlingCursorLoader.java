@@ -16,10 +16,12 @@
 
 package org.dodgybits.shuffle.android.persistence.loader;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 
@@ -27,6 +29,7 @@ import android.util.Log;
  * A {@link android.content.CursorLoader} variant that throttle auto-requery on content changes using
  * {@link Throttle}.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ThrottlingCursorLoader extends CursorLoader {
     private static final String TAG = "ThrottlingCursorLoader";
 

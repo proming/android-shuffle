@@ -40,18 +40,13 @@ import java.util.Map;
 
 import roboguice.inject.ContextScopedProvider;
 
-import static org.dodgybits.shuffle.android.core.util.Constants.cPackage;
-import static org.dodgybits.shuffle.android.core.util.Constants.cStringType;
-
 public class HelpActivity extends RoboActionBarActivity {
     private static final String TAG = "HelpActivity";
     
     public static final String QUERY_NAME = "queryName";
 
     private MyAdapter mAdapter;
-
     private ViewPager mPager;
-
     private List<Fragment> mFragments;
     private Map<ListQuery,Integer> mQueryIndex;
 
@@ -76,7 +71,6 @@ public class HelpActivity extends RoboActionBarActivity {
         int position = getRequestedPosition(getIntent());
         mPager.setCurrentItem(position);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -109,7 +103,7 @@ public class HelpActivity extends RoboActionBarActivity {
             Bundle args = new Bundle();
             int index = helpKeys[i];
             String idKey = "help" + index;
-            int contentId = getResources().getIdentifier(idKey, cStringType, cPackage);
+            int contentId = getResources().getIdentifier(idKey, "string", getPackageName());
             CharSequence content = getText(contentId);
             args.putCharSequence(HelpListFragment.CONTENT, content);
             args.putString(HelpListFragment.TITLE, helpTitles[index]);

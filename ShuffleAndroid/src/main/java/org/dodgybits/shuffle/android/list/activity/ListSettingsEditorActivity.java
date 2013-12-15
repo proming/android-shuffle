@@ -4,15 +4,20 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.*;
+import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.util.Log;
+
 import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.util.Constants;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.persistence.provider.ContextProvider;
 import org.dodgybits.shuffle.android.persistence.provider.ProjectProvider;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
+
 import roboguice.activity.RoboPreferenceActivity;
 
 public class ListSettingsEditorActivity extends RoboPreferenceActivity {
@@ -115,7 +120,7 @@ public class ListSettingsEditorActivity extends RoboPreferenceActivity {
     }
 
     private int getStringId(String id) {
-        return getResources().getIdentifier(id, Constants.cStringType, Constants.cPackage);
+        return getResources().getIdentifier(id, "string", getPackageName());
     }
 
     private ListPreference createList(

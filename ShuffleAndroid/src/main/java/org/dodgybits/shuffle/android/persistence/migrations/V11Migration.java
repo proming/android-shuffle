@@ -1,6 +1,5 @@
 package org.dodgybits.shuffle.android.persistence.migrations;
 
-import org.dodgybits.shuffle.android.persistence.provider.ReminderProvider;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 
 import android.database.sqlite.SQLiteDatabase;
@@ -30,24 +29,22 @@ public class V11Migration implements Migration {
         // no break since we want it to fall through
 	}
 	private void createRemindersTable(SQLiteDatabase db) {
-		db.execSQL("DROP TABLE IF EXISTS " + ReminderProvider.cReminderTableName);
-		db.execSQL("CREATE TABLE " + ReminderProvider.cReminderTableName + " (" + "_id INTEGER PRIMARY KEY,"
+		db.execSQL("DROP TABLE IF EXISTS Reminder");
+		db.execSQL("CREATE TABLE Reminder (" + "_id INTEGER PRIMARY KEY,"
 				+ "taskId INTEGER," + "minutes INTEGER,"
-				+ "method INTEGER NOT NULL" + " DEFAULT "
-				+ ReminderProvider.Reminders.METHOD_DEFAULT + ");");
+				+ "method INTEGER NOT NULL" + " DEFAULT -1);");
 	}
 
 	private void createRemindersEventIdIndex(SQLiteDatabase db) {
         db.execSQL("DROP INDEX IF EXISTS remindersEventIdIndex");
-		db.execSQL("CREATE INDEX remindersEventIdIndex ON " + ReminderProvider.cReminderTableName + " ("
-				+ ReminderProvider.Reminders.TASK_ID + ");");
+		db.execSQL("CREATE INDEX remindersEventIdIndex ON Reminder (taskId);");
 	}
 	private void createTaskCleanupTrigger(SQLiteDatabase db) {
 		// Trigger to remove data tied to a task when we delete that task
         db.execSQL("DROP TRIGGER IF EXISTS tasks_cleanup_delete");
 		db.execSQL("CREATE TRIGGER tasks_cleanup_delete DELETE ON " + TaskProvider.TASK_TABLE_NAME
 				+ " BEGIN "
-				+ "DELETE FROM " + ReminderProvider.cReminderTableName + " WHERE taskId = old._id;"
+				+ "DELETE FROM Reminder WHERE taskId = old._id;"
 				+ "END");
 	}
 

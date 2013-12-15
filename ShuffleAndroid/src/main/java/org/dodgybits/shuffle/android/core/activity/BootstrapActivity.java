@@ -22,24 +22,32 @@ import android.os.Bundle;
 import android.util.Log;
 import com.google.inject.Inject;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
-import org.dodgybits.shuffle.android.server.gcm.GCMInitializer;
+import org.dodgybits.shuffle.android.server.gcm.GcmRegister;
+import org.dodgybits.shuffle.android.server.gcm.event.RegisterGcmEvent;
+
 import roboguice.activity.RoboActivity;
+import roboguice.event.EventManager;
 
 public class BootstrapActivity extends RoboActivity {
-	private static final String cTag = "BootstrapActivity";
+	private static final String TAG = "BootstrapActivity";
 
 
     @Inject
-    GCMInitializer mGCMInitializer;
+    GcmRegister gcmRegister;
 
-	@Override
+    @Inject
+    private EventManager mEventManager;
+
+    @Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 
-        Class<? extends Activity> activityClass = null;
+        mEventManager.fire(new RegisterGcmEvent(this));
+
+        Class<? extends Activity> activityClass;
 		boolean firstTime = Preferences.isFirstTime(this);
 		if (firstTime) {
-			Log.i(cTag, "First time using Shuffle. Show intro screen");
+			Log.i(TAG, "First time using Shuffle. Show intro screen");
 			activityClass = WelcomeActivity.class;
 		} else {
         	activityClass = MainActivity.class;

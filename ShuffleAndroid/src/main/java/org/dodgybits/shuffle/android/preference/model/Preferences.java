@@ -47,6 +47,8 @@ public class Preferences {
     public static final String SYNC_LAST_SYNC_ID = "sync_last_sync_id";
     public static final String SYNC_COUNT = "sync_count";
 
+    public static final String GCM_REGISTRATION_ID = "gcm_registration_id";
+
     public static final String WIDGET_QUERY_PREFIX = "widget_query_";
     public static final String WIDGET_PROJECT_ID_PREFIX = "widget_projectId_";
     public static final String WIDGET_CONTEXT_ID_PREFIX = "widget_contextId_";
@@ -110,6 +112,10 @@ public class Preferences {
 
     public static int getSyncCount(Context context) {
         return getSharedPreferences(context).getInt(SYNC_COUNT, 0);
+    }
+
+    public static String getGcmRegistrationId(Context context) {
+        return getSharedPreferences(context).getString(GCM_REGISTRATION_ID, "");
     }
 
     public static int[] getTopLevelCounts(Context context) {
