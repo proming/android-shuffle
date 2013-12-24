@@ -33,6 +33,8 @@ import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.list.view.task.TaskListFragment;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
+import org.dodgybits.shuffle.android.server.gcm.GcmRegister;
+import org.dodgybits.shuffle.android.server.gcm.event.RegisterGcmEvent;
 
 import java.util.List;
 import java.util.Map;
@@ -73,6 +75,9 @@ public class MainActivity extends RoboActionBarActivity
     private ContextScopedProvider<ProjectListFragment> mProjectListFragmentProvider;
 
     @Inject
+    private GcmRegister gcmRegister;
+
+    @Inject
     private EventManager mEventManager;
 
     @Inject
@@ -88,6 +93,8 @@ public class MainActivity extends RoboActionBarActivity
 
         // don't show soft keyboard unless user clicks on quick add box
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        mEventManager.fire(new RegisterGcmEvent(this));
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);

@@ -25,7 +25,7 @@ import roboguice.inject.ContextSingleton;
  */
 @ContextSingleton
 public class GcmRegister {
-    static final String TAG = "GCM";
+    static final String TAG = "GcmRegister";
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
@@ -35,6 +35,7 @@ public class GcmRegister {
     GoogleCloudMessaging gcm;
 
     public void onRegister(@Observes RegisterGcmEvent event) {
+        Log.d(TAG, "onRegister");
         Context context = event.getContext();
         // Check device for Play Services APK. If check succeeds, proceed with GCM registration.
         if (checkPlayServices(context)) {
@@ -42,6 +43,8 @@ public class GcmRegister {
             String registrationId = Preferences.getGcmRegistrationId(context);
             if (registrationId.isEmpty()) {
                 registerInBackground(context);
+            } else {
+                Log.d(TAG, "Already registered");
             }
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");

@@ -38,6 +38,11 @@ public class SyncRequestBuilder {
             builder.setLastSyncId(lastSyncId);
         }
 
+        String gcmRegistrationId = Preferences.getGcmRegistrationId(mContext);
+        if (!gcmRegistrationId.isEmpty()) {
+            builder.setGcmRegistrationId(gcmRegistrationId);
+        }
+
         long lastSyncDate = Preferences.getLastSyncLocalDate(mContext);
 
         builder.setLastSyncDeviceDate(lastSyncDate);

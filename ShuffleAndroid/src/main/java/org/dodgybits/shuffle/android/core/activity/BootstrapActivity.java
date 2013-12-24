@@ -20,29 +20,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import com.google.inject.Inject;
+
 import org.dodgybits.shuffle.android.preference.model.Preferences;
-import org.dodgybits.shuffle.android.server.gcm.GcmRegister;
-import org.dodgybits.shuffle.android.server.gcm.event.RegisterGcmEvent;
 
 import roboguice.activity.RoboActivity;
-import roboguice.event.EventManager;
 
 public class BootstrapActivity extends RoboActivity {
 	private static final String TAG = "BootstrapActivity";
 
-
-    @Inject
-    GcmRegister gcmRegister;
-
-    @Inject
-    private EventManager mEventManager;
-
     @Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-
-        mEventManager.fire(new RegisterGcmEvent(this));
 
         Class<? extends Activity> activityClass;
 		boolean firstTime = Preferences.isFirstTime(this);
