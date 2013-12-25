@@ -387,9 +387,11 @@
 
         <!--  App Engine synchronisation -->
 
-        <service android:name="org.dodgybits.shuffle.android.server.sync.GaeSyncService" />
+        <receiver android:name="org.dodgybits.shuffle.android.server.sync.SyncReceiver"/>
 
-
+        <service android:name="org.dodgybits.shuffle.android.server.sync.GaeSyncService"
+            android:exported="false">
+        </service>
 
         <!--
           WakefulBroadcastReceiver that will receive intents from GCM
@@ -410,7 +412,13 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="org.dodgybits.shuffle.android.server.gcm.GcmIntentService" />
+        <service android:name="org.dodgybits.shuffle.android.server.gcm.GcmIntentService"
+            android:exported="false">
+        </service>
+
+        <service android:name="org.dodgybits.shuffle.android.server.sync.SyncSchedulingService"
+            android:exported="false">
+        </service>
 
 
 		<!--  app widget -->

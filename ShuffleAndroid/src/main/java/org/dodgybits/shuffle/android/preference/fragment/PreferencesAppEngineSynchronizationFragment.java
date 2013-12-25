@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,8 +22,10 @@ import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.server.IntegrationSettings;
+import org.dodgybits.shuffle.android.server.gcm.GcmIntentService;
 import org.dodgybits.shuffle.android.server.sync.GaeSyncService;
 import org.dodgybits.shuffle.android.server.sync.ObtainAuthTokenTask;
+import org.dodgybits.shuffle.android.server.sync.SyncSchedulingService;
 import org.dodgybits.shuffle.android.server.sync.event.ResetSyncSettingsEvent;
 import org.dodgybits.shuffle.android.server.sync.listener.SyncListener;
 import roboguice.event.EventManager;
@@ -90,7 +93,8 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
 
     public void onSyncNowClicked(View view) {
         if (Preferences.getSyncAuthToken(getActivity()) != null) {
-            Intent intent = new Intent(getActivity(), GaeSyncService.class);
+            Intent intent = new Intent(getActivity(), SyncSchedulingService.class);
+            intent.putExtra(GaeSyncService.SOURCE_EXTRA, "Preferences");
             getActivity().startService(intent);
         } else {
             // token was invalidated - fetch a new one

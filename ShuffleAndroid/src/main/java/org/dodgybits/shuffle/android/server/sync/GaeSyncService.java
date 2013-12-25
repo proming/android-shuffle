@@ -2,29 +2,30 @@ package org.dodgybits.shuffle.android.server.sync;
 
 import android.content.Intent;
 import android.util.Log;
+
 import com.google.inject.Inject;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.textuality.aerc.AppEngineClient;
 import com.textuality.aerc.Response;
+
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.server.IntegrationSettings;
-import org.dodgybits.shuffle.android.server.sync.listener.SyncListener;
 import org.dodgybits.shuffle.dto.ShuffleProtos;
-import roboguice.service.RoboIntentService;
 
 import java.net.URL;
 
+import roboguice.service.RoboIntentService;
+
 public class GaeSyncService extends RoboIntentService {
     private static final String TAG = "GaeSyncService";
+
+    public static final String SOURCE_EXTRA = "source";
 
     @Inject
     SyncRequestBuilder requestBuilder;
 
     @Inject
     SyncResponseProcessor responseProcessor;
-
-    @Inject
-    SyncListener syncListener;
 
     @Inject
     IntegrationSettings integrationSettings;
@@ -61,6 +62,7 @@ public class GaeSyncService extends RoboIntentService {
 
         if ((response.status / 100) != 2) {
             error("Upload failed: " + response.status);
+            // TODO - schedule another attempt
         } else {
             try {
                 ShuffleProtos.SyncResponse syncResponse =

@@ -25,10 +25,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.MainActivity;
+import org.dodgybits.shuffle.android.server.gcm.GcmBroadcastReceiver;
+import org.dodgybits.shuffle.android.server.sync.GaeSyncService;
+import org.dodgybits.shuffle.android.server.sync.SyncSchedulingService;
 
 /**
  * This {@code IntentService} does the actual handling of the GCM message.
@@ -40,7 +44,6 @@ import org.dodgybits.shuffle.android.core.activity.MainActivity;
 public class GcmIntentService extends IntentService {
     public static final int NOTIFICATION_ID = 1;
     private NotificationManager mNotificationManager;
-    NotificationCompat.Builder builder;
 
     public GcmIntentService() {
         super("GcmIntentService");
@@ -62,24 +65,15 @@ public class GcmIntentService extends IntentService {
              * not interested in, or that you don't recognize.
              */
             if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                sendNotification("Send error: " + extras.toString());
+                Log.e(TAG, "Send error: " + extras.toString());
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
-                sendNotification("Deleted messages on server: " + extras.toString());
+                Log.d(TAG, "Deleted messages on server: " + extras.toString());
                 // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                // This loop represents the service doing some work.
-                for (int i = 0; i < 5; i++) {
-                    Log.i(TAG, "Working... " + (i + 1)
-                            + "/5 @ " + SystemClock.elapsedRealtime());
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                    }
-                }
-                Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
-                // Post notification of received message.
-                sendNotification("Received: " + extras.toString());
-                Log.i(TAG, "Received: " + extras.toString());
+                Log.i(TAG, "Received message" + extras.toString());
+                Intent syncIntent = new Intent(this, SyncSchedulingService.class);
+                syncIntent.putExtra(GaeSyncService.SOURCE_EXTRA, "gcm");
+                WakefulBroadcastReceiver.startWakefulService(this, syncIntent);
             }
         }
         // Release the wake lock provided by the WakefulBroadcastReceiver.
