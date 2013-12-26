@@ -4,7 +4,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,9 +21,8 @@ import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.server.IntegrationSettings;
-import org.dodgybits.shuffle.android.server.gcm.GcmIntentService;
+import org.dodgybits.shuffle.android.server.sync.AuthTokenRetriever;
 import org.dodgybits.shuffle.android.server.sync.GaeSyncService;
-import org.dodgybits.shuffle.android.server.sync.ObtainAuthTokenTask;
 import org.dodgybits.shuffle.android.server.sync.SyncSchedulingService;
 import org.dodgybits.shuffle.android.server.sync.event.ResetSyncSettingsEvent;
 import org.dodgybits.shuffle.android.server.sync.listener.SyncListener;
@@ -92,31 +90,12 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
     }
 
     public void onSyncNowClicked(View view) {
-        if (Preferences.getSyncAuthToken(getActivity()) != null) {
-            Intent intent = new Intent(getActivity(), SyncSchedulingService.class);
-            intent.putExtra(GaeSyncService.SOURCE_EXTRA, "Preferences");
-            getActivity().startService(intent);
-        } else {
-            // token was invalidated - fetch a new one
-            String accountName = Preferences.getSyncAccount(getActivity());
-            Account account = null;
-            AccountManager manager = AccountManager.get(getActivity());
-            final Account[] accounts = manager.getAccountsByType(GOOGLE_ACCOUNT);
-            final int numAccounts = accounts.length;
-            for (int i=0; i < numAccounts; i++)
-            {
-                final String name = accounts[i].name;
-                if (name.equals(accountName)) {
-                    account = accounts[i];
-                    break;
-                }
-            }
-
-            new ObtainAuthTokenTask(getActivity(), account, integrationSettings).execute();
-        }
+        Intent intent = new Intent(getActivity(), SyncSchedulingService.class);
+        intent.putExtra(GaeSyncService.SOURCE_EXTRA, GaeSyncService.MANUAL_SOURCE);
+        getActivity().startService(intent);
     }
 
-        public Dialog createAccountsDialog() {
+    public Dialog createAccountsDialog() {
         AccountManager manager = AccountManager.get(getActivity());
         final Account[] accounts = manager.getAccountsByType(GOOGLE_ACCOUNT);
 
@@ -165,8 +144,8 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
                                     " to " + account.name);
                             editor.putString(Preferences.SYNC_ACCOUNT, account.name);
                         }
+                        editor.remove(Preferences.SYNC_AUTH_TOKEN);
                         editor.commit();
-                        new ObtainAuthTokenTask(getActivity(), account, integrationSettings).execute();
                         updateViewsOnSyncAccountSet();
                     }
                 }
@@ -219,7 +198,6 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
             CharSequence syncDate = DateUtils.getRelativeTimeSpanString(getActivity(), lastSyncDate, false);
             mLastSyncTextView.setText(getString(R.string.last_sync_title, syncDate));
         }
-
     }
 
 }

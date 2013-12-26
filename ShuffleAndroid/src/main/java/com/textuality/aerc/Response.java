@@ -27,7 +27,13 @@ public class Response {
      * The HTTP status code
      */
     public int status;
-    
+
+
+    /**
+     * False if app engine rejected request due to stale authToken?
+     */
+    public boolean validAuthToken = true;
+
     /**
      * The HTTP headers received in the response
      */
@@ -40,5 +46,9 @@ public class Response {
     
     protected Response(int status,  Map<String, List<String>> headers, byte[] body) {
         this.status = status; this.headers = headers; this.body = body;
+    }
+
+    protected Response(boolean validAuthToken) {
+        this.validAuthToken = validAuthToken;
     }
 }

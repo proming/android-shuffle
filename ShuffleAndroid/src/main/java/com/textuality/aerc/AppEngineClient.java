@@ -118,6 +118,7 @@ public class AppEngineClient {
             conn = (HttpURLConnection) request.uri.openConnection();
             if (!mAuthenticator.authenticate(conn)) {
                 mErrorMessage = str(R.string.aerc_authentication_failed) + ": " + mAuthenticator.errorMessage();
+                response = new Response(false);
             } else {
                 if (request.headers != null) {
                     for (String header : request.headers.keySet()) {
