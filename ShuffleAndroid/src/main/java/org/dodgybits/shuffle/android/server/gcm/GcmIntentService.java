@@ -72,7 +72,7 @@ public class GcmIntentService extends IntentService {
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 Log.i(TAG, "Received message" + extras.toString());
                 Intent syncIntent = new Intent(this, SyncSchedulingService.class);
-                syncIntent.putExtra(GaeSyncService.SOURCE_EXTRA, "gcm");
+                syncIntent.putExtra(GaeSyncService.SOURCE_EXTRA, GaeSyncService.GCM_SOURCE);
                 WakefulBroadcastReceiver.startWakefulService(this, syncIntent);
             }
         }
