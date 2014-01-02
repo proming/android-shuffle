@@ -35,6 +35,8 @@ import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
 import org.dodgybits.shuffle.android.server.gcm.GcmRegister;
 import org.dodgybits.shuffle.android.server.gcm.event.RegisterGcmEvent;
+import org.dodgybits.shuffle.android.server.sync.SyncAlarmService;
+import org.dodgybits.shuffle.android.server.sync.SyncSchedulingService;
 
 import java.util.List;
 import java.util.Map;
@@ -107,6 +109,8 @@ public class MainActivity extends RoboActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        startService(new Intent(this, SyncAlarmService.class));
     }
 
 

@@ -22,38 +22,43 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.text.format.DateUtils;
 import android.util.Log;
+
+import org.dodgybits.shuffle.android.preference.model.Preferences;
+
+import java.util.Date;
 
 /**
  * Gets notified when events happen that would require a sync and triggers
  * a sync when it deems it necessary.
  */
-public class SyncSchedulingService extends IntentService {
+public class SyncAlarmService extends IntentService {
 
-    public static final String SOURCE_EXTRA = "source";
-    public static final String SYNC_FAILED_SOURCE = "syncFailed";
-    public static final String MANUAL_SOURCE = "manual";
-    public static final String ALARM_SOURCE = "alarm";
-    public static final String LOCAL_CHANGE_SOURCE = "localChange";
-    public static final String GCM_SOURCE = "gcm";
-    public static final String CAUSE_EXTRA = "cause";
-    public static final int NO_RESPONSE_CAUSE = 1;
-    public static final int FAILED_UPLOAD_CAUSE = 2;
+    private static final long SYNC_PERIOD = DateUtils.DAY_IN_MILLIS;
 
-
-    public SyncSchedulingService() {
-        super("SyncSchedulingService");
+    public SyncAlarmService() {
+        super("SyncAlarmService");
     }
-    public static final String TAG = "SyncSchedulingService";
+    public static final String TAG = "SyncAlarmService";
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i(TAG, "Received intent " + intent.getExtras());
+        long lastSyncDate = Preferences.getLastSyncLocalDate(this);
+        long nextSyncDate = Math.max(
+                System.currentTimeMillis() + 5000L,
+                lastSyncDate + SYNC_PERIOD);
+
+        if (Log.isLoggable(TAG, Log.INFO)) {
+            Log.i(TAG, "Next sync at " + new Date(nextSyncDate));
+        }
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent syncIntent = new Intent(this, SyncReceiver.class);
+        Intent syncIntent = new Intent(this, SyncAlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, syncIntent, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC, nextSyncDate,
+                SYNC_PERIOD,
+                pendingIntent);
 
         // Release the wake lock provided by the WakefulBroadcastReceiver
         WakefulBroadcastReceiver.completeWakefulIntent(intent);

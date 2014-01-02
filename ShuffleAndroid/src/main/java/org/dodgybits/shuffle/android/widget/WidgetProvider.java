@@ -32,6 +32,7 @@ import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
 import org.dodgybits.shuffle.android.roboguice.RoboAppWidgetProvider;
 import org.dodgybits.shuffle.android.roboguice.RoboRemoteViewsService;
+import org.dodgybits.shuffle.android.server.sync.SyncAlarmService;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -80,6 +81,8 @@ public class WidgetProvider extends RoboAppWidgetProvider {
                 this.onUpdate(context, appWidgetManager, appWidgetIds);
             }
         }
+
+        context.startService(new Intent(context, SyncAlarmService.class));
     }
 
     /**

@@ -45,6 +45,7 @@ import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.preference.model.ListSettings;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.roboguice.RoboAppWidgetProvider;
+import org.dodgybits.shuffle.android.server.sync.SyncAlarmService;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -92,6 +93,9 @@ public class PreHoneycombWidgetProvider extends RoboAppWidgetProvider {
                 this.onUpdate(context, appWidgetManager, appWidgetIds);
             }
         }
+
+        context.startService(new Intent(context, SyncAlarmService.class));
+
     }
 
     @Override

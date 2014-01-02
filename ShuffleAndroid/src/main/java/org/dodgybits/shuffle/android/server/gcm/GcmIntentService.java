@@ -15,24 +15,19 @@ package org.dodgybits.shuffle.android.server.gcm;
  * limitations under the License.
  */
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-
 import android.app.IntentService;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
-import org.dodgybits.android.shuffle.R;
-import org.dodgybits.shuffle.android.core.activity.MainActivity;
-import org.dodgybits.shuffle.android.server.gcm.GcmBroadcastReceiver;
-import org.dodgybits.shuffle.android.server.sync.GaeSyncService;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 import org.dodgybits.shuffle.android.server.sync.SyncSchedulingService;
+
+import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.GCM_SOURCE;
+import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.SOURCE_EXTRA;
 
 /**
  * This {@code IntentService} does the actual handling of the GCM message.
@@ -42,13 +37,11 @@ import org.dodgybits.shuffle.android.server.sync.SyncSchedulingService;
  * wake lock.
  */
 public class GcmIntentService extends IntentService {
-    public static final int NOTIFICATION_ID = 1;
-    private NotificationManager mNotificationManager;
 
     public GcmIntentService() {
         super("GcmIntentService");
     }
-    public static final String TAG = "GCM";
+    public static final String TAG = "GcmIntentService";
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -72,7 +65,7 @@ public class GcmIntentService extends IntentService {
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 Log.i(TAG, "Received message" + extras.toString());
                 Intent syncIntent = new Intent(this, SyncSchedulingService.class);
-                syncIntent.putExtra(GaeSyncService.SOURCE_EXTRA, GaeSyncService.GCM_SOURCE);
+                syncIntent.putExtra(SOURCE_EXTRA, GCM_SOURCE);
                 WakefulBroadcastReceiver.startWakefulService(this, syncIntent);
             }
         }
@@ -80,25 +73,4 @@ public class GcmIntentService extends IntentService {
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-    // Put the message into a notification and post it.
-    // This is just one simple example of what you might choose to do with
-    // a GCM message.
-    private void sendNotification(String msg) {
-        mNotificationManager = (NotificationManager)
-                this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.shuffle_icon)
-                        .setContentTitle("GCM Notification")
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(msg))
-                        .setContentText(msg);
-
-        mBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-    }
 }

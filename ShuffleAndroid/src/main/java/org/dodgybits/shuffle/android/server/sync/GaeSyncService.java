@@ -1,7 +1,5 @@
 package org.dodgybits.shuffle.android.server.sync;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Intent;
 import android.util.Log;
 
@@ -10,7 +8,6 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.textuality.aerc.AppEngineClient;
 import com.textuality.aerc.Response;
 
-import org.dodgybits.shuffle.android.preference.fragment.PreferencesAppEngineSynchronizationFragment;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.server.IntegrationSettings;
 import org.dodgybits.shuffle.dto.ShuffleProtos;
@@ -19,20 +16,14 @@ import java.net.URL;
 
 import roboguice.service.RoboIntentService;
 
-import static org.dodgybits.shuffle.android.preference.fragment.PreferencesAppEngineSynchronizationFragment.GOOGLE_ACCOUNT;
+import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.CAUSE_EXTRA;
+import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.FAILED_UPLOAD_CAUSE;
+import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.NO_RESPONSE_CAUSE;
+import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.SOURCE_EXTRA;
+import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.SYNC_FAILED_SOURCE;
 
 public class GaeSyncService extends RoboIntentService {
     private static final String TAG = "GaeSyncService";
-
-    public static final String SOURCE_EXTRA = "source";
-    public static final String SYNC_FAILED_SOURCE = "syncFailed";
-    public static final String MANUAL_SOURCE = "manual";
-    public static final String ALARM_SOURCE = "alarm";
-    public static final String LOCAL_CHANGE_SOURCE = "localChange";
-    public static final String GCM_SOURCE = "gcm";
-    public static final String CAUSE_EXTRA = "cause";
-    public static final int NO_RESPONSE_CAUSE = 1;
-    public static final int FAILED_UPLOAD_CAUSE = 2;
 
     @Inject
     SyncRequestBuilder requestBuilder;
