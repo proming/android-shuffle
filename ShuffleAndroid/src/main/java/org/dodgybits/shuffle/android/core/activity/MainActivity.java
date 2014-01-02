@@ -36,7 +36,6 @@ import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
 import org.dodgybits.shuffle.android.server.gcm.GcmRegister;
 import org.dodgybits.shuffle.android.server.gcm.event.RegisterGcmEvent;
 import org.dodgybits.shuffle.android.server.sync.SyncAlarmService;
-import org.dodgybits.shuffle.android.server.sync.SyncSchedulingService;
 
 import java.util.List;
 import java.util.Map;
