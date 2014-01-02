@@ -268,8 +268,6 @@ public class TaskSelector extends AbstractEntitySelector<TaskSelector> implement
             List<String> args = new ArrayList<String>();
             addIdArg(args, mProjectId);
             addIdArg(args, mContextId);
-
-            Log.d(cTag,args.toString());
             mSelectionArgs = args.size() > 0 ? args.toArray(new String[0]): null;
         }
         return mSelectionArgs;

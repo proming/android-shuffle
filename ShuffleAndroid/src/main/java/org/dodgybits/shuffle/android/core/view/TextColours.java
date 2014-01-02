@@ -39,7 +39,6 @@ public class TextColours {
 	private TextColours(Context context) {
 		Log.d(cTag, "Fetching colours");
 		String[] colourStrings = context.getResources().getStringArray(R.array.text_colours);
-		Log.d(cTag, "Fetched colours");
 		textColours = parseColourString(colourStrings);
 		colourStrings = context.getResources().getStringArray(R.array.background_colours);
 		bgColours = parseColourString(colourStrings);
@@ -49,7 +48,6 @@ public class TextColours {
 		int[] colours = new int[colourStrings.length];
 		for (int i = 0; i < colourStrings.length; i++) {
 			String colourString = '#' + colourStrings[i].substring(1);
-			Log.d(cTag, "Parsing " + colourString);
 			colours[i] = Color.parseColor(colourString);
 		}
 		return colours;
