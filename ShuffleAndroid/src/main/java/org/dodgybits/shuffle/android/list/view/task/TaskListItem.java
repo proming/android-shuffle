@@ -21,6 +21,7 @@ import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Project;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.persistence.EntityCache;
+import org.dodgybits.shuffle.android.core.util.FontUtils;
 import org.dodgybits.shuffle.android.core.util.OSUtils;
 import org.dodgybits.shuffle.android.core.util.TaskLifecycleState;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
@@ -75,7 +76,7 @@ public class TaskListItem extends View {
     private static boolean sInit = false;
     private static TextColours sTextColours;
     private static final TextPaint sDefaultPaint = new TextPaint();
-    private static final TextPaint sBoldPaint = new TextPaint();
+    private static final TextPaint sAllCapsPaint = new TextPaint();
     private static final TextPaint sDatePaint = new TextPaint();
     private static final TextPaint sContextPaint = new TextPaint();
     private static final Paint sContextBackgroundPaint = new Paint();
@@ -132,14 +133,14 @@ public class TaskListItem extends View {
             sItemHeight =
                     r.getDimensionPixelSize(R.dimen.list_item_height);
 
-            sDefaultPaint.setTypeface(Typeface.DEFAULT);
+            FontUtils.setCustomFont(sDefaultPaint, context.getAssets(), "regular");
             sDefaultPaint.setAntiAlias(true);
-            sDatePaint.setTypeface(Typeface.DEFAULT);
+            FontUtils.setCustomFont(sDatePaint, context.getAssets(), "regular");
             sDatePaint.setAntiAlias(true);
-            sBoldPaint.setTypeface(Typeface.DEFAULT_BOLD);
-            sBoldPaint.setAntiAlias(true);
-            sBoldPaint.setShadowLayer(0f, 1.0f, 1.0f, R.color.white);
-            sContextPaint.setTypeface(Typeface.DEFAULT);
+            FontUtils.setCustomFont(sAllCapsPaint, context.getAssets(), "allcaps");
+            sAllCapsPaint.setAntiAlias(true);
+            sAllCapsPaint.setShadowLayer(0f, 1.0f, 1.0f, R.color.white);
+            FontUtils.setCustomFont(sContextPaint, context.getAssets(), "regular");
             sContextPaint.setAntiAlias(true);
 
             sContextHorizontalPadding = r.getDimensionPixelSize(R.dimen.context_small_horizontal_padding);
@@ -370,7 +371,7 @@ public class TaskListItem extends View {
                 count * sContextIconPadding; // between icon and text
 
         // And the project...
-        TextPaint projectPaint = isDone() ? sDefaultPaint : sBoldPaint;
+        TextPaint projectPaint = sAllCapsPaint;
         String projectName = mProject == null ? "" : mProject.getName();
         projectPaint.setTextSize(mCoordinates.projectFontSize);
         projectPaint.setColor(getFontColor(isDone() ? PROJECT_TEXT_COLOR_COMPLETE
@@ -458,7 +459,7 @@ public class TaskListItem extends View {
                 mCoordinates.checkmarkX, mCoordinates.checkmarkY, null);
 
         // Draw the project name
-        Paint projectPaint = isDone() ? sDefaultPaint : sBoldPaint;
+        Paint projectPaint = sAllCapsPaint;
         projectPaint.setColor(getFontColor(isDone() ? PROJECT_TEXT_COLOR_COMPLETE
                 : PROJECT_TEXT_COLOR_INCOMPLETE));
         projectPaint.setTextSize(mCoordinates.projectFontSize);
