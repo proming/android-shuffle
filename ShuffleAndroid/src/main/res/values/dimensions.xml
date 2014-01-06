@@ -13,10 +13,10 @@
     <dimen name="activestate_margin_left">0dip</dimen>
     <dimen name="activestate_margin_top">10sp</dimen>
     <dimen name="checkmark_margin_top">3sp</dimen>
-    <dimen name="date_margin_top">8sp</dimen>
+    <dimen name="date_margin_top">7sp</dimen>
 
     <dimen name="project_font_size">18sp</dimen>
-    <dimen name="contents_font_size">15sp</dimen>
+    <dimen name="contents_font_size">16sp</dimen>
     <dimen name="date_font_size">13sp</dimen>
     <dimen name="contexts_font_size">13sp</dimen>
 
