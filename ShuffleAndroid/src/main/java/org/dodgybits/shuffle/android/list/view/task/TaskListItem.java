@@ -269,7 +269,8 @@ public class TaskListItem extends View {
                 if (hasContents) {
                     ssb.append(sContentsSnippetDivider);
                 }
-                ssb.append(mSnippet);
+                String singleLine = stripLineEndings(mSnippet);
+                ssb.append(singleLine);
             }
             mText = ssb;
             changed = true;
@@ -285,6 +286,10 @@ public class TaskListItem extends View {
                     DateUtils.getRelativeTimeSpanString(mAndroidContext, timestamp).toString();
             mDueMillis = timestamp;
         }
+    }
+
+    private String stripLineEndings(String val) {
+        return val.replace("\n", " ").replace("\r", "");
     }
 
     private boolean isDone() {
