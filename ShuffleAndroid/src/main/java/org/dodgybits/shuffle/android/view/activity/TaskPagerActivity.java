@@ -19,15 +19,21 @@ import com.google.inject.Inject;
 
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.activity.MainActivity;
+import org.dodgybits.shuffle.android.core.model.Id;
 import org.dodgybits.shuffle.android.core.model.Task;
 import org.dodgybits.shuffle.android.core.model.encoding.TaskEncoder;
 import org.dodgybits.shuffle.android.core.model.persistence.TaskPersister;
 import org.dodgybits.shuffle.android.core.model.persistence.selector.TaskSelector;
+import org.dodgybits.shuffle.android.list.event.ViewContextEvent;
+import org.dodgybits.shuffle.android.list.event.ViewProjectEvent;
 import org.dodgybits.shuffle.android.list.listener.EntityUpdateListener;
 import org.dodgybits.shuffle.android.list.listener.NavigationListener;
+import org.dodgybits.shuffle.android.list.model.ListQuery;
 import org.dodgybits.shuffle.android.list.view.task.TaskListContext;
 import org.dodgybits.shuffle.android.persistence.provider.TaskProvider;
 import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
+
+import roboguice.event.EventManager;
 
 /**
  * View a task in the context of a given task list.
@@ -49,6 +55,9 @@ public class TaskPagerActivity extends RoboActionBarActivity {
 
     @Inject
     private NavigationListener mNavigationListener;
+
+    @Inject
+    private EventManager mEventManager;
 
     @Inject
     private EntityUpdateListener mEntityUpdateListener;
@@ -78,10 +87,21 @@ public class TaskPagerActivity extends RoboActionBarActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 // app icon in action bar clicked; go home
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(MainActivity.QUERY_NAME, getListContext().getListQuery().name());
-                startActivity(intent);
+                ListQuery listQuery = getListContext().getListQuery();
+                switch (listQuery) {
+                    case project:
+                        mEventManager.fire(new ViewProjectEvent(getListContext().getEntityId()));
+                        break;
+                    case context:
+                        mEventManager.fire(new ViewContextEvent(getListContext().getEntityId()));
+                        break;
+                    default:
+                        Intent intent = new Intent(this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra(MainActivity.QUERY_NAME, listQuery.name());
+                        startActivity(intent);
+                        break;
+                }
                 finish();
                 return true;
         }

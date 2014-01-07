@@ -96,6 +96,16 @@ public class TaskListContext implements Parcelable {
         return mSelector.getListQuery();
     }
 
+    public Id getEntityId() {
+        Id result = null;
+        if (mSelector.getContextId().isInitialised()) {
+            result = mSelector.getContextId();
+        } else if (mSelector.getProjectId().isInitialised()) {
+            result = mSelector.getProjectId();
+        }
+        return result;
+    }
+
     public TaskSelector createSelectorWithPreferences(Context context) {
         ListSettings settings = ListSettingsCache.findSettings(mSelector.getListQuery());
         return mSelector.builderFrom().applyListPreferences(context, settings).build();
