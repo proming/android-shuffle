@@ -2,12 +2,14 @@ package org.dodgybits.shuffle.android.list.view.project;
 
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Project;
+import org.dodgybits.shuffle.android.core.util.FontUtils;
 import org.dodgybits.shuffle.android.core.view.TextColours;
 import org.dodgybits.shuffle.android.list.view.StatusView;
 
@@ -28,7 +30,8 @@ public class ProjectListItem extends LinearLayout {
     public void init(android.content.Context androidContext) {
         LayoutInflater vi = (LayoutInflater)androidContext.
                 getSystemService(android.content.Context.LAYOUT_INFLATER_SERVICE);
-        vi.inflate(R.layout.project_view, this, true);
+        ViewGroup view = (ViewGroup) vi.inflate(R.layout.project_view, this, true);
+        FontUtils.setCustomFont(view, androidContext.getAssets());
 
         mName = (TextView) findViewById(R.id.name);
         mCount = (TextView) findViewById(R.id.count);

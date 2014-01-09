@@ -1,16 +1,20 @@
 package org.dodgybits.shuffle.android.list.view.context;
 
+import android.annotation.TargetApi;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.inject.Inject;
 import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.core.model.Context;
+import org.dodgybits.shuffle.android.core.util.FontUtils;
 import org.dodgybits.shuffle.android.core.view.TextColours;
 import org.dodgybits.shuffle.android.core.view.ContextIcon;
 import org.dodgybits.shuffle.android.core.view.DrawableUtils;
@@ -35,6 +39,7 @@ public class ContextListItem extends LinearLayout {
         init(context);
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public ContextListItem(android.content.Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
@@ -43,7 +48,8 @@ public class ContextListItem extends LinearLayout {
     public void init(android.content.Context androidContext) {
         LayoutInflater vi = (LayoutInflater)androidContext.
                 getSystemService(android.content.Context.LAYOUT_INFLATER_SERVICE);
-        vi.inflate(R.layout.context_view, this, true);
+        ViewGroup view = (ViewGroup) vi.inflate(R.layout.context_view, this, true);
+        FontUtils.setCustomFont(view, androidContext.getAssets());
 
         mName = (TextView) findViewById(R.id.context_view_name);
         mCount = (TextView) findViewById(R.id.context_view_count);
