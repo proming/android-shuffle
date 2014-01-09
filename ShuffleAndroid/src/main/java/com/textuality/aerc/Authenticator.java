@@ -54,17 +54,17 @@ public class Authenticator {
      *  is based on cookies provided by App Engine, which experience suggests have a lifetime of about 24 hours. 
      *  Thus a single Authenticator instance ought to be adequate to serve the needs of most REST dialogues.
      * 
-     * @param activity Activity to be used, if necessary, to prompt for authentication
+     * @param context Context to be used, if necessary, to prompt for authentication
      * @param account Which android.accounts.Account to authenticate with
      * @param appURI For example, https://yourapp.appspot.com/
      */
-    public static Authenticator appEngineAuthenticator(Context activity, Account account, URL appURI) {
-        return new Authenticator(activity, account, appURI);
+    public static Authenticator appEngineAuthenticator(Context context, Account account, URL appURI) {
+        return new Authenticator(context, account, appURI);
     }
 
-    private Authenticator(Context activity, Account account, URL appURI) {
-        mContext = activity;
-        mManager = AccountManager.get(activity);
+    private Authenticator(Context context, Account account, URL appURI) {
+        mContext = context;
+        mManager = AccountManager.get(context);
         mAppURI = appURI;
         mAccount = account;
         // HTTP connection reuse which was buggy pre-froyo
@@ -168,7 +168,12 @@ public class Authenticator {
     private boolean getToken(Account account) {
 
         mToken = null;
-        AccountManagerFuture<Bundle> result = mManager.getAuthToken(account, "ah", null, (Activity) mContext, null, null);
+        AccountManagerFuture<Bundle> result;
+        if (mContext instanceof Activity) {
+            result = mManager.getAuthToken(account, "ah", null, (Activity) mContext, null, null);
+        } else {
+            result = mManager.getAuthToken(account, "ah", false, null, null);
+        }
         try {
             Bundle bundle = result.getResult();
             mToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
