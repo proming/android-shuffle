@@ -334,12 +334,14 @@ public class TaskWidget implements RemoteViewsService.RemoteViewsFactory,
      */
     private CharSequence addStyle(CharSequence text, int size, int color) {
         SpannableStringBuilder builder = new SpannableStringBuilder(text);
-        builder.setSpan(
-                new AbsoluteSizeSpan(size), 0, text.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        if (color != 0) {
-            builder.setSpan(new ForegroundColorSpan(color), 0, text.length(),
+        if (text.length() > 0) {
+            builder.setSpan(
+                    new AbsoluteSizeSpan(size), 0, text.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (color != 0) {
+                builder.setSpan(new ForegroundColorSpan(color), 0, text.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
         return builder;
     }
@@ -398,9 +400,11 @@ public class TaskWidget implements RemoteViewsService.RemoteViewsFactory,
         Project project = mProjectCache.findById(task.getProjectId());
         String projectName = project == null ? "" : project.getName();
         SpannableStringBuilder projectBuilder = new SpannableStringBuilder(projectName);
-        projectBuilder.setSpan(
-                isIncomplete ? new StyleSpan(Typeface.BOLD) : new StyleSpan(Typeface.NORMAL), 0,
-                projectBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (projectBuilder.length() > 0) {
+            projectBuilder.setSpan(
+                    isIncomplete ? new StyleSpan(Typeface.BOLD) : new StyleSpan(Typeface.NORMAL), 0,
+                    projectBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
         CharSequence styledProject = addStyle(projectBuilder, sProjectFontSize, sDefaultTextColor);
         views.setTextViewText(R.id.widget_project, styledProject);
 
