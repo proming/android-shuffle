@@ -41,8 +41,8 @@ public class ProjectListFragment extends RoboListFragment {
     // result codes
     private static final int FILTER_CONFIG = 600;
 
-    private static final int LOADER_ID_PROJECT_LIST_LOADER = 1;
-    private static final int LOADER_ID_TASK_COUNT_LOADER = 2;
+    private static final int LOADER_ID_PROJECT_LIST_LOADER = 1001;
+    private static final int LOADER_ID_TASK_COUNT_LOADER = 1002;
 
     @Inject
     private ProjectListAdaptor mListAdapter;

@@ -53,8 +53,8 @@ public class ContextListFragment extends RoboListFragment {
     // result codes
     private static final int FILTER_CONFIG = 600;
 
-    private static final int LOADER_ID_CONTEXT_LIST_LOADER = 1;
-    private static final int LOADER_ID_TASK_COUNT_LOADER = 2;
+    private static final int LOADER_ID_CONTEXT_LIST_LOADER = 2001;
+    private static final int LOADER_ID_TASK_COUNT_LOADER = 2002;
 
     @Inject
     private ContextListAdaptor mListAdapter;
