@@ -115,6 +115,7 @@ public class MainActivity extends RoboActionBarActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        Log.d(TAG, "Switching to item " + position);
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
