@@ -32,6 +32,20 @@ public class AuthTokenRetriever {
     }
 
     public String retrieveToken() {
+        String token = null;
+        if (Preferences.isSyncEnabled(context)) {
+            token = Preferences.getSyncAuthToken(context);
+            if (token == null) {
+                token = lookupToken();
+                Preferences.getEditor(context)
+                        .putString(Preferences.SYNC_AUTH_TOKEN, token)
+                        .commit();
+            }
+        }
+        return token;
+    }
+
+    private String lookupToken() {
         String authToken = null;
         Account account = fetchAccount();
         if (account == null) {

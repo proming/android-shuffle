@@ -35,6 +35,7 @@ import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.roboguice.RoboActionBarActivity;
 import org.dodgybits.shuffle.android.server.gcm.GcmRegister;
 import org.dodgybits.shuffle.android.server.gcm.event.RegisterGcmEvent;
+import org.dodgybits.shuffle.android.server.sync.AuthTokenRetriever;
 import org.dodgybits.shuffle.android.server.sync.SyncAlarmService;
 
 import java.util.List;
@@ -87,6 +88,9 @@ public class MainActivity extends RoboActionBarActivity
     @Inject
     private EntityUpdateListener mEntityUpdateListener;
 
+    @Inject
+    private AuthTokenRetriever authTokenRetriever;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +112,7 @@ public class MainActivity extends RoboActionBarActivity
 
         mEventManager.fire(new RegisterGcmEvent(this));
         startService(new Intent(this, SyncAlarmService.class));
+        authTokenRetriever.retrieveToken();
     }
 
 
@@ -257,7 +262,6 @@ public class MainActivity extends RoboActionBarActivity
             actionBar.setTitle(mTitle);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

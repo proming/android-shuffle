@@ -23,6 +23,7 @@ import org.dodgybits.android.shuffle.R;
 import org.dodgybits.shuffle.android.preference.activity.PreferencesAppEngineSynchronizationActivity;
 import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.server.IntegrationSettings;
+import org.dodgybits.shuffle.android.server.sync.AuthTokenRetriever;
 import org.dodgybits.shuffle.android.server.sync.SyncSchedulingService;
 import org.dodgybits.shuffle.android.server.sync.event.ResetSyncSettingsEvent;
 import org.dodgybits.shuffle.android.server.sync.listener.SyncListener;
@@ -65,6 +66,9 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
 
     @Inject
     private IntegrationSettings integrationSettings;
+
+    @Inject
+    private AuthTokenRetriever authTokenRetriever;
 
     private Account mSelectedAccount;
 
@@ -143,14 +147,20 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
                         String oldAccountName = Preferences.getSyncAccount(getActivity());
                         SharedPreferences.Editor editor = Preferences.getEditor(getActivity());
                         editor.putBoolean(Preferences.SYNC_ENABLED, true);
-                        if (!oldAccountName.equals(account.name)) {
+                        boolean accountChanged = !oldAccountName.equals(account.name);
+                        if (accountChanged) {
                             Log.i(TAG, "Switching from account " + oldAccountName +
                                     " to " + account.name);
                             editor.putString(Preferences.SYNC_ACCOUNT, account.name);
+                            editor.remove(Preferences.SYNC_AUTH_TOKEN);
                         }
-                        editor.remove(Preferences.SYNC_AUTH_TOKEN);
                         editor.commit();
                         updateViewsOnSyncAccountSet();
+                        if (accountChanged) {
+                            // fetch token now so if permission is required, use
+                            // will be able to respond
+                            authTokenRetriever.retrieveToken();
+                        }
                     }
                 }
             });

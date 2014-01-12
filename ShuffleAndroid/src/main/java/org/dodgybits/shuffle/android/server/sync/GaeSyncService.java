@@ -50,21 +50,10 @@ public class GaeSyncService extends RoboIntentService {
     }
 
     private void performSync() {
-        authToken = fetchToken();
+        authToken = authTokenRetriever.retrieveToken();
         if (authToken != null) {
             callService();
         }
-    }
-
-    private String fetchToken() {
-        String token = Preferences.getSyncAuthToken(this);
-        if (token == null) {
-            token = authTokenRetriever.retrieveToken();
-            Preferences.getEditor(this)
-                    .putString(Preferences.SYNC_AUTH_TOKEN, authToken)
-                    .commit();
-        }
-        return token;
     }
 
     private void callService() {
