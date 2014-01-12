@@ -46,6 +46,8 @@ public class NavigationDrawerFragment extends Fragment {
     private static final String TAG = "HomeListFragment";
     private static final String[] PROJECTION = new String[]{"_id"};
 
+    private static final String POSITION = "position";
+
     private static IconNameCountListAdaptor.ListItem<HomeEntry>[] sListItems = null;
 
     /**
@@ -123,10 +125,8 @@ public class NavigationDrawerFragment extends Fragment {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
-        if (mCallbacks != null) {
-            mCurrentSelectedPosition = mCallbacks.getRequestedPosition(getActivity().getIntent());
-        }
         // Select either the default item (0) or the last selected item.
+        mCurrentSelectedPosition = fetchSelectedPosition(savedInstanceState);
         selectItem(mCurrentSelectedPosition);
 
         // Indicate that this fragment would like to influence the set of actions in the action bar.
@@ -165,6 +165,13 @@ public class NavigationDrawerFragment extends Fragment {
         if (mTask != null) {
             mTask.cancel(true);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(POSITION, mCurrentSelectedPosition);
     }
 
     private void setupAdaptor() {
@@ -249,6 +256,21 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    private int fetchSelectedPosition(Bundle savedInstanceState) {
+        int position = -1;
+        if (savedInstanceState != null) {
+            position = savedInstanceState.getInt(POSITION, -1);
+        }
+        if (position < 0) {
+            if (mCallbacks != null) {
+                position = mCallbacks.getRequestedPosition();
+            } else {
+                position = 0;
+            }
+        }
+        return position;
     }
 
     private void selectItem(int position) {
@@ -353,7 +375,7 @@ public class NavigationDrawerFragment extends Fragment {
          */
         void onNavigationDrawerItemSelected(int position);
 
-        int getRequestedPosition(Intent intent);
+        int getRequestedPosition();
     }
 
     private class CalculateCountTask extends AsyncTask<Void, Void, Void> {

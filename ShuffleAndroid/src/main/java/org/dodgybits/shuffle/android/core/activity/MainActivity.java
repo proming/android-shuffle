@@ -90,25 +90,23 @@ public class MainActivity extends RoboActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
 
         // don't show soft keyboard unless user clicks on quick add box
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        mEventManager.fire(new RegisterGcmEvent(this));
-
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         initFragments();
 
         checkLastVersion();
 
         // Set up the drawer.
+        setContentView(R.layout.main);
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        mEventManager.fire(new RegisterGcmEvent(this));
         startService(new Intent(this, SyncAlarmService.class));
     }
 
@@ -140,12 +138,12 @@ public class MainActivity extends RoboActionBarActivity
     }
 
     @Override
-    public int getRequestedPosition(Intent intent) {
+    public int getRequestedPosition() {
         if (mQueryIndex == null) {
             initFragments();
         }
         int position = 0;
-        String queryName = intent.getStringExtra(QUERY_NAME);
+        String queryName = getIntent().getStringExtra(QUERY_NAME);
         if (queryName != null) {
             ListQuery query = ListQuery.valueOf(queryName);
             position = mQueryIndex.get(query);
