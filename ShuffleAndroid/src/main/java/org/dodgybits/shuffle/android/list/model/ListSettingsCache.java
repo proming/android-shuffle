@@ -27,11 +27,9 @@ public class ListSettingsCache {
                     setDefaultCompleted(Flag.no);
     private static ListSettings ticklerSettings =
             new ListSettings(ListQuery.tickler.name()).
-                    setDefaultCompleted(Flag.no).
                     setDefaultActive(Flag.no);
     private static ListSettings nextTasksSettings =
             new ListSettings(NEXT_TASKS_SETTINGS_KEY).
-                    setDefaultCompleted(Flag.no).
                     disableCompleted().
                     disableDeleted().
                     disableActive();

@@ -40,7 +40,7 @@ public class ListSettings {
 
 
     private String mPrefix;
-    private Flag mDefaultCompleted = Flag.ignored;
+    private Flag mDefaultCompleted = Flag.no;
     private Flag mDefaultPending = Flag.ignored;
     private Flag mDefaultDeleted = Flag.no;
     private Flag mDefaultActive = Flag.yes;
