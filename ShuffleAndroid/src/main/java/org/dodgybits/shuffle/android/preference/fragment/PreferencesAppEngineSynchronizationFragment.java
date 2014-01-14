@@ -159,7 +159,9 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
                         if (accountChanged) {
                             // fetch token now so if permission is required, use
                             // will be able to respond
-                            authTokenRetriever.retrieveToken();
+
+                            //TODO need to retrieve token on separate thread
+//                            authTokenRetriever.retrieveToken();
                         }
                     }
                 }

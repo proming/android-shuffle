@@ -61,7 +61,8 @@ public class SyncSchedulingService extends IntentService {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent syncIntent = new Intent(this, SyncReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, syncIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
+                syncIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.set(AlarmManager.RTC_WAKEUP, state.nextScheduledSync, pendingIntent);
 
         // Release the wake lock provided by the WakefulBroadcastReceiver

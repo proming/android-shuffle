@@ -30,8 +30,8 @@ import org.dodgybits.shuffle.android.preference.model.Preferences;
 import java.util.Date;
 
 /**
- * Gets notified when events happen that would require a sync and triggers
- * a sync when it deems it necessary.
+ * Kicks off a recurring alarm to insure sync happens periodically
+ * regardless of whether changes have been detected.
  */
 public class SyncAlarmService extends IntentService {
 
@@ -55,7 +55,8 @@ public class SyncAlarmService extends IntentService {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent syncIntent = new Intent(this, SyncAlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, syncIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
+                syncIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.setRepeating(AlarmManager.RTC, nextSyncDate,
                 SYNC_PERIOD,
                 pendingIntent);
