@@ -44,6 +44,7 @@ public class Preferences {
     public static final String SYNC_AUTH_TOKEN = "sync_auth_token";
     public static final String SYNC_LAST_SYNC_GAE_DATE = "sync_last_sync_gae_date";
     public static final String SYNC_LAST_SYNC_LOCAL_DATE = "sync_last_sync_local_date";
+    public static final String SYNC_LAST_SYNC_FAILURE_DATE = "sync_last_sync_failure_date";
     public static final String SYNC_LAST_SYNC_ID = "sync_last_sync_id";
     public static final String SYNC_COUNT = "sync_count";
 
@@ -98,16 +99,16 @@ public class Preferences {
         return getSharedPreferences(context).getLong(SYNC_LAST_SYNC_LOCAL_DATE, 0L);
     }
 
+    public static long getLastSyncFailureDate(Context context) {
+        return getSharedPreferences(context).getLong(SYNC_LAST_SYNC_FAILURE_DATE, 0L);
+    }
+
     public static long getLastPermanentlyDeletedDate(Context context) {
         return getSharedPreferences(context).getLong(LAST_PERMANENTLY_DELETED_DATE, 0L);
     }
 
     public static String getSyncAuthToken(Context context) {
         return getSharedPreferences(context).getString(SYNC_AUTH_TOKEN, null);
-    }
-
-    public static boolean validateSyncSettings(Context context) {
-        return getSharedPreferences(context).getString(SYNC_AUTH_TOKEN, null) != null;
     }
 
     public static int getSyncCount(Context context) {

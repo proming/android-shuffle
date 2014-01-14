@@ -8,7 +8,6 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.textuality.aerc.AppEngineClient;
 import com.textuality.aerc.Response;
 
-import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.server.IntegrationSettings;
 import org.dodgybits.shuffle.dto.ShuffleProtos;
 
@@ -17,8 +16,9 @@ import java.net.URL;
 import roboguice.service.RoboIntentService;
 
 import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.CAUSE_EXTRA;
-import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.FAILED_UPLOAD_CAUSE;
+import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.FAILED_STATUS_CAUSE;
 import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.NO_RESPONSE_CAUSE;
+import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.INVALID_AUTH_TOKEN_CAUSE;
 import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.SOURCE_EXTRA;
 import static org.dodgybits.shuffle.android.server.sync.SyncSchedulingService.SYNC_FAILED_SOURCE;
 
@@ -38,6 +38,7 @@ public class GaeSyncService extends RoboIntentService {
     AuthTokenRetriever authTokenRetriever;
 
     private String authToken;
+    private int attempt;
 
     public GaeSyncService() {
         super("GaeSyncService");
@@ -46,6 +47,7 @@ public class GaeSyncService extends RoboIntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "Received sync intent");
+        attempt = 1;
         performSync();
     }
 
@@ -76,7 +78,17 @@ public class GaeSyncService extends RoboIntentService {
         }
 
         if (!response.validAuthToken) {
-            performSync();
+            attempt++;
+            if (attempt <= 3) {
+                // permit 2 retries on invalid auth token
+                Log.e(TAG, "Retry " + attempt + " for invalid auth token");
+                performSync();
+            } else {
+                Intent intent = new Intent(this, SyncSchedulingService.class);
+                intent.putExtra(SOURCE_EXTRA, SYNC_FAILED_SOURCE);
+                intent.putExtra(CAUSE_EXTRA, INVALID_AUTH_TOKEN_CAUSE);
+                startService(intent);
+            }
             return;
         }
 
@@ -85,7 +97,7 @@ public class GaeSyncService extends RoboIntentService {
 
             Intent intent = new Intent(this, SyncSchedulingService.class);
             intent.putExtra(SOURCE_EXTRA, SYNC_FAILED_SOURCE);
-            intent.putExtra(CAUSE_EXTRA, FAILED_UPLOAD_CAUSE);
+            intent.putExtra(CAUSE_EXTRA, FAILED_STATUS_CAUSE);
             startService(intent);
 
         } else {

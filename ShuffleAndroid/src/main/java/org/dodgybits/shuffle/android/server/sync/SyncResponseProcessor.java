@@ -50,6 +50,7 @@ public class SyncResponseProcessor {
                 .putLong(Preferences.SYNC_LAST_SYNC_GAE_DATE, currentGaeDate)
                 .putLong(Preferences.SYNC_LAST_SYNC_LOCAL_DATE, System.currentTimeMillis())
                 .putInt(Preferences.SYNC_COUNT, count + 1)
+                .remove(Preferences.SYNC_LAST_SYNC_FAILURE_DATE)
                 .commit();
     }
 

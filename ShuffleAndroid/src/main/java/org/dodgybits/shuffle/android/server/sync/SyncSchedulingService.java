@@ -21,8 +21,15 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import static android.text.format.DateUtils.*;
 import android.util.Log;
+
+import org.dodgybits.shuffle.android.preference.model.Preferences;
+
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * Gets notified when events happen that would require a sync and triggers
@@ -38,7 +45,8 @@ public class SyncSchedulingService extends IntentService {
     public static final String GCM_SOURCE = "gcm";
     public static final String CAUSE_EXTRA = "cause";
     public static final int NO_RESPONSE_CAUSE = 1;
-    public static final int FAILED_UPLOAD_CAUSE = 2;
+    public static final int FAILED_STATUS_CAUSE = 2;
+    public static final int INVALID_AUTH_TOKEN_CAUSE = 3;
 
 
     public SyncSchedulingService() {
@@ -48,15 +56,70 @@ public class SyncSchedulingService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i(TAG, "Received intent " + intent.getExtras());
+        SyncState state = SyncState.restore(this);
+        state.process(this, intent.getExtras());
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent syncIntent = new Intent(this, SyncReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, syncIntent, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, state.nextScheduledSync, pendingIntent);
 
         // Release the wake lock provided by the WakefulBroadcastReceiver
         WakefulBroadcastReceiver.completeWakefulIntent(intent);
+    }
+
+    private static class SyncState {
+        private long previousSuccess;
+        private long nextScheduledSync;
+        private long previousFailure;
+
+        void process(Context context, Bundle bundle) {
+            String source = bundle.getString(SOURCE_EXTRA);
+            Log.i(TAG, "Received intent from " + source + " " + bundle);
+            final long now = System.currentTimeMillis();
+            switch (source) {
+                case SYNC_FAILED_SOURCE:
+                    Preferences.getEditor(context)
+                            .putLong(Preferences.SYNC_LAST_SYNC_FAILURE_DATE, now)
+                            .commit();
+                    if (previousFailure > 0L) {
+                        // exponential back-off
+                        long msAgo = now - previousFailure;
+                        nextScheduledSync = now + Math.max(msAgo * 2L, 5 * MINUTE_IN_MILLIS);
+                    } else {
+                        nextScheduledSync = now + 5 * MINUTE_IN_MILLIS;
+                    }
+                    break;
+                case MANUAL_SOURCE:
+                    nextScheduledSync = now + 5 * SECOND_IN_MILLIS;
+                    break;
+                case ALARM_SOURCE:
+                    long msAgo = now - previousSuccess;
+                    if (previousSuccess > 0L && msAgo < 10 * MINUTE_IN_MILLIS) {
+                        Log.d(TAG, "Sync " + msAgo + "ms ago - do nothing");
+                    } else {
+                        nextScheduledSync = now + 2 * MINUTE_IN_MILLIS;
+                    }
+                    break;
+                case LOCAL_CHANGE_SOURCE:
+                case GCM_SOURCE:
+                    nextScheduledSync = now + 5 * MINUTE_IN_MILLIS;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown source " + source);
+            }
+
+            if (Log.isLoggable(TAG, Log.INFO)) {
+                Log.i(TAG, "Next sync at " + new Date(nextScheduledSync));
+            }
+        }
+
+        static SyncState restore(Context context) {
+            SyncState state = new SyncState();
+            state.previousSuccess = Preferences.getLastSyncLocalDate(context);
+            state.previousFailure = Preferences.getLastSyncFailureDate(context);
+            return state;
+        }
     }
 
 }

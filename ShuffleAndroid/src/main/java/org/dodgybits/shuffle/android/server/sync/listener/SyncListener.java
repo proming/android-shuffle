@@ -37,6 +37,7 @@ public class SyncListener {
                 .remove(Preferences.SYNC_LAST_SYNC_ID)
                 .remove(Preferences.SYNC_LAST_SYNC_GAE_DATE)
                 .remove(Preferences.SYNC_LAST_SYNC_LOCAL_DATE)
+                .remove(Preferences.SYNC_LAST_SYNC_FAILURE_DATE)
                 .commit();
     }
 
