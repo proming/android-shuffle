@@ -110,11 +110,8 @@ public class MainActivity extends RoboActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        mEventManager.fire(new RegisterGcmEvent(this));
-        startService(new Intent(this, SyncAlarmService.class));
-        authTokenRetriever.retrieveToken();
+        setupSync();
     }
-
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -252,6 +249,12 @@ public class MainActivity extends RoboActionBarActivity
         for (ListQuery query : queries) {
             mQueryIndex.put(query, index);
         }
+    }
+
+    private void setupSync() {
+        mEventManager.fire(new RegisterGcmEvent(this));
+        startService(new Intent(this, SyncAlarmService.class));
+        authTokenRetriever.retrieveToken();
     }
 
     public void restoreActionBar() {

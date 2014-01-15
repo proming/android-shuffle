@@ -31,18 +31,32 @@ public class AuthTokenRetriever {
         this.integrationSettings = integrationSettings;
     }
 
-    public String retrieveToken() {
-        String token = null;
+    public void retrieveToken() {
+        String token;
         if (Preferences.isSyncEnabled(context)) {
             token = Preferences.getSyncAuthToken(context);
             if (token == null) {
-                token = lookupToken();
+                lookupInBackground();
+            }
+        }
+    }
+
+    private void lookupInBackground() {
+        Log.d(TAG, "Looking up token in background with context " + context);
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                return lookupToken();
+            }
+
+            @Override
+            protected void onPostExecute(String token) {
+                Log.i(TAG, "Got token");
                 Preferences.getEditor(context)
                         .putString(Preferences.SYNC_AUTH_TOKEN, token)
                         .commit();
             }
-        }
-        return token;
+        }.execute();
     }
 
     private String lookupToken() {
@@ -51,7 +65,8 @@ public class AuthTokenRetriever {
         if (account == null) {
            Log.e(TAG, "Could not determine Google account for sync");
         } else {
-            Authenticator authent = Authenticator.appEngineAuthenticator(context, account, integrationSettings.getAppURL());
+            Authenticator authent = Authenticator.appEngineAuthenticator(
+                    context, account, integrationSettings.getAppURL());
             authToken = authent.token();
             if (authToken == null) {
                 Log.e(TAG, authent.errorMessage());

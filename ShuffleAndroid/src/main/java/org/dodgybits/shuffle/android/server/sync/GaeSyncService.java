@@ -8,6 +8,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.textuality.aerc.AppEngineClient;
 import com.textuality.aerc.Response;
 
+import org.dodgybits.shuffle.android.preference.model.Preferences;
 import org.dodgybits.shuffle.android.server.IntegrationSettings;
 import org.dodgybits.shuffle.dto.ShuffleProtos;
 
@@ -52,9 +53,12 @@ public class GaeSyncService extends RoboIntentService {
     }
 
     private void performSync() {
-        authToken = authTokenRetriever.retrieveToken();
+        authTokenRetriever.retrieveToken();
+        authToken = Preferences.getSyncAuthToken(this);
         if (authToken != null) {
             callService();
+        } else {
+            Log.i(TAG, "No token, no sync");
         }
     }
 

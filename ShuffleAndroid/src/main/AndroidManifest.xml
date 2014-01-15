@@ -391,7 +391,6 @@
             android:exported="false">
         </service>
 
-
         <receiver android:name="org.dodgybits.shuffle.android.server.sync.SyncAlarmReceiver"/>
 
         <receiver android:name="org.dodgybits.shuffle.android.server.sync.SyncReceiver"/>

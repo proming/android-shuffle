@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.FragmentActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -144,8 +145,9 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     if (mSelectedAccount != null) {
                         final Account account = mSelectedAccount;
-                        String oldAccountName = Preferences.getSyncAccount(getActivity());
-                        SharedPreferences.Editor editor = Preferences.getEditor(getActivity());
+                        final FragmentActivity activity = getActivity();
+                        String oldAccountName = Preferences.getSyncAccount(activity);
+                        SharedPreferences.Editor editor = Preferences.getEditor(activity);
                         editor.putBoolean(Preferences.SYNC_ENABLED, true);
                         boolean accountChanged = !oldAccountName.equals(account.name);
                         if (accountChanged) {
@@ -159,9 +161,7 @@ public class PreferencesAppEngineSynchronizationFragment extends RoboFragment {
                         if (accountChanged) {
                             // fetch token now so if permission is required, use
                             // will be able to respond
-
-                            //TODO need to retrieve token on separate thread
-//                            authTokenRetriever.retrieveToken();
+                            authTokenRetriever.retrieveToken();
                         }
                     }
                 }
