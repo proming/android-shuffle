@@ -66,6 +66,8 @@ public class PreHoneycombWidgetProvider extends RoboAppWidgetProvider {
 
     private ContextBitmapProvider mBitmapProvider;
 
+    private static boolean syncInitialized = false;
+
     @Inject
     TaskPersister mTaskPersister;
     @Inject
@@ -94,7 +96,11 @@ public class PreHoneycombWidgetProvider extends RoboAppWidgetProvider {
             }
         }
 
-        context.startService(new Intent(context, SyncAlarmService.class));
+        if (!syncInitialized) {
+            Log.d(TAG, "Starting alarm service");
+            context.startService(new Intent(context, SyncAlarmService.class));
+            syncInitialized = true;
+        }
 
     }
 

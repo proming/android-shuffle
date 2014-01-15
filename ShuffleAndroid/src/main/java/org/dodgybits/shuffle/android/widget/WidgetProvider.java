@@ -23,6 +23,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import com.google.inject.Inject;
 
@@ -41,10 +42,12 @@ import java.io.PrintWriter;
  * Widget provider for honeycomb+ devices.
  */
 public class WidgetProvider extends RoboAppWidgetProvider {
-
+    private static final String TAG = "WidgetProvider";
 
     @Inject
     private WidgetManager mWidgetManager;
+
+    private static boolean syncInitialized = false;
 
     @Override
     public void onDisabled(Context context) {
@@ -82,7 +85,11 @@ public class WidgetProvider extends RoboAppWidgetProvider {
             }
         }
 
-        context.startService(new Intent(context, SyncAlarmService.class));
+        if (!syncInitialized) {
+            Log.d(TAG, "Starting alarm service");
+            context.startService(new Intent(context, SyncAlarmService.class));
+            syncInitialized = true;
+        }
     }
 
     /**
